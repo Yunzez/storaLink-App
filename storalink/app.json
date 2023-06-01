@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a61dd311-243a-4ed1-a6d3-ea9a2ecba069"
+      }
+    },
+    "owner": "yunzez"
   }
 }

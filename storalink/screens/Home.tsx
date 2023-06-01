@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
-import { createNativeStackNavigator, StackScreenProps } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -12,7 +12,7 @@ type RootStackParamList = {
 };
 
 
-export const HomeScreen = ({navigation}: any) => {
+export const Home = ({navigation}: any) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Home!</Text>
@@ -25,4 +25,4 @@ export const HomeScreen = ({navigation}: any) => {
 }
 
 
-export default HomeScreen
+export default Home
