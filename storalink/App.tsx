@@ -18,6 +18,7 @@ export default function App() {
       <GlobalContextProvider>
         <GlobalStack.Navigator>
           <GlobalStack.Screen name="Login" component={Login} />
+          <GlobalStack.Screen name="Test" component={Test} />
           <GlobalStack.Screen
             options={{
               headerShown: false,

@@ -49,6 +49,7 @@ export const Login = () => {
       />
 
       <Button title="Login" onPress={handleLogin} />
+      <Button title="Go test" onPress={() => { navigator.navigate("Test");}} />
     </Container>
   );
 };
