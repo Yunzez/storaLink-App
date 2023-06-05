@@ -7,12 +7,17 @@ import { BottomTabNavigators } from "./navigation/BottomTabNavigators";
 import { GlobalContextProvider } from "./context/GlobalProvider";
 import Login from "./screens/Login";
 import Test from "./screens/Test";
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+
 const BoxRoot = styled.Text`
   color: red;
 `;
 const GlobalStack = createNativeStackNavigator();
-
+WebBrowser.maybeCompleteAuthSession();
 export default function App() {
+  
+  
   return (
     <NavigationContainer>
       <GlobalContextProvider>

@@ -7,15 +7,22 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/StoraSplash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
+    
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.storalink",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "798924462648-vt2o1lg6dbq0sa83fgjif5rk3pestj73.apps.googleusercontent.com"
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -31,6 +38,7 @@
         "projectId": "a61dd311-243a-4ed1-a6d3-ea9a2ecba069"
       }
     },
-    "owner": "yunzez"
+    "owner": "yunzez",
+    "scheme": "storalink"
   }
 }
