@@ -5,10 +5,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Test from "./Test";
-
+import { SearchBar } from "../theme/genericComponents";
 export const Home = ({ navigation }: any) => {
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <SearchBar placeholder="Search files, saved items, etc..."/>
     <Text>Home!</Text>
     <Button
       title="Go to Test"

@@ -6,6 +6,7 @@ import {
   Text,
   View,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { NavigationProp } from "@react-navigation/native";
@@ -31,7 +32,7 @@ const StyledInput = styled(TextInput)`
   border-radius: ${SPACE.roundMd};
 `;
 
-const SignInBtnContainer = styled(View)`
+const SignInBtnContainer = styled(TouchableOpacity)`
   background-color: ${COLORS.themeYellow};
   border-radius: ${SPACE.roundMd};
   padding: ${SPACE.lg};

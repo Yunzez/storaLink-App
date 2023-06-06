@@ -1,11 +1,12 @@
-import React from 'react'
-import { Text } from 'react-native'
+import React from "react";
+import { SafeAreaView, Text } from "react-native";
 
 export const Files = () => {
   return (
-    <Text>Files</Text>
-  )
-}
+    <SafeAreaView>
+      <Text>Files</Text>
+    </SafeAreaView>
+  );
+};
 
-
-export default Files
+export default Files;
