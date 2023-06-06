@@ -7,6 +7,7 @@ import { BottomTabNavigators } from "./navigation/BottomTabNavigators";
 import { GlobalContextProvider } from "./context/GlobalProvider";
 import Login from "./screens/Login";
 import Test from "./screens/Test";
+import Signup from "./screens/Signup";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 
@@ -22,7 +23,12 @@ export default function App() {
     <NavigationContainer>
       <GlobalContextProvider>
         <GlobalStack.Navigator>
-          <GlobalStack.Screen name="Login" component={Login} />
+          <GlobalStack.Screen 
+           options={{
+            headerShown: false,
+          }}
+          name="Login" component={Login} />
+          <GlobalStack.Screen name="Signup" component={Signup} />
           <GlobalStack.Screen name="Test" component={Test} />
           <GlobalStack.Screen
             options={{

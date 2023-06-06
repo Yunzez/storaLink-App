@@ -12,7 +12,7 @@ export const Home = ({ navigation }: any) => {
     <Text>Home!</Text>
     <Button
       title="Go to Test"
-      onPress={() => navigation.navigate('Test')}
+      onPress={() => navigation.navigate('Test_home')}
     />
     <Button
       title="Back to Login"

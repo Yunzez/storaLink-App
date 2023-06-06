@@ -51,26 +51,13 @@ const SignInText = styled(Text)`
   margin-left: 8px;
 `;
 
-export const Login = () => {
+export const Signup = () => {
   const { navigator } = useContext(GlobalContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remeber, setRemenber] = useState(false);
   const handleLogin = () => {
     // Handle login action here
-    // Use a regular expression to validate the email
-    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-
-    if (!emailRegex.test(username)) {
-      alert("Please enter a valid email address");
-      return;
-    }
-
-    if (password.length < 8) {
-      alert("Password must be at least 8 characters long");
-      return;
-    }
-
     navigator.navigate("Home");
     console.log("Username: ", username);
     console.log("Password: ", password);
@@ -84,7 +71,7 @@ export const Login = () => {
             style={{ width: 40, height: 40 }}
             source={require("../assets/img/LoginIcon.png")}
           />
-          <Text>Sign In </Text>
+          <Text>Sign Up </Text>
         </View>
 
         <Text style={{ margin: 2 }}>Email</Text>
@@ -92,14 +79,13 @@ export const Login = () => {
           value={username}
           onChangeText={setUsername}
           placeholder="Username"
-          secureTextEntry={false}
         />
         <Text style={{ margin: 2 }}>Password</Text>
         <StyledInput
           value={password}
           onChangeText={setPassword}
           placeholder="Password"
-          secureTextEntry={true}
+          secureTextEntry
         />
 
         <View
@@ -120,17 +106,11 @@ export const Login = () => {
         </View>
 
         <SignInBtnContainer>
-          <Button title="Sign In" color={COLORS.white} onPress={handleLogin} />
+          <Button title="Sign Up" color={COLORS.white} onPress={handleLogin} />
         </SignInBtnContainer>
         <View style={{ flexDirection: "row" }}>
-          <Text>Don't have an Account?</Text>
-          <SignInText
-            onPress={() => {
-              navigator.navigate("Signup");
-            }}
-          >
-            Sign up
-          </SignInText>
+          <Text>Have an Account?</Text>
+          <SignInText>Sign in</SignInText>
         </View>
 
         {/* <Button
@@ -145,4 +125,4 @@ export const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

@@ -13,13 +13,25 @@ const Stack = createNativeStackNavigator();
 
 export default function HomeNavigators() {
   return (
-
-        <Stack.Navigator>
-          <Stack.Screen name="Home_Main" component={Home} />
-          <Stack.Screen name="Test" component={Test} />
-          {/* Add more Settings screens here */}
-        </Stack.Navigator>
-
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          title: 'Home'
+        }}
+        name="Home_Main"
+        component={Home}
+      />
+      <Stack.Screen
+       options={{
+        headerShown: true,
+        headerBackTitleVisible: false,
+        headerTitle: 'Test Screen', // or null to hide the screen title in the header
+      }}
+        name="Test_home"
+        component={Test}
+      />
+      {/* Add more Settings screens here */}
+    </Stack.Navigator>
   );
 }
-
