@@ -22,9 +22,9 @@ export const BottomTabNavigators = () => {
           bottom: 20, // you can adjust this value as per your need
           left: 20,
           right: 20,
-          backgroundColor: "#ffffff",
+          backgroundColor: COLORS.lightGrey,
           borderRadius: 30,
-          height: 60,
+          height: 70,
           ...styles.shadow,
         },
       }}
@@ -68,7 +68,7 @@ export const BottomTabNavigators = () => {
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "settings" : "settings-outline"}
-              size={focused ? size * 1.2 : size}
+              size={focused ? size * 1.5 : size*1.2}
               color={focused ? COLORS.themeYellow : COLORS.darkGrey}
             />
           ),
@@ -79,7 +79,7 @@ export const BottomTabNavigators = () => {
 
 const styles = {
   shadow: {
-    shadowColor: "#7F5DF0",
+    shadowColor: COLORS.darkGrey,
     shadowOffset: {
       width: 0,
       height: 10,
