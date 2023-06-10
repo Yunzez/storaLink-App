@@ -31,7 +31,6 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
     justify-content: space-between;
     width: ${screenWidth * 0.9}px;
     flex-direction: row;
-    margin-top: 5px;
     border: 2px solid ${COLORS.darkGrey};
     box-shadow: 0 19px 38px rgba(0,0,0,0.30);
 
@@ -39,7 +38,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 
   return (
     <BlurView
-      intensity={50}
+      intensity={30}
       tint="light"
       style={{
         display: "flex",

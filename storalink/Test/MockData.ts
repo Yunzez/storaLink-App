@@ -24,6 +24,41 @@ export const MockCardList: FolderCardProps[] = [
       console.log("hello");
     },
   },
+  {
+    title: " card",
+    imgUrl: placeHolder,
+    onClick: () => {
+      console.log("hello");
+    },
+  },
+  {
+    title: "Lol card",
+    imgUrl: placeHolder,
+    onClick: () => {
+      console.log("hello");
+    },
+  },
+  {
+    title: "hey card",
+    imgUrl: placeHolder,
+    onClick: () => {
+      console.log("hello");
+    },
+  },
+  {
+    title: "yo card",
+    imgUrl: placeHolder,
+    onClick: () => {
+      console.log("hello");
+    },
+  },
+  {
+    title: "dude card",
+    imgUrl: placeHolder,
+    onClick: () => {
+      console.log("hello");
+    },
+  },
 ];
 
 export const MockLinkList: SmallLinkViewProps[] = [

@@ -12,8 +12,8 @@ const FolderCard = (props: FolderCardProps) => {
   const Card = styled(TouchableOpacity)`
     margin: 5px;
     paddin: 5px;
-    width: 140px; // Adjust width as needed
-    height: 120px; // Adjust height as needed
+    width: 140px; 
+    height: 190px;
     margin-right: 10px;
     background-color: ${COLORS.lightGrey};
     border-radius: ${SPACE.md};
