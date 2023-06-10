@@ -110,6 +110,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
+              style={{marginLeft: 10, marginRight: 10}}
             >
               <Ionicons
                 name={isFocused ? iconName as typeof name: iconName + "-outline" as typeof name}
