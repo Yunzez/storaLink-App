@@ -48,7 +48,6 @@ const StyledCheckbox = styled(Checkbox)`
 
 const SignInText = styled(Text)`
   color: blue;
-  text-decorationline: underline;
   margin-left: 8px;
 `;
 

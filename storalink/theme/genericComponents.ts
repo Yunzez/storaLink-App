@@ -4,6 +4,7 @@ import { COLORS, SPACE } from "./constants";
 export const SearchBar = styled(TextInput)`
 background-color: ${COLORS.lightOrange};
 width: 80%;
-padding: ${SPACE.lg}
-border-radius: ${SPACE.roundMd}
+padding: ${SPACE.lg};
+border-radius: ${SPACE.roundMd};
+margin-bottom: 15px;
 `
