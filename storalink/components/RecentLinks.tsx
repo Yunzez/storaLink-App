@@ -11,7 +11,7 @@ type RecentLinksProps = {
 };
 
 const ComponentTitle = styled(Text)`
-  text-align: start;
+  text-align: left;
   font-size: 18px;
   margin-top: 15px;
   margin-bottom: 10px;

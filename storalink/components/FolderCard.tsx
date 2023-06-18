@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, ImageSourcePropType } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ImageSourcePropType,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components";
 import { COLORS, SPACE } from "../theme/constants";
@@ -12,7 +18,7 @@ const FolderCard = (props: FolderCardProps) => {
   const Card = styled(TouchableOpacity)`
     margin: 5px;
     paddin: 5px;
-    width: 140px; 
+    width: 140px;
     height: 190px;
     margin-right: 10px;
     background-color: ${COLORS.lightGrey};
@@ -23,7 +29,8 @@ const FolderCard = (props: FolderCardProps) => {
     width: 100%;
     height: 70%;
     border-radius: ${SPACE.md};
-    border: 1px solid ${COLORS.themeYellow}
+    border-width: 1px;
+    border-color: ${COLORS.themeYellow};
   `;
 
   const CardTitle = styled(Text)`

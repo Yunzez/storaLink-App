@@ -15,6 +15,7 @@ const PinnedFolders = ({ cardList }: PinnedFoldersProps) => {
   const PinnedFoldersWrapper = styled(View)`
     width: ${screenWidth * 0.9}px;
     height: ${screenHeight * 0.25}px;
+    z-index: 10;
   `;
 
   const ComponentTitle = styled(Text)`

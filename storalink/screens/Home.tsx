@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Test from "./Test";
-import { SearchBar } from "../theme/genericComponents";
+import SearchComponent from "../components/SearchbarComponent";
 import { GlobalContext } from "../context/GlobalProvider";
 import PinnedFolders from "../components/PinnedFolders";
 import { MockCardList, MockLinkList } from "../Test/MockData";
@@ -14,7 +14,7 @@ export const Home = () => {
   const { navigator, screenHeight } = useContext(GlobalContext);
   return (
     <View style={{ display:'flex', justifyContent:'flex-start', alignItems: "center", marginTop: 15 }}>
-      <SearchBar placeholder="Search files, saved items, etc..."/>
+      <SearchComponent placeHolder="Search files, saved items, etc..."/>
       <PinnedFolders cardList={MockCardList}/>
       <RecentLinks linkList={MockLinkList}/>
 

@@ -24,16 +24,15 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
     border-radius: 100px;
     padding: 10px;
     position: absolute;
-  left: 20px;
-  right: 20px;
+    left: 20px;
+    right: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: ${screenWidth * 0.9}px;
     flex-direction: row;
     border: 2px solid ${COLORS.darkGrey};
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30);
-
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3);
   `;
 
   return (
@@ -104,16 +103,21 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 
           return (
             <TouchableOpacity
+              key={index}
               accessibilityRole="button"
               accessibilityState={isFocused ? { selected: true } : {}}
               accessibilityLabel={options.tabBarAccessibilityLabel}
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
-              style={{marginLeft: 10, marginRight: 10}}
+              style={{ marginLeft: 10, marginRight: 10 }}
             >
               <Ionicons
-                name={isFocused ? iconName as typeof name: iconName + "-outline" as typeof name}
+                name={
+                  isFocused
+                    ? (iconName as typeof name)
+                    : ((iconName + "-outline") as typeof name)
+                }
                 size={
                   isFocused ? screenHeight * 0.03 * 1.2 : screenHeight * 0.03
                 }
@@ -132,25 +136,12 @@ export const BottomTabNavigators = () => {
 
   return (
     <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
-      <Tab.Screen
-        name="Home"
-        component={HomeNavigators}
-      />
-      <Tab.Screen
-        name="Files"
-        component={Files}
-      />
-      <Tab.Screen
-        name="Friends"
-        component={Friends}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={Settings}
-      />
+      <Tab.Screen name="Home" component={HomeNavigators} />
+      <Tab.Screen name="Files" component={Files} />
+      <Tab.Screen name="Friends" component={Friends} />
+      <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );
-  
 };
 
 export default BottomTabNavigators;

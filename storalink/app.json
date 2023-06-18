@@ -19,9 +19,6 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.storalink",
       "config": {
-        "googleSignIn": {
-          "reservedClientId": "798924462648-vt2o1lg6dbq0sa83fgjif5rk3pestj73.apps.googleusercontent.com"
-        }
       }
     },
     "android": {
