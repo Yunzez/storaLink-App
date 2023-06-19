@@ -17,6 +17,7 @@ import { SPACE, COLORS } from "../theme/constants";
 
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import { AGeneralTextInput } from "../theme/genericComponents";
 
 const Container = styled(SafeAreaView)`
   flex: 1;
@@ -76,13 +77,13 @@ export const Signup = () => {
         </View>
 
         <Text style={{ margin: 2 }}>Email</Text>
-        <StyledInput
+        <AGeneralTextInput
           value={username}
           onChangeText={setUsername}
           placeholder="Username"
         />
-        <Text style={{ margin: 2 }}>Password</Text>
-        <StyledInput
+        <Text style={{  paddingTop: 15 }}>Password</Text>
+        <AGeneralTextInput
           value={password}
           onChangeText={setPassword}
           placeholder="Password"

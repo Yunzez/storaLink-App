@@ -7,6 +7,8 @@ import {
   View,
   Image,
   TouchableOpacity,
+  StyleSheet,
+  ScrollView,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { NavigationProp } from "@react-navigation/native";
@@ -14,7 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import styled from "styled-components/native";
 import { GlobalContext } from "../context/GlobalProvider";
 import { SPACE, COLORS } from "../theme/constants";
-
+import { AGeneralTextInput } from "../theme/genericComponents";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 
@@ -77,71 +79,78 @@ export const Login = () => {
   };
 
   return (
-    <Container>
-      <View style={{ width: "75%", justifyContent: "center" }}>
-        <View style={{ marginBottom: 10, alignItems: "center" }}>
-          <Image
-            style={{ width: 40, height: 40 }}
-            source={require("../assets/img/LoginIcon.png")}
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <Container>
+        <View style={{ width: "75%", justifyContent: "center" }}>
+          <View style={{ marginBottom: 10, alignItems: "center" }}>
+            <Image
+              style={{ width: 40, height: 40 }}
+              source={require("../assets/img/LoginIcon.png")}
+            />
+            <Text>Sign In </Text>
+          </View>
+
+          <Text style={{ margin: 2 }}>Email</Text>
+          <AGeneralTextInput
+            value={username}
+            onChangeText={setUsername}
+            placeholder="Username"
+            secureTextEntry={false}
           />
-          <Text>Sign In </Text>
-        </View>
+          <Text style={{ paddingTop: 15 }}>Password</Text>
 
-        <Text style={{ margin: 2 }}>Email</Text>
-        <StyledInput
-          value={username}
-          onChangeText={setUsername}
-          placeholder="Username"
-          secureTextEntry={false}
-        />
-        <Text style={{ margin: 2 }}>Password</Text>
-        <StyledInput
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
-          secureTextEntry={true}
-        />
-
-        <View
-          style={{
-            flexDirection: "row",
-            width: "100%",
-            marginTop: 4,
-            marginBottom: 4,
-          }}
-        >
-          <StyledCheckbox
-            disabled={false}
-            value={remeber}
-            onValueChange={(newValue) => setRemenber(newValue)}
-            color={remeber ? COLORS.themeYellow : undefined}
+          <AGeneralTextInput
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Password"
+            secureTextEntry={true}
           />
-          <Text>Remember Me</Text>
-        </View>
 
-        <SignInBtnContainer>
-          <Button title="Sign In" color={COLORS.white} onPress={handleLogin} />
-        </SignInBtnContainer>
-        <View style={{ flexDirection: "row" }}>
-          <Text>Don't have an Account?</Text>
-          <SignInText
-            onPress={() => {
-              navigator.navigate("Signup");
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              marginTop: 4,
+              marginBottom: 4,
             }}
           >
-            Sign up
-          </SignInText>
-        </View>
+            <StyledCheckbox
+              disabled={false}
+              value={remeber}
+              onValueChange={(newValue) => setRemenber(newValue)}
+              color={remeber ? COLORS.themeYellow : undefined}
+            />
+            <Text>Remember Me</Text>
+          </View>
 
-        {/* <Button
+          <SignInBtnContainer>
+            <Button
+              title="Sign In"
+              color={COLORS.white}
+              onPress={handleLogin}
+            />
+          </SignInBtnContainer>
+          <View style={{ flexDirection: "row" }}>
+            <Text>Don't have an Account?</Text>
+            <SignInText
+              onPress={() => {
+                navigator.navigate("Signup");
+              }}
+            >
+              Sign up
+            </SignInText>
+          </View>
+
+          {/* <Button
           title="Go test"
           onPress={() => {
             navigator.navigate("Test");
           }}
           color={COLORS.standardBlack}
         /> */}
-      </View>
-    </Container>
+        </View>
+      </Container>
+    </ScrollView>
   );
 };
 
