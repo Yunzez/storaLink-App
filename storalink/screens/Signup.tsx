@@ -76,7 +76,7 @@ export const Signup = () => {
           <Text>Sign Up </Text>
         </View>
 
-        <Text style={{ margin: 2 }}>Email</Text>
+        <Text style={{  paddingTop: 15 }}>Email</Text>
         <AGeneralTextInput
           value={username}
           onChangeText={setUsername}

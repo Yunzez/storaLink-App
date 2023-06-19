@@ -16,7 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import styled from "styled-components/native";
 import { GlobalContext } from "../context/GlobalProvider";
 import { SPACE, COLORS } from "../theme/constants";
-import { AGeneralTextInput } from "../theme/genericComponents";
+import { AGeneralErrorBlock, AGeneralTextInput } from "../theme/genericComponents";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 
@@ -58,20 +58,31 @@ export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remeber, setRemenber] = useState(false);
+  const [error, setError] = useState('')
   const handleLogin = () => {
     // Handle login action here
     // Use a regular expression to validate the email
     const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
     if (!emailRegex.test(username)) {
+      setError('test failed at email')
       alert("Please enter a valid email address");
+      
       return;
     }
 
     if (password.length < 8) {
+      setError('test failed at password')
       alert("Password must be at least 8 characters long");
+      
       return;
     }
+
+    // ! checking login goes here
+    
+
+    // * assume failure test goes here: 
+
 
     navigator.navigate("Home");
     console.log("Username: ", username);
@@ -89,11 +100,12 @@ export const Login = () => {
             />
             <Text>Sign In </Text>
           </View>
+          <AGeneralErrorBlock errorText={error} />
 
           <Text style={{ margin: 2 }}>Email</Text>
           <AGeneralTextInput
             value={username}
-            onChangeText={setUsername}
+            onChangeText={(text: string) => {setUsername(text); setError('')}}
             placeholder="Username"
             secureTextEntry={false}
           />
@@ -101,7 +113,7 @@ export const Login = () => {
 
           <AGeneralTextInput
             value={password}
-            onChangeText={setPassword}
+            onChangeText={(text:string) => {setPassword(text); setError('')}}
             placeholder="Password"
             secureTextEntry={true}
           />

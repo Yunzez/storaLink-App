@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import styled, { css } from "styled-components/native";
 import { COLORS, SPACE } from "./constants";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 type SearchBarProps = {
   isFocused?: boolean;
 };
@@ -88,5 +88,76 @@ export const AGeneralTextInput = (props: TextInputProps) => {
         </Animated.View>
       </View>
     </TouchableWithoutFeedback>
+  );
+};
+
+type AGeneralErrorBlockProps = {
+  errorText: string;
+};
+
+export const AGeneralErrorBlock = (props: AGeneralErrorBlockProps) => {
+  const styles = StyleSheet.create({
+    animatedTextInputStyle: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      padding: SPACE.nativeLg,
+      borderRadius: SPACE.nativeRoundMd,
+      borderWidth: 1.5,
+      borderStyle: "solid",
+    },
+  });
+  const {errorText} = props
+  const colorAnimation = useState(new Animated.Value(0))[0];
+  const opacityAnimation = useState(new Animated.Value(0))[0];
+  const animatedTextInputStyle = {
+    ...styles.animatedTextInputStyle,
+    backgroundColor: colorAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [COLORS.lightGrey, COLORS.lowerWarning],
+    }),
+    height: colorAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [5, 45], // Adjust the initial and final height values
+    }),
+    borderColor: colorAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange:[COLORS.lightGrey, COLORS.highWarning],
+    }),
+  };
+
+  const opacityAnimationStyle = {
+    opacity: opacityAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1], 
+    }),
+  }
+
+  const animateBackgroundColorandHeight = (toValue: number) => {
+    Animated.parallel([
+      Animated.timing(opacityAnimation, {
+        duration: 200,
+        toValue,
+        useNativeDriver: false,
+      }),
+      Animated.spring(colorAnimation, {
+        toValue,
+        useNativeDriver: false,
+      }),
+    ])
+   .start();
+  };
+
+  useEffect(() => {
+    if(errorText.length > 0) {
+      animateBackgroundColorandHeight(1)
+    } else {
+      animateBackgroundColorandHeight(0)
+    }
+  }, [errorText])
+  return (
+    <Animated.View style={[animatedTextInputStyle, opacityAnimationStyle]}>
+      <Text style={{ fontSize: 20, fontWeight: '500', color: COLORS.highWarning }}>{errorText}</Text>
+    </Animated.View>
   );
 };
