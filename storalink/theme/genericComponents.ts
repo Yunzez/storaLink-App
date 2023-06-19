@@ -16,25 +16,9 @@ export const SearchBar = styled(TextInput)<SearchBarProps>`
 `;
 
 
-type ResultsDropdownProps = {
-    show?: boolean;
-  }; 
-  export const ResultsDropdown = styled(View)<ResultsDropdownProps>`
+
+  export const ResultsDropdown = styled(View)`
   position: absolute;
-  background-color: ${COLORS.white};
-  margin-top: -5px;
-  width: 80%;
-  padding: ${SPACE.lg};
-  border-radius: ${SPACE.roundMd};
-  margin-bottom: 15px;
-  height: ${(props) => (props.show ? "200px" : "0")};
-  shadow-color: ${COLORS.darkGrey};
-  shadow-offset: {
-    width: 0,
-    height: 2,
-  };
-  shadow-opacity: 0.25;
-  shadow-radius: 4px;
-  elevation: 10;
+  padding: 5px;
 `;
 

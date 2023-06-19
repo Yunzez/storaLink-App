@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { MockCardList } from "../Test/MockData";
 import FolderCard from "../components/FolderCard";
 import { GlobalContext } from "../context/GlobalProvider";
+import SearchComponent from "../components/SearchbarComponent";
 
 
 export const Files = () => {
@@ -26,7 +27,7 @@ export const Files = () => {
         marginTop: 15,
       }}
     >
-      <SearchBar placeholder="Search for a folder..." />
+ <SearchComponent placeHolder="Search files, saved items, etc..."/>
 
       <View style={{ flex: 1, justifyContent: "center" }}>
         <ScrollView showsVerticalScrollIndicator={false}>
