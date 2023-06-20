@@ -9,20 +9,20 @@ type PinnedFoldersProps = {
   cardList: FolderCardProps[];
 };
 
+const ComponentTitle = styled(Text)`
+  font-size: 18px;
+  margin: 5px;
+  color: ${COLORS.themeYellow};
+`;
+
 const PinnedFolders = ({ cardList }: PinnedFoldersProps) => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
-
   const PinnedFoldersWrapper = styled(View)`
     width: ${screenWidth * 0.9}px;
     height: ${screenHeight * 0.25}px;
-    z-index: 10;
   `;
 
-  const ComponentTitle = styled(Text)`
-    font-size: 18px;
-    margin: 5px;
-    color: ${COLORS.themeYellow};
-  `;
+  console.log('pinfolder refresh')
 
   return (
     <View>
@@ -42,5 +42,6 @@ const PinnedFolders = ({ cardList }: PinnedFoldersProps) => {
     </View>
   );
 };
+
 
 export default PinnedFolders;
