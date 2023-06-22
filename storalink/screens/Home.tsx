@@ -17,25 +17,22 @@ import { GlobalContext } from "../context/GlobalProvider";
 import PinnedFolders from "../components/PinnedFolders";
 import { MockCardList, MockLinkList } from "../Test/MockData";
 import RecentLinks from "../components/RecentLinks";
-
+import BottomModal from "../components/BottomModal";
 import BottomSheet from "@gorhom/bottom-sheet";
+import { BottomModalRefProps } from "../components/BottomModal";
 export const Home = () => {
 
-  type ModalRef = {
-    openMenu: () => void;
-  };
-  
-  const modalRef = useRef<ModalRef | null>(null);
+  const modalRef = useRef<BottomModalRefProps | null>(null);
   const { navigator, screenHeight } = useContext(GlobalContext);
 
   const showMenu = () => {
-    if(modalRef.current) {
+    if (modalRef.current) {
       modalRef.current.openMenu();
     }
   };
- 
+
   return (
-    <View
+    <SafeAreaView
       style={{
         display: "flex",
         justifyContent: "flex-start",
@@ -44,8 +41,7 @@ export const Home = () => {
       }}
     >
       <SearchComponent placeHolder="Search files, saved items, etc..." />
-      <Button title="Open Menu" onPress={showMenu} />
-      <PinnedFolders cardList={MockCardList} />
+      <PinnedFolders cardList={MockCardList} parentStyle={{paddingTop: 15}}/>
       <RecentLinks linkList={MockLinkList} />
 
       {/* <Button
@@ -56,110 +52,11 @@ export const Home = () => {
       title="Back to Login"
       onPress={() => navigator.navigate('Login')}
     /> */}
-      <BottomModal ref={modalRef}  />
-    </View>
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  menuContent: {
-    backgroundColor: "white",
-    padding: 16,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-  },
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: "grey",
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
-});
-
-type BottomModalProps = {
-  ref: any
-};
-
-// * React.forwardRef is a method in React that allows a component to forward a ref that it receives to a child component. 
-// * This can be useful when you want a parent component to be able to call methods on a child component directly.
-// const BottomModal = React.forwardRef((props: BottomModalProps, ref) => {
-  const BottomModal = React.forwardRef((props: BottomModalProps, ref) => {
-  const [menuVisible, setMenuVisible] = useState(false);
-
-  // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
-  const [trigger, setTrigger] = useState(false);
-  
-  const hideMenu = () => {
-    setTrigger(false);
-  };
-  
-  const showMenu = () => {
-    setTrigger(true);
-  };
-
-  // * To expose methods of the child component to the parent, you can use React.useImperativeHandle
-  React.useImperativeHandle(ref, () => ({
-    openMenu: () => showMenu()
-  }));
 
 
-  const menuAnimation = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (trigger) {
-      Animated.timing(menuAnimation, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(menuAnimation, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    }
-    console.log('trigger')
-  }, [trigger]);
-
-  const menuStyle = {
-    transform: [
-      {
-        translateY: menuAnimation.interpolate({
-          inputRange: [0, 1],
-          outputRange: [300, 0],
-        }),
-      },
-    ],
-  };
-
-  return (
-    <View>
-      {/* Modal */}
-      <Modal visible={trigger} transparent animationType="none">
-        <View style={styles.modalContainer}>
-          {/* Menu Content */}
-          <Animated.View style={[styles.menuContent, menuStyle]}>
-            <Text>Menu Item 1</Text>
-            <Text>Menu Item 2</Text>
-            <Text>Menu Item 3</Text>
-            <Button title="Close Menu" onPress={hideMenu} />
-          </Animated.View>
-        </View>
-      </Modal>
-       
-    </View>
-  );
-});
 
 export default Home;

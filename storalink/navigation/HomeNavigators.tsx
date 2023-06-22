@@ -17,7 +17,6 @@ export default function HomeNavigators() {
       <Stack.Screen
         options={{
           headerShown: false,
-          title: 'Home'
         }}
         name="Home_Main"
         component={Home}
