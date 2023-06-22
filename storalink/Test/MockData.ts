@@ -2,6 +2,13 @@ import { FolderCardProps } from "../components/FolderCard";
 import placeHolder from "../assets/mockImg/placeholder.png";
 import { SmallLinkViewProps } from "../components/SmallLinkView";
 import { SocialMediaSrc } from "../utils";
+
+export interface LinkViewProps extends SmallLinkViewProps {
+    title: string;
+    socialMediaType: SocialMediaSrc;
+    imgUrl?: string;
+    onClick?: () => void;
+  };
 export const MockCardList: FolderCardProps[] = [
   {
     title: "testing card",
@@ -61,21 +68,21 @@ export const MockCardList: FolderCardProps[] = [
   },
 ];
 
-export const MockLinkList: SmallLinkViewProps[] = [
-  { title: "Welcome to Thailand", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Los Angelos", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Seattle", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to My Ass", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Thailand", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Los Angelos", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Seattle", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to My Ass", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Thailand", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Los Angelos", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Seattle", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to My Ass", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Thailand", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Los Angelos", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to Seattle", socialMediaType: SocialMediaSrc.INS },
-  { title: "Welcome to My Ass", socialMediaType: SocialMediaSrc.INS },
+export const MockLinkList: LinkViewProps[] = [
+  { title: "Welcome to Thailand", socialMediaType: SocialMediaSrc.INS, imgUrl: placeHolder},
+  { title: "Welcome to Los Angelos", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to Seattle", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to My Ass", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to Thailand", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to Los Angelos", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to Seattle", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to My Ass", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to Thailand", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to Los Angelos", socialMediaType: SocialMediaSrc.INS ,imgUrl: placeHolder},
+  { title: "Welcome to Seattle", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to My Ass", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to Thailand", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to Los Angelos", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to Seattle", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
+  { title: "Welcome to My Ass", socialMediaType: SocialMediaSrc.INS ,imgUrl: placeHolder},
 ];
