@@ -7,13 +7,28 @@ import {
   Button,
   StyleSheet,
   PanResponder,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  ImageSourcePropType,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { COLORS, SPACE } from "../theme/constants";
+import { useModalContext } from "../context/ModalContext";
+interface ModalBasicProps {
+  name: string;
+  icon?: string;
+}
+
+export interface ModalDataProps extends ModalBasicProps {
+  onClick: () => void;
+}
+
 type BottomModalProps = {
-  ref: any;
-  onClose?: () => void;
   onOpen?: () => void;
   height?: number;
+  data: ModalDataProps[];
+  header?: ModalBasicProps;
+  onClose?: () => void;
 };
 
 export type BottomModalRefProps = {
@@ -22,44 +37,7 @@ export type BottomModalRefProps = {
 
 // * React.forwardRef is a method in React that allows a component to forward a ref that it receives to a child component.
 // * This can be useful when you want a parent component to be able to call methods on a child component directly.
-const BottomModal = React.forwardRef((props: BottomModalProps, ref) => {
-  const [trigger, setTrigger] = useState(false);
-  const hideMenu = () => {
-    Animated.timing(menuAnimation, {
-      duration: 500,
-      toValue: 0,
-      useNativeDriver: true,
-    }).start(() => {
-      setTrigger(false);
-      props.onClose?.();
-    });
-  };
-
-  const showMenu = () => {
-    setTrigger(true); // ! let the modal be able to render first and then do animation
-    Animated.spring(menuAnimation, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start(() => {
-      props.onOpen?.();
-    });
-  };
-
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: () => true,
-    onPanResponderMove: (evt, gestureState) => {
-      // Check if vertical swipe is upwards
-      if (gestureState.dy > 5) {
-        hideMenu();
-        
-      }
-      //   if (gestureState.dy < 0) {
-      //     hideMenu();
-      //   }
-    },
-  });
-
+const BottomModal = (props: BottomModalProps) => {
   const styles = StyleSheet.create({
     modalContainer: {
       flex: 1,
@@ -93,50 +71,100 @@ const BottomModal = React.forwardRef((props: BottomModalProps, ref) => {
       borderRadius: 2.5,
       backgroundColor: "grey",
     },
+    headerContainer: {
+      flexDirection: "row",
+      marginBottom: 10, // Adjust as needed
+      alignItems: "center",
+    },
+    separator: {
+      borderBottomColor: COLORS.lightGrey,
+      borderBottomWidth: 2,
+      borderStyle: "solid",
+    },
   });
+  const { isOpen, closeModal } = useModalContext();
+  const menuAnimation = useRef(
+    new Animated.Value(props.height ? props.height : 300)
+  ).current;
 
-  // * To expose methods of the child component to the parent, you can use React.useImperativeHandle
-  React.useImperativeHandle(ref, () => ({
-    openMenu: () => showMenu(),
-  }));
+  const handleClose = () => {
+    Animated.timing(menuAnimation, {
+        toValue: 0 | (props.height ?? 300),
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+          props.onClose?.();
+          closeModal()
+      });
+  }
 
-  const menuAnimation = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.timing(menuAnimation, {
+      toValue: isOpen ? 0 : props.height || 300,
+      duration: 500,
+      useNativeDriver: true,
+    }).start(() => {
+      if (isOpen) {
+        props.onOpen?.();
+      } else {
+        props.onClose?.();
+      }
+    });
+  }, [isOpen]);
 
   const menuStyle = {
-    transform: [
-      {
-        translateY: menuAnimation.interpolate({
-          inputRange: [0, 1],
-          outputRange: [props.height ? props.height : 300, 0],
-        }),
-      },
-    ],
+    transform: [{ translateY: menuAnimation }],
   };
-
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderMove: (evt, gestureState) => {
+      // Check if vertical swipe is upwards
+      if (gestureState.dy > 5) {
+        closeModal();
+      }
+    },
+  });
   return (
-    <View>
-      {/* Modal */}
-      <Modal visible={trigger} transparent animationType="none">
-        <View style={styles.modalContainer}>
-          {/* Menu Content */}
-          <Animated.View style={[styles.menuContent, menuStyle]}>
-            <ScrollView>
-              <View
-                style={styles.handleContainer}
-                {...panResponder.panHandlers}
-              >
-                <View style={styles.handle} />
+    <Modal visible={isOpen} transparent animationType="none">
+      <View style={styles.modalContainer}>
+        <Animated.View style={[styles.menuContent, menuStyle]}>
+          <ScrollView>
+            <View style={styles.handleContainer} {...panResponder.panHandlers}>
+              <View style={styles.handle} />
+            </View>
+            {props.header && (
+              <View style={styles.headerContainer}>
+                <Image
+                  style={{ marginRight: 10 }}
+                  source={props.header?.icon as ImageSourcePropType}
+                />
+                <Text style={{ fontSize: 17, fontWeight: "500" }}>
+                  {props.header?.name}
+                </Text>
               </View>
-              <Text>Menu Item 1</Text>
-              <Text>Menu Item 2</Text>
-              <Text>Menu Item 3</Text>
-              <Button title="Close Menu" onPress={hideMenu} />
-            </ScrollView>
-          </Animated.View>
-        </View>
-      </Modal>
-    </View>
+            )}
+            <View style={styles.separator} />
+            <View style={{ paddingTop: 15, paddingBottom: 10 }}>
+              {props.data.map((item, key) => {
+                return <ModalOption key={key} data={item} />;
+              })}
+            </View>
+
+            <Button title="Close" onPress={handleClose} />
+          </ScrollView>
+        </Animated.View>
+      </View>
+    </Modal>
   );
-});
+};
+
+const ModalOption = (props: { data: ModalDataProps }) => {
+  return (
+    <TouchableOpacity style={{ padding: SPACE.nativeMd }}>
+      <Text style={{ fontSize: 15 }}>{props.data.name}</Text>
+    </TouchableOpacity>
+  );
+};
 
 export default BottomModal;

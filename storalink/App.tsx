@@ -10,36 +10,51 @@ import Test from "./screens/Test";
 import Signup from "./screens/Signup";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+import { ModalProvider } from "./context/ModalContext";
 
 const BoxRoot = styled.Text`
   color: red;
 `;
 const GlobalStack = createNativeStackNavigator();
 WebBrowser.maybeCompleteAuthSession();
-export default function App() {
-  
-  
+type ProvidersProps = {
+  children: React.ReactNode;
+};
+
+const Providers = ({children}: ProvidersProps) => {
   return (
-    <NavigationContainer>
-      <GlobalContextProvider>
-        <GlobalStack.Navigator>
-          <GlobalStack.Screen 
-           options={{
-            headerShown: false,
-          }}
-          name="Login" component={Login} />
-          <GlobalStack.Screen name="Signup" component={Signup} />
-          <GlobalStack.Screen name="Test" component={Test} />
-          <GlobalStack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name="Home"
-            component={BottomTabNavigators}
-          />
-          {/* Add more Settings screens here */}
-        </GlobalStack.Navigator>
-      </GlobalContextProvider>
-    </NavigationContainer>
+      <NavigationContainer>
+          <GlobalContextProvider>
+              <ModalProvider>
+                  {children}
+              </ModalProvider>
+          </GlobalContextProvider>
+      </NavigationContainer>
+  );
+}
+
+export default function App() {
+  return (
+      <Providers>
+          <GlobalStack.Navigator>
+              <GlobalStack.Screen 
+                  options={{
+                      headerShown: false,
+                  }}
+                  name="Login" 
+                  component={Login} 
+              />
+              <GlobalStack.Screen name="Signup" component={Signup} />
+              <GlobalStack.Screen name="Test" component={Test} />
+              <GlobalStack.Screen
+                  options={{
+                      headerShown: false,
+                  }}
+                  name="Home"
+                  component={BottomTabNavigators}
+              />
+              {/* Add more Settings screens here */}
+          </GlobalStack.Navigator>
+      </Providers>
   );
 }

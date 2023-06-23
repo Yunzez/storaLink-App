@@ -6,7 +6,15 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Button, View, Text, Animated, Modal, StyleSheet } from "react-native";
+import {
+  Button,
+  View,
+  Text,
+  Animated,
+  Modal,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -21,7 +29,6 @@ import BottomModal from "../components/BottomModal";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { BottomModalRefProps } from "../components/BottomModal";
 export const Home = () => {
-
   const modalRef = useRef<BottomModalRefProps | null>(null);
   const { navigator, screenHeight } = useContext(GlobalContext);
 
@@ -40,23 +47,21 @@ export const Home = () => {
         marginTop: 15,
       }}
     >
-      <SearchComponent placeHolder="Search files, saved items, etc..." />
-      <PinnedFolders cardList={MockCardList} parentStyle={{paddingTop: 15}}/>
-      <RecentLinks linkList={MockLinkList} />
-
-      {/* <Button
-      title="Go to Test"
-      onPress={() => navigator.navigate('Test_home')}
-    />
-    <Button
+       <Button
       title="Back to Login"
       onPress={() => navigator.navigate('Login')}
-    /> */}
+    />
+        <SearchComponent placeHolder="Search files, saved items, etc..." />
+        <PinnedFolders
+          cardList={MockCardList}
+          parentStyle={{ paddingTop: 15 }}
+        />
+        <RecentLinks linkList={MockLinkList} />
+
+        
+   
     </SafeAreaView>
   );
 };
-
-
-
 
 export default Home;

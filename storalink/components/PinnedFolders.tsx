@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -8,6 +8,7 @@ import {
   StyleSheet,
   StyleProp,
 } from "react-native";
+import { useModalContext } from "../context/ModalContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FolderCard, { FolderCardProps } from "./FolderCard";
 import styled from "styled-components";
@@ -17,6 +18,7 @@ import BottomModal, { BottomModalRefProps } from "./BottomModal";
 import moreIcon from "../assets/icon/pinnedFolderOptions.png";
 import moreIconActive from "../assets/icon/pinnedFolderOptionsActive.png";
 import { ViewStyle } from "react-native";
+import { ModalDataProps } from "./BottomModal";
 type PinnedFoldersProps = {
   cardList: FolderCardProps[];
   parentStyle?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
@@ -39,6 +41,7 @@ const styles = StyleSheet.create({
 
 const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
+  const {openModal, closeModal } = useModalContext();
   const PinnedFoldersWrapper = styled(View)`
     width: ${screenWidth * 0.9}px;
     height: ${screenHeight * 0.25}px;
@@ -51,33 +54,45 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
   const activeRef = useRef(false); // Ref instead of state
 
   const showMenu = useCallback(() => {
-    if (modalRef.current) {
-      modalRef.current.openMenu();
-      setShowMore(true);
-    }
-  }, []); // Empty dependency array because there is no dependency in this function.
+    openModal();
+  }, [openModal]);
 
-  const handleClose = useCallback(() => {
-    setShowMore(false);
-  }, []); // Empty dependency array because there is no dependency in this function.
+  const modalData: ModalDataProps[] = [
+    {
+      name: "Manage Pinned Folders",
+      onClick: () => {
+        console.log("click");
+      },
+    },
+    {
+      name: "Create New Pinned Folder",
+      onClick: () => {
+        console.log("test2");
+      },
+    },
+    {
+      name: "View All Pinned Folders",
+      onClick: () => {
+        console.log("test2");
+      },
+    },
+  ];
 
-  const FolderCardMemo = React.memo(FolderCard);
   return (
     <View style={parentStyle}>
       <View style={styles.headerWrapperStyle}>
         <ComponentTitle>Pinned Folders</ComponentTitle>
         <ToggleButton
-          isActive={showMore}
-          activeSource={moreIconActive}
-          inactiveSource={moreIcon}
-          onPress={showMenu}
-        />
+        activeSource={moreIconActive}
+        inactiveSource={moreIcon}
+        onPress={showMenu} // Passed the showMenu here
+      />
       </View>
 
       <PinnedFoldersWrapper>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {cardList.map((card, index) => (
-            <FolderCardMemo
+            <FolderCard
               key={index}
               title={card.title}
               imgUrl={card.imgUrl}
@@ -86,7 +101,12 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
           ))}
         </ScrollView>
       </PinnedFoldersWrapper>
-      <BottomModal height={screenHeight * 0.5} ref={modalRef} onClose={handleClose} />
+      <BottomModal
+        data={modalData}
+        height={screenHeight * 0.5}
+        // Removed the ref, not needed anymore
+        header={{ name: 'Pinned Folders Section', icon: moreIconActive }}
+      />
     </View>
   );
 };
@@ -94,17 +114,17 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
 export default PinnedFolders;
 
 type ToggleButtonProps = {
-  isActive: boolean;
   activeSource: any;
   inactiveSource: any;
   onPress: () => void;
 };
 
 const ToggleButton = React.memo(
-  ({ isActive, activeSource, inactiveSource, onPress }: ToggleButtonProps) => {
+  ({ activeSource, inactiveSource, onPress }: ToggleButtonProps) => {
+    const { isOpen } = useModalContext();
     return (
-      <TouchableOpacity onPress={onPress}>
-        <Image source={isActive ? activeSource : inactiveSource} />
+      <TouchableOpacity onPress={onPress}> 
+        <Image source={isOpen ? activeSource : inactiveSource} />
       </TouchableOpacity>
     );
   }
