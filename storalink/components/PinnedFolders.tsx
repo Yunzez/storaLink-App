@@ -41,21 +41,11 @@ const styles = StyleSheet.create({
 
 const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
-  const {openModal, closeModal } = useModalContext();
   const PinnedFoldersWrapper = styled(View)`
     width: ${screenWidth * 0.9}px;
     height: ${screenHeight * 0.25}px;
   `;
-
-  const [showMore, setShowMore] = useState(false);
   console.log("pinfolder refresh");
-
-  const modalRef = useRef<BottomModalRefProps | null>(null);
-  const activeRef = useRef(false); // Ref instead of state
-
-  const showMenu = useCallback(() => {
-    openModal();
-  }, [openModal]);
 
   const modalData: ModalDataProps[] = [
     {
@@ -85,7 +75,6 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
         <ToggleButton
         activeSource={moreIconActive}
         inactiveSource={moreIcon}
-        onPress={showMenu} // Passed the showMenu here
       />
       </View>
 
@@ -116,14 +105,13 @@ export default PinnedFolders;
 type ToggleButtonProps = {
   activeSource: any;
   inactiveSource: any;
-  onPress: () => void;
 };
 
 const ToggleButton = React.memo(
-  ({ activeSource, inactiveSource, onPress }: ToggleButtonProps) => {
-    const { isOpen } = useModalContext();
+  ({ activeSource, inactiveSource }: ToggleButtonProps) => {
+    const { isOpen, openModal } = useModalContext();
     return (
-      <TouchableOpacity onPress={onPress}> 
+      <TouchableOpacity onPress={openModal}> 
         <Image source={isOpen ? activeSource : inactiveSource} />
       </TouchableOpacity>
     );
