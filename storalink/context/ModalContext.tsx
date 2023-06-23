@@ -9,7 +9,7 @@ const ModalContext = createContext({
 export const useModalContext = () => useContext(ModalContext);
 
 
-export const ModalProvider = ({ children }) => {
+export const ModalProvider = ({ children }: {children: React.ReactNode}) => {
     const [isOpen, setIsOpen] = useState(false);
   
     const openModal = () => setIsOpen(true);
