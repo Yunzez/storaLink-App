@@ -136,12 +136,22 @@ export const BottomTabNavigators = () => {
 
   return (
     <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
-      <Tab.Screen   options={{
+      <Tab.Screen
+        options={{
           headerShown: false,
-        }} name="Home" component={HomeNavigators} />
-      <Tab.Screen name="Files" component={Files} />
-      <Tab.Screen name="Friends" component={Friends} />
-      <Tab.Screen name="Settings" component={Settings} />
+        }}
+        name="Home"
+        component={HomeNavigators}
+      />
+      <Tab.Screen  options={{
+          headerShown: false,
+        }} name="Files" component={Files} />
+      <Tab.Screen  options={{
+          headerShown: false,
+        }} name="Friends" component={Friends} />
+      <Tab.Screen  options={{
+          headerShown: false,
+        }} name="Settings" component={Settings} />
     </Tab.Navigator>
   );
 };

@@ -21,6 +21,7 @@ interface GlobalContextProps {
   user: User;
   screenHeight: number, 
   screenWidth:number
+  setUser: Dispatch<SetStateAction<User>>
 }
 
 type RootStackParamList = {
@@ -32,18 +33,19 @@ type RootStackParamList = {
 };
 
 type User = {
-  name: string;
-  age: number;
-  boa: string;
+  username: string;
+  email: string;
+  dob: string;
 };
 
 export const GlobalContext = createContext<GlobalContextProps>({
   navigator: undefined,
   user: {
-    name: "",
-    age: 0,
-    boa: "",
+    username: "",
+    email: "",
+    dob: "",
   },
+  setUser: null, 
   screenHeight: 0, 
   screenWidth:0
 });
@@ -57,19 +59,20 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
 }) => {
   const navigator =
     useNavigation<NavigationProp<RootStackParamList, "Unknown">>();
-  const user = {
-    name: "",
-    age: 0,
-    boa: "",
-  };
 
   const screenHeight = Dimensions.get("window").height; // Get screen height
   const screenWidth = Dimensions.get("window").width; // Get screen width
 
   const [isOpen, setIsOpen]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState(false);
+  
+    const [user, setUser]:[User, Dispatch<SetStateAction<User>>] = useState({
+      username: "",
+      email: '',
+      dob: "",
+    })
   return (
-    <GlobalContext.Provider value={{ navigator, user, screenHeight, screenWidth }}>
+    <GlobalContext.Provider value={{ navigator, user, setUser, screenHeight, screenWidth }}>
       {children}
     </GlobalContext.Provider>
   );

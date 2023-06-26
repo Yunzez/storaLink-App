@@ -23,6 +23,7 @@ import {
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import LoadingScreen from "../components/LoadingScreen";
+import { checkEmail, checkPassword } from "../utils";
 
 const Container = styled(SafeAreaView)`
   flex: 1;
@@ -58,44 +59,79 @@ const SignInText = styled(Text)`
 `;
 
 export const Login = () => {
-  const { navigator } = useContext(GlobalContext);
+  const { navigator, user, setUser } = useContext(GlobalContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remeber, setRemenber] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const handleLogin = () => {
+    setLoading(true);
+
     // Handle login action here
     // Use a regular expression to validate the email
     const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-
-    if (!emailRegex.test(username)) {
-      setError("test failed at email");
+    if (checkEmail(username, emailRegex).length > 0) {
+      setError("Invalid email address");
       alert("Please enter a valid email address");
-
-      return;
+      return 
     }
 
-    if (password.length < 8) {
-      setError("test failed at password");
-      alert("Password must be at least 8 characters long");
-
-      return;
+    if (checkPassword(password).length > 0) {
+      setError("Invalid password");
+      return
     }
+    // * logging in
+    const url =
+      "https://vast-garden-82865-6f202a95ef85.herokuapp.com/api/v1/auth/authenticate";
+    const requestBody = {
+      username: username,
+      password: password,
+      email: username,
+      dob: "2000-01-01",
+    };
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log(response)
+          return response.json();
+        } else {
+          setError('Some Error Occured')
+          setLoading(false);
+          throw new Error("Network response was not ok.");
+        }
+      })
+      .then((data) => {
+        console.log("Response data:", data);
+        navigator.navigate("Home");
+        console.log("Username: ", username);
+        console.log("Password: ", password);
+        setLoading(false);
+        setUser({ username: username, email: username, dob: "" });
+        // Handle the response data here
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log("Error:", error.json());
+        // Handle any errors here
+      });
 
     // ! checking login goes here
 
     // * assume failure test goes here:
-
-    navigator.navigate("Home");
-    console.log("Username: ", username);
-    console.log("Password: ", password);
   };
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       {loading ? (
-        <LoadingScreen loadingText={'We are logging you in'}/>
+        <LoadingScreen loadingText={"We are logging you in"} />
       ) : (
         <Container>
           <View style={{ width: "75%", justifyContent: "center" }}>

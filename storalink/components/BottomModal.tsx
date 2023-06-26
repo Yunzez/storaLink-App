@@ -82,6 +82,7 @@ const BottomModal = (props: BottomModalProps) => {
       borderStyle: "solid",
     },
   });
+  
   const { isOpen, closeModal } = useModalContext();
   const menuAnimation = useRef(
     new Animated.Value(props.height ? props.height : 300)

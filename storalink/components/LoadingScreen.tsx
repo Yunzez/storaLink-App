@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
+import { COLORS } from '../theme/constants';
 
 interface LoadingScreenProps {
     loadingText?:string
@@ -7,7 +8,7 @@ interface LoadingScreenProps {
 const LoadingScreen = (props: LoadingScreenProps) => {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#0000ff" />
+      <ActivityIndicator size="large" color={COLORS.themeYellow} />
       <Text>{props.loadingText?? ""}</Text>
     </View>
   );

@@ -47,10 +47,6 @@ export const Home = () => {
         marginTop: 15,
       }}
     >
-       <Button
-      title="Back to Login"
-      onPress={() => navigator.navigate('Login')}
-    />
         <SearchComponent placeHolder="Search files, saved items, etc..." />
         <PinnedFolders
           cardList={MockCardList}
