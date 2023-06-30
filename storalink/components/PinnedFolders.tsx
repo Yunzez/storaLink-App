@@ -19,6 +19,9 @@ import moreIcon from "../assets/icon/pinnedFolderOptions.png";
 import moreIconActive from "../assets/icon/pinnedFolderOptionsActive.png";
 import { ViewStyle } from "react-native";
 import { ModalDataProps } from "./BottomModal";
+import HeartEditIcon from "../assets/svgComponents/HeartEditIcon";
+import RightArrowIcon from "../assets/svgComponents/RightArrowIcon";
+import AddIcon from "../assets/svgComponents/AddIcon";
 type PinnedFoldersProps = {
   cardList: FolderCardProps[];
   parentStyle?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
@@ -53,18 +56,21 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
       onClick: () => {
         console.log("click");
       },
+      icon: <HeartEditIcon/>
     },
     {
       name: "Create New Pinned Folder",
       onClick: () => {
         console.log("test2");
       },
+      icon: <AddIcon/>
     },
     {
       name: "View All Pinned Folders",
       onClick: () => {
         console.log("test2");
       },
+      icon: <RightArrowIcon/>
     },
   ];
 

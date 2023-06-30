@@ -6,10 +6,12 @@ import { SocialMediaSrc } from "../utils";
 import styled from "styled-components";
 import { COLORS } from "../theme/constants";
 import { GlobalContext } from "../context/GlobalProvider";
-import BlockViewIcon from "../assets/icon/blockViewIcon.svg";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import BlockLinkView from "./BlockLinkView";
 import { LinkViewProps } from "../Test/MockData";
+import RowViewIcon from "../assets/svgComponents/RowViewIcon";
+import BlockViewIcon from "../assets/svgComponents/BlockViewIcon";
+import { Svg, Path } from "react-native-svg";
 type RecentLinksProps = {
   linkList: LinkViewProps[];
 };
@@ -45,31 +47,44 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            width: 53,
+            height: 24,
+            borderRadius: 4,
+            backgroundColor: COLORS.lightGrey,
+            justifyContent:"space-around"
           }}
         >
           <TouchableOpacity
+            style={{ width: 20, height: 20, alignItems:"center", justifyContent:'center' }}
             onPress={() => {
               setBlockView(false);
             }}
           >
-            <Text>row</Text>
+            <RowViewIcon width="12" height="12"/>
           </TouchableOpacity>
           <TouchableOpacity
+            style={{ width: 20, height: 20, alignItems:"center", justifyContent:'center' }}
             onPress={() => {
               setBlockView(true);
             }}
           >
-            <Text>blc</Text>
+            <BlockViewIcon width="12" height="12"/>
           </TouchableOpacity>
         </View>
       </View>
 
       <RecentLinksWrapper>
         <ScrollView showsVerticalScrollIndicator={true}>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent:'space-between' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+            }}
+          >
             {blockView
               ? linkList.map((card, index) => (
-                  <View style={{ width: screenWidth*0.9/ 2 }}>
+                  <View style={{ width: (screenWidth * 0.9) / 2 }}>
                     <BlockLinkView
                       key={index}
                       title={card.title}

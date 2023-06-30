@@ -16,7 +16,7 @@ import { COLORS, SPACE } from "../theme/constants";
 import { useModalContext } from "../context/ModalContext";
 interface ModalBasicProps {
   name: string;
-  icon?: string;
+  icon?: string | React.FC | JSX.Element;
 }
 
 export interface ModalDataProps extends ModalBasicProps {
@@ -82,7 +82,7 @@ const BottomModal = (props: BottomModalProps) => {
       borderStyle: "solid",
     },
   });
-  
+
   const { isOpen, closeModal } = useModalContext();
   const menuAnimation = useRef(
     new Animated.Value(props.height ? props.height : 300)
@@ -90,14 +90,14 @@ const BottomModal = (props: BottomModalProps) => {
 
   const handleClose = () => {
     Animated.timing(menuAnimation, {
-        toValue: 0 | (props.height ?? 300),
-        duration: 500,
-        useNativeDriver: true,
-      }).start(() => {
-          props.onClose?.();
-          closeModal()
-      });
-  }
+      toValue: 0 | (props.height ?? 300),
+      duration: 500,
+      useNativeDriver: true,
+    }).start(() => {
+      props.onClose?.();
+      closeModal();
+    });
+  };
 
   useEffect(() => {
     Animated.timing(menuAnimation, {
@@ -162,10 +162,12 @@ const BottomModal = (props: BottomModalProps) => {
 
 const ModalOption = (props: { data: ModalDataProps }) => {
   return (
-    <TouchableOpacity style={{ padding: SPACE.nativeMd }}>
-      <Text style={{ fontSize: 15 }}>{props.data.name}</Text>
+    <TouchableOpacity style={{ padding: SPACE.nativeMd, flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.lightGrey, marginBottom:10, borderRadius: SPACE.nativeRoundMd }}>
+      {typeof props.data.icon === 'function' ? <props.data.icon /> : props.data.icon || null}
+      <Text style={{ fontSize: 15, marginLeft: 10}}>{props.data.name}</Text>
     </TouchableOpacity>
   );
+  
 };
 
 export default BottomModal;
