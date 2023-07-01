@@ -1,13 +1,9 @@
 import React from "react";
 import { Svg, Path } from "react-native-svg";
-const RightArrowIcon = () => {
+import SvgComponent, { SvgBasicProps } from "./SvgComponent";
+const RightArrowIcon = (props:SvgBasicProps) => {
   return (
-    <Svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
+    <SvgComponent height={props.height} width={props.width}>
       <Path
         d="M14.4299 5.92993L20.4999 11.9999L14.4299 18.0699"
         stroke="#212121"
@@ -22,7 +18,7 @@ const RightArrowIcon = () => {
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-    </Svg>
+    </SvgComponent>
   );
 };
 

@@ -59,7 +59,7 @@ const SignInText = styled(Text)`
 `;
 
 export const Login = () => {
-  const { navigator, user, setUser } = useContext(GlobalContext);
+  const { navigator, user, setUser, devMode } = useContext(GlobalContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remeber, setRemenber] = useState(false);
@@ -91,6 +91,15 @@ export const Login = () => {
       dob: "2000-01-01",
     };
 
+    if(devMode) {
+      console.log('test mode: login without correct credentials')
+      navigator.navigate("Home");
+        console.log("Username: ", username);
+        console.log("Password: ", password);
+        setLoading(false);
+        setUser({ username: username, email: username, dob: "" });
+        return 
+    }
     fetch(url, {
       method: "POST",
       headers: {

@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SmallLinkView, { SmallLinkViewProps } from "./SmallLinkView";
 import { SocialMediaSrc } from "../utils";
 import styled from "styled-components";
-import { COLORS } from "../theme/constants";
+import { COLORS, SPACE } from "../theme/constants";
 import { GlobalContext } from "../context/GlobalProvider";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import BlockLinkView from "./BlockLinkView";
@@ -27,11 +27,12 @@ const ComponentTitle = styled(Text)`
 const RecentLinks = ({ linkList }: RecentLinksProps) => {
   const [blockView, setBlockView] = useState(false);
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
+  const [showRow, setShowRow] = useState(true);
   const RecentLinksWrapper = styled(View)`
     width: ${screenWidth * 0.9}px;
     flex: 1;
   `;
-  console.log("blockviewicon:", BlockViewIcon);
+
   return (
     <View>
       <View
@@ -51,24 +52,42 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
             height: 24,
             borderRadius: 4,
             backgroundColor: COLORS.lightGrey,
-            justifyContent:"space-around"
+            justifyContent: "space-around",
           }}
         >
           <TouchableOpacity
-            style={{ width: 20, height: 20, alignItems:"center", justifyContent:'center' }}
+            style={{
+              width: 20,
+              height: 20,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: blockView ? COLORS.white :COLORS.standardBlack ,
+              borderRadius: SPACE.nativeRoundSm,
+            }}
             onPress={() => {
               setBlockView(false);
             }}
           >
-            <RowViewIcon width="12" height="12"/>
+            <RowViewIcon width="12" height="12" color={blockView ?  COLORS.standardBlack : COLORS.white} />
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ width: 20, height: 20, alignItems:"center", justifyContent:'center' }}
+            style={{
+              width: 20,
+              height: 20,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: blockView ? COLORS.standardBlack : COLORS.white ,
+              borderRadius: SPACE.nativeRoundSm,
+            }}
             onPress={() => {
               setBlockView(true);
             }}
           >
-            <BlockViewIcon width="12" height="12"/>
+            <BlockViewIcon
+              width="12"
+              height="12"
+              color={blockView ? COLORS.white : COLORS.standardBlack}
+            />
           </TouchableOpacity>
         </View>
       </View>

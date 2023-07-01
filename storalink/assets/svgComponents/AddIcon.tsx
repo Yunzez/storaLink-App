@@ -1,13 +1,10 @@
 import React from "react";
 import { Svg, Path } from "react-native-svg";
-const AddIcon = () => {
+import SvgComponent from "./SvgComponent";
+import { SvgBasicProps } from "./SvgComponent";
+const AddIcon = (props: SvgBasicProps) => {
   return (
-    <Svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
+    <SvgComponent height={props.height} width={props.width}>
       <Path
         d="M6 12H18"
         stroke="#212121"
@@ -20,7 +17,7 @@ const AddIcon = () => {
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-    </Svg>
+    </SvgComponent>
   );
 };
 

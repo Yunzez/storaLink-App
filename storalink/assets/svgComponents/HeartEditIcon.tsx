@@ -1,13 +1,9 @@
 import React from "react";
 import { Svg, Path } from "react-native-svg";
-const HeartEditIcon = () => {
+import SvgComponent, { SvgBasicProps } from "./SvgComponent";
+const HeartEditIcon = (props:SvgBasicProps) => {
   return (
-    <Svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
+    <SvgComponent height={props.height} width={props.width}>
       <Path
         d="M21.49 12.0001C21.81 10.9801 22 9.88012 22 8.69012C22 5.60012 19.51 3.1001 16.44 3.1001C14.62 3.1001 13.01 3.98015 12 5.34015C10.99 3.98015 9.37 3.1001 7.56 3.1001C4.49 3.1001 2 5.60012 2 8.69012C2 15.6901 8.48 19.8201 11.38 20.8201C11.55 20.8801 11.77 20.9101 12 20.9101"
         stroke="#212121"
@@ -28,7 +24,7 @@ const HeartEditIcon = () => {
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-    </Svg>
+    </SvgComponent>
   );
 };
 
