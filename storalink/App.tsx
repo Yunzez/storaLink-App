@@ -8,9 +8,10 @@ import { GlobalContextProvider } from "./context/GlobalProvider";
 import Login from "./screens/Login";
 import Test from "./screens/Test";
 import Signup from "./screens/Signup";
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
 import { ModalProvider } from "./context/ModalContext";
+import SingleFolderView from "./screens/SingleFolderView";
 
 const BoxRoot = styled.Text`
   color: red;
@@ -21,40 +22,45 @@ type ProvidersProps = {
   children: React.ReactNode;
 };
 
-const Providers = ({children}: ProvidersProps) => {
+const Providers = ({ children }: ProvidersProps) => {
   return (
-      <NavigationContainer>
-          <GlobalContextProvider>
-              <ModalProvider>
-                  {children}
-              </ModalProvider>
-          </GlobalContextProvider>
-      </NavigationContainer>
+    <NavigationContainer>
+      <GlobalContextProvider>
+        <ModalProvider>{children}</ModalProvider>
+      </GlobalContextProvider>
+    </NavigationContainer>
   );
-}
+};
 
 export default function App() {
   return (
-      <Providers>
-          <GlobalStack.Navigator>
-              <GlobalStack.Screen 
-                  options={{
-                      headerShown: false,
-                  }}
-                  name="Login" 
-                  component={Login} 
-              />
-              <GlobalStack.Screen name="Signup" component={Signup} />
-              <GlobalStack.Screen name="Test" component={Test} />
-              <GlobalStack.Screen
-                  options={{
-                      headerShown: false,
-                  }}
-                  name="Home"
-                  component={BottomTabNavigators}
-              />
-              {/* Add more Settings screens here */}
-          </GlobalStack.Navigator>
-      </Providers>
+    <Providers>
+      <GlobalStack.Navigator>
+        <GlobalStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="Login"
+          component={Login}
+        />
+        <GlobalStack.Screen name="Signup" component={Signup} />
+        <GlobalStack.Screen name="Test" component={Test} />
+        <GlobalStack.Screen
+          options={{
+            headerTitle: 'test'
+          }}
+          name="SingleFolderView"
+          component={SingleFolderView}
+        />
+        <GlobalStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="Home"
+          component={BottomTabNavigators}
+        />
+        {/* Add more Settings screens here */}
+      </GlobalStack.Navigator>
+    </Providers>
   );
 }

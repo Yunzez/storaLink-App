@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -9,12 +9,14 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components";
 import { COLORS, SPACE } from "../theme/constants";
+import { GlobalContext } from "../context/GlobalProvider";
 export type FolderCardProps = {
   title: string;
   imgUrl: string;
   onClick: () => void;
 };
 const FolderCard = (props: FolderCardProps) => {
+  const {navigator} = useContext(GlobalContext)
   const Card = styled(TouchableOpacity)`
     margin: 5px;
     paddin: 5px;
@@ -40,7 +42,7 @@ const FolderCard = (props: FolderCardProps) => {
     font-weight: 500;
   `;
   return (
-    <Card onPress={() => props.onClick}>
+    <Card onPress={() => {props.onClick; navigator.navigate('SingleFolderView')}}>
       <CardImage source={props.imgUrl as ImageSourcePropType} />
       <CardTitle>{props.title}</CardTitle>
       {/* Display image and other card details here */}

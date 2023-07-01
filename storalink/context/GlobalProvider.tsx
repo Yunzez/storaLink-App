@@ -22,7 +22,9 @@ interface GlobalContextProps {
   screenHeight: number, 
   screenWidth:number
   setUser: Dispatch<SetStateAction<User>>
-  devMode: boolean
+  devMode: boolean,
+  setCurrentFocusedFolder: Dispatch<React.SetStateAction<Folder>>,
+  currentFocusedFolder: Folder
 }
 
 type RootStackParamList = {
@@ -31,6 +33,12 @@ type RootStackParamList = {
   Login: "Login";
   Test: "Test";
   Home_Main: "Home_Main";
+};
+
+type Folder = {
+  id: string;
+  name: string;
+  // add other properties as needed
 };
 
 type User = {
@@ -46,10 +54,16 @@ export const GlobalContext = createContext<GlobalContextProps>({
     email: "",
     dob: "",
   },
-  setUser: null, 
+  setUser: () => {}, 
   screenHeight: 0, 
   screenWidth:0,
-  devMode: false
+  devMode: false,
+  currentFocusedFolder: { // Initialize your new state here
+    id: '',
+    name: '',
+    // initialize other properties as needed
+  },
+  setCurrentFocusedFolder: () => {}
 });
 
 interface GlobalContextProviderProps {
@@ -72,8 +86,14 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
       email: '',
       dob: "",
     })
+
+    const [currentFocusedFolder, setCurrentFocusedFolder]: [Folder, Dispatch<SetStateAction<Folder>>] = useState({
+      id: '',
+      name: '',
+      // initialize other properties as needed
+    });
   return (
-    <GlobalContext.Provider value={{ devMode, navigator, user, setUser, screenHeight, screenWidth }}>
+    <GlobalContext.Provider value={{ devMode, navigator, user, setUser, screenHeight, screenWidth, currentFocusedFolder, setCurrentFocusedFolder }}>
       {children}
     </GlobalContext.Provider>
   );

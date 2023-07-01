@@ -40,6 +40,7 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "row",
+          alignItems: "center"
         }}
       >
         <ComponentTitle>Recent Links</ComponentTitle>
@@ -61,14 +62,14 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
               height: 20,
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: blockView ? COLORS.white :COLORS.standardBlack ,
+              backgroundColor: blockView ? COLORS.white :COLORS.themeYellow ,
               borderRadius: SPACE.nativeRoundSm,
             }}
             onPress={() => {
               setBlockView(false);
             }}
           >
-            <RowViewIcon width="12" height="12" color={blockView ?  COLORS.standardBlack : COLORS.white} />
+            <RowViewIcon width="12" height="12" color={blockView ?  COLORS.themeYellow : COLORS.white} />
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -76,7 +77,7 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
               height: 20,
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: blockView ? COLORS.standardBlack : COLORS.white ,
+              backgroundColor: blockView ? COLORS.themeYellow : COLORS.white ,
               borderRadius: SPACE.nativeRoundSm,
             }}
             onPress={() => {
@@ -86,7 +87,7 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
             <BlockViewIcon
               width="12"
               height="12"
-              color={blockView ? COLORS.white : COLORS.standardBlack}
+              color={blockView ? COLORS.white : COLORS.themeYellow}
             />
           </TouchableOpacity>
         </View>
