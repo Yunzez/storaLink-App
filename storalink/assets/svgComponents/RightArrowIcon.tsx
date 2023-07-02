@@ -1,7 +1,7 @@
 import React from "react";
 import { Svg, Path } from "react-native-svg";
 import SvgComponent, { SvgBasicProps } from "./SvgComponent";
-const RightArrowIcon = (props:SvgBasicProps) => {
+const RightArrowIcon = (props: SvgBasicProps) => {
   return (
     <SvgComponent height={props.height} width={props.width}>
       <Path
@@ -23,3 +23,17 @@ const RightArrowIcon = (props:SvgBasicProps) => {
 };
 
 export default RightArrowIcon;
+
+export const RightArrowOpenIcon = (props: SvgBasicProps) => {
+  return (
+    <SvgComponent height={props.height} width={props.width}>
+      <Path
+        d="M9 18L15.4304 13.0606C16.1899 12.4773 16.1899 11.5227 15.4304 10.9394L9 6"
+        stroke="#212121"
+        stroke-miterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SvgComponent>
+  );
+};

@@ -2,56 +2,116 @@ import React, { useContext } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GlobalContext } from "../context/GlobalProvider";
-import { COLORS } from "../theme/constants";
+import { COLORS, SPACE } from "../theme/constants";
 import UserAvatorWidget from "../components/UserAvatorWidget";
+import Profile from "../assets/svgComponents/Profile";
+import Sun from "../assets/svgComponents/Sun";
+import DoorBell from "../assets/svgComponents/DoorBell";
+import ShoppingCart from "../assets/svgComponents/ShoppingCart";
+import RightArrowIcon, { RightArrowOpenIcon } from "../assets/svgComponents/RightArrowIcon";
+import Lock from "../assets/svgComponents/Lock";
+import MessageQuestion from "../assets/svgComponents/MessageQuestion";
+import LogoSVG from "../assets/svgComponents/LogoSVG";
+import Star from "../assets/svgComponents/Star";
 
 export const Settings = () => {
   const { navigator, user } = useContext(GlobalContext);
 
   const handleButtonPress = () => {};
 
+  const mockOnPress = () => {};
   return (
     <SafeAreaView style={styles.container}>
-      <UserAvatorWidget/>
+      <UserAvatorWidget />
+
+      <Text style={styles.settingHeader}>Application</Text>
+
+      <SettingButton
+        title="Account"
+        onPress={mockOnPress}
+        Icon={<Profile width="24" height="24" />}
+      />
+
+      <SettingButton
+        title="Appearance"
+        onPress={mockOnPress}
+        Icon={<Sun width="24" height="24" />}
+      />
+
+      <SettingButton
+        title="Notification"
+        onPress={mockOnPress}
+        Icon={<DoorBell width="24" height="24" />}
+      />
+
+      <SettingButton
+        title="Upgrade Plan"
+        onPress={mockOnPress}
+        Icon={<ShoppingCart width="24" height="24" />}
+      />
+
+      <Text style={styles.settingHeader}>More Info</Text>
+
+      <SettingButton
+        title="Privacy & Security"
+        onPress={mockOnPress}
+        Icon={<Lock width="24" height="24" />}
+      />
+
+      <SettingButton
+        title="Help & Support"
+        onPress={mockOnPress}
+        Icon={<MessageQuestion width="24" height="24" />}
+      />
+
+      <Text style={styles.settingHeader}>Other</Text>
+
+      <SettingButton
+        title="About"
+        onPress={mockOnPress}
+        Icon={<LogoSVG width="24" height="24" />}
+      />
+
+      <SettingButton
+        title="Rate Storalink"
+        onPress={mockOnPress}
+        Icon={<Star width="24" height="24" />}
+      />
 
       <TouchableOpacity
-        style={styles.button}
+        style={styles.logoutBtn}
         onPress={() => navigator.navigate("Login")}
       >
-        <Text>Log out</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-        <Text>Change Password</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-        <Text>Edit Profile</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-        <Text>Account</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-        <Text>Upgrade Plan</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-        <Text>Appearance</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-        <Text>Help</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-        <Text>Privacy & Data</Text>
+        <Text style={{ color: COLORS.themeYellow }}>Log out</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
+
+type SettingBtnProp = {
+  title: string;
+  onPress: () => void;
+  Icon: JSX.Element;
+};
+const SettingButton = ({ title, onPress, Icon }: SettingBtnProp) => (
+  <TouchableOpacity style={styles.button} onPress={onPress}>
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      {Icon}
+      <Text style={{ marginLeft: 10, fontSize: 16 }}>{title}</Text>
+    </View>
+    <View>
+      <RightArrowOpenIcon width="28" height="28"/>
+    </View>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingHorizontal: 20,
-    marginTop: 20,
+    paddingHorizontal: 21,
+    marginTop: 21,
   },
   avatarContainer: {
     width: "100%",
@@ -64,22 +124,40 @@ const styles = StyleSheet.create({
     shadowColor: "#212121",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
-    shadowRadius: 20,
+    shadowRadius: 21,
     elevation: 5, // Required for Android
   },
   avatarText: {
     fontSize: 18,
   },
   button: {
-    justifyContent: "center",
+    height: 40,
+    justifyContent: "space-between",
     alignItems: "center",
     borderRadius: 4,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 30,
     marginVertical: 5,
     backgroundColor: COLORS.lightGrey,
     elevation: 5, // Required for Android
     width: "100%",
+    flexDirection: "row",
+  },
+  settingHeader: {
+    color: COLORS.themeYellow,
+    width: "100%",
+    fontSize: 16,
+    fontWeight: "400",
+  },
+  logoutBtn: {
+    paddingVertical: 10,
+    paddingHorizontal: 21,
+    width: "100%",
+    borderRadius: SPACE.nativeRoundSm,
+    borderWidth: 1,
+    borderColor: COLORS.themeYellow,
+    flexDirection: "row",
+    justifyContent: "center",
   },
 });
 
