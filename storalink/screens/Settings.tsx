@@ -1,33 +1,46 @@
 import React, { useContext } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GlobalContext } from "../context/GlobalProvider";
+import { COLORS } from "../theme/constants";
+import UserAvatorWidget from "../components/UserAvatorWidget";
+
 export const Settings = () => {
   const { navigator, user } = useContext(GlobalContext);
 
-  const handlePasswordChange = () => {
+  const handleButtonPress = () => {};
 
-  }
-
-  const handleEditProfile = () => {
-
-  }
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Settings</Text>
-      <View style={styles.userInfoContainer}>
-        <Text style={styles.userInfoText}>Hi {user.username}</Text>
-        <Text style={styles.userInfoText}>Email: {user.email}</Text>
-        <Text style={styles.userInfoText}>Birthday: {user.dob}</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Log out" onPress={() => navigator.navigate('Login')} />
-      </View>
-      <View style={styles.additionalButtonsContainer}>
-        <Button title="Change Password" onPress={() => handlePasswordChange()} />
-        <Button title="Edit Profile" onPress={() => handleEditProfile()} />
-        {/* Add more buttons here */}
-      </View>
+      <UserAvatorWidget/>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigator.navigate("Login")}
+      >
+        <Text>Log out</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+        <Text>Change Password</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+        <Text>Edit Profile</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+        <Text>Account</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+        <Text>Upgrade Plan</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+        <Text>Appearance</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+        <Text>Help</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+        <Text>Privacy & Data</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -35,31 +48,39 @@ export const Settings = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "flex-start",
+    alignItems: "center",
     paddingHorizontal: 20,
+    marginTop: 20,
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  userInfoContainer: {
+  avatarContainer: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 100,
+    borderRadius: 8,
     marginBottom: 30,
+    backgroundColor: "#FFF",
+    shadowColor: "#212121",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    elevation: 5, // Required for Android
   },
-  userInfoText: {
+  avatarText: {
     fontSize: 18,
-    marginBottom: 10,
   },
-  buttonContainer: {
-    marginBottom: 20,
-  },
-  additionalButtonsContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginVertical: 5,
+    backgroundColor: COLORS.lightGrey,
+    elevation: 5, // Required for Android
+    width: "100%",
   },
 });
-
 
 export default Settings;

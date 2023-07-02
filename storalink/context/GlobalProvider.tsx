@@ -36,8 +36,8 @@ type RootStackParamList = {
 };
 
 type Folder = {
-  id: string;
-  name: string;
+  id: string | null;
+  name: string | null;
   // add other properties as needed
 };
 
@@ -59,8 +59,8 @@ export const GlobalContext = createContext<GlobalContextProps>({
   screenWidth:0,
   devMode: false,
   currentFocusedFolder: { // Initialize your new state here
-    id: '',
-    name: '',
+    id: null,
+    name: null,
     // initialize other properties as needed
   },
   setCurrentFocusedFolder: () => {}
