@@ -16,7 +16,7 @@ export type FolderCardProps = {
   onClick: () => void;
 };
 const FolderCard = (props: FolderCardProps) => {
-  const {navigator} = useContext(GlobalContext)
+  const {navigator, setCurrentFocusedFolder} = useContext(GlobalContext)
   const Card = styled(TouchableOpacity)`
     margin: 5px;
     paddin: 5px;
@@ -42,7 +42,7 @@ const FolderCard = (props: FolderCardProps) => {
     font-weight: 500;
   `;
   return (
-    <Card onPress={() => {props.onClick; navigator.navigate('SingleFolderView')}}>
+    <Card onPress={() => {props.onClick();  navigator.navigate('SingleFolderView')}}>
       <CardImage source={props.imgUrl as ImageSourcePropType} />
       <CardTitle>{props.title}</CardTitle>
       {/* Display image and other card details here */}

@@ -42,6 +42,7 @@ const BottomModal = (props: BottomModalProps) => {
     modalContainer: {
       flex: 1,
       justifyContent: "flex-end",
+      zIndex: 1000, 
     },
     menuContent: {
       backgroundColor: "white",

@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   ScrollView,
   Text,
@@ -22,6 +28,8 @@ import { ModalDataProps } from "./BottomModal";
 import HeartEditIcon from "../assets/svgComponents/HeartEditIcon";
 import RightArrowIcon from "../assets/svgComponents/RightArrowIcon";
 import AddIcon from "../assets/svgComponents/AddIcon";
+import { MockSingleFolderData } from "../Test/MockData";
+import ToggleModalButton from "./ToggleModalButton";
 type PinnedFoldersProps = {
   cardList: FolderCardProps[];
   parentStyle?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
@@ -43,7 +51,8 @@ const styles = StyleSheet.create({
 });
 
 const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
-  const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
+  const { navigator, screenHeight, screenWidth, setCurrentFocusedFolder } =
+    useContext(GlobalContext);
   const PinnedFoldersWrapper = styled(View)`
     width: ${screenWidth * 0.9}px;
     height: ${screenHeight * 0.25}px;
@@ -56,32 +65,37 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
       onClick: () => {
         console.log("click");
       },
-      icon: <HeartEditIcon/>
+      icon: <HeartEditIcon />,
     },
     {
       name: "Create New Pinned Folder",
       onClick: () => {
         console.log("test2");
       },
-      icon: <AddIcon/>
+      icon: <AddIcon />,
     },
     {
       name: "View All Pinned Folders",
       onClick: () => {
         console.log("test2");
       },
-      icon: <RightArrowIcon/>
+      icon: <RightArrowIcon />,
     },
   ];
+
+  const handleCardOnClick = () => {
+    console.log("set folder");
+    setCurrentFocusedFolder(MockSingleFolderData);
+  };
 
   return (
     <View style={parentStyle}>
       <View style={styles.headerWrapperStyle}>
         <ComponentTitle>Pinned Folders</ComponentTitle>
-        <ToggleButton
-        activeSource={moreIconActive}
-        inactiveSource={moreIcon}
-      />
+        <ToggleModalButton
+          activeSource={moreIconActive}
+          inactiveSource={moreIcon}
+        />
       </View>
 
       <PinnedFoldersWrapper>
@@ -91,7 +105,10 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
               key={index}
               title={card.title}
               imgUrl={card.imgUrl}
-              onClick={card.onClick}
+              onClick={() => {
+                card.onClick();
+                handleCardOnClick();
+              }}
             />
           ))}
         </ScrollView>
@@ -100,26 +117,10 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
         data={modalData}
         height={screenHeight * 0.5}
         // Removed the ref, not needed anymore
-        header={{ name: 'Pinned Folders Section', icon: moreIconActive }}
+        header={{ name: "Pinned Folders Section", icon: moreIconActive }}
       />
     </View>
   );
 };
 
 export default PinnedFolders;
-
-type ToggleButtonProps = {
-  activeSource: any;
-  inactiveSource: any;
-};
-
-const ToggleButton = React.memo(
-  ({ activeSource, inactiveSource }: ToggleButtonProps) => {
-    const { isOpen, openModal } = useModalContext();
-    return (
-      <TouchableOpacity onPress={openModal}> 
-        <Image source={isOpen ? activeSource : inactiveSource} />
-      </TouchableOpacity>
-    );
-  }
-);

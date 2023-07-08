@@ -12,7 +12,7 @@ import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import { ModalProvider } from "./context/ModalContext";
 import SingleFolderView from "./screens/SingleFolderView";
-
+import { NativeBaseProvider } from "native-base";
 const BoxRoot = styled.Text`
   color: red;
 `;
@@ -24,11 +24,13 @@ type ProvidersProps = {
 
 const Providers = ({ children }: ProvidersProps) => {
   return (
-    <NavigationContainer>
-      <GlobalContextProvider>
-        <ModalProvider>{children}</ModalProvider>
-      </GlobalContextProvider>
-    </NavigationContainer>
+    <NativeBaseProvider>
+      <ModalProvider>
+        <NavigationContainer>
+          <GlobalContextProvider>{children}</GlobalContextProvider>
+        </NavigationContainer>
+      </ModalProvider>
+    </NativeBaseProvider>
   );
 };
 
@@ -47,7 +49,7 @@ export default function App() {
         <GlobalStack.Screen name="Test" component={Test} />
         <GlobalStack.Screen
           options={{
-            headerTitle: 'test'
+            headerTitle: "test",
           }}
           name="SingleFolderView"
           component={SingleFolderView}

@@ -39,7 +39,6 @@ const SmallLinkView = (props: SmallLinkViewProps) => {
       break;
     default:
       console.log("type does not match");
-      SocialIconUrl = "ins";
       break;
   }
   return (

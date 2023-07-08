@@ -74,11 +74,13 @@ export const Login = () => {
     if (checkEmail(username, emailRegex).length > 0) {
       setError("Invalid email address");
       alert("Please enter a valid email address");
+      setLoading(false);
       return 
     }
 
     if (checkPassword(password).length > 0) {
       setError("Invalid password");
+      setLoading(false);
       return
     }
     // * logging in

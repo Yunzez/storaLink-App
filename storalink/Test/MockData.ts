@@ -2,6 +2,7 @@ import { FolderCardProps } from "../components/FolderCard";
 import placeHolder from "../assets/mockImg/placeholder.png";
 import { SmallLinkViewProps } from "../components/SmallLinkView";
 import { SocialMediaSrc } from "../utils";
+import { FolderProps } from "../context/GlobalProvider";
 
 export interface LinkViewProps extends SmallLinkViewProps {
     title: string;
@@ -15,7 +16,7 @@ export const MockCardList: FolderCardProps[] = [
     imgUrl: placeHolder,
     onClick: () => {
       console.log("hello");
-    },
+    }
   },
   {
     title: "testing card 2",
@@ -86,3 +87,12 @@ export const MockLinkList: LinkViewProps[] = [
   { title: "Welcome to Seattle", socialMediaType: SocialMediaSrc.INS,imgUrl: placeHolder },
   { title: "Welcome to My Ass", socialMediaType: SocialMediaSrc.INS ,imgUrl: placeHolder},
 ];
+
+
+export const MockSingleFolderData: FolderProps = {
+  id: 1,
+  name: "Travel Tips",
+  description: 'New Folder for testing, yohoo',
+  thumbNailUrl: placeHolder, 
+  links: MockLinkList
+}

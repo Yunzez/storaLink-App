@@ -15,6 +15,7 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { Dimensions } from "react-native";
+import { LinkViewProps } from "../Test/MockData";
 
 interface GlobalContextProps {
   navigator: any;
@@ -23,8 +24,8 @@ interface GlobalContextProps {
   screenWidth:number
   setUser: Dispatch<SetStateAction<User>>
   devMode: boolean,
-  setCurrentFocusedFolder: Dispatch<React.SetStateAction<Folder>>,
-  currentFocusedFolder: Folder
+  setCurrentFocusedFolder: Dispatch<React.SetStateAction<FolderProps>>,
+  currentFocusedFolder: FolderProps
 }
 
 type RootStackParamList = {
@@ -35,9 +36,13 @@ type RootStackParamList = {
   Home_Main: "Home_Main";
 };
 
-type Folder = {
-  id: string | null;
+
+export type FolderProps = {
+  id: number ;
   name: string | null;
+  description: string| null
+  thumbNailUrl: string | null;
+  links: LinkViewProps[];
   // add other properties as needed
 };
 
@@ -87,9 +92,9 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
       dob: "",
     })
 
-    const [currentFocusedFolder, setCurrentFocusedFolder]: [Folder, Dispatch<SetStateAction<Folder>>] = useState({
-      id: '',
-      name: '',
+    const [currentFocusedFolder, setCurrentFocusedFolder]: [FolderProps, Dispatch<SetStateAction<FolderProps>>] = useState({
+      id: 1,
+      name: 'Null',
       // initialize other properties as needed
     });
   return (
