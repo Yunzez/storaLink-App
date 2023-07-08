@@ -42,7 +42,7 @@ const FolderCard = (props: FolderCardProps) => {
     font-weight: 500;
   `;
   return (
-    <Card onPress={() => {props.onClick();  navigator.navigate('SingleFolderView')}}>
+    <Card onPress={() => {props.onClick()}}>
       <CardImage source={props.imgUrl as ImageSourcePropType} />
       <CardTitle>{props.title}</CardTitle>
       {/* Display image and other card details here */}

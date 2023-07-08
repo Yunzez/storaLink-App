@@ -11,6 +11,8 @@ import {
   ScrollView,
   Image,
   ImageSourcePropType,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
 import { COLORS, SPACE } from "../theme/constants";
 import { useModalContext } from "../context/ModalContext";
@@ -42,7 +44,7 @@ const BottomModal = (props: BottomModalProps) => {
     modalContainer: {
       flex: 1,
       justifyContent: "flex-end",
-      zIndex: 1000, 
+      zIndex: 1000,
     },
     menuContent: {
       backgroundColor: "white",
@@ -122,16 +124,38 @@ const BottomModal = (props: BottomModalProps) => {
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (evt, gestureState) => {
       // Check if vertical swipe is upwards
-      if (gestureState.dy > 5) {
-        closeModal();
+      if (gestureState.dy > 15) {
+        Animated.timing(menuAnimation, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }).start(() => {
+          handleClose();
+        });
       }
     },
   });
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollDistance = event.nativeEvent.contentOffset.y;
+    const scrollThreshold = -20; // Adjust the threshold as needed
+
+    if (scrollDistance > scrollThreshold) {
+      Animated.timing(menuAnimation, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+        handleClose();
+      });
+    }
+  };
+
   return (
     <Modal visible={isOpen} transparent animationType="none">
       <View style={styles.modalContainer}>
         <Animated.View style={[styles.menuContent, menuStyle]}>
-          <ScrollView>
+          <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
             <View style={styles.handleContainer} {...panResponder.panHandlers}>
               <View style={styles.handle} />
             </View>
@@ -163,12 +187,24 @@ const BottomModal = (props: BottomModalProps) => {
 
 const ModalOption = (props: { data: ModalDataProps }) => {
   return (
-    <TouchableOpacity style={{ padding: SPACE.nativeMd, flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.lightGrey, marginBottom:10, borderRadius: SPACE.nativeRoundMd }}>
-      {typeof props.data.icon === 'function' ? <props.data.icon /> : props.data.icon || null}
-      <Text style={{ fontSize: 15, marginLeft: 10}}>{props.data.name}</Text>
+    <TouchableOpacity
+      style={{
+        padding: SPACE.nativeMd,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: COLORS.lightGrey,
+        marginBottom: 10,
+        borderRadius: SPACE.nativeRoundMd,
+      }}
+    >
+      {typeof props.data.icon === "function" ? (
+        <props.data.icon />
+      ) : (
+        props.data.icon || null
+      )}
+      <Text style={{ fontSize: 15, marginLeft: 10 }}>{props.data.name}</Text>
     </TouchableOpacity>
   );
-  
 };
 
 export default BottomModal;

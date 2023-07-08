@@ -33,6 +33,9 @@ const Providers = ({ children }: ProvidersProps) => {
     </NativeBaseProvider>
   );
 };
+type FolderViewRouteParams = {
+  name?: string;
+};
 
 export default function App() {
   return (
@@ -48,8 +51,11 @@ export default function App() {
         <GlobalStack.Screen name="Signup" component={Signup} />
         <GlobalStack.Screen name="Test" component={Test} />
         <GlobalStack.Screen
-          options={{
-            headerTitle: "test",
+          options={({ route }) => {
+            const params = route.params as FolderViewRouteParams;
+            return {
+              headerTitle: params?.name ?? "Default Title",
+            };
           }}
           name="SingleFolderView"
           component={SingleFolderView}

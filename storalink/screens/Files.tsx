@@ -19,10 +19,11 @@ import SmallLinkView from "../components/SmallLinkView";
 import { SocialMediaSrc } from "../utils";
 import { useModalContext } from "../context/ModalContext";
 import BottomModal, { ModalDataProps } from "../components/BottomModal";
+import OutLinedButton from "../components/OutLinedButton";
 
 export const Files = () => {
   const { screenHeight } = useContext(GlobalContext);
-  const {openModal} = useModalContext()
+  const { openModal } = useModalContext();
   const [blockView, setBlockView] = useState(false);
   const modalData: ModalDataProps[] = [
     {
@@ -71,17 +72,10 @@ export const Files = () => {
           marginBottom: 10,
         }}
       >
-        <TouchableOpacity
-          style={{
-            borderColor: COLORS.themeYellow,
-            borderRadius: SPACE.nativeRoundSm,
-            borderWidth: 1,
-            padding: 4,
-          }}
-          onPress={() => {openModal()}}
-        >
-          <Text style={{ color: COLORS.themeYellow }}>Order By</Text>
-        </TouchableOpacity>
+        <OutLinedButton text="Order By" onClick={() => {
+            openModal();
+          }}/>
+       
 
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity
@@ -147,12 +141,12 @@ export const Files = () => {
           </FolderListWrapper>
         </ScrollView>
       </View>
-      <BottomModal data ={modalData}
-  header= {{ name: 'Pinned Folders Section'} }/>
+      <BottomModal
+        data={modalData}
+        header={{ name: "Pinned Folders Section" }}
+      />
     </SafeAreaView>
   );
 };
-
-
 
 export default Files;

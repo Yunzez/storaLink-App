@@ -86,6 +86,8 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
   const handleCardOnClick = () => {
     console.log("set folder");
     setCurrentFocusedFolder(MockSingleFolderData);
+    navigator.navigate('SingleFolderView', {name: MockSingleFolderData.name})
+
   };
 
   return (
