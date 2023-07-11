@@ -1,3 +1,5 @@
+import { MockSingleFolderData } from "./Test/MockData";
+
 export enum SocialMediaSrc {
   INS = "Instagram",
   FB = "Facebook",
@@ -28,5 +30,15 @@ export function hexToRGBA(hex: string, alpha = 1) {
   const b = parseInt(hex.slice(5, 7), 16);
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+export function fetchFolderDataById(id: string | number) {
+  console.log(id)
+  const target = MockSingleFolderData.find((value) => {
+    return value.id === Number(id);
+  })
+  
+  console.log('target value', target)
+  return target;
 }
 

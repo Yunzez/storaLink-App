@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useRoute } from "@react-navigation/native";
 import {
   ScrollView,
   Text,
@@ -13,6 +14,7 @@ import {
   Image,
   StyleSheet,
   StyleProp,
+  InteractionManager
 } from "react-native";
 import { useModalContext } from "../context/ModalContext";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -30,6 +32,7 @@ import RightArrowIcon from "../assets/svgComponents/RightArrowIcon";
 import AddIcon from "../assets/svgComponents/AddIcon";
 import { MockSingleFolderData } from "../Test/MockData";
 import ToggleModalButton from "./ToggleModalButton";
+import { fetchFolderDataById } from "../utils";
 type PinnedFoldersProps = {
   cardList: FolderCardProps[];
   parentStyle?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
@@ -53,12 +56,13 @@ const styles = StyleSheet.create({
 const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
   const { navigator, screenHeight, screenWidth, setCurrentFocusedFolder } =
     useContext(GlobalContext);
+  const [trigger, setTrigger] = useState(true)
   const PinnedFoldersWrapper = styled(View)`
     width: ${screenWidth * 0.9}px;
     height: ${screenHeight * 0.25}px;
   `;
   console.log("pinfolder refresh");
-
+  const route = useRoute();
   const modalData: ModalDataProps[] = [
     {
       name: "Manage Pinned Folders",
@@ -83,12 +87,14 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
     },
   ];
 
-  const handleCardOnClick = () => {
+  const handleCardOnClick = async () => {
     console.log("set folder");
-    setCurrentFocusedFolder(MockSingleFolderData);
-    navigator.navigate('SingleFolderView', {name: MockSingleFolderData.name})
-
-  };
+   
+    const folderData = await fetchFolderDataById(MockSingleFolderData[0].id);
+    // navigator.navigate('SingleFolderView', {name: folderData?.name})
+    setCurrentFocusedFolder(folderData as FolderProps);
+    
+};
 
   return (
     <View style={parentStyle}>
@@ -107,9 +113,12 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
               key={index}
               title={card.title}
               imgUrl={card.imgUrl}
-              onClick={() => {
-                card.onClick();
-                handleCardOnClick();
+              onClick={ () => {
+                navigator.navigate('SingleFolderView', {name: 'test', id: MockSingleFolderData[0].id})
+                InteractionManager.runAfterInteractions(() => {
+                  card.onClick();
+                  handleCardOnClick();
+                });
               }}
             />
           ))}

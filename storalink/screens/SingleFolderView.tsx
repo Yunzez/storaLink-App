@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { Box, Text, VStack, Avatar, HStack, Flex } from "native-base";
-import { GlobalContext } from "../context/GlobalProvider";
+import { FolderProps, GlobalContext } from "../context/GlobalProvider";
 import LoadingScreen from "../components/LoadingScreen";
 import { COLORS, SPACE } from "../theme/constants";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,17 +19,40 @@ import moreIconActive from "../assets/icon/pinnedFolderOptionsActive.png";
 import BottomModal, { ModalDataProps } from "../components/BottomModal";
 import placeHolder from "../assets/mockImg/mockAvatar0.png";
 
-import { hexToRGBA } from "../utils";
+import { fetchFolderDataById, hexToRGBA } from "../utils";
 import OutLinedButton from "../components/OutLinedButton";
 import BlockViewIcon from "../assets/svgComponents/BlockViewIcon";
 import RowViewIcon from "../assets/svgComponents/RowViewIcon";
+import { useRoute } from "@react-navigation/native";
 export const SingleFolderView = () => {
   const [blockView, setBlockView] = useState(false);
-  const { currentFocusedFolder, screenHeight, screenWidth } =
-    useContext(GlobalContext);
-  console.log(currentFocusedFolder.id, placeHolder, "check place holder");
+  const {
+    currentFocusedFolder,
+    setCurrentFocusedFolder,
+    screenHeight,
+    screenWidth,
+  } = useContext(GlobalContext);
+
+  const [isLoading, setIsLoading] = useState(true);
+  console.log(
+    currentFocusedFolder?.id ?? "no id",
+    placeHolder,
+    "check place holder"
+  );
+  const route = useRoute();
+//   useEffect(() => {
+//     console.log(route.params);
+//     if (route.params && route.params.folderData) {
+//       setCurrentFocusedFolder(route.params.folderData);
+//       setIsLoading(false);
+//     }
+//   }, [route.params]);
+
   useEffect(() => {
-    console.log("single folder links", currentFocusedFolder.links);
+    if (currentFocusedFolder) {
+      console.log("single folder links", currentFocusedFolder.links);
+      setIsLoading(false);
+    }
   }, [currentFocusedFolder]);
 
   const modalData: ModalDataProps[] = [
@@ -54,6 +77,8 @@ export const SingleFolderView = () => {
   ];
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+      {isLoading && <LoadingScreen />}
+
       {currentFocusedFolder.id ? (
         <ScrollView>
           <Box
@@ -151,7 +176,7 @@ export const SingleFolderView = () => {
             <Flex flexDirection={"row"} justifyContent={"space-between"} mb={3}>
               <Flex flexDirection={"row"}>
                 <OutLinedButton
-                style={{marginRight: 5}}
+                  style={{ marginRight: 5 }}
                   onClick={() => {
                     console.log("hello");
                   }}
@@ -229,8 +254,10 @@ export const SingleFolderView = () => {
                         />
                       )}
                       <VStack marginLeft={4}>
-                        <Text >{link.title}</Text>
-                        <Text color={COLORS.darkGrey}>From {link.socialMediaType}</Text>
+                        <Text>{link.title}</Text>
+                        <Text color={COLORS.darkGrey}>
+                          From {link.socialMediaType}
+                        </Text>
                       </VStack>
                     </HStack>
                   </Box>
@@ -242,8 +269,9 @@ export const SingleFolderView = () => {
           </Box>
         </ScrollView>
       ) : (
-        <LoadingScreen loadingText="Loading your folder" />
+        <Text>The folder cannot be loaded rn, pls try again later</Text>
       )}
+
       <BottomModal
         data={modalData}
         height={screenHeight * 0.5}

@@ -89,10 +89,10 @@ export const MockLinkList: LinkViewProps[] = [
 ];
 
 
-export const MockSingleFolderData: FolderProps = {
+export const MockSingleFolderData: FolderProps[] = [{
   id: 1,
   name: "Travel Tips",
   description: 'New Folder for testing, yohoo',
   thumbNailUrl: placeHolder, 
   links: MockLinkList
-}
+}]
