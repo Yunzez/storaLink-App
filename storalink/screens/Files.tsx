@@ -119,7 +119,7 @@ export const Files = () => {
         </View>
       </View>
 
-      <View style={{ flex: 1, justifyContent: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", width: '85%' }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <FolderListWrapper>
             {blockView
