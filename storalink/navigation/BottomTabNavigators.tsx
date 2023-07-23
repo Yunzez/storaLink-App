@@ -14,6 +14,7 @@ import { COLORS, SPACE } from "../theme/constants";
 import { BlurView } from "expo-blur";
 import { TouchableOpacity, View, Text } from "react-native";
 import { GlobalContext } from "../context/GlobalProvider";
+import SettingNavigators from "./SettingNavigators";
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
@@ -151,7 +152,7 @@ export const BottomTabNavigators = () => {
         }} name="Friends" component={Friends} />
       <Tab.Screen  options={{
           headerShown: false,
-        }} name="Settings" component={Settings} />
+        }} name="Settings" component={SettingNavigators} />
     </Tab.Navigator>
   );
 };

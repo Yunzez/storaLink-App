@@ -28,25 +28,25 @@ export const Settings = () => {
 
       <SettingButton
         title="Account"
-        onPress={mockOnPress}
+        onPress={() => navigator.navigate("account")}
         Icon={<Profile width="24" height="24" />}
       />
 
       <SettingButton
         title="Appearance"
-        onPress={mockOnPress}
+        onPress={() => navigator.navigate("appearance")}
         Icon={<Sun width="24" height="24" />}
       />
 
       <SettingButton
         title="Notification"
-        onPress={mockOnPress}
+        onPress={() => navigator.navigate('notification')}
         Icon={<DoorBell width="24" height="24" />}
       />
 
       <SettingButton
         title="Upgrade Plan"
-        onPress={mockOnPress}
+        onPress={() => navigator.navigate('plans')}
         Icon={<ShoppingCart width="24" height="24" />}
       />
 
