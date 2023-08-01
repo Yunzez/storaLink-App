@@ -16,7 +16,7 @@ import {
 } from "@react-navigation/native";
 import { Dimensions } from "react-native";
 import { LinkViewProps } from "../Test/MockData";
-
+import { FolderCardProps } from "../components/FolderCard";
 interface GlobalContextProps {
   navigator: any;
   user: User;
@@ -84,6 +84,10 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   const screenHeight = Dimensions.get("window").height; // Get screen height
   const screenWidth = Dimensions.get("window").width; // Get screen width
 
+  const folderPreviewDataDefault = createContext<FolderCardProps | null>(null)
+  const folderPreviewData = useContext(folderPreviewDataDefault)
+
+  
   const [isOpen, setIsOpen]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState(false);
     const [user, setUser]:[User, Dispatch<SetStateAction<User>>] = useState({

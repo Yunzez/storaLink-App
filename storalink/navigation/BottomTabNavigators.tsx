@@ -15,6 +15,8 @@ import { BlurView } from "expo-blur";
 import { TouchableOpacity, View, Text } from "react-native";
 import { GlobalContext } from "../context/GlobalProvider";
 import SettingNavigators from "./SettingNavigators";
+import AddFile from "../screens/AddFile";
+import AddFilesNavigators from "./AddFileNavigators";
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
@@ -68,6 +70,9 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               break;
             case "Settings":
               iconName = "settings";
+              break;
+            case "Add":
+              iconName = "add-circle";
               break;
             default:
               break;
@@ -144,15 +149,34 @@ export const BottomTabNavigators = () => {
         name="Home"
         component={HomeNavigators}
       />
-      <Tab.Screen  options={{
+      <Tab.Screen
+        options={{
           headerShown: false,
-        }} name="Files" component={Files} />
-      <Tab.Screen  options={{
+        }}
+        name="Files"
+        component={Files}
+      />
+      <Tab.Screen
+        options={{
           headerShown: false,
-        }} name="Friends" component={Friends} />
-      <Tab.Screen  options={{
+        }}
+        name="Add"
+        component={AddFilesNavigators}
+      />
+      <Tab.Screen
+        options={{
           headerShown: false,
-        }} name="Settings" component={SettingNavigators} />
+        }}
+        name="Friends"
+        component={Friends}
+      />
+      <Tab.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Settings"
+        component={SettingNavigators}
+      />
     </Tab.Navigator>
   );
 };
