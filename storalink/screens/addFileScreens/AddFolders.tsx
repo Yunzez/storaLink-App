@@ -1,18 +1,50 @@
-import { ScrollView, View } from "native-base";
-import React, { useContext } from "react";
+import { ScrollView, View, Image } from "native-base";
+import React, { useContext, useEffect, useState } from "react";
 import { TouchableOpacity, Text, SafeAreaView, TextInput } from "react-native";
 import { GlobalContext } from "../../context/GlobalProvider";
 import { RetrunButton, AGeneralTextInput } from "../../theme/genericComponents";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SPACE } from "../../theme/constants";
-
+import * as ImagePicker from "expo-image-picker";
+import { FolderCardProps } from "../../components/FolderCard";
 const AddFolders = () => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
+  const [valid, setValid] = useState(false);
+  const [folderName, setFolderName] = useState("");
+  const [des, setDes] = useState("");
+  const [image, setImage] = useState('');
+
+  const newFolderObject: FolderCardProps= {
+    title: folderName,
+    imgUrl: image,
+    onClick: () => {console.log('clicked card named: ', folderName)}
+  };
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    // console.log(result);
+
+    if (!result.canceled) {
+      delete result.cancelled;
+      console.log(result);
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  useEffect(() => {
+    folderName.length > 1 ? setValid(true) : setValid(false);
+  }, [folderName]);
   return (
     <SafeAreaView>
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <View style={{ width: screenWidth * 0.8 }}>
-          <View style={{ position: "absolute" }}>
+          <View style={{ position: "absolute", zIndex: 99 }}>
             <RetrunButton
               onPress={() => {
                 navigator.navigate("add_main");
@@ -20,7 +52,7 @@ const AddFolders = () => {
             >
               <Ionicons
                 name="chevron-back-outline"
-                size={20}
+                size={25}
                 color={COLORS.standardBlack}
               />
             </RetrunButton>
@@ -34,12 +66,17 @@ const AddFolders = () => {
           <ScrollView style={{ marginTop: 30 }}>
             <View style={{ marginBottom: 20 }}>
               <Text>Folder Name *</Text>
-              <AGeneralTextInput placeholder="Your most creative name here..." />
+              <AGeneralTextInput
+                onChangeText={(text: string) => {
+                  setFolderName(text);
+                }}
+                placeholder="Your most creative name here..."
+              />
             </View>
-            <View style= {{marginBottom: 20}}>
+            <View style={{ marginBottom: 20 }}>
               <Text>Cover</Text>
 
-              <TouchableOpacity>
+              <TouchableOpacity onPress={pickImage}>
                 <View
                   style={{
                     borderColor: COLORS.darkGrey,
@@ -47,24 +84,49 @@ const AddFolders = () => {
                     borderWidth: 2,
                     borderRadius: SPACE.nativeRoundMd,
                     height: 150,
-                    flexDirection:'row',
-                    justifyContent: 'center',
-                    alignItems: 'center'
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
-                  <Ionicons
-                    name="image-outline"
-                    size={70}
-                    color={COLORS.darkGrey}
-                  />
+                  {image.length == 0 ? (
+                    <Ionicons
+                      name="image-outline"
+                      size={70}
+                      color={COLORS.darkGrey}
+                    />
+                  ) : (
+                    <Image
+                      source={{ uri: image }} // Use the uri property to show the selected image
+                      style={{ height: 100, width: 100 }}
+                    />
+                  )}
                 </View>
               </TouchableOpacity>
             </View>
 
             <View>
               <Text>Description</Text>
-              <AGeneralTextInput multiline={true}  numberOfLines={4} placeholder="What’s this folder about?" />
+              <AGeneralTextInput
+                multiline={true}
+                numberOfLines={4}
+                placeholder="What’s this folder about?"
+              />
             </View>
+            <TouchableOpacity
+              style={{
+                width: "100%",
+                backgroundColor: valid ? COLORS.themeYellow : COLORS.darkGrey,
+                borderRadius: SPACE.nativeRoundMd,
+                flexDirection: "row",
+                justifyContent: "center",
+                paddingTop: 15,
+                paddingBottom: 15,
+                marginTop: 20,
+              }}
+            >
+              <Text>Create</Text>
+            </TouchableOpacity>
           </ScrollView>
         </View>
       </View>
