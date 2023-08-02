@@ -11,6 +11,7 @@ import styled from "styled-components";
 import { COLORS, SPACE } from "../theme/constants";
 import { GlobalContext } from "../context/GlobalProvider";
 export type FolderCardProps = {
+  id?: number;
   title: string;
   imgUrl: string;
   onClick: () => void;

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { SafeAreaView, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { GlobalContext } from "../context/GlobalProvider";
@@ -8,7 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 const AddFile = () => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
-
+    const [update, setUpdate] = useState(false)
   const CreateButton = styled(View)`
     background-color: ${COLORS.lightOrange};
     padding-left: ${screenWidth * 0.25}px;

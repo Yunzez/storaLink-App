@@ -8,17 +8,40 @@ import { COLORS, SPACE } from "../../theme/constants";
 import * as ImagePicker from "expo-image-picker";
 import { FolderCardProps } from "../../components/FolderCard";
 const AddFolders = () => {
-  const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
+  const {
+    navigator,
+    screenHeight,
+    screenWidth,
+    folderCovers,
+    setFolderCovers,
+  } = useContext(GlobalContext);
   const [valid, setValid] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [des, setDes] = useState("");
-  const [image, setImage] = useState('');
-
-  const newFolderObject: FolderCardProps= {
+  const [image, setImage] = useState("");
+  const [update, setUpdate] = useState(false)
+  const newFolderObject: FolderCardProps = {
     title: folderName,
     imgUrl: image,
-    onClick: () => {console.log('clicked card named: ', folderName)}
+    onClick: () => {
+      console.log("clicked card named: ", folderName);
+    },
   };
+
+  const createFolder = () => {
+    console.log("run create folder");
+    setFolderCovers((prevFolderCovers) => {
+      // Use the functional update to get the previous value of folderCovers
+      const updatedFolderCovers =
+        prevFolderCovers != null
+          ? [...prevFolderCovers, newFolderObject]
+          : [newFolderObject];
+      return updatedFolderCovers;
+    });
+    // setUpdate(true)
+    console.log("finished run create folder");
+  };
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -39,7 +62,14 @@ const AddFolders = () => {
 
   useEffect(() => {
     folderName.length > 1 ? setValid(true) : setValid(false);
-  }, [folderName]);
+    console.log("update folderCovers", folderCovers);
+  }, [folderName, folderCovers]);
+
+  useEffect(() => {
+    console.log(folderCovers);
+    if(update)  setUpdate(false)
+  }, [update, folderCovers]);
+
   return (
     <SafeAreaView>
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -97,6 +127,7 @@ const AddFolders = () => {
                     />
                   ) : (
                     <Image
+                      alt="user image"
                       source={{ uri: image }} // Use the uri property to show the selected image
                       style={{ height: 100, width: 100 }}
                     />
@@ -124,6 +155,7 @@ const AddFolders = () => {
                 paddingBottom: 15,
                 marginTop: 20,
               }}
+              onPress={() => createFolder()}
             >
               <Text>Create</Text>
             </TouchableOpacity>

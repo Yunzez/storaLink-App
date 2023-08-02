@@ -1,4 +1,4 @@
-"use client";
+
 import React, {
   createContext,
   useContext,
@@ -8,6 +8,7 @@ import React, {
   SetStateAction,
   Dispatch,
   useEffect,
+  useReducer,
 } from "react";
 import {
   NavigationProp,
@@ -57,19 +58,44 @@ type User = {
 // Define the context interface for folder covers
 interface FolderCoversContextProps {
   folderCovers: FolderCardProps[] | null;
-  setFolderCovers: Dispatch<SetStateAction<FolderCardProps[] | null>>;
+  dispatchFolderCovers: Dispatch<FolderCoversAction>;
 }
+
+// Define the actions for folderCovers
+type FolderCoversAction =
+  | { type: 'ADD'; folder: FolderCardProps }
+  | { type: 'REMOVE'; folderId: number };
+
+// Create the reducer for folderCovers
+const folderCoversReducer = (
+  state: FolderCardProps[] | null,
+  action: FolderCoversAction
+): FolderCardProps[] | null => {
+  switch (action.type) {
+    case 'ADD':
+      return state !== null ? [...state, action.folder] : [action.folder];
+    case 'REMOVE':
+      return state !== null
+        ? state.filter((folder) => folder.id !== action.folderId)
+        : null;
+    default:
+      return state;
+  }
+};
+
 
 // Create the context for folder covers
 const FolderCoversContext = createContext<FolderCoversContextProps>({
   folderCovers: null,
-  setFolderCovers: () => {},
+  dispatchFolderCovers: () => {},
 });
 
 // Custom hook to use the folder covers context
 export const useFolderCoversContext = () => {
   return useContext(FolderCoversContext);
 };
+
+
 export const GlobalContext = createContext<GlobalContextProps>({
   navigator: undefined,
   user: {
@@ -105,7 +131,8 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   const folderPreviewDataDefault = createContext<FolderCardProps[] | null>(null)
   const folderPreviewData = useContext(folderPreviewDataDefault)
 // Get folderCovers and setFolderCovers from the FolderCoversContext
-const { folderCovers, setFolderCovers } = useFolderCoversContext();
+const [folderCovers, dispatchFolderCovers] = useReducer(folderCoversReducer, null);
+
   
   const [isOpen, setIsOpen]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState(false);
@@ -121,7 +148,7 @@ const { folderCovers, setFolderCovers } = useFolderCoversContext();
       // initialize other properties as needed
     });
   return (
-    <GlobalContext.Provider value={{ devMode, navigator, user, setUser, screenHeight, screenWidth, currentFocusedFolder, setCurrentFocusedFolder, folderCovers, setFolderCovers }}>
+    <GlobalContext.Provider value={{ devMode, navigator, user, setUser, screenHeight, screenWidth, currentFocusedFolder, setCurrentFocusedFolder, folderCovers, dispatchFolderCovers }}>
       {children}
     </GlobalContext.Provider>
   );
