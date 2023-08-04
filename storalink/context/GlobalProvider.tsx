@@ -28,7 +28,7 @@ interface GlobalContextProps {
   setCurrentFocusedFolder: Dispatch<React.SetStateAction<FolderProps>>,
   currentFocusedFolder: FolderProps,
   folderCovers: FolderCardProps[]| null,
-  setFolderCovers: Dispatch<SetStateAction<FolderCardProps[] | null>>;
+  dispatchFolderCovers: Dispatch<FolderCoversAction>;
 }
 
 type RootStackParamList = {
@@ -112,7 +112,9 @@ export const GlobalContext = createContext<GlobalContextProps>({
     name: null,
     // initialize other properties as needed
   },
-  setCurrentFocusedFolder: () => {}
+  setCurrentFocusedFolder: () => {},
+  folderCovers: null,
+
 });
 
 interface GlobalContextProviderProps {
