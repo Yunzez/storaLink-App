@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { SearchBar, ResultsDropdown } from "../theme/genericComponents";
-import { StyleSheet, TouchableWithoutFeedback } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import {
   SafeAreaView,
   Text,
@@ -14,17 +18,22 @@ import { COLORS, SPACE } from "../theme/constants";
 
 type SearchComponentProps = {
   placeHolder: string;
+  algorithm?: (searchInput: string) => Map<string, any>;
 };
 export const SearchComponent = (props: SearchComponentProps) => {
   const [isFocused, setFocus] = useState(false);
   const [value, setValue] = useState("");
+  const initialResultMap = new Map<string, any>();
+  initialResultMap.set("if you see this", 1);
+  initialResultMap.set("it means there is no algorithm for filtering", 2);
 
+  const [result, setResult] = useState<Map<string, any>>(initialResultMap);
   const colorAnimation = useState(new Animated.Value(0))[0];
   const heightAnimation = useState(new Animated.Value(0))[0];
   const textOpacityAnimation = useState(new Animated.Value(0))[0];
   const styles = StyleSheet.create({
     animatedSearchBar: {
-      width: "80%",
+      width: "100%",
       zIndex: 999,
       flexDirection: "row",
       justifyContent: "center",
@@ -32,8 +41,8 @@ export const SearchComponent = (props: SearchComponentProps) => {
       borderRadius: 8,
     },
     animatedDropDownBar: {
-      width: "80%",
-      position: 'absolute',
+      width: "100%",
+      position: "absolute",
       padding: SPACE.nativeLg,
       borderRadius: SPACE.nativeRoundMd,
       marginBottom: 15,
@@ -45,8 +54,8 @@ export const SearchComponent = (props: SearchComponentProps) => {
       },
       shadowOpacity: 0.25,
       shadowRadius: 4,
-      elevation: 10,
-      
+      elevation: 1000,
+      zIndex: 10,
     },
   });
 
@@ -60,7 +69,7 @@ export const SearchComponent = (props: SearchComponentProps) => {
       inputRange: [0, 1],
       outputRange: [COLORS.lightGrey, COLORS.themeYellow],
     }),
-    borderWidth: 2
+    borderWidth: 2,
   };
 
   const animatedDropDownBar = {
@@ -69,6 +78,9 @@ export const SearchComponent = (props: SearchComponentProps) => {
       inputRange: [0, 1],
       outputRange: [0, 200],
     }),
+    opcity: 1,
+    borderColor: COLORS.highWarning,
+    borderWidth: 1,
   };
 
   const handleFocus = () => {
@@ -91,6 +103,10 @@ export const SearchComponent = (props: SearchComponentProps) => {
   const handleChangeText = (text: string) => {
     setValue(text);
     text.length > 0 ? animateDropDownHeight(1) : animateDropDownHeight(0);
+    const newValues = props.algorithm?.(value);
+    if (newValues) {
+      setValue(newValues);
+    }
   };
 
   const animateBackgroundColor = (toValue: number) => {
@@ -106,6 +122,35 @@ export const SearchComponent = (props: SearchComponentProps) => {
       inputRange: [0, 1],
       outputRange: [0, 1],
     }),
+    padding: 2,
+    borderRadius: SPACE.nativeSm,
+  };
+
+  const handleTextTouchIn = () => {
+    // Handle TouchableOpacity touch-in event (hover effect start)
+    Animated.timing(textOpacityAnimation, {
+      toValue: 1,
+      duration: 150,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const handleTextTouchOut = () => {
+    // Handle TouchableOpacity touch-out event (hover effect end)
+    Animated.timing(textOpacityAnimation, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const animatedTextTouchable = {
+    width: "100%",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    marginVertical: 2,
+    borderRadius: SPACE.nativeRoundSm,
+    backgroundColor: COLORS.darkGrey, // Add a background color to the button
   };
 
   const animateDropDownHeight = (toValue: number) => {
@@ -124,13 +169,15 @@ export const SearchComponent = (props: SearchComponentProps) => {
   };
 
   return (
-    <View style={{ width: "100%", zIndex: 999 }}>
+    <View style={{ width: "100%", zIndex: 1000 }}>
       <View
         style={{
           flexDirection: "row",
           justifyContent: "center",
           display: "flex",
           width: "100%",
+          zIndex: 1000,
+          elevation: 1000,
         }}
       >
         <TouchableWithoutFeedback onPress={handleBlur}>
@@ -153,15 +200,22 @@ export const SearchComponent = (props: SearchComponentProps) => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
+          zIndex: 100,
+          opacity: 1,
         }}
       >
         <Animated.View style={[animatedDropDownBar, animatedTextOpacity]}>
           <ResultsDropdown>
-            <Animated.Text style={animatedTextOpacity}>test</Animated.Text>
-            <Animated.Text style={animatedTextOpacity}>test</Animated.Text>
-            <Animated.Text style={animatedTextOpacity}>test</Animated.Text>
-            <Animated.Text style={animatedTextOpacity}>test</Animated.Text>
-            <Animated.Text style={animatedTextOpacity}>test</Animated.Text>
+            {Array.from(result.keys()).map((key) => (
+              <TouchableOpacity
+                key={key} // Make sure to provide a unique key for each element
+                onPress={handleTextTouchIn}
+                onPressOut={handleTextTouchOut}
+                style={animatedTextTouchable}
+              >
+                <Text>{key}</Text>
+              </TouchableOpacity>
+            ))}
           </ResultsDropdown>
         </Animated.View>
       </View>

@@ -18,19 +18,8 @@ import {
 import { Dimensions } from "react-native";
 import { LinkViewProps } from "../Test/MockData";
 import { FolderCardProps } from "../components/FolderCard";
-interface GlobalContextProps {
-  navigator: any;
-  user: User;
-  screenHeight: number, 
-  screenWidth:number
-  setUser: Dispatch<SetStateAction<User>>
-  devMode: boolean,
-  setCurrentFocusedFolder: Dispatch<React.SetStateAction<FolderProps>>,
-  currentFocusedFolder: FolderProps,
-  folderCovers: FolderCardProps[]| null,
-  dispatchFolderCovers: Dispatch<FolderCoversAction>;
-}
 
+import placeHolder from "../assets/mockImg/placeholder.png";
 type RootStackParamList = {
   Unknown: "Unknown";
   Home: "Home";
@@ -45,7 +34,7 @@ export type FolderProps = {
   name: string | null;
   description: string| null
   thumbNailUrl: string | null;
-  links: LinkViewProps[];
+  links: LinkViewProps[] | null;
   // add other properties as needed
 };
 
@@ -94,7 +83,18 @@ const FolderCoversContext = createContext<FolderCoversContextProps>({
 export const useFolderCoversContext = () => {
   return useContext(FolderCoversContext);
 };
-
+interface GlobalContextProps {
+  navigator: any;
+  user: User;
+  screenHeight: number, 
+  screenWidth:number
+  setUser: Dispatch<SetStateAction<User>>
+  devMode: boolean,
+  setCurrentFocusedFolder: Dispatch<React.SetStateAction<FolderProps>>,
+  currentFocusedFolder: FolderProps,
+  folderCovers: FolderCardProps[]| null,
+  dispatchFolderCovers: Dispatch<FolderCoversAction>;
+}
 
 export const GlobalContext = createContext<GlobalContextProps>({
   navigator: undefined,
@@ -107,14 +107,16 @@ export const GlobalContext = createContext<GlobalContextProps>({
   screenHeight: 0, 
   screenWidth:0,
   devMode: false,
-  currentFocusedFolder: { // Initialize your new state here
-    id: null,
-    name: null,
-    // initialize other properties as needed
-  },
   setCurrentFocusedFolder: () => {},
+  currentFocusedFolder: {
+    id: 0,
+    name: null,
+    description: '',
+    thumbNailUrl: '',
+    links: null
+  },
   folderCovers: null,
-
+  dispatchFolderCovers: () => {},
 });
 
 interface GlobalContextProviderProps {

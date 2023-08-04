@@ -14,6 +14,7 @@ import { COLORS, SPACE } from "../../theme/constants";
 import * as ImagePicker from "expo-image-picker";
 import { FolderCardProps } from "../../components/FolderCard";
 import styled from "styled-components";
+import { postCreateFolder } from "./createFiles";
 
 enum statusType {
   initialize,
@@ -59,7 +60,8 @@ const AddFolders = () => {
   const createFolder = () => {
     console.log("run create folder");
     setStatus(statusType.creating);
-    dispatchFolderCovers({ type: "ADD", folder: newFolderObject });
+    const folderWithId = postCreateFolder(newFolderObject)
+    dispatchFolderCovers({ type: "ADD", folder: folderWithId });
     //TODO add fetch api to create folder here
     console.log("finished creating folder");
     setStatus(statusType.finished);
@@ -195,10 +197,14 @@ const AddFolders = () => {
             </View>
           ) : (
             <LoadingContainer>
-              <Text style={{ fontSize: 20 }}>
-                You just created the new folder: {folderName}
+              <Text style={{ fontSize: 18 }}>
+                You just created the new folder: 
+              </Text>
+              <Text style={{ fontSize: 22 }}>
+              {folderName}
               </Text>
               <TouchableOpacity
+               onPress={() => {navigator.navigate('Home'); setStatus(statusType.initialize)}}
                 style={{
                   width: screenWidth * 0.7,
                   borderRadius: SPACE.nativeRoundMd,
@@ -212,6 +218,7 @@ const AddFolders = () => {
                 <Text style={{ fontSize: 15 }}>Back to Home</Text>
               </TouchableOpacity>
               <TouchableOpacity
+              onPress={() => {navigator.navigate('Home'); setStatus(statusType.initialize)}}
                 style={{
                   width: screenWidth * 0.7,
                   borderRadius: SPACE.nativeRoundMd,

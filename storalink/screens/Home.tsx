@@ -30,7 +30,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { BottomModalRefProps } from "../components/BottomModal";
 export const Home = () => {
   const modalRef = useRef<BottomModalRefProps | null>(null);
-  const { navigator, screenHeight } = useContext(GlobalContext);
+  const { navigator, screenHeight, folderCovers } = useContext(GlobalContext);
 
   const showMenu = () => {
     if (modalRef.current) {
@@ -47,15 +47,12 @@ export const Home = () => {
         marginTop: 15,
       }}
     >
+      <View style={{ width: "80%", zIndex: 5 }}>
         <SearchComponent placeHolder="Search files, saved items, etc..." />
-        <PinnedFolders
-          cardList={MockCardList}
-          parentStyle={{ paddingTop: 15 }}
-        />
-        <RecentLinks linkList={MockLinkList} />
+      </View>
 
-        
-   
+      <PinnedFolders cardList={folderCovers} parentStyle={{ paddingTop: 15 }} />
+      <RecentLinks linkList={MockLinkList} />
     </SafeAreaView>
   );
 };

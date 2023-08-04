@@ -21,7 +21,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import FolderCard, { FolderCardProps } from "./FolderCard";
 import styled from "styled-components";
 import { COLORS, SPACE } from "../theme/constants";
-import { GlobalContext } from "../context/GlobalProvider";
+import { GlobalContext, FolderProps } from "../context/GlobalProvider";
 import BottomModal, { BottomModalRefProps } from "./BottomModal";
 import moreIcon from "../assets/icon/pinnedFolderOptions.png";
 import moreIconActive from "../assets/icon/pinnedFolderOptionsActive.png";
@@ -108,7 +108,7 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
 
       <PinnedFoldersWrapper>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {cardList.map((card, index) => (
+          {cardList ? cardList.map((card, index) => (
             <FolderCard
               key={index}
               title={card.title}
@@ -121,7 +121,7 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
                 });
               }}
             />
-          ))}
+          )) : <Text>You don't have pinned folders</Text>}
         </ScrollView>
       </PinnedFoldersWrapper>
       <BottomModal

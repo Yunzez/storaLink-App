@@ -63,7 +63,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               iconName = "home";
               break;
             case "Files":
-              iconName = "document";
+              iconName = "folder-open";
               break;
             case "Friends":
               iconName = "people";

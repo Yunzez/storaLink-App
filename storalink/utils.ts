@@ -24,6 +24,15 @@ export const checkPassword = (password: string) => {
   return "";
 };
 
+// * check if the image is local path 
+export const isLocalPath = (url: string) => {
+  console.log('url:', url);
+  if (typeof url === 'string') {
+    return false // Check if the url does not start with "http" (i.e., local path)
+  }
+    return true
+};
+
 export function hexToRGBA(hex: string, alpha = 1) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);

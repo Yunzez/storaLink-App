@@ -62,7 +62,7 @@ const SmallLinkView = (props: SmallLinkViewProps) => {
           <Text>{props.title}</Text>
         </View>
 
-        <Text style={{color: COLORS.darkGrey}}>{props.description ?? "no des"}</Text>
+        <Text style={{color: COLORS.darkGrey}}>{props.description ?? " "}</Text>
       </View>
       <View style={{ flex: 1, alignItems: "flex-end" }}>
         <MoreOptionsButtonDropDown

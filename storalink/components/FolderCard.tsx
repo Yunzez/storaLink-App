@@ -10,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components";
 import { COLORS, SPACE } from "../theme/constants";
 import { GlobalContext } from "../context/GlobalProvider";
+import { isLocalPath } from "../utils";
 export type FolderCardProps = {
   id?: number;
   title: string;
@@ -17,7 +18,7 @@ export type FolderCardProps = {
   onClick: () => void;
 };
 const FolderCard = (props: FolderCardProps) => {
-  const {navigator, setCurrentFocusedFolder} = useContext(GlobalContext)
+  const { navigator, setCurrentFocusedFolder } = useContext(GlobalContext);
   const Card = styled(TouchableOpacity)`
     margin: 5px;
     paddin: 5px;
@@ -42,11 +43,20 @@ const FolderCard = (props: FolderCardProps) => {
     color: ${COLORS.darkGrey};
     font-weight: 500;
   `;
+
+  console.log('url: ', props.imgUrl, props.id)
   return (
-    <Card onPress={() => {props.onClick()}}>
-      <CardImage source={props.imgUrl as ImageSourcePropType} />
+    <Card
+      onPress={() => {
+        props.onClick();
+      }}
+    >
+      {isLocalPath(props.imgUrl) ? ( // Check if imgUrl is a local path
+        <CardImage source={props.imgUrl as ImageSourcePropType} />
+      ) : (
+        <CardImage source={{ uri: props.imgUrl }} /> // Use the image URI
+      )}
       <CardTitle>{props.title}</CardTitle>
-      {/* Display image and other card details here */}
     </Card>
   );
 };

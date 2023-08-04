@@ -7,6 +7,7 @@ import { COLORS, SPACE } from "../../theme/constants";
 import { Ionicons } from "@expo/vector-icons";
 import { AGeneralTextInput, RetrunButton } from "../../theme/genericComponents";
 import * as ImagePicker from "expo-image-picker";
+import SearchComponent from "../../components/SearchbarComponent";
 const AddLinks = () => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
   const [valid, isValid] = useState(false);
@@ -60,9 +61,9 @@ const AddLinks = () => {
               <Text>Link URL *</Text>
               <AGeneralTextInput placeholder="https://..." />
             </View>
-            <View style={{ marginBottom: 20 }}>
+            <View style={{ marginBottom: 20, zIndex: 5 }}>
               <Text>Save Link To *</Text>
-              <AGeneralTextInput placeholder="Folder name..." />
+              <SearchComponent placeHolder="Search a folder"/>
             </View>
             <View style={{ marginBottom: 20 }}>
               <Text>ThumbNail</Text>

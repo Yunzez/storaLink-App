@@ -62,7 +62,9 @@ export const Files = () => {
         marginTop: 15,
       }}
     >
-      <SearchComponent placeHolder="Search files, saved items, etc..." />
+      <View style={{ width: "80%", zIndex: 5}}>
+        <SearchComponent placeHolder="Search files, saved items, etc..." />
+      </View>
       <View
         style={{
           flexDirection: "row",
@@ -72,10 +74,12 @@ export const Files = () => {
           marginBottom: 10,
         }}
       >
-        <OutLinedButton text="Order By" onClick={() => {
+        <OutLinedButton
+          text="Order By"
+          onClick={() => {
             openModal();
-          }}/>
-       
+          }}
+        />
 
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity
@@ -119,7 +123,7 @@ export const Files = () => {
         </View>
       </View>
 
-      <View style={{ flex: 1, justifyContent: "center", width: '85%' }}>
+      <View style={{ flex: 1, justifyContent: "center", width: "85%" }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <FolderListWrapper>
             {blockView

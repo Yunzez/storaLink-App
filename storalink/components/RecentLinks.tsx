@@ -58,8 +58,8 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
         >
           <TouchableOpacity
             style={{
-              width: 20,
-              height: 20,
+              width: 25,
+              height: 25,
               alignItems: "center",
               justifyContent: "center",
               backgroundColor: blockView ? COLORS.white :COLORS.themeYellow ,
@@ -69,12 +69,12 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
               setBlockView(false);
             }}
           >
-            <RowViewIcon width="12" height="12" color={blockView ?  COLORS.themeYellow : COLORS.white} />
+            <RowViewIcon width="15" height="15" color={blockView ?  COLORS.themeYellow : COLORS.white} />
           </TouchableOpacity>
           <TouchableOpacity
             style={{
-              width: 20,
-              height: 20,
+              width: 25,
+              height: 25,
               alignItems: "center",
               justifyContent: "center",
               backgroundColor: blockView ? COLORS.themeYellow : COLORS.white ,
@@ -85,8 +85,8 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
             }}
           >
             <BlockViewIcon
-              width="12"
-              height="12"
+              width="15"
+              height="15"
               color={blockView ? COLORS.white : COLORS.themeYellow}
             />
           </TouchableOpacity>
