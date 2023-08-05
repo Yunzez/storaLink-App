@@ -28,6 +28,7 @@ import RecentLinks from "../components/RecentLinks";
 import BottomModal from "../components/BottomModal";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { BottomModalRefProps } from "../components/BottomModal";
+import { FolderCardProps } from "../components/FolderCard";
 export const Home = () => {
   const modalRef = useRef<BottomModalRefProps | null>(null);
   const { navigator, screenHeight, folderCovers } = useContext(GlobalContext);
@@ -51,7 +52,7 @@ export const Home = () => {
         <SearchComponent placeHolder="Search files, saved items, etc..." />
       </View>
 
-      <PinnedFolders cardList={folderCovers} parentStyle={{ paddingTop: 15 }} />
+      <PinnedFolders cardList={folderCovers as FolderCardProps[]} parentStyle={{ paddingTop: 15 }} />
       <RecentLinks linkList={MockLinkList} />
     </SafeAreaView>
   );

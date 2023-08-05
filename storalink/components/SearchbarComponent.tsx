@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { SearchBar, ResultsDropdown } from "../theme/genericComponents";
 import {
   StyleSheet,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
@@ -20,13 +21,33 @@ type SearchComponentProps = {
   placeHolder: string;
   algorithm?: (searchInput: string) => Map<string, any>;
 };
+
+export enum searchValueType {
+  normal,
+  noValue,
+  error,
+}
+
+type searchResultType = {
+  value: string;
+  onClick: () => void;
+  valueType?: searchValueType;
+};
 export const SearchComponent = (props: SearchComponentProps) => {
   const [isFocused, setFocus] = useState(false);
   const [value, setValue] = useState("");
-  const initialResultMap = new Map<string, any>();
-  initialResultMap.set("if you see this", 1);
-  initialResultMap.set("it means there is no algorithm for filtering", 2);
-
+  const initialResultMap = new Map<string, searchResultType>();
+  initialResultMap.set("if you see this", {
+    value: "1",
+    onClick: () => {},
+    valueType: searchValueType.error,
+  });
+  initialResultMap.set("it means there is no algorithm for filtering", {
+    value: "1",
+    onClick: () => {},
+    valueType: searchValueType.error,
+  });
+  const inputBoxRef = useRef<TextInput>(null)
   const [result, setResult] = useState<Map<string, any>>(initialResultMap);
   const colorAnimation = useState(new Animated.Value(0))[0];
   const heightAnimation = useState(new Animated.Value(0))[0];
@@ -103,11 +124,21 @@ export const SearchComponent = (props: SearchComponentProps) => {
   const handleChangeText = (text: string) => {
     setValue(text);
     text.length > 0 ? animateDropDownHeight(1) : animateDropDownHeight(0);
-    const newValues = props.algorithm?.(value);
+    const newValues = props.algorithm?.(text);
+    console.log("search result", newValues);
     if (newValues) {
-      setValue(newValues);
+      setResult(newValues);
     }
   };
+
+  const selectValue = (result: [string, any]) => {
+    console.log('selecting', result)
+    setValue(result[0])
+    if(inputBoxRef.current) {
+      inputBoxRef.current.setNativeProps({ text: result[0] });
+    }
+    handleBlur()
+  }
 
   const animateBackgroundColor = (toValue: number) => {
     Animated.timing(colorAnimation, {
@@ -183,6 +214,7 @@ export const SearchComponent = (props: SearchComponentProps) => {
         <TouchableWithoutFeedback onPress={handleBlur}>
           <Animated.View style={animatedSearchBarStyle}>
             <SearchBar
+            ref={inputBoxRef}
               placeholder={props.placeHolder}
               isFocused={isFocused}
               onFocus={handleFocus}
@@ -206,15 +238,43 @@ export const SearchComponent = (props: SearchComponentProps) => {
       >
         <Animated.View style={[animatedDropDownBar, animatedTextOpacity]}>
           <ResultsDropdown>
-            {Array.from(result.keys()).map((key) => (
-              <TouchableOpacity
-                key={key} // Make sure to provide a unique key for each element
-                onPress={handleTextTouchIn}
-                onPressOut={handleTextTouchOut}
-                style={animatedTextTouchable}
-              >
-                <Text>{key}</Text>
-              </TouchableOpacity>
+            {Array.from(result).map((value, key) => (
+              <View key={key}>
+                {(value[1].valueType == searchValueType.normal ||
+                  !value[1].valueType) && (
+                  <TouchableOpacity
+                  onPress={() => { handleTextTouchIn(); selectValue(value);}}
+                    onPressOut={handleTextTouchOut}
+                    style={animatedTextTouchable}
+                  >
+                    <Text>{value[0]}</Text>
+                  </TouchableOpacity>
+                )}
+
+                {value[1].valueType == searchValueType.error && (
+                  <TouchableOpacity
+                    onPress={handleTextTouchIn}
+                    onPressOut={handleTextTouchOut}
+                    style={animatedTextTouchable}
+                  >
+                    <Text style={{ color: COLORS.highWarning }}>
+                      {value[0]}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+
+                {value[1].valueType == searchValueType.noValue && (
+                  <TouchableOpacity
+                    onPress={() => { handleTextTouchIn(); selectValue(value);}}
+                    onPressOut={() => {handleTextTouchOut()}}
+                    style={{...animatedTextTouchable, backgroundColor: COLORS.lightOrange, }}
+                  >
+                    <Text style={{ color: COLORS.themeYellow }}>
+                      {value[0]}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             ))}
           </ResultsDropdown>
         </Animated.View>

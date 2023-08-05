@@ -15,6 +15,7 @@ export type FolderCardProps = {
   id?: number;
   title: string;
   imgUrl: string;
+  desc?: string
   onClick: () => void;
 };
 const FolderCard = (props: FolderCardProps) => {

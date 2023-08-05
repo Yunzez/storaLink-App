@@ -90,9 +90,6 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
   const handleCardOnClick = async () => {
     console.log("set folder");
    
-    const folderData = await fetchFolderDataById(MockSingleFolderData[0].id);
-    // navigator.navigate('SingleFolderView', {name: folderData?.name})
-    setCurrentFocusedFolder(folderData as FolderProps);
     
 };
 
@@ -114,11 +111,8 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
               title={card.title}
               imgUrl={card.imgUrl}
               onClick={ () => {
-                navigator.navigate('SingleFolderView', {name: 'test', id: MockSingleFolderData[0].id})
-                InteractionManager.runAfterInteractions(() => {
-                  card.onClick();
-                  handleCardOnClick();
-                });
+                navigator.navigate('SingleFolderView', {name: 'test', id: card.id})
+                
               }}
             />
           )) : <Text>You don't have pinned folders</Text>}

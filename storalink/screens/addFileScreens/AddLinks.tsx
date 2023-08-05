@@ -7,9 +7,9 @@ import { COLORS, SPACE } from "../../theme/constants";
 import { Ionicons } from "@expo/vector-icons";
 import { AGeneralTextInput, RetrunButton } from "../../theme/genericComponents";
 import * as ImagePicker from "expo-image-picker";
-import SearchComponent from "../../components/SearchbarComponent";
+import SearchComponent, { searchValueType } from "../../components/SearchbarComponent";
 const AddLinks = () => {
-  const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
+  const { navigator, screenHeight, screenWidth, folderCovers } = useContext(GlobalContext);
   const [valid, isValid] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
   const [image, setImage] = useState("");
@@ -35,6 +35,22 @@ const AddLinks = () => {
   useEffect(() => {
     console.log('add image path')
   }, [image])
+
+  const searchAlgorithm = (value: string): Map<string, any> => {
+    console.log('run search', value)
+    const retMap = new Map()
+    if(!folderCovers) {
+        retMap.set('You have no folder yet, go create your first folder', {value: 'no val', onClick: () => {}, valueType: searchValueType.noValue})
+        return retMap
+    }
+    for(const cover of folderCovers) {
+        console.log(cover)
+        retMap.set(cover.title, () => {console.log(cover.title)})
+    }
+    console.log('search result', retMap)
+    return retMap 
+  }
+
   return (
     <SafeAreaView>
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -63,7 +79,7 @@ const AddLinks = () => {
             </View>
             <View style={{ marginBottom: 20, zIndex: 5 }}>
               <Text>Save Link To *</Text>
-              <SearchComponent placeHolder="Search a folder"/>
+              <SearchComponent placeHolder="Search a folder" algorithm={searchAlgorithm}/>
             </View>
             <View style={{ marginBottom: 20 }}>
               <Text>ThumbNail</Text>

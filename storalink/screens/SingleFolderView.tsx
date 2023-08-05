@@ -19,15 +19,16 @@ import moreIconActive from "../assets/icon/pinnedFolderOptionsActive.png";
 import BottomModal, { ModalDataProps } from "../components/BottomModal";
 import placeHolder from "../assets/mockImg/mockAvatar0.png";
 
-import { fetchFolderDataById, hexToRGBA } from "../utils";
+import { hexToRGBA } from "../utils";
 import OutLinedButton from "../components/OutLinedButton";
 import BlockViewIcon from "../assets/svgComponents/BlockViewIcon";
 import RowViewIcon from "../assets/svgComponents/RowViewIcon";
 import { useRoute } from "@react-navigation/native";
 export const SingleFolderView = () => {
+    const {folderCache} = useContext(GlobalContext)
   const [blockView, setBlockView] = useState(false);
+  const [currData, setCurrData] = useState<FolderProps | undefined>(undefined)
   const {
-    currentFocusedFolder,
     setCurrentFocusedFolder,
     screenHeight,
     screenWidth,
@@ -35,25 +36,43 @@ export const SingleFolderView = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   console.log(
-    currentFocusedFolder?.id ?? "no id",
+    currData?.id ?? "no id",
     placeHolder,
     "check place holder"
   );
+
   const route = useRoute();
-//   useEffect(() => {
-//     console.log(route.params);
-//     if (route.params && route.params.folderData) {
-//       setCurrentFocusedFolder(route.params.folderData);
-//       setIsLoading(false);
-//     }
-//   }, [route.params]);
+
+  const fetchFolderDataById = (id: string | number) => {
+    if(!folderCache) {
+        return null
+    }
+    const target = folderCache.find((value) => {
+        return value.id === Number(id);
+      })
+      
+      console.log('target value', target)
+      return target;
+
+   
+  }
 
   useEffect(() => {
-    if (currentFocusedFolder) {
-      console.log("single folder links", currentFocusedFolder.links);
-      setIsLoading(false);
+    if(route.params){
+        const folderData =  fetchFolderDataById(route.params.id);
+        console.log('route name',route.params.id)
+        if (folderData) {
+            setCurrData(folderData)
+          setIsLoading(false);
+        } else {
+            console.error('folder data is null')
+        }
     }
-  }, [currentFocusedFolder]);
+   
+    // navigator.navigate('SingleFolderView', {name: folderData?.name})
+    // setCurrentFocusedFolder(folderData as FolderProps);
+   
+  }, []);
 
   const modalData: ModalDataProps[] = [
     {
@@ -79,7 +98,7 @@ export const SingleFolderView = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
       {isLoading && <LoadingScreen />}
 
-      {currentFocusedFolder.id ? (
+      {currData ? (
         <ScrollView>
           <Box
             width={screenWidth}
@@ -92,8 +111,8 @@ export const SingleFolderView = () => {
           >
             <ImageBackground
               source={
-                currentFocusedFolder.links
-                  ? (currentFocusedFolder.links[0].imgUrl as string)
+                currData.links
+                  ? (currData.links[0].imgUrl as string)
                   : "../assets/mockImg/placeholder.png"
               }
               style={{ width: screenWidth, height: screenHeight * 0.2 }}
@@ -130,7 +149,7 @@ export const SingleFolderView = () => {
                         bold
                         color={COLORS.white}
                       >
-                        {currentFocusedFolder.id}: {currentFocusedFolder.name}
+                        {currData.id}: {currData.name}
                       </Text>
                       <Flex flexDirection={"row"}>
                         <Avatar
@@ -171,7 +190,7 @@ export const SingleFolderView = () => {
           </Box>
           <Box bg="white" px={4} rounded={SPACE.nativeRoundLg}>
             <Text fontSize="md" my={3} color={COLORS.darkGrey}>
-              {currentFocusedFolder.description ?? "no description"}
+              {currData.description ?? "no description"}
             </Text>
             <Flex flexDirection={"row"} justifyContent={"space-between"} mb={3}>
               <Flex flexDirection={"row"}>
@@ -238,9 +257,9 @@ export const SingleFolderView = () => {
 
             <VStack space={2}>
               {/* TODO: implement black view } */}
-              {currentFocusedFolder.links &&
-              currentFocusedFolder.links.length > 0 ? (
-                currentFocusedFolder.links.map((link, index) => (
+              {currData.links &&
+              currData.links.length > 0 ? (
+                currData.links.map((link, index) => (
                   <Box key={index} p={1} bg="gray.100" rounded="md">
                     <HStack justifyContent="start">
                       {link.imgUrl && (
