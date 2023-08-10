@@ -34,7 +34,7 @@ import { MockSingleFolderData } from "../Test/MockData";
 import ToggleModalButton from "./ToggleModalButton";
 import { fetchFolderDataById } from "../utils";
 type PinnedFoldersProps = {
-  cardList: FolderCardProps[];
+  cardList: FolderProps[];
   parentStyle?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
 };
 
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 });
 
 const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
-  const { navigator, screenHeight, screenWidth, setCurrentFocusedFolder } =
+  const { navigator, screenHeight, screenWidth } =
     useContext(GlobalContext);
   const [trigger, setTrigger] = useState(true)
   const PinnedFoldersWrapper = styled(View)`
@@ -108,10 +108,12 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
           {cardList ? cardList.map((card, index) => (
             <FolderCard
               key={index}
-              title={card.title}
-              imgUrl={card.imgUrl}
+              title={card.name as string}
+              imgUrl={card.thumbNailUrl as string}
+              desc={card.desc}
+              linksNumber={card.links?.length ?? 0}
               onClick={ () => {
-                navigator.navigate('SingleFolderView', {name: 'test', id: card.id})
+                navigator.navigate('SingleFolderView', {name: card.name, id: card.id})
                 
               }}
             />

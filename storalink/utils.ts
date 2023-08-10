@@ -26,6 +26,7 @@ export const checkPassword = (password: string) => {
 
 // * check if the image is local path 
 export const isLocalPath = (url: string) => {
+
   console.log('url:', url);
   if (typeof url === 'string') {
     return false // Check if the url does not start with "http" (i.e., local path)

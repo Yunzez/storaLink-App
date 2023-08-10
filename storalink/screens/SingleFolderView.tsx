@@ -19,59 +19,51 @@ import moreIconActive from "../assets/icon/pinnedFolderOptionsActive.png";
 import BottomModal, { ModalDataProps } from "../components/BottomModal";
 import placeHolder from "../assets/mockImg/mockAvatar0.png";
 
-import { hexToRGBA } from "../utils";
+import { hexToRGBA, isLocalPath } from "../utils";
 import OutLinedButton from "../components/OutLinedButton";
 import BlockViewIcon from "../assets/svgComponents/BlockViewIcon";
 import RowViewIcon from "../assets/svgComponents/RowViewIcon";
 import { useRoute } from "@react-navigation/native";
+import placeholder from "../assets/mockImg/placeholder.png";
 export const SingleFolderView = () => {
-    const {folderCache} = useContext(GlobalContext)
+  const { folderCache } = useContext(GlobalContext);
   const [blockView, setBlockView] = useState(false);
-  const [currData, setCurrData] = useState<FolderProps | undefined>(undefined)
-  const {
-    setCurrentFocusedFolder,
-    screenHeight,
-    screenWidth,
-  } = useContext(GlobalContext);
+  const [currData, setCurrData] = useState<FolderProps | undefined>(undefined);
+  const { setCurrentFocusedFolder, screenHeight, screenWidth } =
+    useContext(GlobalContext);
 
   const [isLoading, setIsLoading] = useState(true);
-  console.log(
-    currData?.id ?? "no id",
-    placeHolder,
-    "check place holder"
-  );
+  console.log(currData?.id ?? "no id", "check place holder");
 
   const route = useRoute();
 
   const fetchFolderDataById = (id: string | number) => {
-    if(!folderCache) {
-        return null
+    console.log("folder data", folderCache);
+    if (!folderCache) {
+      return null;
     }
     const target = folderCache.find((value) => {
-        return value.id === Number(id);
-      })
-      
-      console.log('target value', target)
-      return target;
+      return value.id === Number(id);
+    });
 
-   
-  }
+    console.log("target value", target);
+    return target;
+  };
 
   useEffect(() => {
-    if(route.params){
-        const folderData =  fetchFolderDataById(route.params.id);
-        console.log('route name',route.params.id)
-        if (folderData) {
-            setCurrData(folderData)
-          setIsLoading(false);
-        } else {
-            console.error('folder data is null')
-        }
+    if (route.params) {
+      const folderData = fetchFolderDataById(route.params.id);
+      console.log("route name", route.params.id, folderData);
+      if (folderData) {
+        setCurrData(folderData);
+        setIsLoading(false);
+      } else {
+        console.error("folder data is null");
+      }
     }
-   
+
     // navigator.navigate('SingleFolderView', {name: folderData?.name})
     // setCurrentFocusedFolder(folderData as FolderProps);
-   
   }, []);
 
   const modalData: ModalDataProps[] = [
@@ -111,11 +103,16 @@ export const SingleFolderView = () => {
           >
             <ImageBackground
               source={
-                currData.links
-                  ? (currData.links[0].imgUrl as string)
-                  : "../assets/mockImg/placeholder.png"
+                currData.thumbNailUrl
+                  ? isLocalPath(currData.thumbNailUrl)
+                    ? currData.thumbNailUrl
+                    : { uri: currData.thumbNailUrl }
+                  : require("../assets/mockImg/placeholder.png")
               }
-              style={{ width: screenWidth, height: screenHeight * 0.2 }}
+              style={{
+                width: screenWidth,
+                height: screenHeight * 0.2,
+              }}
             >
               <LinearGradient
                 colors={[
@@ -257,14 +254,33 @@ export const SingleFolderView = () => {
 
             <VStack space={2}>
               {/* TODO: implement black view } */}
-              {currData.links &&
-              currData.links.length > 0 ? (
+
+              {currData.links && currData.links.length > 0 ? (
                 currData.links.map((link, index) => (
                   <Box key={index} p={1} bg="gray.100" rounded="md">
                     <HStack justifyContent="start">
-                      {link.imgUrl && (
+                      {link.imgUrl?.length === 0 ? (
+                        // precheck if the imgUrl is not filled out, we use default value if not
                         <Image
-                          source={link.imgUrl}
+                          source={placeholder as ImageSourcePropType}
+                          style={{
+                            width: 55,
+                            height: 40,
+                            borderRadius: SPACE.nativeRoundSm,
+                          }}
+                        />
+                      ) : link.imgUrl && isLocalPath(link.imgUrl) ? (
+                        <Image
+                          source={link.imgUrl as ImageSourcePropType}
+                          style={{
+                            width: 55,
+                            height: 40,
+                            borderRadius: SPACE.nativeRoundSm,
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          source={{ uri: link.imgUrl }}
                           style={{
                             width: 55,
                             height: 40,
@@ -272,6 +288,7 @@ export const SingleFolderView = () => {
                           }}
                         />
                       )}
+
                       <VStack marginLeft={4}>
                         <Text>{link.title}</Text>
                         <Text color={COLORS.darkGrey}>

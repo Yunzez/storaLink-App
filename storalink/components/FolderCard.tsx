@@ -11,11 +11,13 @@ import styled from "styled-components";
 import { COLORS, SPACE } from "../theme/constants";
 import { GlobalContext } from "../context/GlobalProvider";
 import { isLocalPath } from "../utils";
+import placeholder from '../assets/mockImg/placeholder.png'
 export type FolderCardProps = {
   id?: number;
   title: string;
   imgUrl: string;
-  desc?: string
+  desc?: string;
+  linksNumber: number;
   onClick: () => void;
 };
 const FolderCard = (props: FolderCardProps) => {
@@ -45,19 +47,27 @@ const FolderCard = (props: FolderCardProps) => {
     font-weight: 500;
   `;
 
-  console.log('url: ', props.imgUrl, props.id)
+  console.log("url: ", props.imgUrl, props.id);
   return (
     <Card
       onPress={() => {
         props.onClick();
       }}
     >
-      {isLocalPath(props.imgUrl) ? ( // Check if imgUrl is a local path
-        <CardImage source={props.imgUrl as ImageSourcePropType} />
-      ) : (
-        <CardImage source={{ uri: props.imgUrl }} /> // Use the image URI
-      )}
+      {
+        props.imgUrl?.length === 0 ? (
+          // precheck if the imgUrl is not filled out, we use default value if not
+          <CardImage
+            source={placeholder as ImageSourcePropType}
+          />
+        ) : isLocalPath(props.imgUrl) ? ( // Check if imgUrl is a local path
+          <CardImage source={props.imgUrl as ImageSourcePropType} />
+        ) : (
+          <CardImage source={{ uri: props.imgUrl }} />
+        ) // Use the image URI
+      }
       <CardTitle>{props.title}</CardTitle>
+      <Text>{}</Text>
     </Card>
   );
 };

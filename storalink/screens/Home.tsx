@@ -21,7 +21,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Test from "./Test";
 import SearchComponent from "../components/SearchbarComponent";
-import { GlobalContext } from "../context/GlobalProvider";
+import { FolderProps, GlobalContext } from "../context/GlobalProvider";
 import PinnedFolders from "../components/PinnedFolders";
 import { MockCardList, MockLinkList } from "../Test/MockData";
 import RecentLinks from "../components/RecentLinks";
@@ -31,7 +31,7 @@ import { BottomModalRefProps } from "../components/BottomModal";
 import { FolderCardProps } from "../components/FolderCard";
 export const Home = () => {
   const modalRef = useRef<BottomModalRefProps | null>(null);
-  const { navigator, screenHeight, folderCovers } = useContext(GlobalContext);
+  const { navigator, screenHeight, folderCovers, folderCache} = useContext(GlobalContext);
 
   const showMenu = () => {
     if (modalRef.current) {
@@ -52,7 +52,7 @@ export const Home = () => {
         <SearchComponent placeHolder="Search files, saved items, etc..." />
       </View>
 
-      <PinnedFolders cardList={folderCovers as FolderCardProps[]} parentStyle={{ paddingTop: 15 }} />
+      <PinnedFolders cardList={folderCache as FolderProps[]} parentStyle={{ paddingTop: 15 }} />
       <RecentLinks linkList={MockLinkList} />
     </SafeAreaView>
   );

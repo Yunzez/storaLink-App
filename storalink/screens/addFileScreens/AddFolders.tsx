@@ -15,12 +15,9 @@ import * as ImagePicker from "expo-image-picker";
 import { FolderCardProps } from "../../components/FolderCard";
 import styled from "styled-components";
 import { postCreateFolder } from "./createFiles";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 
-enum statusType {
-  initialize,
-  creating,
-  finished,
-}
+import { statusType } from "./createFiles";
 const AddFolders = () => {
   const {
     navigator,
@@ -34,7 +31,7 @@ const AddFolders = () => {
   const [des, setDes] = useState("");
   const [image, setImage] = useState("");
   const [update, setUpdate] = useState(false);
-
+const navigation = useNavigation()
   const [status, setStatus] = useState<statusType>(statusType.initialize);
   const LoadingContainer = styled(View)`
     align-items: center;
@@ -52,6 +49,8 @@ const AddFolders = () => {
   const newFolderObject: FolderCardProps = {
     title: folderName,
     imgUrl: image,
+    desc: des,
+    linksNumber: 0,
     onClick: () => {
       console.log("clicked card named: ", folderName);
     },
@@ -60,7 +59,7 @@ const AddFolders = () => {
   const createFolder = () => {
     console.log("run create folder");
     setStatus(statusType.creating);
-    const folderWithId = postCreateFolder(newFolderObject)
+    const folderWithId = postCreateFolder(newFolderObject);
     dispatchFolderCovers({ type: "ADD", folder: folderWithId });
     //TODO add fetch api to create folder here
     console.log("finished creating folder");
@@ -174,6 +173,9 @@ const AddFolders = () => {
                     multiline={true}
                     numberOfLines={4}
                     placeholder="What’s this folder about?"
+                    onChangeText={(text: string) => {
+                        setDes(text)
+                    }}
                   />
                 </View>
                 <TouchableOpacity
@@ -198,13 +200,23 @@ const AddFolders = () => {
           ) : (
             <LoadingContainer>
               <Text style={{ fontSize: 18 }}>
-                You just created the new folder: 
+                You just created the new folder:
               </Text>
-              <Text style={{ fontSize: 22 }}>
-              {folderName}
-              </Text>
+              <Text style={{ fontSize: 22 }}>{folderName}</Text>
               <TouchableOpacity
-               onPress={() => {navigator.navigate('Home'); setStatus(statusType.initialize)}}
+                onPress={() => {
+                  navigator.navigate("Home");
+                  setStatus(statusType.initialize);
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0, // Reset stack to the first screen
+                      routes: [
+                        { name: "add_main" }, // Replace 'MainRoute' with the main route's name
+                        { name: "add_main" }, // Replace 'TargetScreen' with the screen you want to navigate to
+                      ],
+                    })
+                  );
+                }}
                 style={{
                   width: screenWidth * 0.7,
                   borderRadius: SPACE.nativeRoundMd,
@@ -218,7 +230,10 @@ const AddFolders = () => {
                 <Text style={{ fontSize: 15 }}>Back to Home</Text>
               </TouchableOpacity>
               <TouchableOpacity
-              onPress={() => {navigator.navigate('Home'); setStatus(statusType.initialize)}}
+                onPress={() => {
+                  navigator.navigate("Home");
+                  setStatus(statusType.initialize);
+                }}
                 style={{
                   width: screenWidth * 0.7,
                   borderRadius: SPACE.nativeRoundMd,

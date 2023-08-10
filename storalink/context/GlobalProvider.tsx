@@ -32,6 +32,7 @@ export type FolderProps = {
   name: string | null;
   description: string | null;
   thumbNailUrl: string | null;
+  desc: string;
   links: LinkViewProps[] | null;
   // add other properties as needed
 };
@@ -45,8 +46,7 @@ type User = {
 // Define the actions for folderCovers
 type FolderCoversAction =
   | { type: "ADD"; folder: FolderCardProps }
-  | { type: "REMOVE"; folderId: number };
-
+  | { type: "REMOVE"; folderId: number }
 // Create the reducer for folderCovers
 const folderCoversReducer = (
   state: FolderCardProps[] | null,
@@ -66,8 +66,9 @@ const folderCoversReducer = (
 
 // Define the actions for folderCovers
 type FolderCacheAction =
-  | { type: "ADD"; folder: FolderProps }
-  | { type: "REMOVE"; folderId: number };
+  | { type: "ADD_LINK"; link: LinkViewProps; folderId: number }
+  | { type: "REMOVE_LINK"; linkId: number; folderId: number }
+  | { type: "ADD_FOLDER"; folder: FolderProps };
 
 // Create the reducer for folderCovers
 const FolderCacheReducer = (
@@ -75,17 +76,38 @@ const FolderCacheReducer = (
   action: FolderCacheAction
 ): FolderProps[] | null => {
   switch (action.type) {
-    case "ADD":
+    case "ADD_FOLDER":
       return state !== null ? [...state, action.folder] : [action.folder];
-    case "REMOVE":
+    case "ADD_LINK":
       return state !== null
-        ? state.filter((folder) => folder.id !== action.folderId)
+        ? state.map((folder) => {
+            return folder.id === action.folderId
+              ? ({
+                  ...folder,
+                  links: folder.links
+                    ? [...folder.links, action.link]
+                    : [action.link],
+                } as FolderProps)
+              : folder;
+          })
+        : null;
+    case "REMOVE_LINK":
+      return state !== null
+        ? state.map((folder) =>
+            folder.id === action.folderId
+              ? {
+                  ...folder,
+                  links: folder.links
+                    ? folder.links.filter((link) => link.id !== action.linkId)
+                    : null,
+                }
+              : folder
+          )
         : null;
     default:
       return state;
   }
 };
-
 
 interface GlobalContextProps {
   navigator: any;
@@ -161,28 +183,31 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
       folderCovers.forEach((folderCover) => {
         // Assuming the folder ID is a unique identifier for folders
         const folderId = folderCover.id;
-  
+
         // Check if the folder already exists in the folderCache
-        const existingFolder = folderCache?.find((folder) => folder.id === folderId);
-  
+        const existingFolder = folderCache?.find(
+          (folder) => folder.id === folderId
+        );
+
         // If the folder does not exist in the folderCache, add it
         if (!existingFolder) {
           // Convert FolderCardProps to FolderProps
           const newFolder: FolderProps = {
             id: folderCover.id ?? 1,
             name: folderCover.title,
-            description: folderCover.desc ?? ' ',
+            description: folderCover.desc ?? " ",
             thumbNailUrl: folderCover.imgUrl, // Assuming imgUrl is the thumbnail URL
             links: null,
           };
-  
+
+          console.log("detech new folder added, catching up on folder cache");
           // Add the new folder to the folderCache
-          dispatchFolderCache({ type: 'ADD', folder: newFolder });
+          dispatchFolderCache({ type: "ADD_FOLDER", folder: newFolder });
+          console.log("folder cache new", folderCache);
         }
       });
     }
   }, [folderCovers, folderCache]);
-
 
   const [isOpen, setIsOpen]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState(false);

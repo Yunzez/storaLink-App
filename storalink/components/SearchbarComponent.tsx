@@ -28,7 +28,7 @@ export enum searchValueType {
   error,
 }
 
-type searchResultType = {
+export type searchResultType = {
   value: string;
   onClick: () => void;
   valueType?: searchValueType;
@@ -48,7 +48,7 @@ export const SearchComponent = (props: SearchComponentProps) => {
     valueType: searchValueType.error,
   });
   const inputBoxRef = useRef<TextInput>(null)
-  const [result, setResult] = useState<Map<string, any>>(initialResultMap);
+  const [result, setResult] = useState< Map<string, searchResultType>>(initialResultMap);
   const colorAnimation = useState(new Animated.Value(0))[0];
   const heightAnimation = useState(new Animated.Value(0))[0];
   const textOpacityAnimation = useState(new Animated.Value(0))[0];
@@ -131,11 +131,11 @@ export const SearchComponent = (props: SearchComponentProps) => {
     }
   };
 
-  const selectValue = (result: [string, any]) => {
+  const selectValue = (result: string) => {
     console.log('selecting', result)
     setValue(result[0])
     if(inputBoxRef.current) {
-      inputBoxRef.current.setNativeProps({ text: result[0] });
+      inputBoxRef.current.setNativeProps({ text: result });
     }
     handleBlur()
   }
@@ -238,39 +238,40 @@ export const SearchComponent = (props: SearchComponentProps) => {
       >
         <Animated.View style={[animatedDropDownBar, animatedTextOpacity]}>
           <ResultsDropdown>
-            {Array.from(result).map((value, key) => (
+            {Array.from(result.keys()).map((value, key) => (
+
               <View key={key}>
-                {(value[1].valueType == searchValueType.normal ||
-                  !value[1].valueType) && (
+                {result.get(value)?.valueType == searchValueType.normal ||
+                  !result.get(value)?.valueType && (
                   <TouchableOpacity
-                  onPress={() => { handleTextTouchIn(); selectValue(value);}}
+                  onPress={() => { handleTextTouchIn(); selectValue(value);result.get(value)?.onClick?.() }}
                     onPressOut={handleTextTouchOut}
                     style={animatedTextTouchable}
                   >
-                    <Text>{value[0]}</Text>
+                    <Text>{value}</Text>
                   </TouchableOpacity>
                 )}
 
-                {value[1].valueType == searchValueType.error && (
+                {result.get(value)?.valueType == searchValueType.error && (
                   <TouchableOpacity
                     onPress={handleTextTouchIn}
                     onPressOut={handleTextTouchOut}
                     style={animatedTextTouchable}
                   >
                     <Text style={{ color: COLORS.highWarning }}>
-                      {value[0]}
+                      {value}
                     </Text>
                   </TouchableOpacity>
                 )}
 
-                {value[1].valueType == searchValueType.noValue && (
+                {result.get(value)?.valueType == searchValueType.noValue && (
                   <TouchableOpacity
-                    onPress={() => { handleTextTouchIn(); selectValue(value);}}
+                    onPress={() => { handleTextTouchIn();}}
                     onPressOut={() => {handleTextTouchOut()}}
                     style={{...animatedTextTouchable, backgroundColor: COLORS.lightOrange, }}
                   >
                     <Text style={{ color: COLORS.themeYellow }}>
-                      {value[0]}
+                      {value}
                     </Text>
                   </TouchableOpacity>
                 )}
