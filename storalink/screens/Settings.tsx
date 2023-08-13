@@ -91,12 +91,12 @@ export const Settings = () => {
 type SettingBtnProp = {
   title: string;
   onPress: () => void;
-  Icon: JSX.Element;
+  Icon?: JSX.Element;
 };
-const SettingButton = ({ title, onPress, Icon }: SettingBtnProp) => (
+export const SettingButton = ({ title, onPress, Icon }: SettingBtnProp) => (
   <TouchableOpacity style={styles.button} onPress={onPress}>
     <View style={{ flexDirection: "row", alignItems: "center" }}>
-      {Icon}
+      {Icon? Icon : ''}
       <Text style={{ marginLeft: 10, fontSize: 16 }}>{title}</Text>
     </View>
     <View>

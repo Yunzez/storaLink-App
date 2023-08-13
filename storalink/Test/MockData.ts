@@ -1,8 +1,15 @@
 import { FolderCardProps } from "../components/FolderCard";
 import placeHolder from "../assets/mockImg/placeholder.png";
 import { SmallLinkViewProps } from "../components/SmallLinkView";
-import { SocialMediaSrc } from "../utils";
+// import { SocialMediaSrc } from "../utils";
 import { FolderProps } from "../context/GlobalProvider";
+
+export enum SocialMediaSrc {
+  INS = "Instagram",
+  FB = "Facebook",
+  YT = "Youtube",
+  TK = "TikTok",
+}
 
 export interface LinkViewProps extends SmallLinkViewProps {
   id?: number;
@@ -82,82 +89,82 @@ export const MockCardList: FolderCardProps[] = [
 export const MockLinkList: LinkViewProps[] = [
   {
     title: "Welcome to Thailand",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Los Angelos",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Seattle",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to My Ass",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Thailand",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Los Angelos",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Seattle",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
-    title: "Welcome to My Ass",
-    socialMediaType: SocialMediaSrc.INS,
+    title: "Welcome to My Ass", 
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Thailand",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Los Angelos",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Seattle",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to My Ass",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Thailand",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Los Angelos",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to Seattle",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
   {
     title: "Welcome to My Ass",
-    socialMediaType: SocialMediaSrc.INS,
+    socialMediaType: SocialMediaSrc.INS ?? ' ',
     imgUrl: placeHolder,
   },
 ];
@@ -169,5 +176,6 @@ export const MockSingleFolderData: FolderProps[] = [
     description: "New Folder for testing, yohoo",
     thumbNailUrl: placeHolder,
     links: MockLinkList,
+    desc: ''
   },
 ];

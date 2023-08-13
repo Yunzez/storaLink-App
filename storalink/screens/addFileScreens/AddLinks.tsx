@@ -20,7 +20,7 @@ import SearchComponent, {
 } from "../../components/SearchbarComponent";
 import { LinkViewProps } from "../../Test/MockData";
 import { SocialMediaSrc } from "../../utils";
-import { statusType } from "./createFiles";
+import { postCreateLink, statusType } from "./createFiles";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import placeholder from '../../assets/mockImg/placeholder.png'
 const AddLinks = () => {
@@ -31,6 +31,7 @@ const AddLinks = () => {
     folderCovers,
     folderCache,
     dispatchFolderCache,
+    dispatchRecentLinkCache
   } = useContext(GlobalContext);
   const [valid, setValid] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
@@ -123,11 +124,15 @@ const AddLinks = () => {
         imgUrl: image 
     };
 
+   const completeLink = postCreateLink(newLink)
+
     dispatchFolderCache({
       type: "ADD_LINK",
       folderId: selectedFolder,
-      link: newLink,
+      link: completeLink,
     });
+
+    dispatchRecentLinkCache({type: 'ADD', link: completeLink, folderId: selectedFolder } )
 
     setStatus(statusType.finished)
   };

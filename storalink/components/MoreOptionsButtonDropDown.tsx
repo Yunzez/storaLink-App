@@ -3,6 +3,7 @@ import { Image, TouchableOpacity } from "react-native";
 import { Menu, Button } from "native-base";
 import moreIcon from "../assets/icon/pinnedFolderOptions.png";
 import { InterfaceMenuProps } from "native-base/lib/typescript/components/composites/Menu/types";
+import { SPACE } from "../theme/constants";
 type OptionType = {
   name: string;
   onClick: () => void;
@@ -32,6 +33,7 @@ export const MoreOptionsButtonDropDown = (props: OptionsDropDownType) => {
   const [position, setPosition] = React.useState<MenuPlacement>('auto');
   return (
     <Menu
+    style={{borderRadius: SPACE.nativeMd, paddingVertical: 1}}
       placement={position == 'auto' ? "bottom right" : position}
       trigger={(triggerProps) => {
         return (

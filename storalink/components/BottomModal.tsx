@@ -150,7 +150,7 @@ const BottomModal = (props: BottomModalProps) => {
       });
     }
   };
-
+  console.log('bnottom modal, data: ', props.data)
   return (
     <Modal visible={isOpen} transparent animationType="none">
       <View style={styles.modalContainer}>
@@ -195,6 +195,11 @@ const ModalOption = (props: { data: ModalDataProps }) => {
         backgroundColor: COLORS.lightGrey,
         marginBottom: 10,
         borderRadius: SPACE.nativeRoundMd,
+      }}
+      onPress={() => {
+        console.log(" modal option on press");
+        console.log('modal option used:', props.data.onClick)
+        props.data.onClick();
       }}
     >
       {typeof props.data.icon === "function" ? (

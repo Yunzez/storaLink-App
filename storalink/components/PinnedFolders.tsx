@@ -67,21 +67,21 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
     {
       name: "Manage Pinned Folders",
       onClick: () => {
-        console.log("click");
+        console.log("click ??? ");
       },
       icon: <HeartEditIcon />,
     },
     {
       name: "Create New Pinned Folder",
       onClick: () => {
-        console.log("test2");
+        console.log("test4");
       },
       icon: <AddIcon />,
     },
     {
       name: "View All Pinned Folders",
       onClick: () => {
-        console.log("test2");
+        console.log("test4");
       },
       icon: <RightArrowIcon />,
     },
@@ -105,9 +105,10 @@ const PinnedFolders = ({ cardList, parentStyle }: PinnedFoldersProps) => {
 
       <PinnedFoldersWrapper>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {cardList ? cardList.map((card, index) => (
+          {cardList && cardList.length > 0 ? cardList.map((card, index) => ( 
             <FolderCard
               key={index}
+              id={card.id}
               title={card.name as string}
               imgUrl={card.thumbNailUrl as string}
               desc={card.desc}

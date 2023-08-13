@@ -24,15 +24,16 @@ const ComponentTitle = styled(Text)`
   color: ${COLORS.themeYellow};
 `;
 
-const RecentLinks = ({ linkList }: RecentLinksProps) => {
+const RecentLinks = ({}: RecentLinksProps) => {
   const [blockView, setBlockView] = useState(false);
-  const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
+  const { navigator, screenHeight, screenWidth, recentLinkCache } =
+    useContext(GlobalContext);
   const [showRow, setShowRow] = useState(true);
   const RecentLinksWrapper = styled(View)`
     width: ${screenWidth * 0.9}px;
     flex: 1;
   `;
-
+  const linkList: LinkViewProps[] = recentLinkCache as LinkViewProps[];
   return (
     <View>
       <View
@@ -40,7 +41,7 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "row",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <ComponentTitle>Recent Links</ComponentTitle>
@@ -62,14 +63,18 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
               height: 25,
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: blockView ? COLORS.white :COLORS.themeYellow ,
+              backgroundColor: blockView ? COLORS.white : COLORS.themeYellow,
               borderRadius: SPACE.nativeRoundSm,
             }}
             onPress={() => {
               setBlockView(false);
             }}
           >
-            <RowViewIcon width="15" height="15" color={blockView ?  COLORS.themeYellow : COLORS.white} />
+            <RowViewIcon
+              width="15"
+              height="15"
+              color={blockView ? COLORS.themeYellow : COLORS.white}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -77,7 +82,7 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
               height: 25,
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: blockView ? COLORS.themeYellow : COLORS.white ,
+              backgroundColor: blockView ? COLORS.themeYellow : COLORS.white,
               borderRadius: SPACE.nativeRoundSm,
             }}
             onPress={() => {
@@ -102,8 +107,9 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
               justifyContent: "space-between",
             }}
           >
-            {blockView
-              ? linkList.map((card, index) => (
+            {linkList && linkList.length > 0 ? (
+              blockView ? (
+                linkList.map((card, index) => (
                   <View style={{ width: (screenWidth * 0.9) / 2 }}>
                     <BlockLinkView
                       key={index}
@@ -114,13 +120,21 @@ const RecentLinks = ({ linkList }: RecentLinksProps) => {
                     />
                   </View>
                 ))
-              : linkList.map((card, index) => (
+              ) : (
+                linkList.map((card, index) => (
                   <SmallLinkView
                     key={index}
                     title={card.title}
                     socialMediaType={SocialMediaSrc.INS}
                   />
-                ))}
+                ))
+              )
+            ) : (
+              <View>
+                 <Text>there is no link yet</Text>
+              </View>
+             
+            )}
           </View>
         </ScrollView>
       </RecentLinksWrapper>

@@ -25,7 +25,7 @@ export default function SettingNavigators() {
       />
       <Stack.Screen
         options={{
-          headerShown: true,
+          headerShown: false,
           headerBackTitleVisible: true,
           headerTitle: "Account", // or null to hide the screen title in the header
         }}
@@ -34,7 +34,7 @@ export default function SettingNavigators() {
       />
       <Stack.Screen
         options={{
-          headerShown: true,
+          headerShown: false,
           headerBackTitleVisible: true,
           headerTitle: "Appearance", // or null to hide the screen title in the header
         }}
@@ -43,7 +43,7 @@ export default function SettingNavigators() {
       />
       <Stack.Screen
         options={{
-          headerShown: true,
+          headerShown: false,
           headerBackTitleVisible: true,
           headerTitle: "Notification", // or null to hide the screen title in the header
         }}
@@ -52,7 +52,7 @@ export default function SettingNavigators() {
       />
       <Stack.Screen
         options={{
-          headerShown: true,
+          headerShown: false,
           headerBackTitleVisible: true,
           headerTitle: "Plans", // or null to hide the screen title in the header
         }}

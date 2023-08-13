@@ -118,6 +118,11 @@ export const RetrunButton = styled(TouchableOpacity)`
   align-items: center;
 `;
 
+export const NormalTitle = styled(Text)`
+font-size: 18px;
+font-weight: 400;
+`
+
 export const AGeneralErrorBlock = (props: AGeneralErrorBlockProps) => {
   const styles = StyleSheet.create({
     animatedTextInputStyle: {

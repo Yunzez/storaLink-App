@@ -20,6 +20,7 @@ import { COLORS, SPACE } from "../theme/constants";
 type SearchComponentProps = {
   placeHolder: string;
   algorithm?: (searchInput: string) => Map<string, any>;
+  useSearchDropDown?: boolean
 };
 
 export enum searchValueType {
@@ -34,6 +35,7 @@ export type searchResultType = {
   valueType?: searchValueType;
 };
 export const SearchComponent = (props: SearchComponentProps) => {
+  const useSearchDropDown = props.useSearchDropDown ?? true
   const [isFocused, setFocus] = useState(false);
   const [value, setValue] = useState("");
   const initialResultMap = new Map<string, searchResultType>();
@@ -47,10 +49,12 @@ export const SearchComponent = (props: SearchComponentProps) => {
     onClick: () => {},
     valueType: searchValueType.error,
   });
-  const inputBoxRef = useRef<TextInput>(null)
-  const [result, setResult] = useState< Map<string, searchResultType>>(initialResultMap);
+  const inputBoxRef = useRef<TextInput>(null);
+  const [result, setResult] =
+    useState<Map<string, searchResultType>>(initialResultMap);
   const colorAnimation = useState(new Animated.Value(0))[0];
   const heightAnimation = useState(new Animated.Value(0))[0];
+  const opacityAnimation = useState(new Animated.Value(0))[0];
   const textOpacityAnimation = useState(new Animated.Value(0))[0];
   const styles = StyleSheet.create({
     animatedSearchBar: {
@@ -97,9 +101,10 @@ export const SearchComponent = (props: SearchComponentProps) => {
     ...styles.animatedDropDownBar,
     height: heightAnimation.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 200],
+      outputRange: [0, 200], // This will set the height to 0 when not showing and 200 when showing
     }),
-    opcity: 1,
+
+    opacity: 1,
     borderColor: COLORS.highWarning,
     borderWidth: 1,
   };
@@ -132,13 +137,13 @@ export const SearchComponent = (props: SearchComponentProps) => {
   };
 
   const selectValue = (result: string) => {
-    console.log('selecting', result)
-    setValue(result[0])
-    if(inputBoxRef.current) {
+    console.log("selecting", result);
+    setValue(result[0]);
+    if (inputBoxRef.current) {
       inputBoxRef.current.setNativeProps({ text: result });
     }
-    handleBlur()
-  }
+    handleBlur();
+  };
 
   const animateBackgroundColor = (toValue: number) => {
     Animated.timing(colorAnimation, {
@@ -214,7 +219,7 @@ export const SearchComponent = (props: SearchComponentProps) => {
         <TouchableWithoutFeedback onPress={handleBlur}>
           <Animated.View style={animatedSearchBarStyle}>
             <SearchBar
-            ref={inputBoxRef}
+              ref={inputBoxRef}
               placeholder={props.placeHolder}
               isFocused={isFocused}
               onFocus={handleFocus}
@@ -236,49 +241,57 @@ export const SearchComponent = (props: SearchComponentProps) => {
           opacity: 1,
         }}
       >
-        <Animated.View style={[animatedDropDownBar, animatedTextOpacity]}>
-          <ResultsDropdown>
-            {Array.from(result.keys()).map((value, key) => (
+        {useSearchDropDown && value.length > 0 && (
+          <Animated.View style={[animatedDropDownBar, animatedTextOpacity]}>
+            <ResultsDropdown style={{ height: "100%" }}>
+              {Array.from(result.keys()).map((value, key) => (
+                <View key={key}>
+                  {result.get(value)?.valueType == searchValueType.normal ||
+                    (!result.get(value)?.valueType && (
+                      <TouchableOpacity
+                        onPress={() => {
+                          handleTextTouchIn();
+                          selectValue(value);
+                          result.get(value)?.onClick?.();
+                        }}
+                        onPressOut={handleTextTouchOut}
+                        style={animatedTextTouchable}
+                      >
+                        <Text>{value}</Text>
+                      </TouchableOpacity>
+                    ))}
 
-              <View key={key}>
-                {result.get(value)?.valueType == searchValueType.normal ||
-                  !result.get(value)?.valueType && (
-                  <TouchableOpacity
-                  onPress={() => { handleTextTouchIn(); selectValue(value);result.get(value)?.onClick?.() }}
-                    onPressOut={handleTextTouchOut}
-                    style={animatedTextTouchable}
-                  >
-                    <Text>{value}</Text>
-                  </TouchableOpacity>
-                )}
+                  {result.get(value)?.valueType == searchValueType.error && (
+                    <TouchableOpacity
+                      onPress={handleTextTouchIn}
+                      onPressOut={handleTextTouchOut}
+                      style={animatedTextTouchable}
+                    >
+                      <Text style={{ color: COLORS.highWarning }}>{value}</Text>
+                    </TouchableOpacity>
+                  )}
 
-                {result.get(value)?.valueType == searchValueType.error && (
-                  <TouchableOpacity
-                    onPress={handleTextTouchIn}
-                    onPressOut={handleTextTouchOut}
-                    style={animatedTextTouchable}
-                  >
-                    <Text style={{ color: COLORS.highWarning }}>
-                      {value}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-
-                {result.get(value)?.valueType == searchValueType.noValue && (
-                  <TouchableOpacity
-                    onPress={() => { handleTextTouchIn();}}
-                    onPressOut={() => {handleTextTouchOut()}}
-                    style={{...animatedTextTouchable, backgroundColor: COLORS.lightOrange, }}
-                  >
-                    <Text style={{ color: COLORS.themeYellow }}>
-                      {value}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            ))}
-          </ResultsDropdown>
-        </Animated.View>
+                  {result.get(value)?.valueType == searchValueType.noValue && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleTextTouchIn();
+                      }}
+                      onPressOut={() => {
+                        handleTextTouchOut();
+                      }}
+                      style={{
+                        ...animatedTextTouchable,
+                        backgroundColor: COLORS.lightOrange,
+                      }}
+                    >
+                      <Text style={{ color: COLORS.themeYellow }}>{value}</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              ))}
+            </ResultsDropdown>
+          </Animated.View>
+        )}
       </View>
     </View>
   );

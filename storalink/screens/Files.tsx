@@ -22,24 +22,24 @@ import BottomModal, { ModalDataProps } from "../components/BottomModal";
 import OutLinedButton from "../components/OutLinedButton";
 
 export const Files = () => {
-  const { screenHeight } = useContext(GlobalContext);
+  const { screenHeight, folderCache, navigator } = useContext(GlobalContext);
   const { openModal } = useModalContext();
-  const [blockView, setBlockView] = useState(false);
+  const [blockView, setBlockView] = useState(true);
   const modalData: ModalDataProps[] = [
     {
-      name: "Manage Pinned Folders",
+      name: "Pin",
       onClick: () => {
         console.log("click");
       },
     },
     {
-      name: "Create New Pinned Folder",
+      name: "Unpin",
       onClick: () => {
         console.log("test2");
       },
     },
     {
-      name: "View All Pinned Folders",
+      name: "Private Folder",
       onClick: () => {
         console.log("test2");
       },
@@ -62,8 +62,11 @@ export const Files = () => {
         marginTop: 15,
       }}
     >
-      <View style={{ width: "80%", zIndex: 5}}>
-        <SearchComponent placeHolder="Search files, saved items, etc..." />
+      <View style={{ width: "80%", zIndex: 5 }}>
+        <SearchComponent
+          placeHolder="Search files, saved items, etc..."
+          useSearchDropDown={false}
+        />
       </View>
       <View
         style={{
@@ -126,28 +129,60 @@ export const Files = () => {
       <View style={{ flex: 1, justifyContent: "center", width: "85%" }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <FolderListWrapper>
-            {blockView
-              ? MockCardList.map((card, index) => (
+            {folderCache ? (
+              blockView ? (
+                folderCache.map((card, index) => (
                   <FolderCard
                     key={index}
-                    title={card.title}
-                    imgUrl={card.imgUrl}
-                    onClick={card.onClick}
+                    title={card.name as string}
+                    imgUrl={card.thumbNailUrl as string}
+                    linksNumber={card.links?.length ?? 0}
+                    onClick={() => {
+                      navigator.navigate("SingleFolderView", {
+                        name: card.name,
+                        id: card.id,
+                      });
+                    }}
                   />
                 ))
-              : MockCardList.map((card, index) => (
+              ) : (
+                folderCache &&
+                folderCache.map((card, index) => (
                   <SmallLinkView
                     key={index}
-                    title={card.title}
+                    title={card.name as string}
                     socialMediaType={SocialMediaSrc.INS}
                   />
-                ))}
+                ))
+              )
+            ) : (
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Text>You have no folders yet</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigator.navigate("Add", {screen: 'add_new_folder'});
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: COLORS.themeYellow,
+                      fontSize: 18,
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    Go crete a folder
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </FolderListWrapper>
         </ScrollView>
       </View>
+
+      {/* this modal will response to all actions within the children of this page */}
       <BottomModal
         data={modalData}
-        header={{ name: "Pinned Folders Section" }}
+        header={{ name: "Manage Folder" }}
       />
     </SafeAreaView>
   );

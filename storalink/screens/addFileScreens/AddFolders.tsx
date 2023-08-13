@@ -31,8 +31,9 @@ const AddFolders = () => {
   const [des, setDes] = useState("");
   const [image, setImage] = useState("");
   const [update, setUpdate] = useState(false);
-const navigation = useNavigation()
+  const navigation = useNavigation();
   const [status, setStatus] = useState<statusType>(statusType.initialize);
+  const [newFolderId, setNewFolderId] = useState(-1);
   const LoadingContainer = styled(View)`
     align-items: center;
     justify-content: center;
@@ -47,6 +48,7 @@ const navigation = useNavigation()
   `;
 
   const newFolderObject: FolderCardProps = {
+    id: -1,
     title: folderName,
     imgUrl: image,
     desc: des,
@@ -56,10 +58,28 @@ const navigation = useNavigation()
     },
   };
 
+  const resetFileRoute = () => {
+    setValid(false)
+    setDes('')
+    setFolderName('')
+    setImage('')
+    setNewFolderId(-1)
+    navigation.dispatch(
+        CommonActions.reset({
+          index: 0, // Reset stack to the first screen
+          routes: [
+            { name: "add_main" }, // Replace 'MainRoute' with the main route's name
+            { name: "add_main" }, // Replace 'TargetScreen' with the screen you want to navigate to
+          ],
+        })
+      );
+  }
+
   const createFolder = () => {
     console.log("run create folder");
     setStatus(statusType.creating);
     const folderWithId = postCreateFolder(newFolderObject);
+    setNewFolderId(folderWithId.id ?? -1);
     dispatchFolderCovers({ type: "ADD", folder: folderWithId });
     //TODO add fetch api to create folder here
     console.log("finished creating folder");
@@ -174,7 +194,7 @@ const navigation = useNavigation()
                     numberOfLines={4}
                     placeholder="What’s this folder about?"
                     onChangeText={(text: string) => {
-                        setDes(text)
+                      setDes(text);
                     }}
                   />
                 </View>
@@ -207,15 +227,7 @@ const navigation = useNavigation()
                 onPress={() => {
                   navigator.navigate("Home");
                   setStatus(statusType.initialize);
-                  navigation.dispatch(
-                    CommonActions.reset({
-                      index: 0, // Reset stack to the first screen
-                      routes: [
-                        { name: "add_main" }, // Replace 'MainRoute' with the main route's name
-                        { name: "add_main" }, // Replace 'TargetScreen' with the screen you want to navigate to
-                      ],
-                    })
-                  );
+                  resetFileRoute()
                 }}
                 style={{
                   width: screenWidth * 0.7,
@@ -231,8 +243,15 @@ const navigation = useNavigation()
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigator.navigate("Home");
+                    resetFileRoute()
+                  newFolderId > 0
+                    ? navigator.navigate("SingleFolderView", {
+                        name: folderName,
+                        id: newFolderId,
+                      })
+                    : navigator.navigate("Home");
                   setStatus(statusType.initialize);
+
                 }}
                 style={{
                   width: screenWidth * 0.7,

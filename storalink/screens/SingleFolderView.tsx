@@ -25,11 +25,12 @@ import BlockViewIcon from "../assets/svgComponents/BlockViewIcon";
 import RowViewIcon from "../assets/svgComponents/RowViewIcon";
 import { useRoute } from "@react-navigation/native";
 import placeholder from "../assets/mockImg/placeholder.png";
+import emptyFolder from "../assets/icon/emptyFolder.png";
+import MoreOptionsButtonDropDown from "../components/MoreOptionsButtonDropDown";
 export const SingleFolderView = () => {
-  const { folderCache } = useContext(GlobalContext);
   const [blockView, setBlockView] = useState(false);
   const [currData, setCurrData] = useState<FolderProps | undefined>(undefined);
-  const { setCurrentFocusedFolder, screenHeight, screenWidth } =
+  const { setCurrentFocusedFolder, navigator, screenHeight, screenWidth, dispatchFolderCache , folderCache} =
     useContext(GlobalContext);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -50,6 +51,8 @@ export const SingleFolderView = () => {
     return target;
   };
 
+  
+
   useEffect(() => {
     if (route.params) {
       const folderData = fetchFolderDataById(route.params.id);
@@ -64,25 +67,25 @@ export const SingleFolderView = () => {
 
     // navigator.navigate('SingleFolderView', {name: folderData?.name})
     // setCurrentFocusedFolder(folderData as FolderProps);
-  }, []);
+  }, [folderCache]);
 
   const modalData: ModalDataProps[] = [
     {
       name: "Manage Pinned Folders",
       onClick: () => {
-        console.log("click");
+        console.log("click single folder");
       },
     },
     {
       name: "Create New Pinned Folder",
       onClick: () => {
-        console.log("test2");
+        console.log("test3");
       },
     },
     {
       name: "View All Pinned Folders",
       onClick: () => {
-        console.log("test2");
+        console.log("test3");
       },
     },
   ];
@@ -91,7 +94,7 @@ export const SingleFolderView = () => {
       {isLoading && <LoadingScreen />}
 
       {currData ? (
-        <ScrollView>
+        <ScrollView style={{ minHeight: screenHeight * 0.5 }}>
           <Box
             width={screenWidth}
             _text={{
@@ -257,55 +260,100 @@ export const SingleFolderView = () => {
 
               {currData.links && currData.links.length > 0 ? (
                 currData.links.map((link, index) => (
-                  <Box key={index} p={1} bg="gray.100" rounded="md">
-                    <HStack justifyContent="start">
-                      {link.imgUrl?.length === 0 ? (
-                        // precheck if the imgUrl is not filled out, we use default value if not
-                        <Image
-                          source={placeholder as ImageSourcePropType}
-                          style={{
-                            width: 55,
-                            height: 40,
-                            borderRadius: SPACE.nativeRoundSm,
-                          }}
-                        />
-                      ) : link.imgUrl && isLocalPath(link.imgUrl) ? (
-                        <Image
-                          source={link.imgUrl as ImageSourcePropType}
-                          style={{
-                            width: 55,
-                            height: 40,
-                            borderRadius: SPACE.nativeRoundSm,
-                          }}
-                        />
-                      ) : (
-                        <Image
-                          source={{ uri: link.imgUrl }}
-                          style={{
-                            width: 55,
-                            height: 40,
-                            borderRadius: SPACE.nativeRoundSm,
-                          }}
-                        />
-                      )}
+                  <Box key={index} p={2} bg="gray.100" rounded="md">
+                    <HStack justifyContent="space-between" alignItems={"center"}>
+                      <HStack justifyContent="space-between">
+                        {link.imgUrl?.length === 0 ? (
+                          // precheck if the imgUrl is not filled out, we use default value if not
+                          <Image
+                            source={placeholder as ImageSourcePropType}
+                            style={{
+                              width: 55,
+                              height: 40,
+                              borderRadius: SPACE.nativeRoundSm,
+                            }}
+                          />
+                        ) : link.imgUrl && isLocalPath(link.imgUrl) ? (
+                          <Image
+                            source={link.imgUrl as ImageSourcePropType}
+                            style={{
+                              width: 55,
+                              height: 40,
+                              borderRadius: SPACE.nativeRoundSm,
+                            }}
+                          />
+                        ) : (
+                          <Image
+                            source={{ uri: link.imgUrl }}
+                            style={{
+                              width: 55,
+                              height: 40,
+                              borderRadius: SPACE.nativeRoundSm,
+                            }}
+                          />
+                        )}
 
-                      <VStack marginLeft={4}>
-                        <Text>{link.title}</Text>
-                        <Text color={COLORS.darkGrey}>
-                          From {link.socialMediaType}
-                        </Text>
-                      </VStack>
+                        <VStack marginLeft={4}>
+                          <Text>{link.title}</Text>
+                          <Text color={COLORS.darkGrey}>
+                            From {link.socialMediaType}
+                          </Text>
+                        </VStack>
+                      </HStack>
+
+                      <MoreOptionsButtonDropDown
+                        option={[
+                          {
+                            name: "Delete",
+                            onClick: () => {
+                              console.log("Delete this", "folder id: ", route.params?.id, "link id: ", link.id, );
+                                dispatchFolderCache({type: 'REMOVE_LINK', linkId: link.id ?? -1, folderId: route.params?.id })
+                            },
+                          },
+                          {
+                            name: "Share",
+                            onClick: () => {
+                              console.log("Share this");
+                            },
+                          },
+                        ]}
+                      />
                     </HStack>
                   </Box>
                 ))
               ) : (
-                <Text>No Links in this folder</Text>
+                <View
+                  style={{
+                    height: screenHeight * 0.5,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image source={emptyFolder} />
+                  <Text style={{ fontSize: 22, fontWeight: "bold" }}>
+                    This Folder is empty!
+                  </Text>
+                  <TouchableOpacity onPress={() => [
+                    navigator.navigate('Add', { screen: 'add_new_link' })
+                  ]}>
+                    <Text
+                      style={{
+                        color: COLORS.themeYellow,
+                        textDecorationLine: "underline",
+                      }}
+                    >
+                      Add your first link!
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               )}
             </VStack>
           </Box>
         </ScrollView>
       ) : (
-        <Text>The folder cannot be loaded rn, pls try again later</Text>
+        <View style={{ height: screenHeight * 0.5 }}>
+          <Text>The folder cannot be loaded rn, pls try again later</Text>
+        </View>
       )}
 
       <BottomModal

@@ -33,6 +33,7 @@ export type FolderProps = {
   description: string | null;
   thumbNailUrl: string | null;
   desc: string;
+  pinned: boolean;
   links: LinkViewProps[] | null;
   // add other properties as needed
 };
@@ -46,8 +47,17 @@ type User = {
 // Define the actions for folderCovers
 type FolderCoversAction =
   | { type: "ADD"; folder: FolderCardProps }
-  | { type: "REMOVE"; folderId: number }
+  | { type: "REMOVE"; folderId: number };
 // Create the reducer for folderCovers
+
+/**
+ *
+ * @param state the FolderCardProps of the appliaction
+ * @param action the action
+ * @returns the new state
+ *
+ * this reducer keeps track of folders covers data globally
+ */
 const folderCoversReducer = (
   state: FolderCardProps[] | null,
   action: FolderCoversAction
@@ -65,12 +75,24 @@ const folderCoversReducer = (
 };
 
 // Define the actions for folderCovers
+
 type FolderCacheAction =
   | { type: "ADD_LINK"; link: LinkViewProps; folderId: number }
   | { type: "REMOVE_LINK"; linkId: number; folderId: number }
-  | { type: "ADD_FOLDER"; folder: FolderProps };
+  | { type: "ADD_FOLDER"; folder: FolderProps }
+  | { type: "REMOVE_FOLDER"; folderId: number }
+  | { type: "PIN_FOLDER"; folderId: number }
+  | { type: "UNPIN_FOLDER"; folderId: number };
 
-// Create the reducer for folderCovers
+/**
+ *
+ * @param state
+ * @param action
+ * @returns
+ *
+ * this keeps tack of the folder cache, the details of the folder info
+ * including links, in the app
+ */
 const FolderCacheReducer = (
   state: FolderProps[] | null,
   action: FolderCacheAction
@@ -104,6 +126,62 @@ const FolderCacheReducer = (
               : folder
           )
         : null;
+    case "PIN_FOLDER":
+      return state !== null
+      ? state.map((folder) => {
+        if(folder.id === action.folderId) {
+          console.log('update folder pin')
+          return {...folder, pinned: true}
+        } else {
+          return folder
+        }
+      }) : null 
+    default:
+      return state;
+  }
+};
+
+type RecentLinkCacheAction =
+  | { type: "ADD"; link: LinkViewProps; folderId: number }
+  | { type: "DELETE"; folderId: number };
+
+interface recentLinkType extends LinkViewProps {
+  folderId: number;
+}
+/**
+ *
+ * @param state
+ * @param action
+ * @returns
+ *
+ * this keeps track of the recent 10 links for the app so we can display recent links
+ */
+const recentLinkCacheReducer = (
+  state: recentLinkType[] | null,
+  action: RecentLinkCacheAction
+): recentLinkType[] | null => {
+  switch (action.type) {
+    case "ADD":
+      // Create the new link with its associated folderId
+      const newLink: recentLinkType = {
+        ...action.link,
+        folderId: action.folderId,
+      };
+
+      // Prepend the new link to the front of the array
+      const newState = state !== null ? [newLink, ...state] : [newLink];
+
+      // If the array's length exceeds 10, remove the last link
+      if (newState.length > 10) {
+        newState.pop();
+      }
+
+      return newState;
+
+    case "DELETE":
+      // Filter out all links associated with the provided folderId
+      return state?.filter((link) => link.folderId !== action.folderId) || null;
+
     default:
       return state;
   }
@@ -122,6 +200,8 @@ interface GlobalContextProps {
   dispatchFolderCovers: Dispatch<FolderCoversAction>;
   folderCache: FolderProps[] | null;
   dispatchFolderCache: Dispatch<FolderCacheAction>;
+  recentLinkCache: LinkViewProps[] | null;
+  dispatchRecentLinkCache: Dispatch<RecentLinkCacheAction>;
 }
 
 export const GlobalContext = createContext<GlobalContextProps>({
@@ -138,15 +218,19 @@ export const GlobalContext = createContext<GlobalContextProps>({
   setCurrentFocusedFolder: () => {},
   currentFocusedFolder: {
     id: 0,
+    desc: "",
     name: null,
     description: "",
     thumbNailUrl: "",
+    pinned: false,
     links: null,
   },
   folderCovers: null,
   dispatchFolderCovers: () => {},
   folderCache: null,
   dispatchFolderCache: () => {},
+  recentLinkCache: null,
+  dispatchRecentLinkCache: () => {},
 });
 
 interface GlobalContextProviderProps {
@@ -175,6 +259,10 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
     FolderCacheReducer,
     null
   );
+  const [recentLinkCache, dispatchRecentLinkCache] = useReducer(
+    recentLinkCacheReducer,
+    null
+  );
 
   useEffect(() => {
     // Here, you can update the folderCache whenever folderCovers changes
@@ -194,6 +282,7 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
           // Convert FolderCardProps to FolderProps
           const newFolder: FolderProps = {
             id: folderCover.id ?? 1,
+            pinned: false,
             name: folderCover.title,
             description: folderCover.desc ?? " ",
             thumbNailUrl: folderCover.imgUrl, // Assuming imgUrl is the thumbnail URL
@@ -240,6 +329,8 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
         dispatchFolderCovers,
         folderCache,
         dispatchFolderCache,
+        recentLinkCache,
+        dispatchRecentLinkCache,
       }}
     >
       {children}
