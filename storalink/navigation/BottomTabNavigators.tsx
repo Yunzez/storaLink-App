@@ -77,7 +77,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
             default:
               break;
           }
-          console.log(options, descriptors[route.key]);
+
           const label =
             options.tabBarLabel !== undefined
               ? options.tabBarLabel()

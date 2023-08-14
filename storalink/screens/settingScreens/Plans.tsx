@@ -1,10 +1,17 @@
-import React from 'react'
-import { SafeAreaView, Text } from 'react-native'
+import React from "react";
+import { SafeAreaView, Text } from "react-native";
+import HeaderWithBackButton from "../../components/HeaderWithBackBtn";
 
 const Plans = () => {
   return (
-    <SafeAreaView><Text>Plans</Text></SafeAreaView>
-  )
-}
+    <SafeAreaView>
+      <HeaderWithBackButton
+        title="Plans"
+        navigateToScreen="Settings"
+        navigateToParams={"setting_main"}
+      />
+    </SafeAreaView>
+  );
+};
 
-export default Plans
+export default Plans;

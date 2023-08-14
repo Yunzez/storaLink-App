@@ -95,8 +95,6 @@ const AddFolders = () => {
       quality: 1,
     });
 
-    // console.log(result);
-
     if (!result.canceled) {
       delete result.cancelled;
       console.log(result);

@@ -34,12 +34,10 @@ export const SingleFolderView = () => {
     useContext(GlobalContext);
 
   const [isLoading, setIsLoading] = useState(true);
-  console.log(currData?.id ?? "no id", "check place holder");
 
   const route = useRoute();
 
   const fetchFolderDataById = (id: string | number) => {
-    console.log("folder data", folderCache);
     if (!folderCache) {
       return null;
     }
@@ -47,7 +45,6 @@ export const SingleFolderView = () => {
       return value.id === Number(id);
     });
 
-    console.log("target value", target);
     return target;
   };
 

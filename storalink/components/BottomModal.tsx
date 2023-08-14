@@ -1,21 +1,24 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
-  Animated,
   Text,
   View,
-  Modal,
   Button,
   StyleSheet,
-  PanResponder,
   TouchableOpacity,
-  ScrollView,
   Image,
   ImageSourcePropType,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
+  Modal,
 } from "react-native";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { COLORS, SPACE } from "../theme/constants";
 import { useModalContext } from "../context/ModalContext";
+
 interface ModalBasicProps {
   name: string;
   icon?: string | React.FC | JSX.Element;
@@ -33,132 +36,67 @@ type BottomModalProps = {
   onClose?: () => void;
 };
 
-export type BottomModalRefProps = {
-  openMenu: () => void;
-};
-
-// * React.forwardRef is a method in React that allows a component to forward a ref that it receives to a child component.
-// * This can be useful when you want a parent component to be able to call methods on a child component directly.
 const BottomModal = (props: BottomModalProps) => {
-  const styles = StyleSheet.create({
-    modalContainer: {
-      flex: 1,
-      justifyContent: "flex-end",
-      zIndex: 1000,
-    },
-    menuContent: {
-      backgroundColor: "white",
-      padding: 16,
-      borderTopLeftRadius: 16,
-      borderTopRightRadius: 16,
-      height: props.height || "auto", // props.height used here, defaults to 'auto' if not provided
-    },
-    container: {
-      flex: 1,
-      padding: 24,
-      backgroundColor: "grey",
-    },
-    contentContainer: {
-      flex: 1,
-      alignItems: "center",
-    },
-    handleContainer: {
-      alignItems: "center",
-      padding: 10,
-      height: 20,
-      marginBottom: 10,
-    },
-    handle: {
-      width: 50,
-      height: 5,
-      borderRadius: 2.5,
-      backgroundColor: "grey",
-    },
-    headerContainer: {
-      flexDirection: "row",
-      marginBottom: 10, // Adjust as needed
-      alignItems: "center",
-    },
-    separator: {
-      borderBottomColor: COLORS.lightGrey,
-      borderBottomWidth: 2,
-      borderStyle: "solid",
-    },
-  });
+  // hooks
+  const { isOpen, openModal, closeModal } = useModalContext();
+  const sheetRef = useRef<BottomSheet>(null);
+  const [isClosing, setIsClosing] = useState(false);
 
-  const { isOpen, closeModal } = useModalContext();
-  const menuAnimation = useRef(
-    new Animated.Value(props.height ? props.height : 300)
-  ).current;
-
-  const handleClose = () => {
-    Animated.timing(menuAnimation, {
-      toValue: 0 | (props.height ?? 300),
-      duration: 500,
-      useNativeDriver: true,
-    }).start(() => {
-      props.onClose?.();
-      closeModal();
-    });
-  };
+  // variables
+  const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
 
   useEffect(() => {
-    Animated.timing(menuAnimation, {
-      toValue: isOpen ? 0 : props.height || 300,
-      duration: 500,
-      useNativeDriver: true,
-    }).start(() => {
-      if (isOpen) {
-        props.onOpen?.();
-      } else {
-        props.onClose?.();
-      }
-    });
-  }, [isOpen]);
-
-  const menuStyle = {
-    transform: [{ translateY: menuAnimation }],
-  };
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: () => true,
-    onPanResponderMove: (evt, gestureState) => {
-      // Check if vertical swipe is upwards
-      if (gestureState.dy > 15) {
-        Animated.timing(menuAnimation, {
-          toValue: 0,
-          duration: 500,
-          useNativeDriver: true,
-        }).start(() => {
-          handleClose();
-        });
-      }
-    },
-  });
-
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const scrollDistance = event.nativeEvent.contentOffset.y;
-    const scrollThreshold = -20; // Adjust the threshold as needed
-
-    if (scrollDistance > scrollThreshold) {
-      Animated.timing(menuAnimation, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start(() => {
-        handleClose();
-      });
+    console.log("modal status change", isOpen);
+    if (isOpen) {
+      console.log("open modal");
+      handleSnapPress(2); // Open to 90% by default
+      // handleClosePress();
+    } else {
+      handleSnapPress(2);
+      // handleClosePress(); // Close the modal
     }
-  };
-  console.log('bnottom modal, data: ', props.data)
+  }, [isOpen]);
+  // callbacks
+
+  const handleClosePress = useCallback(() => {
+    setIsClosing(true);
+    sheetRef.current?.close();
+  }, []);
+
+  const handleSheetChange = useCallback((index) => {
+    console.log("handleSheetChange", index);
+  }, []);
+  const handleSnapPress = useCallback((index) => {
+    sheetRef.current?.snapToIndex(index);
+  }, []);
+
   return (
-    <Modal visible={isOpen} transparent animationType="none">
-      <View style={styles.modalContainer}>
-        <Animated.View style={[styles.menuContent, menuStyle]}>
-          <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
-            <View style={styles.handleContainer} {...panResponder.panHandlers}>
-              <View style={styles.handle} />
-            </View>
+    <Modal
+      visible={isOpen}
+      style={{ height: "100%" }}
+      transparent
+      animationType="none"
+    >
+      <View style={styles.container}>
+        <View>
+          <Text> occupy space</Text>
+        </View>
+        {/* <Button title="Close" onPress={() => {handleClosePress(); closeModal()}} />
+       <Button title="Snap To 90%" onPress={() => handleSnapPress(2)} />
+      <Button title="Snap To 50%" onPress={() => handleSnapPress(1)} />
+      <Button title="Snap To 25%" onPress={() => handleSnapPress(0)} /> */}
+
+        <BottomSheet
+          ref={sheetRef}
+          snapPoints={snapPoints}
+          onClose={() => {
+            if (isClosing) {
+              closeModal();
+              setIsClosing(false);
+            }
+          }}
+        >
+          <View style={styles.contentContainer}>
             {props.header && (
               <View style={styles.headerContainer}>
                 <Image
@@ -177,9 +115,14 @@ const BottomModal = (props: BottomModalProps) => {
               })}
             </View>
 
-            <Button title="Close" onPress={handleClose} />
-          </ScrollView>
-        </Animated.View>
+            <Button
+              title="Close"
+              onPress={() => {
+                handleClosePress();
+              }}
+            />
+          </View>
+        </BottomSheet>
       </View>
     </Modal>
   );
@@ -188,17 +131,8 @@ const BottomModal = (props: BottomModalProps) => {
 const ModalOption = (props: { data: ModalDataProps }) => {
   return (
     <TouchableOpacity
-      style={{
-        padding: SPACE.nativeMd,
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: COLORS.lightGrey,
-        marginBottom: 10,
-        borderRadius: SPACE.nativeRoundMd,
-      }}
+      style={styles.optionContainer}
       onPress={() => {
-        console.log(" modal option on press");
-        console.log('modal option used:', props.data.onClick)
         props.data.onClick();
       }}
     >
@@ -207,9 +141,45 @@ const ModalOption = (props: { data: ModalDataProps }) => {
       ) : (
         props.data.icon || null
       )}
-      <Text style={{ fontSize: 15, marginLeft: 10 }}>{props.data.name}</Text>
+      <Text style={styles.optionText}>{props.data.name}</Text>
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    bottom: 0,
+    zIndex: 999,
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 24,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    marginBottom: 10,
+    alignItems: "center",
+  },
+  separator: {
+    borderBottomColor: COLORS.lightGrey,
+    borderBottomWidth: 2,
+    borderStyle: "solid",
+  },
+  optionContainer: {
+    padding: SPACE.nativeMd,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: COLORS.lightGrey,
+    marginBottom: 10,
+    borderRadius: SPACE.nativeRoundMd,
+  },
+  optionText: {
+    fontSize: 15,
+    marginLeft: 10,
+  },
+});
 
 export default BottomModal;

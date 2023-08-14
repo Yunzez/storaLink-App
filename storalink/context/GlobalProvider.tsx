@@ -42,6 +42,8 @@ type User = {
   username: string;
   email: string;
   dob: string;
+  profileImg?: string;
+  userType?: 'basic' | 'advanced'
 };
 
 // Define the actions for folderCovers

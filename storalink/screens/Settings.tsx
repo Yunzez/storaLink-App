@@ -13,6 +13,7 @@ import Lock from "../assets/svgComponents/Lock";
 import MessageQuestion from "../assets/svgComponents/MessageQuestion";
 import LogoSVG from "../assets/svgComponents/LogoSVG";
 import Star from "../assets/svgComponents/Star";
+import StoraModal, { StoraModalProps } from "../components/StoraModal";
 
 export const Settings = () => {
   const { navigator, user } = useContext(GlobalContext);
@@ -88,6 +89,26 @@ export const Settings = () => {
   );
 };
 
+type SettingActionBtnProps = {
+  title: string;
+  onPress: () => void;
+  Icon?: JSX.Element;
+  children?: React.ReactNode;
+};
+export const SettingActionBtn = ({ title, onPress, Icon, children }: SettingActionBtnProps) => (
+  <TouchableOpacity style={styles.button} onPress={onPress}>
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      {Icon? Icon : ''}
+      <Text style={{ marginLeft: 10, fontSize: 16 }}>{title}</Text>
+    </View>
+    <View>
+    <StoraModal>
+        {children}
+      </StoraModal>
+    </View>
+  </TouchableOpacity>
+);
+
 type SettingBtnProp = {
   title: string;
   onPress: () => void;
@@ -104,6 +125,24 @@ export const SettingButton = ({ title, onPress, Icon }: SettingBtnProp) => (
     </View>
   </TouchableOpacity>
 );
+
+export const SettingSaveBtn = (props: {onClick: ()=>void}) => {
+  return (
+    <TouchableOpacity
+    style={{
+      width: "100%",
+      backgroundColor: COLORS.lightOrange,
+      paddingVertical: 5,
+      borderRadius: SPACE.nativeRoundSm,
+      flexDirection: "row",
+      justifyContent: "center",
+    }}
+    onPress={() => props.onClick()}
+  >
+    <Text>Save</Text>
+  </TouchableOpacity>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -132,11 +171,11 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 40,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     alignItems: "center",
     borderRadius: 4,
     paddingVertical: 8,
-    paddingHorizontal: 30,
+    paddingHorizontal: 6,
     marginVertical: 5,
     backgroundColor: COLORS.lightGrey,
     elevation: 5, // Required for Android

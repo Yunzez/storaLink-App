@@ -25,26 +25,7 @@ export const Files = () => {
   const { screenHeight, folderCache, navigator } = useContext(GlobalContext);
   const { openModal } = useModalContext();
   const [blockView, setBlockView] = useState(true);
-  const modalData: ModalDataProps[] = [
-    {
-      name: "Pin",
-      onClick: () => {
-        console.log("click");
-      },
-    },
-    {
-      name: "Unpin",
-      onClick: () => {
-        console.log("test2");
-      },
-    },
-    {
-      name: "Private Folder",
-      onClick: () => {
-        console.log("test2");
-      },
-    },
-  ];
+
   const FolderListWrapper = styled(View)`
     display: flex;
     flex-direction: row;
@@ -179,11 +160,6 @@ export const Files = () => {
         </ScrollView>
       </View>
 
-      {/* this modal will response to all actions within the children of this page */}
-      <BottomModal
-        data={modalData}
-        header={{ name: "Manage Folder" }}
-      />
     </SafeAreaView>
   );
 };

@@ -17,6 +17,7 @@ import BottomModal, { ModalDataProps } from "./BottomModal";
 import ToggleModalButton from "./ToggleModalButton";
 import moreIcon from "../assets/icon/pinnedFolderOptions.png";
 import moreIconActive from "../assets/icon/pinnedFolderOptionsActive.png";
+import { useModalContext } from "../context/ModalContext";
 export type FolderCardProps = {
   id: number;
   title: string;
@@ -31,7 +32,8 @@ export interface FolderCardInput {
 }
 
 const FolderCard = (props: FolderCardProps) => {
-  const { navigator, setCurrentFocusedFolder, screenHeight, folderCache, dispatchFolderCache} = useContext(GlobalContext);
+  const { navigator, setCurrentFocusedFolder, screenHeight, folderCache, dispatchFolderCache, } = useContext(GlobalContext);
+  const {closeModal} = useModalContext()
   const Card = styled(TouchableOpacity)`
     margin: 5px;
     paddin: 5px;
@@ -61,7 +63,7 @@ const FolderCard = (props: FolderCardProps) => {
     {
       name: "Pin",
       onClick: () => {
-        console.log('testing pin folder')
+        closeModal()
         dispatchFolderCache({type: 'PIN_FOLDER', folderId: props.id})
       },
     },

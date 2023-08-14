@@ -1,20 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import { SafeAreaView, View, Text, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { COLORS } from "../theme/constants";
 import Pencil from "../assets/svgComponents/Pencil";
+import { GlobalContext } from "../context/GlobalProvider";
 
 const UserAvatorWidget = () => {
+    const {user, navigator} = useContext(GlobalContext)
   return (
     <View style={styles.avatarContainer}>
       <View style={{flexDirection: 'row', alignItems:'center'}}>
         <TouchableOpacity style={styles.avatarImage}></TouchableOpacity>
         <View style={{ marginLeft: 10 }}>
-          <Text style={styles.avatarTextName}>Jenna May </Text>
-          <Text style={styles.avatarTextEmail}>Jennamay@gmail.com </Text>
+          <Text style={styles.avatarTextName}>{user.username} </Text>
+          <Text style={styles.avatarTextEmail}>{user.email} </Text>
         </View>
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => {navigator.navigate("account")}}>
         <Pencil width="30" height="30" color={COLORS.themeYellow}/>
       </TouchableOpacity>
     </View>
