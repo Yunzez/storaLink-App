@@ -25,11 +25,9 @@ type ProvidersProps = {
 const Providers = ({ children }: ProvidersProps) => {
   return (
     <NativeBaseProvider>
-      <ModalProvider>
-        <NavigationContainer>
-          <GlobalContextProvider>{children}</GlobalContextProvider>
-        </NavigationContainer>
-      </ModalProvider>
+      <NavigationContainer>
+        <GlobalContextProvider>{children}</GlobalContextProvider>
+      </NavigationContainer>
     </NativeBaseProvider>
   );
 };

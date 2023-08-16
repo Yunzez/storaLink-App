@@ -1,4 +1,6 @@
 import React, {
+  Dispatch,
+  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -19,7 +21,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { COLORS, SPACE } from "../theme/constants";
 import { useModalContext } from "../context/ModalContext";
 
-interface ModalBasicProps {
+export interface ModalBasicProps {
   name: string;
   icon?: string | React.FC | JSX.Element;
 }
@@ -28,7 +30,9 @@ export interface ModalDataProps extends ModalBasicProps {
   onClick: () => void;
 }
 
-type BottomModalProps = {
+export type BottomModalProps = {
+  openIndicator: boolean;
+  setOpenIndicator: Dispatch<SetStateAction<boolean>>
   onOpen?: () => void;
   height?: number;
   data: ModalDataProps[];
@@ -38,41 +42,36 @@ type BottomModalProps = {
 
 const BottomModal = (props: BottomModalProps) => {
   // hooks
-  const { isOpen, openModal, closeModal } = useModalContext();
+
   const sheetRef = useRef<BottomSheet>(null);
-  const [isClosing, setIsClosing] = useState(false);
 
   // variables
-  const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
+  const snapPoints = useMemo(() => ["40%", "60%", "90%"], []);
 
   useEffect(() => {
-    console.log("modal status change", isOpen);
-    if (isOpen) {
+    console.log("modal status change", props.openIndicator);
+    if (props.openIndicator) {
       console.log("open modal");
       handleSnapPress(2); // Open to 90% by default
       // handleClosePress();
-    } else {
-      handleSnapPress(2);
-      // handleClosePress(); // Close the modal
-    }
-  }, [isOpen]);
+    } 
+  }, [props.openIndicator]);
   // callbacks
 
-  const handleClosePress = useCallback(() => {
-    setIsClosing(true);
+  const handleClosePress = () => {
     sheetRef.current?.close();
-  }, []);
+  };
 
-  const handleSheetChange = useCallback((index) => {
+  const handleSheetChange = useCallback((index: number) => {
     console.log("handleSheetChange", index);
   }, []);
-  const handleSnapPress = useCallback((index) => {
+  const handleSnapPress = useCallback((index: number) => {
     sheetRef.current?.snapToIndex(index);
   }, []);
 
   return (
     <Modal
-      visible={isOpen}
+      visible={props.openIndicator}
       style={{ height: "100%" }}
       transparent
       animationType="none"
@@ -90,10 +89,7 @@ const BottomModal = (props: BottomModalProps) => {
           ref={sheetRef}
           snapPoints={snapPoints}
           onClose={() => {
-            if (isClosing) {
-              closeModal();
-              setIsClosing(false);
-            }
+            props.setOpenIndicator(false)
           }}
         >
           <View style={styles.contentContainer}>
