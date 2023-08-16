@@ -61,7 +61,6 @@ export const Files = () => {
         <OutLinedButton
           text="Order By"
           onClick={() => {
-            openModal();
           }}
         />
 

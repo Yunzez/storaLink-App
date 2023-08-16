@@ -132,10 +132,11 @@ export const SettingSaveBtn = (props: {onClick: ()=>void}) => {
     style={{
       width: "100%",
       backgroundColor: COLORS.lightOrange,
-      paddingVertical: 5,
+      paddingVertical: 10,
       borderRadius: SPACE.nativeRoundSm,
       flexDirection: "row",
       justifyContent: "center",
+      marginVertical: 5
     }}
     onPress={() => props.onClick()}
   >

@@ -20,7 +20,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Test from "./Test";
-import SearchComponent from "../components/SearchbarComponent";
+import SearchComponent, {
+  searchResultType,
+  searchValueType,
+} from "../components/SearchbarComponent";
 import { FolderProps, GlobalContext } from "../context/GlobalProvider";
 import PinnedFolders from "../components/PinnedFolders";
 import { MockCardList, MockLinkList } from "../Test/MockData";
@@ -30,9 +33,37 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { BottomModalProps } from "../components/BottomModal";
 import { FolderCardProps } from "../components/FolderCard";
 export const Home = () => {
-  const { navigator, screenHeight, folderCovers, folderCache} = useContext(GlobalContext);
- 
-
+  const { navigator, screenHeight, folderCovers, folderCache } =
+    useContext(GlobalContext);
+  const searchAlgorithm = (value: string): Map<string, searchResultType> => {
+    const retMap = new Map();
+    if (!folderCache) {
+      retMap.set("You have no folder yet, go create your first folder", {
+        value: "no val",
+        onClick: () => {},
+        valueType: searchValueType.noValue,
+      });
+      return retMap;
+    }
+    for (const cover of folderCache) {
+      console.log(cover);
+      if (cover.name?.includes(value)) {
+        retMap.set(cover.name, {
+          onClick: () => {
+            console.log(cover.id);
+            navigator.navigate("SingleFolderView", {
+              name: cover.name,
+              id: cover.id,
+            });
+          },
+        });
+      }
+    }
+    if (retMap.size === 0) {
+      retMap.set("There is no result", { onClick: () => {} });
+    }
+    return retMap;
+  };
   return (
     <SafeAreaView
       style={{
@@ -43,11 +74,14 @@ export const Home = () => {
       }}
     >
       <View style={{ width: "80%", zIndex: 5 }}>
-        <SearchComponent placeHolder="Search files, saved items, etc..." />
+        <SearchComponent
+          placeHolder="Search files, saved items, etc..."
+          algorithm={searchAlgorithm}
+        />
       </View>
 
       <PinnedFolders parentStyle={{ paddingTop: 15 }} />
-      <RecentLinks linkList={MockLinkList} />
+      <RecentLinks />
     </SafeAreaView>
   );
 };

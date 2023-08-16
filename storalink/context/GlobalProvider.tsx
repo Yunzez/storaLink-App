@@ -138,6 +138,16 @@ const FolderCacheReducer = (
           return folder
         }
       }) : null 
+      case "UNPIN_FOLDER":
+        return state !== null
+        ? state.map((folder) => {
+          if(folder.id === action.folderId) {
+            console.log('update folder pin')
+            return {...folder, pinned: false}
+          } else {
+            return folder
+          }
+        }) : null 
     default:
       return state;
   }
@@ -212,6 +222,8 @@ export const GlobalContext = createContext<GlobalContextProps>({
     username: "",
     email: "",
     dob: "",
+    profileImg: '',
+    userType: 'basic'
   },
   setUser: () => {},
   screenHeight: 0,
@@ -306,7 +318,9 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
     username: "",
     email: "",
     dob: "",
-  });
+    profileImg: '',
+    userType: 'basic'
+  } as User);
 
   const [currentFocusedFolder, setCurrentFocusedFolder]: [
     FolderProps,

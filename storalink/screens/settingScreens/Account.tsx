@@ -1,7 +1,11 @@
 import { Center, Text, View } from "native-base";
 import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NormalTitle, RetrunButton } from "../../theme/genericComponents";
+import {
+  AGeneralTextInput,
+  NormalTitle,
+  RetrunButton,
+} from "../../theme/genericComponents";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalContext } from "../../context/GlobalProvider";
 import { COLORS, SPACE } from "../../theme/constants";
@@ -11,7 +15,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import StoraModal from "../../components/StoraModal";
 
 const Account = () => {
-  const { navigator, screenHeight, user } = useContext(GlobalContext);
+  const { navigator, screenHeight, user, setUser } = useContext(GlobalContext);
+  const [userNameVal, setUserNameVal] = useState(user.username)
   return (
     <SafeAreaView style={{ justifyContent: "center", flexDirection: "row" }}>
       <View width={"80%"}>
@@ -36,6 +41,7 @@ const Account = () => {
                 }}
               >
                 <Text>Change display image</Text>
+
                 <SettingSaveBtn
                   onClick={() => {
                     console.log("hi");
@@ -47,20 +53,24 @@ const Account = () => {
           <SettingActionBtn
             title={`Display Name: ${user.username} `}
             onPress={() => {
-              console.log("hi");
+                
             }}
             children={
               <View
                 style={{
-                  height: 100,
+                  height: 150,
                   justifyContent: "space-between",
                   margin: 10,
                 }}
               >
                 <Text>Change display name</Text>
+                <View style={{ marginVertical: 4 }}>
+                  <AGeneralTextInput value={userNameVal} onChangeText={(text: string) => {setUserNameVal(text)}}/>
+                </View>
+
                 <SettingSaveBtn
                   onClick={() => {
-                    console.log("hi");
+                    setUser({...user, username: userNameVal })
                   }}
                 />
               </View>

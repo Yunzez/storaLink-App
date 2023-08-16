@@ -72,14 +72,14 @@ const FolderCard = React.memo((props: FolderCardProps) => {
     {
       name: "Pin",
       onClick: () => {
-        setLoaclModalIndicator(false)
+        // setLoaclModalIndicator(false)
         dispatchFolderCache({ type: "PIN_FOLDER", folderId: props.id });
       },
     },
     {
       name: "Unpin",
       onClick: () => {
-        console.log("test3");
+        dispatchFolderCache({ type: "UNPIN_FOLDER", folderId: props.id });
       },
     },
     {

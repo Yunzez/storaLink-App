@@ -89,7 +89,7 @@ const AddLinks = () => {
   const searchAlgorithm = (value: string): Map<string, searchResultType> => {
     console.log("run search", value);
     const retMap = new Map();
-    if (!folderCovers) {
+    if (!folderCache) {
       retMap.set("You have no folder yet, go create your first folder", {
         value: "no val",
         onClick: () => {},
@@ -97,15 +97,21 @@ const AddLinks = () => {
       });
       return retMap;
     }
-    for (const cover of folderCovers) {
+    for (const cover of folderCache) {
       console.log(cover);
-      retMap.set(cover.title, {
-        onClick: () => {
-          console.log(cover.id);
-          setSelectedFolder(cover.id as number);
-          setSelectedFolderName(cover.title)
-        },
-      });
+      if(cover.name?.includes(value)) {
+        retMap.set(cover.name, {
+            onClick: () => {
+              console.log(cover.id);
+              setSelectedFolder(cover.id as number);
+              setSelectedFolderName(cover.name)
+            },
+          });
+      }
+    }
+    console.log('searching', retMap.size)
+    if(retMap.size === 0) {
+        retMap.set('There is no result', {onClick: () => {}})
     }
     console.log("search result", retMap);
     return retMap;

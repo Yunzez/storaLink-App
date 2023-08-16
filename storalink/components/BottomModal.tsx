@@ -42,18 +42,17 @@ export type BottomModalProps = {
 
 const BottomModal = (props: BottomModalProps) => {
   // hooks
-
+  console.log('bottom modal triggered', props.header.name)
   const sheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ["40%", "60%", "90%"], []);
+  const snapPoints = useMemo(() => ["45%", "75%", "90%"], []);
 
   useEffect(() => {
     console.log("modal status change", props.openIndicator);
     if (props.openIndicator) {
       console.log("open modal");
       handleSnapPress(2); // Open to 90% by default
-      // handleClosePress();
     } 
   }, [props.openIndicator]);
   // callbacks
@@ -71,15 +70,13 @@ const BottomModal = (props: BottomModalProps) => {
 
   return (
     <Modal
-      visible={props.openIndicator}
+      visible={props.openIndicator == true}
       style={{ height: "100%" }}
       transparent
       animationType="none"
     >
       <View style={styles.container}>
-        <View>
-          <Text> occupy space</Text>
-        </View>
+        
         {/* <Button title="Close" onPress={() => {handleClosePress(); closeModal()}} />
        <Button title="Snap To 90%" onPress={() => handleSnapPress(2)} />
       <Button title="Snap To 50%" onPress={() => handleSnapPress(1)} />
@@ -107,7 +104,7 @@ const BottomModal = (props: BottomModalProps) => {
             <View style={styles.separator} />
             <View style={{ paddingTop: 15, paddingBottom: 10 }}>
               {props.data.map((item, key) => {
-                return <ModalOption key={key} data={item} />;
+                return <ModalOption key={key} data={item} closeModal={handleClosePress}/>;
               })}
             </View>
 
@@ -124,12 +121,13 @@ const BottomModal = (props: BottomModalProps) => {
   );
 };
 
-const ModalOption = (props: { data: ModalDataProps }) => {
+const ModalOption = (props: { data: ModalDataProps, closeModal:()=>void}) => {
   return (
     <TouchableOpacity
       style={styles.optionContainer}
       onPress={() => {
         props.data.onClick();
+        props.closeModal()
       }}
     >
       {typeof props.data.icon === "function" ? (

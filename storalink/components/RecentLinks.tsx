@@ -12,9 +12,7 @@ import { LinkViewProps } from "../Test/MockData";
 import RowViewIcon from "../assets/svgComponents/RowViewIcon";
 import BlockViewIcon from "../assets/svgComponents/BlockViewIcon";
 import { Svg, Path } from "react-native-svg";
-type RecentLinksProps = {
-  linkList: LinkViewProps[];
-};
+
 
 const ComponentTitle = styled(Text)`
   text-align: left;
@@ -24,7 +22,7 @@ const ComponentTitle = styled(Text)`
   color: ${COLORS.themeYellow};
 `;
 
-const RecentLinks = ({}: RecentLinksProps) => {
+const RecentLinks = () => {
   const [blockView, setBlockView] = useState(false);
   const { navigator, screenHeight, screenWidth, recentLinkCache } =
     useContext(GlobalContext);
