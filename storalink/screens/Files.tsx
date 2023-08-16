@@ -114,6 +114,7 @@ export const Files = () => {
               blockView ? (
                 folderCache.map((card, index) => (
                   <FolderCard
+                    id={card.id}
                     key={index}
                     title={card.name as string}
                     imgUrl={card.thumbNailUrl as string}

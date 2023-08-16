@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -31,40 +31,49 @@ export interface FolderCardInput {
   card: FolderProps;
 }
 
-const FolderCard = (props: FolderCardProps) => {
-  const { navigator, setCurrentFocusedFolder, screenHeight, folderCache, dispatchFolderCache, } = useContext(GlobalContext);
-  const {closeModal} = useModalContext()
-  const Card = styled(TouchableOpacity)`
-    margin: 5px;
-    paddin: 5px;
-    width: 140px;
-    height: 190px;
-    margin-right: 10px;
-    background-color: ${COLORS.lightGrey};
-    border-radius: ${SPACE.md};
-  `;
+const Card = styled(TouchableOpacity)`
+  margin: 5px;
+  paddin: 5px;
+  width: 140px;
+  height: 190px;
+  margin-right: 10px;
+  background-color: ${COLORS.lightGrey};
+  border-radius: ${SPACE.md};
+`;
 
-  const CardImage = styled(Image)`
-    width: 100%;
-    height: 70%;
-    border-radius: ${SPACE.md};
-    border-width: 1px;
-    border-color: ${COLORS.themeYellow};
-  `;
+const CardImage = styled(Image)`
+  width: 100%;
+  height: 70%;
+  border-radius: ${SPACE.md};
+  border-width: 1px;
+  border-color: ${COLORS.themeYellow};
+`;
 
-  const CardTitle = styled(Text)`
-    margin: 5px;
-    font-size: 15px;
-    color: ${COLORS.darkGrey};
-    font-weight: 500;
-  `;
+const CardTitle = styled(Text)`
+  margin: 5px;
+  font-size: 15px;
+  color: ${COLORS.darkGrey};
+  font-weight: 500;
+`;
 
+const FolderCard = React.memo((props: FolderCardProps) => {
+  const {
+    navigator,
+    setCurrentFocusedFolder,
+    screenHeight,
+    folderCache,
+    dispatchFolderCache,
+  } = useContext(GlobalContext);
+
+  const [loaclModalIndicator, setLoaclModalIndicator] = useState(false);
+
+ 
   const modalData: ModalDataProps[] = [
     {
       name: "Pin",
       onClick: () => {
-        closeModal()
-        dispatchFolderCache({type: 'PIN_FOLDER', folderId: props.id})
+        setLoaclModalIndicator(false)
+        dispatchFolderCache({ type: "PIN_FOLDER", folderId: props.id });
       },
     },
     {
@@ -80,9 +89,8 @@ const FolderCard = (props: FolderCardProps) => {
       },
     },
   ];
-  
 
-  console.log("url: ", props.imgUrl, props.id);
+  console.log("test url:", props.imgUrl, props.id);
   return (
     <Card
       onPress={() => {
@@ -99,21 +107,25 @@ const FolderCard = (props: FolderCardProps) => {
           <CardImage source={{ uri: props.imgUrl }} />
         ) // Use the image URI
       }
-      <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <CardTitle>{props.title}</CardTitle>
         <ToggleModalButton
+          onClick={() => {
+            setLoaclModalIndicator(!loaclModalIndicator);
+          }}
+          indicator={loaclModalIndicator}
           activeSource={moreIconActive}
           inactiveSource={moreIcon}
         />
-       
       </View>
-      {/* this modal will response to all actions within the children of this page */}
       <BottomModal
-        data={modalData}
         header={{ name: "Manage Folder" }}
+        data={modalData}
+        openIndicator={loaclModalIndicator}
+        setOpenIndicator={setLoaclModalIndicator}
       />
     </Card>
   );
-};
+});
 
 export default FolderCard;

@@ -27,25 +27,11 @@ import { MockCardList, MockLinkList } from "../Test/MockData";
 import RecentLinks from "../components/RecentLinks";
 import BottomModal from "../components/BottomModal";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { BottomModalRefProps } from "../components/BottomModal";
+import { BottomModalProps } from "../components/BottomModal";
 import { FolderCardProps } from "../components/FolderCard";
 export const Home = () => {
-  const modalRef = useRef<BottomModalRefProps | null>(null);
   const { navigator, screenHeight, folderCovers, folderCache} = useContext(GlobalContext);
-  let pinnedFolder: FolderProps[] = []
-
-  useEffect(() => {
-    if(folderCache){
-      for(const folder of folderCache) {
-        if(folder.pinned) pinnedFolder.push(folder) 
-      }
-    }
-  }, [folderCache])
-  const showMenu = () => {
-    if (modalRef.current) {
-      modalRef.current.openMenu();
-    }
-  };
+ 
 
   return (
     <SafeAreaView
@@ -60,7 +46,7 @@ export const Home = () => {
         <SearchComponent placeHolder="Search files, saved items, etc..." />
       </View>
 
-      <PinnedFolders cardList={pinnedFolder as FolderProps[]} parentStyle={{ paddingTop: 15 }} />
+      <PinnedFolders parentStyle={{ paddingTop: 15 }} />
       <RecentLinks linkList={MockLinkList} />
     </SafeAreaView>
   );
