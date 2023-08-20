@@ -18,6 +18,8 @@ import ToggleModalButton from "./ToggleModalButton";
 import moreIcon from "../assets/icon/pinnedFolderOptions.png";
 import moreIconActive from "../assets/icon/pinnedFolderOptionsActive.png";
 import { useModalContext } from "../context/ModalContext";
+import PinnedFolderIcon from "../assets/svgComponents/PinnedFolderIcon";
+import LinkNumberIcon from "../assets/svgComponents/LinkNumberIcon";
 export type FolderCardProps = {
   id: number;
   title: string;
@@ -25,6 +27,7 @@ export type FolderCardProps = {
   desc?: string;
   linksNumber: number;
   onClick: () => void;
+  pinned?: boolean;
 };
 
 export interface FolderCardInput {
@@ -63,11 +66,11 @@ const FolderCard = React.memo((props: FolderCardProps) => {
     screenHeight,
     folderCache,
     dispatchFolderCache,
+    dispatchFolderCovers
   } = useContext(GlobalContext);
 
   const [loaclModalIndicator, setLoaclModalIndicator] = useState(false);
 
- 
   const modalData: ModalDataProps[] = [
     {
       name: "Pin",
@@ -88,15 +91,41 @@ const FolderCard = React.memo((props: FolderCardProps) => {
         console.log("test3");
       },
     },
+    {
+      name: "Delete Folder",
+      onClick: () => {
+        dispatchFolderCovers({type: "REMOVE", folderId: props.id})
+        dispatchFolderCache({type: "REMOVE_FOLDER", folderId: props.id})
+      }
+    }
   ];
 
-  console.log("test url:", props.imgUrl, props.id);
+  console.log("test url:", props.imgUrl, props.id, props.pinned);
+
+  useEffect(() => {
+    console.log(props.pinned);
+  });
   return (
     <Card
       onPress={() => {
         props.onClick();
       }}
     >
+      {props.pinned && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            backgroundColor: COLORS.themeYellow,
+            zIndex: 999,
+            padding: 3,
+            borderRadius: SPACE.nativeRoundSm,
+          }}
+        >
+          <PinnedFolderIcon width="18" height="18" />
+        </View>
+      )}
       {
         props.imgUrl?.length === 0 ? (
           // precheck if the imgUrl is not filled out, we use default value if not
@@ -107,7 +136,7 @@ const FolderCard = React.memo((props: FolderCardProps) => {
           <CardImage source={{ uri: props.imgUrl }} />
         ) // Use the image URI
       }
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between",marginTop: 2, }}>
         <CardTitle>{props.title}</CardTitle>
         <ToggleModalButton
           onClick={() => {
@@ -117,6 +146,19 @@ const FolderCard = React.memo((props: FolderCardProps) => {
           activeSource={moreIconActive}
           inactiveSource={moreIcon}
         />
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignContent: "center",
+          marginHorizontal: 5,
+        }}
+      >
+        <LinkNumberIcon height="15" width="15" />
+        <Text style={{ color: COLORS.darkGrey, marginStart: 2 }}>
+          {props.linksNumber}
+        </Text>
       </View>
       <BottomModal
         header={{ name: "Manage Folder" }}

@@ -17,10 +17,15 @@ import {
 } from "react-native";
 import { COLORS, SPACE } from "../theme/constants";
 
+
+/**
+ * * if you do not wanna have the drop down, use useSearchDropDown = false, and pass in your own onCHangeText
+ */
 type SearchComponentProps = {
   placeHolder: string;
   algorithm?: (searchInput: string) => Map<string, any>;
   useSearchDropDown?: boolean
+  onChangeText?: (text: string) => void;
 };
 
 export enum searchValueType {
@@ -127,13 +132,18 @@ export const SearchComponent = (props: SearchComponentProps) => {
   };
 
   const handleChangeText = (text: string) => {
-    setValue(text);
-    text.length > 0 ? animateDropDownHeight(1) : animateDropDownHeight(0);
-    const newValues = props.algorithm?.(text);
-    console.log("search result", newValues);
-    if (newValues) {
-      setResult(newValues);
+    if(props.useSearchDropDown == null || props.useSearchDropDown) {
+      setValue(text);
+      text.length > 0 ? animateDropDownHeight(1) : animateDropDownHeight(0);
+      const newValues = props.algorithm?.(text);
+      console.log("search result", newValues);
+      if (newValues) {
+        setResult(newValues);
+      }
+    } else {
+      props.onChangeText?.(text)
     }
+    
   };
 
   const selectValue = (result: string) => {

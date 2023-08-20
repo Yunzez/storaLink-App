@@ -113,6 +113,7 @@ const PinnedFolders = ({ parentStyle }: PinnedFoldersProps) => {
           {pinnedFolders && pinnedFolders.length > 0 ? (
             pinnedFolders.map((card, index) => (
               <FolderCard
+              pinned={card.pinned}
                 key={index}
                 id={card.id}
                 title={card.name as string}

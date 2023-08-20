@@ -25,6 +25,7 @@ const AddFolders = () => {
     screenWidth,
     folderCovers,
     dispatchFolderCovers,
+    dispatchFolderCache
   } = useContext(GlobalContext);
   const [valid, setValid] = useState(false);
   const [folderName, setFolderName] = useState("");

@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -11,7 +11,7 @@ import styled from "styled-components";
 import { MockCardList } from "../Test/MockData";
 import FolderCard from "../components/FolderCard";
 import { GlobalContext } from "../context/GlobalProvider";
-import SearchComponent from "../components/SearchbarComponent";
+import SearchComponent, { searchResultType, searchValueType } from "../components/SearchbarComponent";
 import RowViewIcon from "../assets/svgComponents/RowViewIcon";
 import { COLORS, SPACE } from "../theme/constants";
 import BlockViewIcon from "../assets/svgComponents/BlockViewIcon";
@@ -23,7 +23,6 @@ import OutLinedButton from "../components/OutLinedButton";
 
 export const Files = () => {
   const { screenHeight, folderCache, navigator } = useContext(GlobalContext);
-  const { openModal } = useModalContext();
   const [blockView, setBlockView] = useState(true);
 
   const FolderListWrapper = styled(View)`
@@ -33,6 +32,42 @@ export const Files = () => {
     flex-wrap: wrap;
     height: ${screenHeight * 0.8}px;
   `;
+
+  const searchAlgorithm = (value: string): Map<string, searchResultType> => {
+    const retMap = new Map();
+    if (!folderCache) {
+      retMap.set("You have no folder yet, go create your first folder", {
+        value: "no val",
+        onClick: () => {},
+        valueType: searchValueType.noValue,
+      });
+      return retMap;
+    }
+    for (const cover of folderCache) {
+      console.log(cover);
+      if (cover.name?.includes(value)) {
+        retMap.set(cover.name, {
+          onClick: () => {
+            console.log(cover.id);
+            navigator.navigate("SingleFolderView", {
+              name: cover.name,
+              id: cover.id,
+            });
+          },
+        });
+      }
+    }
+    if (retMap.size === 0) {
+      retMap.set("There is no result", { onClick: () => {} });
+    }
+    return retMap;
+  };
+
+  useEffect(() => {
+    console.log('folder cache update detected in files', folderCache)
+    //! this useEffect is to detect chanege in folderCache so we can update card appearance 
+    //! there is a possibility for optimization by putting this lower down to folder card, not required rn 
+  }, [folderCache])
 
   return (
     <SafeAreaView
@@ -46,7 +81,7 @@ export const Files = () => {
       <View style={{ width: "80%", zIndex: 5 }}>
         <SearchComponent
           placeHolder="Search files, saved items, etc..."
-          useSearchDropDown={false}
+          algorithm={searchAlgorithm}
         />
       </View>
       <View
@@ -113,6 +148,7 @@ export const Files = () => {
               blockView ? (
                 folderCache.map((card, index) => (
                   <FolderCard
+                  pinned = {card.pinned}
                     id={card.id}
                     key={index}
                     title={card.name as string}

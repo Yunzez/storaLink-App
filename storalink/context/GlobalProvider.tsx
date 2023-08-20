@@ -43,7 +43,7 @@ type User = {
   email: string;
   dob: string;
   profileImg?: string;
-  userType?: 'basic' | 'advanced'
+  userType?: "basic" | "advanced";
 };
 
 // Define the actions for folderCovers
@@ -130,28 +130,37 @@ const FolderCacheReducer = (
         : null;
     case "PIN_FOLDER":
       return state !== null
-      ? state.map((folder) => {
-        if(folder.id === action.folderId) {
-          console.log('update folder pin')
-          return {...folder, pinned: true}
-        } else {
-          return folder
-        }
-      }) : null 
-      case "UNPIN_FOLDER":
-        return state !== null
         ? state.map((folder) => {
-          if(folder.id === action.folderId) {
-            console.log('update folder pin')
-            return {...folder, pinned: false}
-          } else {
-            return folder
-          }
-        }) : null 
+            if (folder.id === action.folderId) {
+              console.log("update folder pin");
+              return { ...folder, pinned: true };
+            } else {
+              return folder;
+            }
+          })
+        : null;
+    case "UNPIN_FOLDER":
+      return state !== null
+        ? state.map((folder) => {
+            if (folder.id === action.folderId) {
+              return { ...folder, pinned: false };
+            } else {
+              return folder;
+            }
+          })
+        : null;
+    case "REMOVE_FOLDER":
+      console.log("Action received:", action);
+      const newState = state !== null
+        ? state.filter((folder) => folder.id !== action.folderId)
+        : null;
+      console.log("New state:", newState);
+      return newState?.length == 0 ? null : newState;
     default:
       return state;
   }
 };
+
 
 type RecentLinkCacheAction =
   | { type: "ADD"; link: LinkViewProps; folderId: number }
@@ -222,8 +231,8 @@ export const GlobalContext = createContext<GlobalContextProps>({
     username: "",
     email: "",
     dob: "",
-    profileImg: '',
-    userType: 'basic'
+    profileImg: "",
+    userType: "basic",
   },
   setUser: () => {},
   screenHeight: 0,
@@ -279,6 +288,10 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   );
 
   useEffect(() => {
+    console.log('global provider see changes in folder cache',folderCache)
+  }, [folderCache])
+
+  useEffect(() => {
     // Here, you can update the folderCache whenever folderCovers changes
     // This assumes that folderCovers and folderCache have a 1:1 mapping based on the folder ID
     if (folderCovers) {
@@ -318,8 +331,8 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
     username: "",
     email: "",
     dob: "",
-    profileImg: '',
-    userType: 'basic'
+    profileImg: "",
+    userType: "basic",
   } as User);
 
   const [currentFocusedFolder, setCurrentFocusedFolder]: [
