@@ -14,7 +14,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-  
     "plugins": [
       [
         "expo-image-picker",
@@ -24,18 +23,28 @@
         }
       ]
     ],
-    
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.storalink",
-      "config": {
-      }
+      "infoPlist": {
+        "NSExtension": {
+          "NSExtensionAttributes": {
+            "NSExtensionActivationRule": "TRUEPREDICATE",
+            "NSExtensionActivationSupportsWebURLWithMaxCount": 1
+          }
+        }
+      },
+      "config": {}
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.storalink"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -48,5 +57,4 @@
     "owner": "yunzez",
     "scheme": "storalink"
   }
-  
 }

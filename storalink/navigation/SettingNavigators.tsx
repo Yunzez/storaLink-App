@@ -10,6 +10,7 @@ import Account from "../screens/settingScreens/Account";
 import Appearance from "../screens/settingScreens/Appearance";
 import Notification from "../screens/settingScreens/Notification";
 import Plans from "../screens/settingScreens/Plans";
+import About from "../screens/settingScreens/About";
 
 const Stack = createNativeStackNavigator();
 
@@ -67,6 +68,15 @@ export default function SettingNavigators() {
         }}
         name="privacy"
         component={Test}
+      />
+       <Stack.Screen
+        options={{
+          headerShown: true,
+          headerBackTitleVisible: true,
+          headerTitle: "About ", // or null to hide the screen title in the header
+        }}
+        name="about"
+        component={About}
       />
     </Stack.Navigator>
   );

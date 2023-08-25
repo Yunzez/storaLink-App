@@ -13,6 +13,9 @@ import * as Google from "expo-auth-session/providers/google";
 import { ModalProvider } from "./context/ModalContext";
 import SingleFolderView from "./screens/SingleFolderView";
 import { NativeBaseProvider } from "native-base";
+import { Linking } from "react-native";
+import { useEffect, useState } from "react";
+import * as SplashScreen from "expo-splash-screen";
 const BoxRoot = styled.Text`
   color: red;
 `;
@@ -36,6 +39,13 @@ type FolderViewRouteParams = {
 };
 
 export default function App() {
+  SplashScreen.hideAsync()
+    .then((result) =>
+      console.log(`Splash screen hidden successfully: ${result}`)
+    )
+    .catch(console.warn);
+
+
   return (
     <Providers>
       <GlobalStack.Navigator>
@@ -52,7 +62,7 @@ export default function App() {
           options={({ route }) => {
             const params = route.params as FolderViewRouteParams;
             return {
-              headerTitle: params?.name ?? "Default Title",
+              headerTitle: params?.name ?? "Title",
             };
           }}
           name="SingleFolderView"

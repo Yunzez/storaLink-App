@@ -27,11 +27,20 @@ import { useRoute } from "@react-navigation/native";
 import placeholder from "../assets/mockImg/placeholder.png";
 import emptyFolder from "../assets/icon/emptyFolder.png";
 import MoreOptionsButtonDropDown from "../components/MoreOptionsButtonDropDown";
+import * as Sharing from 'expo-sharing';
+import { Share } from 'react-native';
+
 export const SingleFolderView = () => {
   const [blockView, setBlockView] = useState(false);
   const [currData, setCurrData] = useState<FolderProps | undefined>(undefined);
-  const { setCurrentFocusedFolder, navigator, screenHeight, screenWidth, dispatchFolderCache , folderCache} =
-    useContext(GlobalContext);
+  const {
+    setCurrentFocusedFolder,
+    navigator,
+    screenHeight,
+    screenWidth,
+    dispatchFolderCache,
+    folderCache,
+  } = useContext(GlobalContext);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,8 +56,6 @@ export const SingleFolderView = () => {
 
     return target;
   };
-
-  
 
   useEffect(() => {
     if (route.params) {
@@ -258,7 +265,10 @@ export const SingleFolderView = () => {
               {currData.links && currData.links.length > 0 ? (
                 currData.links.map((link, index) => (
                   <Box key={index} p={2} bg="gray.100" rounded="md">
-                    <HStack justifyContent="space-between" alignItems={"center"}>
+                    <HStack
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
                       <HStack justifyContent="space-between">
                         {link.imgUrl?.length === 0 ? (
                           // precheck if the imgUrl is not filled out, we use default value if not
@@ -303,15 +313,30 @@ export const SingleFolderView = () => {
                           {
                             name: "Delete",
                             onClick: () => {
-                              console.log("Delete this", "folder id: ", route.params?.id, "link id: ", link.id, );
-                                dispatchFolderCache({type: 'REMOVE_LINK', linkId: link.id ?? -1, folderId: route.params?.id })
+                              console.log(
+                                "Delete this",
+                                "folder id: ",
+                                route.params?.id,
+                                "link id: ",
+                                link.id
+                              );
+                              dispatchFolderCache({
+                                type: "REMOVE_LINK",
+                                linkId: link.id ?? -1,
+                                folderId: route.params?.id,
+                              });
                             },
                           },
                           {
                             name: "Share",
                             onClick: () => {
                               console.log("Share this");
-                            },
+                              Share.share({
+                                message: 'share link',
+                                url: 'https://www.baidu.com'
+                            });
+                          }
+                          
                           },
                         ]}
                       />
@@ -330,9 +355,11 @@ export const SingleFolderView = () => {
                   <Text style={{ fontSize: 22, fontWeight: "bold" }}>
                     This Folder is empty!
                   </Text>
-                  <TouchableOpacity onPress={() => [
-                    navigator.navigate('Add', { screen: 'add_new_link' })
-                  ]}>
+                  <TouchableOpacity
+                    onPress={() => [
+                      navigator.navigate("Add", { screen: "add_new_link" }),
+                    ]}
+                  >
                     <Text
                       style={{
                         color: COLORS.themeYellow,

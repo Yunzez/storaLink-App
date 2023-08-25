@@ -69,7 +69,7 @@ export const Settings = () => {
 
       <SettingButton
         title="About"
-        onPress={mockOnPress}
+        onPress={() => navigator.navigate("about")}
         Icon={<LogoSVG width="24" height="24" />}
       />
 
