@@ -184,6 +184,7 @@ export const SingleFolderView = () => {
                     </Flex>
 
                     <ToggleModalButton
+                      onClick={() => {console.log('hi')}}
                       activeSource={moreIconActive}
                       inactiveSource={moreIcon}
                     />
