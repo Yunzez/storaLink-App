@@ -1,12 +1,11 @@
 import React, { useContext, useState } from "react";
-import { Text, View, ScrollView, Image } from "react-native";
+import { Text, View, ScrollView, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SmallLinkView, { SmallLinkViewProps } from "./SmallLinkView";
 import { SocialMediaSrc } from "../utils";
 import styled from "styled-components";
 import { COLORS, SPACE } from "../theme/constants";
 import { GlobalContext } from "../context/GlobalProvider";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import BlockLinkView from "./BlockLinkView";
 import { LinkViewProps } from "../Test/MockData";
 import RowViewIcon from "../assets/svgComponents/RowViewIcon";

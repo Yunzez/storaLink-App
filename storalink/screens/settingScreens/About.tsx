@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
-import { View, Text, Linking, Button} from "react-native";
+import { View, Text, Linking, Button, TouchableOpacity} from "react-native";
 import { GlobalContext } from "../../context/GlobalProvider";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import * as WebBrowser from 'expo-web-browser';
 
 const About = () => {

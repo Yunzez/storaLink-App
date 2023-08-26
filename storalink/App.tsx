@@ -15,10 +15,8 @@ import SingleFolderView from "./screens/SingleFolderView";
 import { NativeBaseProvider } from "native-base";
 import { Linking } from "react-native";
 import { useEffect, useState } from "react";
-import * as SplashScreen from "expo-splash-screen";
-const BoxRoot = styled.Text`
-  color: red;
-`;
+
+
 const GlobalStack = createNativeStackNavigator();
 WebBrowser.maybeCompleteAuthSession();
 type ProvidersProps = {
@@ -39,12 +37,6 @@ type FolderViewRouteParams = {
 };
 
 export default function App() {
-  SplashScreen.hideAsync()
-    .then((result) =>
-      console.log(`Splash screen hidden successfully: ${result}`)
-    )
-    .catch(console.warn);
-
 
   return (
     <Providers>

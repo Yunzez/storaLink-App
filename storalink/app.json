@@ -3,58 +3,20 @@
     "name": "storalink",
     "slug": "storalink",
     "version": "1.0.0",
-    "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "splash": {
       "image": "./assets/Splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends.",
-          "savePhotosPermission": "Allow Storalink to save photos."
-        }
-      ]
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.storalink",
-      "infoPlist": {
-        "NSExtension": {
-          "NSExtensionAttributes": {
-            "NSExtensionActivationRule": "TRUEPREDICATE",
-            "NSExtensionActivationSupportsWebURLWithMaxCount": 1
-          }
-        }
-      },
-      "config": {}
-    },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
-      "package": "com.storalink"
+      "package": "com.yunzez.storalink"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "a61dd311-243a-4ed1-a6d3-ea9a2ecba069"
-      }
-    },
-    "owner": "yunzez",
-    "scheme": "storalink"
+    "ios": {
+      "bundleIdentifier": "com.yunzez.storalink"
+    }
   }
 }

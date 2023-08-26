@@ -1,4 +1,5 @@
 import { Center, Text, View } from "native-base";
+import {TouchableOpacity} from "react-native";
 import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -11,7 +12,6 @@ import { GlobalContext } from "../../context/GlobalProvider";
 import { COLORS, SPACE } from "../../theme/constants";
 import HeaderWithBackButton from "../../components/HeaderWithBackBtn";
 import { SettingActionBtn, SettingButton, SettingSaveBtn } from "../Settings";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import StoraModal from "../../components/StoraModal";
 
 const Account = () => {

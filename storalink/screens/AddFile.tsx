@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
-import { SafeAreaView, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { SafeAreaView, Text, View, TouchableOpacity } from "react-native";
 import { GlobalContext } from "../context/GlobalProvider";
 import { COLORS, SPACE } from "../theme/constants";
 import styled from "styled-components";
