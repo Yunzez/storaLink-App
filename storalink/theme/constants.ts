@@ -1,7 +1,7 @@
 export const COLORS = {
     standardBlack: '#212121',
     darkGrey: '#C4C4C4',
-    themeYellow: '#FFA800',
+    themeYellow: '#FF9900',
     highWarning: '#FF5555',
     lightOrange: '#FFF5E2',
     lightGrey: '#F9F9F9',

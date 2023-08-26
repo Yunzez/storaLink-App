@@ -148,10 +148,10 @@ export const Login = () => {
           <View style={{ width: "75%", justifyContent: "center" }}>
             <View style={{ marginBottom: 10, alignItems: "center" }}>
               <Image
-                style={{ width: 40, height: 40 }}
-                source={require("../assets/img/LoginIcon.png")}
+                style={{ width: 50, height: 50 }}
+                source={require("../assets/img/YellowIcon.png")}
               />
-              <Text>Sign In </Text>
+               <Text style={{marginTop: 10, fontSize: 18, fontWeight: '500'}}>Sign in </Text>
             </View>
             <AGeneralErrorBlock errorText={error} />
 

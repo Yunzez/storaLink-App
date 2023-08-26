@@ -6,7 +6,7 @@ import SvgComponent, {
 } from "./SvgComponent";
 const LogoSVG = (props: SvgPropsWithAdvanced) => {
   return (
-    <SvgComponent height={props.height} width={props.width}>
+    <SvgComponent height={props.height} width={props.width} viewBox="0 0 24 24">
       <Mask
         id="mask0_289_11826"
         maskUnits="userSpaceOnUse"
@@ -21,7 +21,7 @@ const LogoSVG = (props: SvgPropsWithAdvanced) => {
           width="23"
           height="23"
           fill="white"
-          stroke="#FFA800"
+          stroke= {props.color ?? "#FFA800"}
         />
       </Mask>
       <G mask="url(#mask0_289_11826)">
