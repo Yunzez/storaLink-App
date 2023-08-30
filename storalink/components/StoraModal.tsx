@@ -8,17 +8,16 @@ import { GlobalContext } from "../context/GlobalProvider";
 export interface StoraModalProps {
   children: React.ReactNode;
   actionBtnNode?: React.ReactNode;
+  trigger: boolean
+  setTrigger: React.Dispatch<boolean>
 }
 
-export const StoraModal = ({ children, actionBtnNode }: StoraModalProps) => {
-  const [showModal, setShowModal] = useState(false);
+export const StoraModal = ({ children, actionBtnNode, trigger, setTrigger }: StoraModalProps) => {
   const {screenWidth} = useContext(GlobalContext)
   return (
     <Center >
-      <TouchableOpacity onPress={() => setShowModal(true)}>
-        {actionBtnNode ? actionBtnNode :  <Pencil width="30" height="30" color={COLORS.themeYellow}/>}
-      </TouchableOpacity>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} >
+     
+      <Modal isOpen={trigger} onClose={() => setTrigger(false)} >
         <Modal.Content maxWidth={screenWidth} >
           <Modal.Header style={{ borderBottomWidth: 0 }}>
             <Modal.CloseButton />

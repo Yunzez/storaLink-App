@@ -17,8 +17,10 @@ import {
 import { Dimensions } from "react-native";
 import { LinkViewProps } from "../Test/MockData";
 import { FolderCardProps } from "../components/FolderCard";
-
+import * as Notifications from "expo-notifications";
+import { useNotification } from "../hooks/useNotification";
 import placeHolder from "../assets/mockImg/placeholder.png";
+import { ExpoPushToken } from "expo-notifications";
 type RootStackParamList = {
   Unknown: "Unknown";
   Home: "Home";
@@ -151,16 +153,16 @@ const FolderCacheReducer = (
         : null;
     case "REMOVE_FOLDER":
       console.log("Action received:", action);
-      const newState = state !== null
-        ? state.filter((folder) => folder.id !== action.folderId)
-        : null;
+      const newState =
+        state !== null
+          ? state.filter((folder) => folder.id !== action.folderId)
+          : null;
       console.log("New state:", newState);
       return newState?.length == 0 ? null : newState;
     default:
       return state;
   }
 };
-
 
 type RecentLinkCacheAction =
   | { type: "ADD"; link: LinkViewProps; folderId: number }
@@ -223,6 +225,8 @@ interface GlobalContextProps {
   dispatchFolderCache: Dispatch<FolderCacheAction>;
   recentLinkCache: LinkViewProps[] | null;
   dispatchRecentLinkCache: Dispatch<RecentLinkCacheAction>;
+  expoPushToken: ExpoPushToken| string;
+  setExpoPushToken: Dispatch<SetStateAction<ExpoPushToken| string>>;
 }
 
 export const GlobalContext = createContext<GlobalContextProps>({
@@ -254,6 +258,8 @@ export const GlobalContext = createContext<GlobalContextProps>({
   dispatchFolderCache: () => {},
   recentLinkCache: null,
   dispatchRecentLinkCache: () => {},
+  expoPushToken: '',
+  setExpoPushToken: () => {},
 });
 
 interface GlobalContextProviderProps {
@@ -288,8 +294,8 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   );
 
   useEffect(() => {
-    console.log('global provider see changes in folder cache',folderCache)
-  }, [folderCache])
+    console.log("global provider see changes in folder cache", folderCache);
+  }, [folderCache]);
 
   useEffect(() => {
     // Here, you can update the folderCache whenever folderCovers changes
@@ -343,6 +349,48 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
     name: "Null",
     // initialize other properties as needed
   });
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+  
+  const { registerForPushNotificationsAsync, sendPushNotification } =
+    useNotification();
+  const [expoPushToken, setExpoPushToken] = useState<ExpoPushToken| string>("");
+  const [notification, setNotification] =
+    useState<Notifications.Notification>();
+  const notificationListener = useRef<any>();
+  const responseListener = useRef<any>();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
+    console.log(expoPushToken);
+    if (notificationListener) {
+      notificationListener.current =
+        Notifications.addNotificationReceivedListener((notification) => {
+          setNotification(notification);
+        });
+
+      responseListener.current =
+        Notifications.addNotificationResponseReceivedListener((response) => {
+          console.log(response);
+        });
+    }
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -360,6 +408,8 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
         dispatchFolderCache,
         recentLinkCache,
         dispatchRecentLinkCache,
+        expoPushToken,
+        setExpoPushToken,
       }}
     >
       {children}

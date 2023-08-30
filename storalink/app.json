@@ -17,6 +17,11 @@
     },
     "ios": {
       "bundleIdentifier": "com.yunzez.storalink"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a61dd311-243a-4ed1-a6d3-ea9a2ecba069"
+      }
     }
   }
 }

@@ -1,22 +1,51 @@
 import React, { useContext } from "react";
-import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { COLORS } from "../theme/constants";
 import Pencil from "../assets/svgComponents/Pencil";
 import { GlobalContext } from "../context/GlobalProvider";
 
 const UserAvatorWidget = () => {
-    const {user, navigator} = useContext(GlobalContext)
+  const { user, navigator } = useContext(GlobalContext);
+  const defaultImage = require('../assets/img/YellowIcon.png');
+console.log('')
   return (
     <View style={styles.avatarContainer}>
-      <View style={{flexDirection: 'row', alignItems:'center'}}>
-        <TouchableOpacity style={styles.avatarImage}></TouchableOpacity>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-around",
+        }}
+      >
+        <TouchableOpacity style={styles.avatarImage}>
+          
+          <Image
+            style={{ width: "100%", height: "100%", borderRadius: 50 }}
+            source={
+              user.profileImg
+                ? user.profileImg 
+                : defaultImage
+            }
+          />
+        </TouchableOpacity>
         <View style={{ marginLeft: 10 }}>
           <Text style={styles.avatarTextName}>{user.username} </Text>
           <Text style={styles.avatarTextEmail}>{user.email} </Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => {navigator.navigate("account")}}>
-        <Pencil width="30" height="30" color={COLORS.themeYellow}/>
+      <TouchableOpacity
+        onPress={() => {
+          navigator.navigate("account");
+        }}
+      >
+        <Pencil width="30" height="30" color={COLORS.themeYellow} />
       </TouchableOpacity>
     </View>
   );
@@ -25,8 +54,9 @@ const UserAvatorWidget = () => {
 const styles = StyleSheet.create({
   avatarContainer: {
     width: "100%",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     padding: 10,
+    paddingHorizontal: 15,
     alignItems: "center",
     flexDirection: "row",
     height: 100,

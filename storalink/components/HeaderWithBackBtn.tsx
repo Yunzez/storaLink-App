@@ -27,7 +27,8 @@ const HeaderWithBackButton: React.FC<HeaderWithBackButtonProps> = ({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        flex: 0
+        flex: 0,
+        marginBottom: 5
       }}
     >
       <View style={{ position: "absolute", left: 0 }}>

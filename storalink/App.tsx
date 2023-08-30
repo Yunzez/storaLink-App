@@ -14,8 +14,9 @@ import { ModalProvider } from "./context/ModalContext";
 import SingleFolderView from "./screens/SingleFolderView";
 import { NativeBaseProvider } from "native-base";
 import { Linking } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ShareContextProvider } from "./context/ShareContext";
 
 const GlobalStack = createNativeStackNavigator();
 WebBrowser.maybeCompleteAuthSession();
@@ -39,37 +40,39 @@ type FolderViewRouteParams = {
 export default function App() {
   return (
     <Providers>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <GlobalStack.Navigator>
-          <GlobalStack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name="Login"
-            component={Login}
-          />
-          <GlobalStack.Screen name="Signup" component={Signup} />
-          <GlobalStack.Screen name="Test" component={Test} />
-          <GlobalStack.Screen
-            options={({ route }) => {
-              const params = route.params as FolderViewRouteParams;
-              return {
-                headerTitle: params?.name ?? "Title",
-              };
-            }}
-            name="SingleFolderView"
-            component={SingleFolderView}
-          />
-          <GlobalStack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name="Home"
-            component={BottomTabNavigators}
-          />
-          {/* Add more Settings screens here */}
-        </GlobalStack.Navigator>
-      </GestureHandlerRootView>
+      <ShareContextProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <GlobalStack.Navigator>
+            <GlobalStack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="Login"
+              component={Login}
+            />
+            <GlobalStack.Screen name="Signup" component={Signup} />
+            <GlobalStack.Screen name="Test" component={Test} />
+            <GlobalStack.Screen
+              options={({ route }) => {
+                const params = route.params as FolderViewRouteParams;
+                return {
+                  headerTitle: params?.name ?? "Title",
+                };
+              }}
+              name="SingleFolderView"
+              component={SingleFolderView}
+            />
+            <GlobalStack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="Home"
+              component={BottomTabNavigators}
+            />
+            {/* Add more Settings screens here */}
+          </GlobalStack.Navigator>
+        </GestureHandlerRootView>
+      </ShareContextProvider>
     </Providers>
   );
 }
