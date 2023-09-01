@@ -225,8 +225,8 @@ interface GlobalContextProps {
   dispatchFolderCache: Dispatch<FolderCacheAction>;
   recentLinkCache: LinkViewProps[] | null;
   dispatchRecentLinkCache: Dispatch<RecentLinkCacheAction>;
-  expoPushToken: ExpoPushToken| string;
-  setExpoPushToken: Dispatch<SetStateAction<ExpoPushToken| string>>;
+  expoPushToken: ExpoPushToken | string;
+  setExpoPushToken: Dispatch<SetStateAction<ExpoPushToken | string>>;
 }
 
 export const GlobalContext = createContext<GlobalContextProps>({
@@ -258,7 +258,7 @@ export const GlobalContext = createContext<GlobalContextProps>({
   dispatchFolderCache: () => {},
   recentLinkCache: null,
   dispatchRecentLinkCache: () => {},
-  expoPushToken: '',
+  expoPushToken: "",
   setExpoPushToken: () => {},
 });
 
@@ -286,7 +286,14 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   );
   const [folderCache, dispatchFolderCache] = useReducer(
     FolderCacheReducer,
-    null
+    [{id: -1,
+      name: 'default',
+      description: ' this is your default folder',
+      thumbNailUrl: null,
+      desc: 'default',
+      pinned: true,
+      links: null,
+    }] satisfies FolderProps[]
   );
   const [recentLinkCache, dispatchRecentLinkCache] = useReducer(
     recentLinkCacheReducer,
@@ -357,19 +364,22 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
       shouldSetBadge: false,
     }),
   });
-  
+
   const { registerForPushNotificationsAsync, sendPushNotification } =
     useNotification();
-  const [expoPushToken, setExpoPushToken] = useState<ExpoPushToken| string>("");
+  const [expoPushToken, setExpoPushToken] = useState<ExpoPushToken | string>(
+    ""
+  );
   const [notification, setNotification] =
     useState<Notifications.Notification>();
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
-    );
+    registerForPushNotificationsAsync().then((token) => {
+      console.log(token);
+      setExpoPushToken(token);
+    });
     console.log(expoPushToken);
     if (notificationListener) {
       notificationListener.current =

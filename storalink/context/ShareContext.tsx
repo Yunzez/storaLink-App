@@ -39,20 +39,15 @@ export const ShareContextProvider = ({
   }, []);
 
   useEffect(() => {
+    const listener = ShareMenu.addNewShareListener(handleShare);
     if(handleShare ) {
         ShareMenu.getInitialShare(handleShare);
     }
-   
+    return () => {
+        listener.remove();
+      };
   }, []);
 
-  // initalize listner
-  const listener = ShareMenu.addNewShareListener(handleShare);
-  useEffect(() => {
-    // remove listener on unMount
-    return () => {
-      listener.remove();
-    };
-  }, []);
 
 //   if (!sharedMimeType && !shareUrl) {
 //     // The user hasn't shared anything yet
