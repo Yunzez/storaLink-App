@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+		<key>com.apple.security.application-groups</key>
+		<array>
+			<string>group.com.storalink.app</string>
+		</array>
 		<key>ReactShareViewBackgroundColor</key>
 		<dict>
 			<key>Red</key>
@@ -19,6 +23,10 @@
 		<dict>
 			<key>NSAllowsArbitraryLoads</key>
 			<true />
+			<key>NSAllowsArbitraryLoadsInWebContent</key>
+			<true />
+			<key>NSAllowsLocalNetworking</key>
+			<true />
 			<key>NSExceptionDomains</key>
 			<dict>
 				<key>localhost</key>
@@ -31,7 +39,7 @@
 		<key>HostAppBundleIdentifier</key>
 		<string>com.storalink.app</string>
 		<key>HostAppURLScheme</key>
-		<string>com.storalink.app</string>
+		<string>com.storalink.app://</string>
 		<key>NSExtension</key>
 		<dict>
 			<key>NSExtensionAttributes</key>

@@ -80,7 +80,6 @@ export const AGeneralTextInput = (props: AGeneralTextInputProps) => {
       outputRange: [COLORS.darkGrey, COLORS.themeYellow],
     }),
   };
-  console.log('reload general text input')
   return (
     <TouchableWithoutFeedback onPress={handleBlur}>
       <View>

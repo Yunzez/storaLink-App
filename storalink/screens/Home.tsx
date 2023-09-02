@@ -33,8 +33,17 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { BottomModalProps } from "../components/BottomModal";
 import { FolderCardProps } from "../components/FolderCard";
 export const Home = () => {
-  const { navigator, screenHeight, folderCovers, folderCache } =
+
+  const { navigator, screenHeight, folderCovers, folderCache, shareUrl, setShareUrl } =
     useContext(GlobalContext);
+
+    useEffect(() => {
+      console.log('change in share url', shareUrl, shareUrl.length)
+      if(shareUrl.length > 0) {
+        setShareUrl('')
+      }
+    }, [shareUrl])
+
   const searchAlgorithm = (value: string): Map<string, searchResultType> => {
     const retMap = new Map();
     if (!folderCache) {

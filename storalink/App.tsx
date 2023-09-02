@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { BottomTabNavigators } from "./navigation/BottomTabNavigators";
-import { GlobalContextProvider } from "./context/GlobalProvider";
+import { GlobalContext, GlobalContextProvider } from "./context/GlobalProvider";
 import Login from "./screens/Login";
 import Test from "./screens/Test";
 import Signup from "./screens/Signup";
@@ -13,10 +13,13 @@ import * as Google from "expo-auth-session/providers/google";
 import { ModalProvider } from "./context/ModalContext";
 import SingleFolderView from "./screens/SingleFolderView";
 import { NativeBaseProvider } from "native-base";
-import { Linking } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ShareContextProvider } from "./context/ShareContext";
+import * as Linking from 'expo-linking';
+import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
+import { useShare } from "./hooks/useShare";
+import useAsyncStorage from "./hooks/useAsyncStorage";
 
 const GlobalStack = createNativeStackNavigator();
 WebBrowser.maybeCompleteAuthSession();
@@ -27,7 +30,7 @@ type ProvidersProps = {
 const Providers = ({ children }: ProvidersProps) => {
   return (
     <NativeBaseProvider>
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <GlobalContextProvider>{children}</GlobalContextProvider>
       </NavigationContainer>
     </NativeBaseProvider>
@@ -37,7 +40,26 @@ type FolderViewRouteParams = {
   name?: string;
 };
 
+const linking = {
+  prefixes: ['com.storalink.app://'],
+  config: {
+    screens: {
+      Home: 'home?sharedData=:sharedData',
+    },
+  },
+};
+
+
 export default function App() {
+  const [sharedData, setSharedData] = useState('');
+  const [sharedMimeType, setSharedMimeType] = useState('');
+  const [sharedExtraData, setSharedExtraData] = useState(null);
+  const {navigator} = useContext(GlobalContext)
+  const {getData} = useAsyncStorage()
+  // ShareMenu.getInitialShare(handleShare);
+
+  
+  useShare(navigator)
   return (
     <Providers>
       <ShareContextProvider>

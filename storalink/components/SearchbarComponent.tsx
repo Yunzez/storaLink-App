@@ -110,8 +110,6 @@ export const SearchComponent = (props: SearchComponentProps) => {
     }),
 
     opacity: 1,
-    borderColor: COLORS.highWarning,
-    borderWidth: 1,
   };
 
   const handleFocus = () => {

@@ -24,6 +24,8 @@ import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import LoadingScreen from "../components/LoadingScreen";
 import { checkEmail, checkPassword } from "../utils";
+import { useShare } from "../hooks/useShare";
+import { ShareMenuReactView } from "react-native-share-menu";
 
 const Container = styled(SafeAreaView)`
   flex: 1;
@@ -139,6 +141,10 @@ export const Login = () => {
     // * assume failure test goes here:
   };
 
+  ShareMenuReactView.data().then((data) => {
+    console.log("current data", data)
+  })
+  
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       {loading ? (

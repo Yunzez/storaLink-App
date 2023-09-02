@@ -34,7 +34,8 @@ export const ShareContextProvider = ({
     setSharedMimeType(mimeType);
     console.log(ShareMenuReactView.data())
     // You can receive extra data from your custom Share View
-    console.log(extraData);
+    console.log('extra data', extraData);
+
     console.log(data, 'here is the share data')
   }, []);
 
@@ -47,6 +48,11 @@ export const ShareContextProvider = ({
         listener.remove();
       };
   }, []);
+
+  useEffect(() => {
+    console.log('initial share')
+    ShareMenu.getInitialShare(handleShare);
+}, []);
 
 
 //   if (!sharedMimeType && !shareUrl) {

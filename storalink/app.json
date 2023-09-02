@@ -4,6 +4,7 @@
     "slug": "storalink",
     "version": "1.0.0",
     "icon": "./assets/icon.png",
+    "scheme": "com.storalink.app",
     "assetBundlePatterns": [
       "**/*"
     ],

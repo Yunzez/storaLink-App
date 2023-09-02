@@ -227,6 +227,8 @@ interface GlobalContextProps {
   dispatchRecentLinkCache: Dispatch<RecentLinkCacheAction>;
   expoPushToken: ExpoPushToken | string;
   setExpoPushToken: Dispatch<SetStateAction<ExpoPushToken | string>>;
+  shareUrl: string;
+  setShareUrl:  Dispatch<SetStateAction<string>>;
 }
 
 export const GlobalContext = createContext<GlobalContextProps>({
@@ -260,6 +262,8 @@ export const GlobalContext = createContext<GlobalContextProps>({
   dispatchRecentLinkCache: () => {},
   expoPushToken: "",
   setExpoPushToken: () => {},
+  shareUrl: '',
+  setShareUrl: () => {},
 });
 
 interface GlobalContextProviderProps {
@@ -269,6 +273,7 @@ interface GlobalContextProviderProps {
 export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   children,
 }) => {
+  const [shareUrl, setShareUrl] = useState('') 
   const navigator =
     useNavigation<NavigationProp<RootStackParamList, "Unknown">>();
   const devMode = true;
@@ -420,6 +425,8 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
         dispatchRecentLinkCache,
         expoPushToken,
         setExpoPushToken,
+        shareUrl,
+        setShareUrl
       }}
     >
       {children}
