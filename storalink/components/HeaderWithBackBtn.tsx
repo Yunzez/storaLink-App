@@ -9,16 +9,19 @@ import { GlobalContext } from "../context/GlobalProvider";
 type HeaderWithBackButtonProps = {
   navigateToScreen?: string;
   navigateToParams?: string;
+  navigateOptions?: any
   title?: string;
 };
 
 const HeaderWithBackButton: React.FC<HeaderWithBackButtonProps> = ({
   navigateToScreen = "Settings",
   navigateToParams = "setting_main",
+  navigateOptions,
   title = "Account",
 }) => {
   const { navigator } = useContext(GlobalContext);
-
+  const navigationChoice = navigateOptions == undefined ? { screen: navigateToParams } : navigateOptions
+  console.log(navigateToScreen, navigateOptions, navigationChoice)
   return (
     <View
       style={{
@@ -34,7 +37,7 @@ const HeaderWithBackButton: React.FC<HeaderWithBackButtonProps> = ({
       <View style={{ position: "absolute", left: 0 }}>
         <RetrunButton
           onPress={() => {
-            navigator.navigate(navigateToScreen, { screen: navigateToParams });
+            navigator.navigate(navigateToScreen, navigationChoice);
           }}
         >
           <Ionicons

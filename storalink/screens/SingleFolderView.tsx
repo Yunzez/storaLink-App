@@ -27,8 +27,8 @@ import { useRoute } from "@react-navigation/native";
 import placeholder from "../assets/mockImg/placeholder.png";
 import emptyFolder from "../assets/icon/emptyFolder.png";
 import MoreOptionsButtonDropDown from "../components/MoreOptionsButtonDropDown";
-import * as Sharing from 'expo-sharing';
-import { Share } from 'react-native';
+import * as Sharing from "expo-sharing";
+import { Share } from "react-native";
 
 export const SingleFolderView = () => {
   const [blockView, setBlockView] = useState(false);
@@ -184,7 +184,10 @@ export const SingleFolderView = () => {
                     </Flex>
 
                     <ToggleModalButton
-                      onClick={() => {console.log('hi')}}
+                      indicator={false}
+                      onClick={() => {
+                        console.log("hi");
+                      }}
                       activeSource={moreIconActive}
                       inactiveSource={moreIcon}
                     />
@@ -265,7 +268,11 @@ export const SingleFolderView = () => {
 
               {currData.links && currData.links.length > 0 ? (
                 currData.links.map((link, index) => (
-                  <Box key={index} p={2} bg="gray.100" rounded="md">
+                  <TouchableOpacity onPress={() => {console.log('pressed for single link')
+                  navigator.navigate("SingleLinkView", {
+                    id: route.params.id,
+                  });}}>
+                  <Box key={index} p={2} bg="gray.100" rounded="md" >
                     <HStack
                       justifyContent="space-between"
                       alignItems={"center"}
@@ -314,13 +321,6 @@ export const SingleFolderView = () => {
                           {
                             name: "Delete",
                             onClick: () => {
-                              console.log(
-                                "Delete this",
-                                "folder id: ",
-                                route.params?.id,
-                                "link id: ",
-                                link.id
-                              );
                               dispatchFolderCache({
                                 type: "REMOVE_LINK",
                                 linkId: link.id ?? -1,
@@ -333,16 +333,16 @@ export const SingleFolderView = () => {
                             onClick: () => {
                               console.log("Share this");
                               Share.share({
-                                message: 'share link',
-                                url: 'https://www.baidu.com'
-                            });
-                          }
-                          
+                                message: "share link",
+                                url: "https://www.baidu.com",
+                              });
+                            },
                           },
                         ]}
                       />
                     </HStack>
                   </Box>
+                  </TouchableOpacity>
                 ))
               ) : (
                 <View
@@ -374,6 +374,7 @@ export const SingleFolderView = () => {
               )}
             </VStack>
           </Box>
+          
         </ScrollView>
       ) : (
         <View style={{ height: screenHeight * 0.5 }}>

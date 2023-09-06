@@ -47,24 +47,24 @@ const ShareScreen = () => {
 
         //! for continue in app, it only works when we directly refer to the app, openning the 
         //! share view will make it crashes
-        ShareMenuReactView.continueInApp({hello: 'from the other side', link: link});
+        // ShareMenuReactView.continueInApp({hello: 'from the other side', link: link});
         setSharedData(link);
-        setLoading(false);
-        // if (data) {
-        //   getLinkPreview(link)
-        //     .then((metadata) => {
-        //       console.log(metadata);
-        //       setLinkMetadata(metadata);
-        //       setTitle(metadata.title);
-        //       setDescription(metadata.description);
-        //       setImage(metadata.images[0]);
-        //       setLoading(false);
-        //     })
-        //     .catch((error) => {
-        //       console.error("Error fetching link metadata:", error);
-        //       setLoading(false);
-        //     });
-        // }
+        // setLoading(false);
+        if (data) {
+          getLinkPreview(link)
+            .then((metadata) => {
+              console.log(metadata);
+              setLinkMetadata(metadata);
+              setTitle(metadata.title);
+              setDescription(metadata.description);
+              setImage(metadata.images[0]);
+              setLoading(false);
+            })
+            .catch((error) => {
+              console.error("Error fetching link metadata:", error);
+              setLoading(false);
+            });
+        }
       });
     } catch (error) {
       console.error("Error getting shared data:", error);

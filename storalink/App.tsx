@@ -20,6 +20,7 @@ import * as Linking from 'expo-linking';
 import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 import { useShare } from "./hooks/useShare";
 import useAsyncStorage from "./hooks/useAsyncStorage";
+import SingleLinkView from "./screens/SingleLinkView";
 
 const GlobalStack = createNativeStackNavigator();
 WebBrowser.maybeCompleteAuthSession();
@@ -83,6 +84,16 @@ export default function App() {
               }}
               name="SingleFolderView"
               component={SingleFolderView}
+            />
+            <GlobalStack.Screen
+              options={({ route }) => {
+                const params = route.params as FolderViewRouteParams;
+                return {
+                  headerTitle: params?.name ?? "Title",
+                };
+              }}
+              name="SingleLinkView"
+              component={SingleLinkView}
             />
             <GlobalStack.Screen
               options={{
