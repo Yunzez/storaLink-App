@@ -10,6 +10,23 @@
 if encouter error regarding typescript: 
 - (Ctrl+Shift+P or Command+Shift+P) and searching for "TypeScript: Restart TS Server."
 
+## Create local Db
+
+### Specify a Directory
+
+1. Create a new directory:
+    ```bash
+    mkdir ~/my_mongo_db
+    ```
+
+2. Run MongoDB with `--dbpath`:
+    ```bash
+    mongod --dbpath ~/my_mongo_db
+    ```
+
+Choose one of these options and try running `mongod` again.
+
+---
 ## Database test (Local)
 
 Copy a MongoDB Atlas database to your local machine for testing, you can use the `mongodump` and `mongorestore` utilities. Here's how:
