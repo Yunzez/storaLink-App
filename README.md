@@ -24,7 +24,10 @@ if encouter error regarding typescript:
     mongod --dbpath ~/my_mongo_db
     ```
 
-Choose one of these options and try running `mongod` again.
+* After updating the path, run like this (if you put db in Code/storalink_db):
+```
+mongod --dbpath=./Code/storalink_db
+```
 
 ---
 ## Database test (Local)
