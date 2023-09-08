@@ -116,7 +116,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
-              style={{ marginLeft: 10, marginRight: 10 }}
+              style={{ marginLeft: 10, marginRight: 10, alignItems: "center"}}
             >
               <Ionicons
                 name={
@@ -129,6 +129,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                 }
                 color={isFocused ? COLORS.themeYellow : COLORS.darkGrey}
               />
+              <Text style={{fontSize:10, color: COLORS.darkGrey}}>{name}</Text>
             </TouchableOpacity>
           );
         })}

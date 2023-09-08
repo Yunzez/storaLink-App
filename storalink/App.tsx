@@ -21,6 +21,7 @@ import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 import { useShare } from "./hooks/useShare";
 import useAsyncStorage from "./hooks/useAsyncStorage";
 import SingleLinkView from "./screens/SingleLinkView";
+import * as Font from 'expo-font';
 
 const GlobalStack = createNativeStackNavigator();
 WebBrowser.maybeCompleteAuthSession();
@@ -59,7 +60,16 @@ export default function App() {
   const {getData} = useAsyncStorage()
   // ShareMenu.getInitialShare(handleShare);
 
-  
+  // useEffect(() => {
+  //   async function loadFont() {
+  //     await Font.loadAsync({
+  //       'Helvetica-Bold': require('./assets/fonts/FreeSans.ttf'), // Replace with the actual path to your font file
+  //     });
+  //   }
+
+  //   loadFont();
+  // }, []);
+
   useShare(navigator)
   return (
     <Providers>
@@ -90,6 +100,7 @@ export default function App() {
                 const params = route.params as FolderViewRouteParams;
                 return {
                   headerTitle: params?.name ?? "Title",
+                  headerShown: false
                 };
               }}
               name="SingleLinkView"

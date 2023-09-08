@@ -229,6 +229,8 @@ interface GlobalContextProps {
   setExpoPushToken: Dispatch<SetStateAction<ExpoPushToken | string>>;
   shareUrl: string;
   setShareUrl:  Dispatch<SetStateAction<string>>;
+  defaultImage: any;
+  placeHolder: any
 }
 
 export const GlobalContext = createContext<GlobalContextProps>({
@@ -264,6 +266,8 @@ export const GlobalContext = createContext<GlobalContextProps>({
   setExpoPushToken: () => {},
   shareUrl: '',
   setShareUrl: () => {},
+  defaultImage: '',
+  placeHolder:""
 });
 
 interface GlobalContextProviderProps {
@@ -273,6 +277,8 @@ interface GlobalContextProviderProps {
 export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   children,
 }) => {
+  const defaultImage = require('../assets/img/YellowIcon.png');
+  const placeHolder = require('../assets/mockImg/placeholder.png')
   const [shareUrl, setShareUrl] = useState('') 
   const navigator =
     useNavigation<NavigationProp<RootStackParamList, "Unknown">>();
@@ -291,14 +297,7 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   );
   const [folderCache, dispatchFolderCache] = useReducer(
     FolderCacheReducer,
-    [{id: -1,
-      name: 'default',
-      description: ' this is your default folder',
-      thumbNailUrl: null,
-      desc: 'default',
-      pinned: true,
-      links: null,
-    }] satisfies FolderProps[]
+    [] satisfies FolderProps[]
   );
   const [recentLinkCache, dispatchRecentLinkCache] = useReducer(
     recentLinkCacheReducer,
@@ -426,7 +425,9 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
         expoPushToken,
         setExpoPushToken,
         shareUrl,
-        setShareUrl
+        setShareUrl,
+        defaultImage,
+        placeHolder
       }}
     >
       {children}

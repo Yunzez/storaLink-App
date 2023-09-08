@@ -67,6 +67,10 @@ export const Login = () => {
   const [remeber, setRemenber] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    console.log('dev mode is: ', devMode)
+  }, [devMode])
   const handleLogin = () => {
     setLoading(true);
 

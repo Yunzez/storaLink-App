@@ -29,6 +29,19 @@ import emptyFolder from "../assets/icon/emptyFolder.png";
 import MoreOptionsButtonDropDown from "../components/MoreOptionsButtonDropDown";
 import * as Sharing from "expo-sharing";
 import { Share } from "react-native";
+import { LinkViewProps } from "../Test/MockData";
+
+
+export const fetchFolderDataById = (id: string | number, folderCache): FolderProps => {
+  if (!folderCache) {
+    return null;
+  }
+  const target = folderCache.find((value) => {
+    return value.id === Number(id);
+  });
+
+  return target;
+};
 
 export const SingleFolderView = () => {
   const [blockView, setBlockView] = useState(false);
@@ -46,20 +59,11 @@ export const SingleFolderView = () => {
 
   const route = useRoute();
 
-  const fetchFolderDataById = (id: string | number) => {
-    if (!folderCache) {
-      return null;
-    }
-    const target = folderCache.find((value) => {
-      return value.id === Number(id);
-    });
-
-    return target;
-  };
+ 
 
   useEffect(() => {
     if (route.params) {
-      const folderData = fetchFolderDataById(route.params.id);
+      const folderData = fetchFolderDataById(route.params.id, folderCache);
       console.log("route name", route.params.id, folderData);
       if (folderData) {
         setCurrData(folderData);
@@ -271,6 +275,7 @@ export const SingleFolderView = () => {
                   <TouchableOpacity onPress={() => {console.log('pressed for single link')
                   navigator.navigate("SingleLinkView", {
                     id: route.params.id,
+                    linkSeq: index
                   });}}>
                   <Box key={index} p={2} bg="gray.100" rounded="md" >
                     <HStack

@@ -76,12 +76,13 @@ export const Signup = () => {
         return
       }
     const url =
-      "https://vast-garden-82865-6f202a95ef85.herokuapp.com/api/v1/auth/register";
+      "https://vast-garden-82865-6f202a95ef85.herokuapp.com/api/v1/storalinker";
     const requestBody = {
       username: username,
       password: password,
       email: username,
       dob: "2000-01-01",
+      authorities: ['user']
     };
 
     fetch(url, {
@@ -95,6 +96,7 @@ export const Signup = () => {
         if (response.ok) {
           return response.json();
         } else {
+          console.log(response)
           throw new Error("Network response was not ok.");
         }
       })

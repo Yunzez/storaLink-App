@@ -15,6 +15,7 @@ import { GlobalContext } from "../context/GlobalProvider";
 type SearchBarProps = {
   isFocused?: boolean;
 };
+import * as Font from 'expo-font';
 
 export const SearchBar = styled(TextInput)<SearchBarProps>`
   background-color: ${COLORS.lightOrange};
@@ -106,6 +107,11 @@ export const AGeneralTextInput = (props: AGeneralTextInputProps) => {
 type AGeneralErrorBlockProps = {
   errorText: string;
 };
+
+export const HelveticaBold = styled.Text`
+  font-family: Helvetica-Bold; /* Specify the font family name */
+  font-weight: bold; /* Make the text bold */
+`;
 
 export const RetrunButton = styled(TouchableOpacity)`
   width: 40px;
