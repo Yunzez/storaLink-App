@@ -19,18 +19,18 @@ if encouter error regarding typescript:
     mkdir ~/my_mongo_db
     ```
 
-2. Run MongoDB with `--dbpath`:
+2. Run MongoDB with `--dbpath` (if you put db in Code/storalink_db):
+   *use absolute path*
     ```bash
-    mongod --dbpath ~/my_mongo_db
+    mongod --dbpath=./Code/storalink_db
     ```
 
-* After updating the path, run like this (if you put db in Code/storalink_db):
+3. After updating the path, run like this (if you put db in Code/storalink_db):
 ```
 mongod --dbpath=./Code/storalink_db
 ```
-
 ---
-## Database test (Local)
+## Get Dump from Cloud MangoDB:
 
 Copy a MongoDB Atlas database to your local machine for testing, you can use the `mongodump` and `mongorestore` utilities. Here's how:
 
@@ -53,12 +53,18 @@ Open your terminal and run the following command:
 ```bash
 mongodump --uri "mongodb+srv://<username>:<password>@cluster0.mongodb.net/<dbname>?retryWrites=true&w=majority" --out /path/to/output/folder
 ```
+* this output folder is better not be in your desinated database folder, this is only a dump *
+  
 Replace `<username>`, `<password>`, `<dbname>`, and `/path/to/output/folder` with your actual MongoDB Atlas username, password, database name, and the folder where you want to store the dump.
 
 ### Step 4: Use `mongorestore` to Restore the Database Locally
 After you've downloaded the database, you can restore it to your local MongoDB instance using the following command:
 ```bash
-mongorestore /path/to/output/folder
+mongorestore --db database/path  ./dump/path
 ```
 
+### Step 5: Run local db: 
+```
+mongod --dbpath=./Code/storalink_db
+```
 ----- 
