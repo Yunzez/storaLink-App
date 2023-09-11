@@ -57,6 +57,7 @@ const SignInText = styled(Text)`
 `;
 
 export const Signup = () => {
+  const {backendLink} = useContext(GlobalContext)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { navigator, user, setUser } = useContext(GlobalContext);
@@ -76,7 +77,7 @@ export const Signup = () => {
         return
       }
     const url =
-      "https://vast-garden-82865-6f202a95ef85.herokuapp.com/api/v1/storalinker";
+    backendLink + '/api/v1/auth/signup';
     const requestBody = {
       username: username,
       password: password,
@@ -92,27 +93,36 @@ export const Signup = () => {
       },
       body: JSON.stringify(requestBody),
     })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          console.log(response)
-          throw new Error("Network response was not ok.");
-        }
-      })
-      .then((data) => {
-        console.log("Response data:", data);
-        navigator.navigate("Home");
-        console.log("Username: ", username);
-        console.log("Password: ", password);
-        setLoading(false);
-        setUser({ username: username, email: username, dob: "" });
-        // Handle the response data here
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        // Handle any errors here
-      });
+    .then((response) => {
+      if (response.ok) {
+        console.log(response);
+        return response.json();
+      } else {
+        console.log("error:", response);
+        return response.json().then((errorData) => {
+          // Assuming the backend sends a JSON with an 'error' field
+
+          const error = new Error();
+          error.message = errorData.error; // Set the error message
+          throw error;
+        });
+      }
+    })
+    .then((data) => {
+      console.log("Response data:", data);
+      navigator.navigate("Home");
+      console.log("Username: ", username);
+      console.log("Password: ", password);
+      setLoading(false);
+      setUser({ username: username, email: username, dob: "" });
+      // Handle the response data here
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.log("Error:", error.message);  // Access the error message here
+      // Handle any errors here
+  });
+
 
     navigator.navigate("Home");
     console.log("Username: ", username);

@@ -230,7 +230,8 @@ interface GlobalContextProps {
   shareUrl: string;
   setShareUrl:  Dispatch<SetStateAction<string>>;
   defaultImage: any;
-  placeHolder: any
+  placeHolder: any;
+  backendLink: string;
 }
 
 export const GlobalContext = createContext<GlobalContextProps>({
@@ -245,7 +246,7 @@ export const GlobalContext = createContext<GlobalContextProps>({
   setUser: () => {},
   screenHeight: 0,
   screenWidth: 0,
-  devMode: false,
+  devMode: true,
   setCurrentFocusedFolder: () => {},
   currentFocusedFolder: {
     id: 0,
@@ -267,7 +268,8 @@ export const GlobalContext = createContext<GlobalContextProps>({
   shareUrl: '',
   setShareUrl: () => {},
   defaultImage: '',
-  placeHolder:""
+  placeHolder:"",
+  backendLink: ''
 });
 
 interface GlobalContextProviderProps {
@@ -283,6 +285,8 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   const navigator =
     useNavigation<NavigationProp<RootStackParamList, "Unknown">>();
   const devMode = true;
+  const backendLink =  devMode ? 'http://localhost:8080' :
+      "https://vast-garden-82865-6f202a95ef85.herokuapp.com/api/v1/auth/authenticate";
   const screenHeight = Dimensions.get("window").height; // Get screen height
   const screenWidth = Dimensions.get("window").width; // Get screen width
 
@@ -427,7 +431,8 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
         shareUrl,
         setShareUrl,
         defaultImage,
-        placeHolder
+        placeHolder,
+        backendLink
       }}
     >
       {children}

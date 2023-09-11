@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Box, Text, VStack, Avatar, HStack, Flex } from "native-base";
+import { Box, Text, VStack, Avatar, HStack, Flex, SearchIcon } from "native-base";
 import { FolderProps, GlobalContext } from "../context/GlobalProvider";
 import LoadingScreen from "../components/LoadingScreen";
 import { COLORS, SPACE } from "../theme/constants";
@@ -30,9 +30,13 @@ import MoreOptionsButtonDropDown from "../components/MoreOptionsButtonDropDown";
 import * as Sharing from "expo-sharing";
 import { Share } from "react-native";
 import { LinkViewProps } from "../Test/MockData";
+import AddIcon from "../assets/svgComponents/AddIcon";
+import Filter from "../assets/svgComponents/Filter";
 
-
-export const fetchFolderDataById = (id: string | number, folderCache): FolderProps => {
+export const fetchFolderDataById = (
+  id: string | number,
+  folderCache
+): FolderProps => {
   if (!folderCache) {
     return null;
   }
@@ -58,8 +62,6 @@ export const SingleFolderView = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const route = useRoute();
-
- 
 
   useEffect(() => {
     if (route.params) {
@@ -206,19 +208,31 @@ export const SingleFolderView = () => {
             </Text>
             <Flex flexDirection={"row"} justifyContent={"space-between"} mb={3}>
               <Flex flexDirection={"row"}>
+              <OutLinedButton
+                  style={{ marginRight: 5 }}
+                  onClick={() => {
+                    console.log("hello");
+                  }}
+                  text=""
+                  icon={<SearchIcon color={COLORS.themeYellow}/>}
+                />
                 <OutLinedButton
                   style={{ marginRight: 5 }}
                   onClick={() => {
                     console.log("hello");
                   }}
                   text="Sort By"
+                  icon={<Filter width="20" height="20" color={COLORS.themeYellow}/>}
                 />
+               
                 <OutLinedButton
                   onClick={() => {
                     console.log("hello");
                   }}
                   text="Add item"
+                  icon={<AddIcon width="20" height="20" color={COLORS.themeYellow}/>}
                 />
+                  
               </Flex>
 
               <View style={{ flexDirection: "row" }}>
@@ -272,81 +286,85 @@ export const SingleFolderView = () => {
 
               {currData.links && currData.links.length > 0 ? (
                 currData.links.map((link, index) => (
-                  <TouchableOpacity onPress={() => {console.log('pressed for single link')
-                  navigator.navigate("SingleLinkView", {
-                    id: route.params.id,
-                    linkSeq: index
-                  });}}>
-                  <Box key={index} p={2} bg="gray.100" rounded="md" >
-                    <HStack
-                      justifyContent="space-between"
-                      alignItems={"center"}
-                    >
-                      <HStack justifyContent="space-between">
-                        {link.imgUrl?.length === 0 ? (
-                          // precheck if the imgUrl is not filled out, we use default value if not
-                          <Image
-                            source={placeholder as ImageSourcePropType}
-                            style={{
-                              width: 55,
-                              height: 40,
-                              borderRadius: SPACE.nativeRoundSm,
-                            }}
-                          />
-                        ) : link.imgUrl && isLocalPath(link.imgUrl) ? (
-                          <Image
-                            source={link.imgUrl as ImageSourcePropType}
-                            style={{
-                              width: 55,
-                              height: 40,
-                              borderRadius: SPACE.nativeRoundSm,
-                            }}
-                          />
-                        ) : (
-                          <Image
-                            source={{ uri: link.imgUrl }}
-                            style={{
-                              width: 55,
-                              height: 40,
-                              borderRadius: SPACE.nativeRoundSm,
-                            }}
-                          />
-                        )}
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log("pressed for single link");
+                      navigator.navigate("SingleLinkView", {
+                        id: route.params.id,
+                        linkSeq: index,
+                      });
+                    }}
+                  >
+                    <Box key={index} p={2} bg="gray.100" rounded="md">
+                      <HStack
+                        justifyContent="space-between"
+                        alignItems={"center"}
+                      >
+                        <HStack justifyContent="space-between">
+                          {link.imgUrl?.length === 0 ? (
+                            // precheck if the imgUrl is not filled out, we use default value if not
+                            <Image
+                              source={placeholder as ImageSourcePropType}
+                              style={{
+                                width: 55,
+                                height: 40,
+                                borderRadius: SPACE.nativeRoundSm,
+                              }}
+                            />
+                          ) : link.imgUrl && isLocalPath(link.imgUrl) ? (
+                            <Image
+                              source={link.imgUrl as ImageSourcePropType}
+                              style={{
+                                width: 55,
+                                height: 40,
+                                borderRadius: SPACE.nativeRoundSm,
+                              }}
+                            />
+                          ) : (
+                            <Image
+                              source={{ uri: link.imgUrl }}
+                              style={{
+                                width: 55,
+                                height: 40,
+                                borderRadius: SPACE.nativeRoundSm,
+                              }}
+                            />
+                          )}
 
-                        <VStack marginLeft={4}>
-                          <Text>{link.title}</Text>
-                          <Text color={COLORS.darkGrey}>
-                            From {link.socialMediaType}
-                          </Text>
-                        </VStack>
+                          <VStack marginLeft={4}>
+                            <Text>{link.title}</Text>
+                            <Text color={COLORS.darkGrey}>
+                              From {link.socialMediaType}
+                            </Text>
+                          </VStack>
+                        </HStack>
+
+                        <MoreOptionsButtonDropDown
+                          option={[
+                            {
+                              name: "Delete",
+                              onClick: () => {
+                                dispatchFolderCache({
+                                  type: "REMOVE_LINK",
+                                  linkId: link.id ?? -1,
+                                  folderId: route.params?.id,
+                                });
+                              },
+                            },
+                            {
+                              name: "Share",
+                              onClick: () => {
+                                console.log("Share this");
+                                Share.share({
+                                  message: "share link",
+                                  url: "https://www.baidu.com",
+                                });
+                              },
+                            },
+                          ]}
+                        />
                       </HStack>
-
-                      <MoreOptionsButtonDropDown
-                        option={[
-                          {
-                            name: "Delete",
-                            onClick: () => {
-                              dispatchFolderCache({
-                                type: "REMOVE_LINK",
-                                linkId: link.id ?? -1,
-                                folderId: route.params?.id,
-                              });
-                            },
-                          },
-                          {
-                            name: "Share",
-                            onClick: () => {
-                              console.log("Share this");
-                              Share.share({
-                                message: "share link",
-                                url: "https://www.baidu.com",
-                              });
-                            },
-                          },
-                        ]}
-                      />
-                    </HStack>
-                  </Box>
+                    </Box>
                   </TouchableOpacity>
                 ))
               ) : (
@@ -379,7 +397,6 @@ export const SingleFolderView = () => {
               )}
             </VStack>
           </Box>
-          
         </ScrollView>
       ) : (
         <View style={{ height: screenHeight * 0.5 }}>

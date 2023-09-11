@@ -61,7 +61,8 @@ const SignInText = styled(Text)`
 `;
 
 export const Login = () => {
-  const { navigator, user, setUser, devMode } = useContext(GlobalContext);
+  const { navigator, user, setUser, devMode, backendLink } =
+    useContext(GlobalContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remeber, setRemenber] = useState(false);
@@ -69,8 +70,8 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log('dev mode is: ', devMode)
-  }, [devMode])
+    console.log("dev mode is: ", devMode);
+  }, [devMode]);
   const handleLogin = () => {
     setLoading(true);
 
@@ -81,33 +82,58 @@ export const Login = () => {
       setError("Invalid email address");
       alert("Please enter a valid email address");
       setLoading(false);
-      return 
+      return;
     }
 
-    if (checkPassword(password).length > 0) {
-      setError("Invalid password");
-      setLoading(false);
-      return
-    }
+    // if (checkPassword(password).length > 0) {
+    //   setError("Invalid password");
+    //   setLoading(false);
+    //   return;
+    // }
     // * logging in
-    const url =
-      "https://vast-garden-82865-6f202a95ef85.herokuapp.com/api/v1/auth/authenticate";
+    const url = backendLink + "/api/v1/auth/login";
+    const csrfTokenLink = backendLink + "/api/v1/auth/csrf-token"
+    
+    // fetch(csrfTokenLink, {
+    //   method: 'GET',
+    //   credentials: 'include',
+    // })
+    // .then(response => {
+    //   if (!response.ok) {
+    //     throw new Error('Network response was not ok');
+    //   }
+    //   return response.text().then(text => {
+    //     return text ? JSON.parse(text) : {}
+    //   })
+    // })
+    // .then(data => {
+    //   const csrfToken = data.token;
+    //   // Now you can use csrfToken in your subsequent requests
+    // })
+    // .catch(error => {
+    //   console.error('Error fetching CSRF token:', error);
+    // });
+    
+
+    fetch(url)
     const requestBody = {
       username: username,
       password: password,
       email: username,
       dob: "2000-01-01",
     };
+    console.log(requestBody)
 
-    if(devMode) {
-      console.log('test mode: login without correct credentials')
-      navigator.navigate("Home");
-        console.log("Username: ", username);
-        console.log("Password: ", password);
-        setLoading(false);
-        setUser({ username: username, email: username, dob: "" });
-        return 
-    }
+    // if (devMode) {
+    //   console.log("test mode: login without correct credentials");
+    //   navigator.navigate("Home");
+    //   console.log("Username: ", username);
+    //   console.log("Password: ", password);
+    //   setLoading(false);
+    //   setUser({ username: username, email: username, dob: "" });
+    //   return;
+    // }
+    console.log("fetching", url);
     fetch(url, {
       method: "POST",
       headers: {
@@ -117,12 +143,17 @@ export const Login = () => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log(response)
+          console.log(response);
           return response.json();
         } else {
-          setError('Some Error Occured')
-          setLoading(false);
-          throw new Error("Network response was not ok.");
+          console.log("error:", response);
+          return response.json().then((errorData) => {
+            // Assuming the backend sends a JSON with an 'error' field
+
+            const error = new Error();
+            error.message = errorData.error; // Set the error message
+            throw error;
+          });
         }
       })
       .then((data) => {
@@ -136,9 +167,9 @@ export const Login = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.log("Error:", error.json());
+        console.log("Error:", error.message);  // Access the error message here
         // Handle any errors here
-      });
+    });
 
     // ! checking login goes here
 
@@ -146,9 +177,9 @@ export const Login = () => {
   };
 
   ShareMenuReactView.data().then((data) => {
-    console.log("current data", data)
-  })
-  
+    console.log("current data", data);
+  });
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       {loading ? (
@@ -161,7 +192,9 @@ export const Login = () => {
                 style={{ width: 50, height: 50 }}
                 source={require("../assets/img/YellowIcon.png")}
               />
-               <Text style={{marginTop: 10, fontSize: 18, fontWeight: '500'}}>Sign in </Text>
+              <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "500" }}>
+                Sign in{" "}
+              </Text>
             </View>
             <AGeneralErrorBlock errorText={error} />
 

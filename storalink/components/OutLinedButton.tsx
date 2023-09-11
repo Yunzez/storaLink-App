@@ -5,6 +5,7 @@ import {
   StyleProp,
   ViewStyle,
   StyleSheet,
+  View,
 } from "react-native";
 import { COLORS, SPACE } from "../theme/constants";
 import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
@@ -13,18 +14,26 @@ type OutLinedButtonProps = {
   onClick: () => void;
   text: string;
   style?: StyleProp<ViewStyle>; // Update the type declaration here
+  icon: React.JSX.Element;
 };
 
-const OutLinedButton = ({ onClick, text, style }: OutLinedButtonProps) => {
+const OutLinedButton = ({
+  icon,
+  onClick,
+  text,
+  style,
+}: OutLinedButtonProps) => {
   const buttonStyle = StyleSheet.compose(
     {
       borderColor: COLORS.themeYellow,
       borderRadius: SPACE.nativeRoundSm,
       borderWidth: 1,
       padding: 4,
+      justifyContent:'center'
     },
     style
   );
+  console.log(icon);
   return (
     <TouchableOpacity
       style={buttonStyle}
@@ -32,7 +41,10 @@ const OutLinedButton = ({ onClick, text, style }: OutLinedButtonProps) => {
         onClick();
       }}
     >
-      <Text style={{ color: COLORS.themeYellow }}>{text}</Text>
+      <View style={{flexDirection:'row', justifyContent:'space-between', alignContent: 'center', alignItems:'center'}}>
+        {icon}
+        <Text style={{ color: COLORS.themeYellow }}>{text}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
