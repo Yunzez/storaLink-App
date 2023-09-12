@@ -6,6 +6,7 @@ import HeaderWithBackButton from "../components/HeaderWithBackBtn";
 import { useRoute } from "@react-navigation/native";
 import { fetchFolderDataById } from "./SingleFolderView";
 import { COLORS, SPACE } from "../theme/constants";
+import StoralinkSwiper from "../components/StoralinkSwiper";
 
 const SingleLinkView = () => {
   const {
@@ -16,17 +17,64 @@ const SingleLinkView = () => {
     dispatchFolderCache,
     folderCache,
     defaultImage,
-    placeHolder
+    placeHolder,
   } = useContext(GlobalContext);
 
   const route = useRoute();
   const [selectedLinkSeq, setSelectedLinkSeq] = useState(route.params.linkSeq);
   const folder = fetchFolderDataById(route.params?.id, folderCache);
   const links = folder.links;
+  const linkOnScroll = (direction: string) => {
+    console.log('triggered scroll', direction)
+    if(direction == 'left') {
+      setSelectedLinkSeq(selectedLinkSeq - 1)
+      console.log('decrease seq')
+    } else {
+      setSelectedLinkSeq(selectedLinkSeq + 1)
+    }
+  }
 
   console.log("got folder", folder, selectedLinkSeq);
   return (
     <SafeAreaView>
+      <StoralinkSwiper
+      onCardScolled={(direction: string) => linkOnScroll(direction)}
+        style={{
+          width: screenWidth,
+          position: "absolute",
+          top: 120,
+          left: 0,
+          right: 0,
+          height: screenHeight * 0.35,
+          zIndex: 10
+        }}
+      >
+        {links.map((link, index) => (
+          <View
+            key={index}
+            style={{
+              backgroundColor: COLORS.white,
+              padding: SPACE.nativeMd,
+              borderRadius: SPACE.nativeRoundMd,
+              height: screenHeight * 0.4,
+              width: '100%'
+            }}
+          >
+            <View style={{ marginVertical: SPACE.nativeSm }}>
+              <Text>@Some_Auther</Text>
+            </View>
+            <Image
+              style={{
+                width: '100%',
+                height: screenHeight * 0.3, // Set a fixed height
+                borderRadius: SPACE.nativeRoundMd,
+              }}
+              source={link.imgUrl ? link.imgUrl : placeHolder}
+            />
+          </View>
+        ))}
+      </StoralinkSwiper>
+
       <View
         style={{
           flexDirection: "row",
@@ -43,32 +91,13 @@ const SingleLinkView = () => {
             navigateOptions={{ id: route.params?.id }}
           />
 
-          <View style={{ marginTop: 30 }}>
-            <View
-              style={{
-                backgroundColor: COLORS.white,
-                padding: SPACE.nativeMd,
-                borderRadius: SPACE.nativeRoundMd,
-                height: screenHeight * 0.3
-              }}
-            >
-              <View style={{ marginVertical: SPACE.nativeSm }}>
-                <Text>@Some_Auther</Text>
-              </View>
-
-              <Image
-                style={{ flex: 1, width: "100%", height: 'auto', borderRadius: SPACE.nativeRoundMd }}
-                source={
-                  links[selectedLinkSeq].imgUrl
-                    ? links[selectedLinkSeq].imgUrl
-                    : placeHolder
-                }
-              />
-            </View>
-            <Text style={{marginTop: 30}}>
+          <View style={{ marginTop: screenHeight * 0.35 }}>
+            <Text style={{ marginTop: 30 }}>
               {selectedLinkSeq + 1} / {links.length}
             </Text>
-            <HelveticaBold style={{marginTop: 30 }}>{links[selectedLinkSeq].title}</HelveticaBold>
+            <HelveticaBold style={{ marginTop: 30 }}>
+              {links[selectedLinkSeq].title}
+            </HelveticaBold>
           </View>
         </View>
       </View>

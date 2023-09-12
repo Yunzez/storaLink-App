@@ -33,7 +33,7 @@ const OutLinedButton = ({
     },
     style
   );
-  console.log(icon);
+
   return (
     <TouchableOpacity
       style={buttonStyle}
