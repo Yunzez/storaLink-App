@@ -98,6 +98,9 @@ const SingleLinkView = () => {
             <HelveticaBold style={{ marginTop: 30 }}>
               {links[selectedLinkSeq].title}
             </HelveticaBold>
+            <HelveticaBold style={{ marginTop: 30 }}>
+              {links[selectedLinkSeq].description}
+            </HelveticaBold>
           </View>
         </View>
       </View>

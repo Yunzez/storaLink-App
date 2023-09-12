@@ -1,5 +1,5 @@
 import { View } from "native-base";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   TouchableOpacity,
   Text,
@@ -41,6 +41,8 @@ const AddLinks = () => {
   const [status, setStatus] = useState<statusType>(statusType.initialize);
   const [url, setUrl] = useState("");
   const navigation = useNavigation()
+  const [description, setDescription] = useState('')
+  const desRef = useRef()
   const LoadingContainer = styled(View)`
     align-items: center;
     justify-content: center;
@@ -118,6 +120,7 @@ const AddLinks = () => {
   };
 
   const onCreateLink = () => {
+    console.log(description)
     setStatus(statusType.creating)
     if (selectedFolder == -1) {
       return;
@@ -126,10 +129,10 @@ const AddLinks = () => {
       title: url,
       linkUrl: url,
       socialMediaType: SocialMediaSrc.INS,
-        imgUrl: image 
+      imgUrl: image 
     };
 
-   const completeLink = postCreateLink(newLink)
+   const completeLink = postCreateLink(newLink, description)
 
     dispatchFolderCache({
       type: "ADD_LINK",
@@ -218,9 +221,12 @@ const AddLinks = () => {
               <View>
                 <Text>Description</Text>
                 <AGeneralTextInput
+                value={description}
                   multiline={true}
                   numberOfLines={4}
                   placeholder="What’s this folder about?"
+
+                  onChangeText={(text: string) => {setDescription(text)}}
                 />
               </View>
 

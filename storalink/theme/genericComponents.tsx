@@ -37,6 +37,7 @@ export const ResultsDropdown = styled(View)`
 interface AGeneralTextInputProps extends TextInputProps {
   multiline?: boolean; // Add the "multiline" prop to the AGeneralTextInputProps interface
   numberOfLines? : number
+  ref? 
 }
 
 

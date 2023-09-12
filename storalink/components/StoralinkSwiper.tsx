@@ -26,14 +26,19 @@ const StoralinkSwiper: React.FC<StoralinkSwiperProps> = ({ children, style, onCa
     const currentScrollPosition = event.nativeEvent.contentOffset.x;
     const cardIndex = Math.round(currentScrollPosition / cardWidth);
     const snapTo = cardIndex * cardWidth;
-
+    const totalCards = React.Children.count(children);
+  
     if (cardIndex !== initialCardIndex) {
       const direction = currentScrollPosition > initialCardIndex * cardWidth ? 'right' : 'left';
       onCardScolled?.(direction);
     }
-
-    scrollViewRef.current.scrollTo({ x: snapTo, animated: true });
+  
+    // Check if the user is at the first or last card
+    if (cardIndex >= 0 && cardIndex < totalCards) {
+      scrollViewRef.current.scrollTo({ x: snapTo, animated: true });
+    }
   };
+  
 
   return (
     <Animated.ScrollView

@@ -158,7 +158,7 @@ export const Login = () => {
       })
       .then((data) => {
         console.log("Response data:", data);
-        navigator.navigate("Home");
+        navigator.navigate("BottomNavigater");
         console.log("Username: ", username);
         console.log("Password: ", password);
         setLoading(false);

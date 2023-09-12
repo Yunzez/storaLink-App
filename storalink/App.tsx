@@ -110,7 +110,7 @@ export default function App() {
               options={{
                 headerShown: false,
               }}
-              name="Home"
+              name="BottomNavigater"
               component={BottomTabNavigators}
             />
             {/* Add more Settings screens here */}

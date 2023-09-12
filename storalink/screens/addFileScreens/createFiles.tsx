@@ -13,9 +13,10 @@ export function postCreateFolder(folder: FolderCardProps): FolderCardProps {
   return folder;
 }
 
-export function postCreateLink(link: LinkViewProps): LinkViewProps {
+export function postCreateLink(link: LinkViewProps, description?:string): LinkViewProps {
     const randomId = Math.floor(Math.random() * 99999) + 1;
-    link = { ...link, id: randomId };
+    const finalDes = description.length > 0 ? description : 'This link has no description' 
+    link = { ...link, id: randomId, description: finalDes };
     return link;
 }
 
