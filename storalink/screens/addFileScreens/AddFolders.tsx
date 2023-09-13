@@ -25,7 +25,9 @@ const AddFolders = () => {
     screenWidth,
     folderCovers,
     dispatchFolderCovers,
-    dispatchFolderCache
+    dispatchFolderCache,
+    backendLink,
+    user
   } = useContext(GlobalContext);
   const [valid, setValid] = useState(false);
   const [folderName, setFolderName] = useState("");
@@ -79,7 +81,7 @@ const AddFolders = () => {
   const createFolder = () => {
     console.log("run create folder");
     setStatus(statusType.creating);
-    const folderWithId = postCreateFolder(newFolderObject);
+    const folderWithId = postCreateFolder(newFolderObject, backendLink, user.id);
     setNewFolderId(folderWithId.id ?? -1);
     dispatchFolderCovers({ type: "ADD", folder: folderWithId });
     //TODO add fetch api to create folder here

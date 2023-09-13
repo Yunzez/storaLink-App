@@ -72,11 +72,9 @@ export const Login = () => {
   useEffect(() => {
     console.log("dev mode is: ", devMode);
   }, [devMode]);
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setLoading(true);
-
-    // Handle login action here
-    // Use a regular expression to validate the email
+    let userId = ''
     const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
     if (checkEmail(username, emailRegex).length > 0) {
       setError("Invalid email address");
@@ -119,14 +117,13 @@ export const Login = () => {
     const requestBody = {
       username: username,
       password: password,
-      email: username,
-      dob: "2000-01-01",
+      email: username
     };
-    console.log(requestBody)
+    console.log(requestBody, devMode)
 
     // if (devMode) {
     //   console.log("test mode: login without correct credentials");
-    //   navigator.navigate("Home");
+    //   navigator.navigate("BottomNavigater");
     //   console.log("Username: ", username);
     //   console.log("Password: ", password);
     //   setLoading(false);
@@ -157,12 +154,13 @@ export const Login = () => {
         }
       })
       .then((data) => {
-        console.log("Response data:", data);
+        console.log("Response data id:", data.id);
         navigator.navigate("BottomNavigater");
-        console.log("Username: ", username);
-        console.log("Password: ", password);
-        setLoading(false);
-        setUser({ username: username, email: username, dob: "" });
+        userId =  data.id
+        setUser({ id: data.id, username: username, email: username, dob: "" });
+        console.log('new user', { id: data.id, username: username, email: username, dob: "" })
+        // * update user folder 
+        fetchUserFolderInfo(data.id)
         // Handle the response data here
       })
       .catch((error) => {
@@ -171,10 +169,25 @@ export const Login = () => {
         // Handle any errors here
     });
 
-    // ! checking login goes here
-
-    // * assume failure test goes here:
   };
+
+
+  const fetchUserFolderInfo = async (userId: string | number) => {
+    const userFolderUrl = `${backendLink}/api/v1/folder/user/${userId}`; // Make sure to include the full API path
+    try {
+      const rep = await fetch(userFolderUrl);
+      if (rep.ok) {
+        const folderData = await rep.json();
+        console.log('folderData:', folderData);
+      } else {
+        console.log('Error:', rep.status, rep.statusText);
+      }
+    } catch (error) {
+      console.log('Fetch error:', error);
+    }
+    setLoading(false);
+  };
+  
 
   ShareMenuReactView.data().then((data) => {
     console.log("current data", data);

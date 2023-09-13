@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components/native";
+import { Image } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -17,24 +18,31 @@ import { GlobalContext } from "../context/GlobalProvider";
 import SettingNavigators from "./SettingNavigators";
 import AddFile from "../screens/AddFile";
 import AddFilesNavigators from "./AddFileNavigators";
+import BottomAddIcon from "../assets/icon/BottomAdd.png";
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
 
   const BottomNavigationContainer = styled(View)`
-    height: ${screenHeight * 0.08}px;
+    height: ${screenHeight * 0.09}px;
     background-color: ${COLORS.white};
-    border-radius: 100px;
-    padding: 10px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 8px;
     position: absolute;
-    left: 20px;
-    right: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: ${screenWidth * 0.9}px;
+    width: auto;
     flex-direction: row;
-    border: 2px solid ${COLORS.darkGrey};
+
     box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3);
   `;
 
@@ -57,7 +65,9 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const name = descriptors[route.key].route.name;
+          let useIcon = true;
           let iconName = "home";
+          let showText = true;
           switch (name) {
             case "Home":
               iconName = "home";
@@ -72,7 +82,8 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               iconName = "settings";
               break;
             case "Add":
-              iconName = "add-circle";
+              useIcon = false;
+              showText = false;
               break;
             default:
               break;
@@ -116,20 +127,42 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
-              style={{ marginLeft: 10, marginRight: 10, alignItems: "center"}}
+              style={{
+                marginLeft: 10,
+                marginRight: 10,
+                alignItems: "center",
+                transform:
+                  isFocused && name === "Add" ? [{ translateY: -10 }] : [],
+              }}
             >
-              <Ionicons
-                name={
-                  isFocused
-                    ? (iconName as typeof name)
-                    : ((iconName + "-outline") as typeof name)
-                }
-                size={
-                  isFocused ? screenHeight * 0.03 * 1.2 : screenHeight * 0.03
-                }
-                color={isFocused ? COLORS.themeYellow : COLORS.darkGrey}
-              />
-              <Text style={{fontSize:10, color: COLORS.darkGrey}}>{name}</Text>
+              {useIcon ? (
+                <Ionicons
+                  name={
+                    isFocused
+                      ? (iconName as typeof name)
+                      : ((iconName + "-outline") as typeof name)
+                  }
+                  size={
+                    isFocused ? screenHeight * 0.03 * 1.2 : screenHeight * 0.03
+                  }
+                  color={isFocused ? COLORS.themeYellow : COLORS.darkGrey}
+                />
+              ) : (
+                <Image
+                  source={BottomAddIcon}
+                  style={{
+                    width: isFocused && name === "Add" ? 75 : 60,
+                    height: isFocused && name === "Add" ? 75 : 60,
+                    marginBottom: isFocused && name === "Add" ? 20 : 10,
+                  }}
+                />
+              )}
+
+              {showText && (
+                <Text style={{ fontSize: 10, color: COLORS.darkGrey }}>
+                  {name}
+                </Text>
+              )}
             </TouchableOpacity>
           );
         })}

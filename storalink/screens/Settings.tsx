@@ -18,11 +18,23 @@ import Star from "../assets/svgComponents/Star";
 import StoraModal, { StoraModalProps } from "../components/StoraModal";
 import Pencil from "../assets/svgComponents/Pencil";
 import { Switch } from "native-base";
+import { getEmptyUser } from "../utils";
 
 export const Settings = () => {
-  const { navigator, user } = useContext(GlobalContext);
+  const { navigator, user, setUser, dispatchFolderCache, dispatchFolderCovers, dispatchRecentLinkCache } = useContext(GlobalContext);
 
   const handleButtonPress = () => {};
+
+  const onLogOut = () => {
+    navigator.navigate("Login")
+    // * refresh user data
+    if(user) {
+      setUser(getEmptyUser())
+      dispatchFolderCache({type: 'CLEAR'})
+      dispatchFolderCovers({type: 'CLEAR'})
+      dispatchRecentLinkCache({type: 'CLEAR'})
+    }
+  }
 
   const mockOnPress = () => {};
   return (
@@ -85,13 +97,15 @@ export const Settings = () => {
 
       <TouchableOpacity
         style={styles.logoutBtn}
-        onPress={() => navigator.navigate("Login")}
+        onPress={() => onLogOut()}
       >
         <Text style={{ color: COLORS.themeYellow }}>Log out</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
+
+
 
 type SettingActionBtnProps = {
   title: string;

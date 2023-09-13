@@ -40,7 +40,8 @@ export type FolderProps = {
   // add other properties as needed
 };
 
-type User = {
+export type User = {
+  id: any;
   username: string;
   email: string;
   dob: string;
@@ -51,7 +52,8 @@ type User = {
 // Define the actions for folderCovers
 type FolderCoversAction =
   | { type: "ADD"; folder: FolderCardProps }
-  | { type: "REMOVE"; folderId: number };
+  | { type: "REMOVE"; folderId: number }
+  | { type: "CLEAR" };
 // Create the reducer for folderCovers
 
 /**
@@ -86,7 +88,8 @@ type FolderCacheAction =
   | { type: "ADD_FOLDER"; folder: FolderProps }
   | { type: "REMOVE_FOLDER"; folderId: number }
   | { type: "PIN_FOLDER"; folderId: number }
-  | { type: "UNPIN_FOLDER"; folderId: number };
+  | { type: "UNPIN_FOLDER"; folderId: number }
+  | { type: "CLEAR" };
 
 /**
  *
@@ -159,6 +162,9 @@ const FolderCacheReducer = (
           : null;
       console.log("New state:", newState);
       return newState?.length == 0 ? null : newState;
+    case "CLEAR":
+      console.log("clear all folders");
+      return null;
     default:
       return state;
   }
@@ -166,7 +172,8 @@ const FolderCacheReducer = (
 
 type RecentLinkCacheAction =
   | { type: "ADD"; link: LinkViewProps; folderId: number }
-  | { type: "DELETE"; folderId: number };
+  | { type: "DELETE"; folderId: number }
+  | { type: "CLEAR" };
 
 interface recentLinkType extends LinkViewProps {
   folderId: number;
@@ -228,7 +235,7 @@ interface GlobalContextProps {
   expoPushToken: ExpoPushToken | string;
   setExpoPushToken: Dispatch<SetStateAction<ExpoPushToken | string>>;
   shareUrl: string;
-  setShareUrl:  Dispatch<SetStateAction<string>>;
+  setShareUrl: Dispatch<SetStateAction<string>>;
   defaultImage: any;
   placeHolder: any;
   backendLink: string;
@@ -237,6 +244,7 @@ interface GlobalContextProps {
 export const GlobalContext = createContext<GlobalContextProps>({
   navigator: undefined,
   user: {
+    id: "",
     username: "",
     email: "",
     dob: "",
@@ -265,11 +273,11 @@ export const GlobalContext = createContext<GlobalContextProps>({
   dispatchRecentLinkCache: () => {},
   expoPushToken: "",
   setExpoPushToken: () => {},
-  shareUrl: '',
+  shareUrl: "",
   setShareUrl: () => {},
-  defaultImage: '',
-  placeHolder:"",
-  backendLink: ''
+  defaultImage: "",
+  placeHolder: "",
+  backendLink: "",
 });
 
 interface GlobalContextProviderProps {
@@ -279,14 +287,15 @@ interface GlobalContextProviderProps {
 export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   children,
 }) => {
-  const defaultImage = require('../assets/img/YellowIcon.png');
-  const placeHolder = require('../assets/mockImg/placeholder.png')
-  const [shareUrl, setShareUrl] = useState('') 
+  const defaultImage = require("../assets/img/YellowIcon.png");
+  const placeHolder = require("../assets/mockImg/placeholder.png");
+  const [shareUrl, setShareUrl] = useState("");
   const navigator =
     useNavigation<NavigationProp<RootStackParamList, "Unknown">>();
   const devMode = true;
-  const backendLink =  devMode ? 'http://localhost:8080' :
-      "https://vast-garden-82865-6f202a95ef85.herokuapp.com/api/v1/auth/authenticate";
+  const backendLink = devMode
+    ? "http://localhost:8080"
+    : "https://vast-garden-82865-6f202a95ef85.herokuapp.com/api/v1/auth/authenticate";
   const screenHeight = Dimensions.get("window").height; // Get screen height
   const screenWidth = Dimensions.get("window").width; // Get screen width
 
@@ -349,6 +358,7 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   const [isOpen, setIsOpen]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState(false);
   const [user, setUser]: [User, Dispatch<SetStateAction<User>>] = useState({
+    id: "",
     username: "",
     email: "",
     dob: "",
@@ -432,7 +442,7 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
         setShareUrl,
         defaultImage,
         placeHolder,
-        backendLink
+        backendLink,
       }}
     >
       {children}

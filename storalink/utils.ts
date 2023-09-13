@@ -1,4 +1,5 @@
 import { MockSingleFolderData } from "./Test/MockData";
+import { User } from "./context/GlobalProvider";
 
 export enum SocialMediaSrc {
   INS = "Instagram",
@@ -24,13 +25,12 @@ export const checkPassword = (password: string) => {
   return "";
 };
 
-// * check if the image is local path 
+// * check if the image is local path
 export const isLocalPath = (url: string) => {
-
-  if (typeof url === 'string') {
-    return false // Check if the url does not start with "http" (i.e., local path)
+  if (typeof url === "string") {
+    return false; // Check if the url does not start with "http" (i.e., local path)
   }
-    return true
+  return true;
 };
 
 export function hexToRGBA(hex: string, alpha = 1) {
@@ -42,14 +42,27 @@ export function hexToRGBA(hex: string, alpha = 1) {
 }
 
 export function fetchFolderDataById(id: string | number) {
-  console.log(id)
+  console.log(id);
   const target = MockSingleFolderData.find((value) => {
     return value.id === Number(id);
-  })
-  
+  });
+
   return target;
 }
 
-
-
-
+/**
+ * 
+ * @returns an empty user of @
+ */
+export function getEmptyUser(): User {
+  return {
+    user: {
+      id: "",
+      username: "",
+      email: "",
+      dob: "",
+      profileImg: "",
+      userType: "basic",
+    } as User
+  };
+}
