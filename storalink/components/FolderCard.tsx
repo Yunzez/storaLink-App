@@ -105,6 +105,7 @@ const FolderCard = React.memo((props: FolderCardProps) => {
   useEffect(() => {
     console.log(props.pinned);
   });
+  console.log('image url: ', props.imgUrl)
   return (
     <Card
       onPress={() => {
@@ -127,7 +128,7 @@ const FolderCard = React.memo((props: FolderCardProps) => {
         </View>
       )}
       {
-        props.imgUrl?.length === 0 ? (
+        props.imgUrl?.length === 0 || !props.imgUrl ? (
           // precheck if the imgUrl is not filled out, we use default value if not
           <CardImage source={placeholder as ImageSourcePropType} />
         ) : isLocalPath(props.imgUrl) ? ( // Check if imgUrl is a local path

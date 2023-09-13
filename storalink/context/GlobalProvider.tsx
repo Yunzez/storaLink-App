@@ -86,6 +86,7 @@ type FolderCacheAction =
   | { type: "ADD_LINK"; link: LinkViewProps; folderId: number }
   | { type: "REMOVE_LINK"; linkId: number; folderId: number }
   | { type: "ADD_FOLDER"; folder: FolderProps }
+  | {type: "DUMP"; folders: FolderProps[]}
   | { type: "REMOVE_FOLDER"; folderId: number }
   | { type: "PIN_FOLDER"; folderId: number }
   | { type: "UNPIN_FOLDER"; folderId: number }
@@ -165,6 +166,9 @@ const FolderCacheReducer = (
     case "CLEAR":
       console.log("clear all folders");
       return null;
+    case "DUMP":
+      console.log("dump all folders");
+      return action.folders
     default:
       return state;
   }

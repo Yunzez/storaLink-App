@@ -14,7 +14,7 @@ type OutLinedButtonProps = {
   onClick: () => void;
   text: string;
   style?: StyleProp<ViewStyle>; // Update the type declaration here
-  icon: React.JSX.Element;
+  icon?: React.JSX.Element;
 };
 
 const OutLinedButton = ({

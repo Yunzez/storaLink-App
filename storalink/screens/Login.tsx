@@ -26,7 +26,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import { checkEmail, checkPassword } from "../utils";
 import { useShare } from "../hooks/useShare";
 import { ShareMenuReactView } from "react-native-share-menu";
-
+import { FolderProps } from "../context/GlobalProvider";
 const Container = styled(SafeAreaView)`
   flex: 1;
   flex-direction: row;
@@ -61,7 +61,7 @@ const SignInText = styled(Text)`
 `;
 
 export const Login = () => {
-  const { navigator, user, setUser, devMode, backendLink } =
+  const { navigator, user, setUser, devMode, backendLink, dispatchFolderCache } =
     useContext(GlobalContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -179,6 +179,7 @@ export const Login = () => {
       if (rep.ok) {
         const folderData = await rep.json();
         console.log('folderData:', folderData);
+        dispatchFolderCache({type: "DUMP", folders: folderData as FolderProps[]})
       } else {
         console.log('Error:', rep.status, rep.statusText);
       }
