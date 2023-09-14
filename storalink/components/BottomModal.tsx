@@ -126,6 +126,7 @@ const ModalOption = (props: { data: ModalDataProps, closeModal:()=>void}) => {
     <TouchableOpacity
       style={styles.optionContainer}
       onPress={() => {
+        console.log('option onpressed')
         props.data.onClick();
         props.closeModal()
       }}

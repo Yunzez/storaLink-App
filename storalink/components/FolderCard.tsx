@@ -20,6 +20,7 @@ import moreIconActive from "../assets/icon/pinnedFolderOptionsActive.png";
 import { useModalContext } from "../context/ModalContext";
 import PinnedFolderIcon from "../assets/svgComponents/PinnedFolderIcon";
 import LinkNumberIcon from "../assets/svgComponents/LinkNumberIcon";
+import StoraModal from "./StoraModal";
 export type FolderCardProps = {
   id: number;
   title: string;
@@ -66,9 +67,10 @@ const FolderCard = React.memo((props: FolderCardProps) => {
     screenHeight,
     folderCache,
     dispatchFolderCache,
-    dispatchFolderCovers
+    dispatchFolderCovers,
   } = useContext(GlobalContext);
 
+  const [showModal, setShowModal] = useState(false);
   const [loaclModalIndicator, setLoaclModalIndicator] = useState(false);
 
   const modalData: ModalDataProps[] = [
@@ -94,10 +96,10 @@ const FolderCard = React.memo((props: FolderCardProps) => {
     {
       name: "Delete Folder",
       onClick: () => {
-        dispatchFolderCovers({type: "REMOVE", folderId: props.id})
-        dispatchFolderCache({type: "REMOVE_FOLDER", folderId: props.id})
-      }
-    }
+        console.log("click delete");
+        setShowModal(true);
+      },
+    },
   ];
 
   console.log("test url:", props.imgUrl, props.id, props.pinned);
@@ -105,13 +107,63 @@ const FolderCard = React.memo((props: FolderCardProps) => {
   useEffect(() => {
     console.log(props.pinned);
   });
-  console.log('image url: ', props.imgUrl)
+  console.log("image url: ", props.imgUrl);
   return (
     <Card
       onPress={() => {
         props.onClick();
       }}
     >
+      <StoraModal
+        trigger={showModal}
+        setTrigger={setShowModal}
+        headerText="Delete"
+      >
+        <View style={{ padding: 10, paddingTop: 20 }}>
+          <Text style={{ marginVertical: 10 }}>
+            Are you sure you want to delete{" "}
+            <Text style={{ fontWeight: "400" }}>
+              Long Link Title Placeholder 1?
+            </Text>
+          </Text>
+          <View style={{flexDirection: "row", justifyContent: 'flex-end'}}>
+          <TouchableOpacity
+             
+              style={{
+                borderColor: COLORS.standardBlack,
+                padding: 8,
+                borderWidth: 2,
+                borderRadius: SPACE.nativeRoundMd,
+                marginEnd: 10
+              }}
+              onPress={() => {
+                setShowModal(false);
+              }}
+            >
+              <Text style={{color: COLORS.standardBlack, fontWeight: '500'}}>No, Keep It</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                borderColor: COLORS.themeYellow,
+                padding: 8,
+                borderWidth: 2,
+                backgroundColor: COLORS.themeYellow,
+                borderRadius: SPACE.nativeRoundMd,
+              }}
+              onPress={() => {
+                dispatchFolderCovers({ type: "REMOVE", folderId: props.id });
+                dispatchFolderCache({
+                  type: "REMOVE_FOLDER",
+                  folderId: props.id,
+                });
+              }}
+            >
+              <Text style={{color: COLORS.white, fontWeight: '500'}}>Yes, Delete</Text>
+            </TouchableOpacity>
+            
+          </View>
+        </View>
+      </StoraModal>
       {props.pinned && (
         <View
           style={{
@@ -137,7 +189,13 @@ const FolderCard = React.memo((props: FolderCardProps) => {
           <CardImage source={{ uri: props.imgUrl }} />
         ) // Use the image URI
       }
-      <View style={{ flexDirection: "row", justifyContent: "space-between",marginTop: 2, }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: 2,
+        }}
+      >
         <CardTitle>{props.title}</CardTitle>
         <ToggleModalButton
           onClick={() => {

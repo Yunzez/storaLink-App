@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Modal, Center } from "native-base";
+import { Modal, Center, View } from "native-base";
 import { Text, TouchableOpacity } from "react-native";
 import Pencil from "../assets/svgComponents/Pencil";
 import { COLORS } from "../theme/constants";
@@ -8,19 +8,28 @@ import { GlobalContext } from "../context/GlobalProvider";
 export interface StoraModalProps {
   children: React.ReactNode;
   actionBtnNode?: React.ReactNode;
-  trigger: boolean
-  setTrigger: React.Dispatch<boolean>
+  headerText?: string;
+  trigger: boolean;
+  setTrigger: React.Dispatch<boolean>;
 }
 
-export const StoraModal = ({ children, actionBtnNode, trigger, setTrigger }: StoraModalProps) => {
-  const {screenWidth} = useContext(GlobalContext)
+export const StoraModal = ({
+  children,
+  actionBtnNode,
+  trigger,
+  setTrigger,
+  headerText,
+}: StoraModalProps) => {
+  const { screenWidth } = useContext(GlobalContext);
   return (
-    <Center >
-     
-      <Modal isOpen={trigger} onClose={() => setTrigger(false)} >
-        <Modal.Content maxWidth={screenWidth} >
+    <Center>
+      <Modal isOpen={trigger} onClose={() => setTrigger(false)}>
+        <Modal.Content maxWidth={screenWidth}>
           <Modal.Header style={{ borderBottomWidth: 0 }}>
-            <Modal.CloseButton />
+              <Text style={{ fontWeight: "500", fontSize: 16, padding: 3}}>
+                {headerText}
+              </Text>
+              <Modal.CloseButton />
           </Modal.Header>
           {children}
         </Modal.Content>
