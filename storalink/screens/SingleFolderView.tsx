@@ -40,8 +40,9 @@ export const fetchFolderDataById = (
   if (!folderCache) {
     return null;
   }
+  console.log('looking in ', folderCache)
   const target = folderCache.find((value) => {
-    return value.id === Number(id);
+    return value.id === id;
   });
 
   return target;
@@ -159,7 +160,7 @@ export const SingleFolderView = () => {
                         bold
                         color={COLORS.white}
                       >
-                        {currData.id}: {currData.name}
+                      {currData.name}
                       </Text>
                       <Flex flexDirection={"row"}>
                         <Avatar

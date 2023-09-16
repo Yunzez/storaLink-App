@@ -40,7 +40,8 @@ type PinnedFoldersProps = {
 
 const ComponentTitle = styled(Text)`
   font-size: 18px;
-  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   color: ${COLORS.themeYellow};
 `;
 
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const PinnedFolders = ({ parentStyle }: PinnedFoldersProps) => {
+const RecentFolders = ({ parentStyle }: PinnedFoldersProps) => {
   const { navigator, screenHeight, screenWidth, folderCache } =
     useContext(GlobalContext);
   const [trigger, setTrigger] = useState(true);
@@ -99,7 +100,7 @@ const PinnedFolders = ({ parentStyle }: PinnedFoldersProps) => {
   return (
     <View style={parentStyle}>
       <View style={styles.headerWrapperStyle}>
-        <ComponentTitle>Pinned Folders</ComponentTitle>
+      <ComponentTitle>Recent Folders</ComponentTitle>
         <ToggleModalButton
           indicator={loaclModalIndicator}
           onClick={() => setLoaclModalIndicator(true)}
@@ -129,7 +130,7 @@ const PinnedFolders = ({ parentStyle }: PinnedFoldersProps) => {
               />
             ))
           ) : (
-            <Text>You don't have pinned folders</Text>
+            <Text>There is no recent folders yet</Text>
           )}
         </ScrollView>
       </PinnedFoldersWrapper>
@@ -143,4 +144,4 @@ const PinnedFolders = ({ parentStyle }: PinnedFoldersProps) => {
   );
 };
 
-export default PinnedFolders;
+export default RecentFolders;

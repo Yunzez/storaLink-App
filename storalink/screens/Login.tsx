@@ -60,9 +60,27 @@ const SignInText = styled(Text)`
   margin-left: 8px;
 `;
 
+const cleanFolderData = (folderData: any[]): FolderProps[] => {
+  return folderData.map((folder: any) => ({
+    id: folder.id,
+    name: folder.folderName || null,
+    description: folder.folderDescription || null,
+    thumbNailUrl: folder.imageUrl || null,
+    desc: "", // You can set this to a default value or derive it from the original data
+    pinned: false, // You can set this to a default value or derive it from the original data
+    links: folder.linkIds.length > 0 ? folder.linkIds : null // Assuming linkIds can be used to derive LinkViewProps
+  }));
+};
+
 export const Login = () => {
-  const { navigator, user, setUser, devMode, backendLink, dispatchFolderCache } =
-    useContext(GlobalContext);
+  const {
+    navigator,
+    user,
+    setUser,
+    devMode,
+    backendLink,
+    dispatchFolderCache,
+  } = useContext(GlobalContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remeber, setRemenber] = useState(false);
@@ -74,7 +92,7 @@ export const Login = () => {
   }, [devMode]);
   const handleLogin = async () => {
     setLoading(true);
-    let userId = ''
+    let userId = "";
     const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
     if (checkEmail(username, emailRegex).length > 0) {
       setError("Invalid email address");
@@ -90,8 +108,8 @@ export const Login = () => {
     // }
     // * logging in
     const url = backendLink + "/api/v1/auth/login";
-    const csrfTokenLink = backendLink + "/api/v1/auth/csrf-token"
-    
+    const csrfTokenLink = backendLink + "/api/v1/auth/csrf-token";
+
     // fetch(csrfTokenLink, {
     //   method: 'GET',
     //   credentials: 'include',
@@ -111,15 +129,14 @@ export const Login = () => {
     // .catch(error => {
     //   console.error('Error fetching CSRF token:', error);
     // });
-    
 
-    fetch(url)
+    fetch(url);
     const requestBody = {
       username: username,
       password: password,
-      email: username
+      email: username,
     };
-    console.log(requestBody, devMode)
+    console.log(requestBody, devMode);
 
     // if (devMode) {
     //   console.log("test mode: login without correct credentials");
@@ -156,21 +173,24 @@ export const Login = () => {
       .then((data) => {
         console.log("Response data id:", data.id);
         navigator.navigate("BottomNavigater");
-        userId =  data.id
+        userId = data.id;
         setUser({ id: data.id, username: username, email: username, dob: "" });
-        console.log('new user', { id: data.id, username: username, email: username, dob: "" })
-        // * update user folder 
-        fetchUserFolderInfo(data.id)
+        console.log("new user", {
+          id: data.id,
+          username: username,
+          email: username,
+          dob: "",
+        });
+        // * update user folder
+        fetchUserFolderInfo(data.id);
         // Handle the response data here
       })
       .catch((error) => {
         setLoading(false);
-        console.log("Error:", error.message);  // Access the error message here
+        console.log("Error:", error.message); // Access the error message here
         // Handle any errors here
-    });
-
+      });
   };
-
 
   const fetchUserFolderInfo = async (userId: string | number) => {
     const userFolderUrl = `${backendLink}/api/v1/folder/user/${userId}`; // Make sure to include the full API path
@@ -178,17 +198,20 @@ export const Login = () => {
       const rep = await fetch(userFolderUrl);
       if (rep.ok) {
         const folderData = await rep.json();
-        console.log('folderData:', folderData);
-        dispatchFolderCache({type: "DUMP", folders: folderData as FolderProps[]})
+        console.log("folderData:", folderData);
+        const cleanedFolderData = cleanFolderData(folderData);
+        dispatchFolderCache({
+          type: "DUMP",
+          folders: cleanedFolderData as FolderProps[],
+        });
       } else {
-        console.log('Error:', rep.status, rep.statusText);
+        console.log("Error:", rep.status, rep.statusText);
       }
     } catch (error) {
-      console.log('Fetch error:', error);
+      console.log("Fetch error:", error);
     }
     setLoading(false);
   };
-  
 
   ShareMenuReactView.data().then((data) => {
     console.log("current data", data);

@@ -25,24 +25,30 @@ import SearchComponent, {
   searchValueType,
 } from "../components/SearchbarComponent";
 import { FolderProps, GlobalContext } from "../context/GlobalProvider";
-import PinnedFolders from "../components/PinnedFolders";
+import RecentFolder from "../components/RecentFolders";
 import { MockCardList, MockLinkList } from "../Test/MockData";
 import RecentLinks from "../components/RecentLinks";
 import BottomModal from "../components/BottomModal";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { BottomModalProps } from "../components/BottomModal";
 import { FolderCardProps } from "../components/FolderCard";
+import PinnedFolderBadge from "../components/PinnedFolderBadge";
 export const Home = () => {
+  const {
+    navigator,
+    screenHeight,
+    folderCovers,
+    folderCache,
+    shareUrl,
+    setShareUrl,
+  } = useContext(GlobalContext);
 
-  const { navigator, screenHeight, folderCovers, folderCache, shareUrl, setShareUrl } =
-    useContext(GlobalContext);
-
-    useEffect(() => {
-      console.log('change in share url', shareUrl, shareUrl.length)
-      if(shareUrl.length > 0) {
-        setShareUrl('')
-      }
-    }, [shareUrl])
+  useEffect(() => {
+    console.log("change in share url", shareUrl, shareUrl.length);
+    if (shareUrl.length > 0) {
+      setShareUrl("");
+    }
+  }, [shareUrl]);
 
   const searchAlgorithm = (value: string): Map<string, searchResultType> => {
     const retMap = new Map();
@@ -88,8 +94,28 @@ export const Home = () => {
           algorithm={searchAlgorithm}
         />
       </View>
+      {/* pinned folder component */}
+      <View
+        style={{
+          marginTop: 15,
+          flexDirection: "row",
+          width: '90%'
+        }}
+      >
+        <ScrollView
+        horizontal={true}>
+        {folderCache &&folderCache.map((folder: FolderProps) => {
+          return (
+            <View style={{marginEnd: 10}}>
+              <PinnedFolderBadge folder={folder} />
+            </View>
+          );
+        })}
+        </ScrollView>
+        
+      </View>
 
-      <PinnedFolders parentStyle={{ paddingTop: 15 }} />
+      <RecentFolder />
       <RecentLinks />
     </SafeAreaView>
   );
