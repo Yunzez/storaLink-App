@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components/native";
 import { Image } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -18,8 +18,20 @@ import { GlobalContext } from "../context/GlobalProvider";
 import SettingNavigators from "./SettingNavigators";
 import AddFile from "../screens/AddFile";
 import AddFilesNavigators from "./AddFileNavigators";
-import BottomAddIcon from "../assets/icon/BottomAdd.png";
-
+import BottomAddIcon from "../assets/bottomNavigatorIcons/BottomAdd.png";
+import home from "../assets/bottomNavigatorIcons/home.png";
+import home_selected from "../assets/bottomNavigatorIcons/home_selected.png";
+import folder from "../assets/bottomNavigatorIcons/folder.png";
+import folder_selected from "../assets/bottomNavigatorIcons/folder_selected.png";
+import notification from "../assets/bottomNavigatorIcons/notification.png";
+import notification_selected from "../assets/bottomNavigatorIcons/notification_selected.png";
+import profile from "../assets/bottomNavigatorIcons/profile.png";
+import profile_selected from "../assets/bottomNavigatorIcons/profile_selected.png";
+import BottomHome from "../assets/svgComponents/bottomNavSVG/BottomHome";
+import BottomFolder from "../assets/svgComponents/bottomNavSVG/BottomFolder";
+import BottomNotification from "../assets/svgComponents/bottomNavSVG/BottomNotification";
+import BottomProfile from "../assets/svgComponents/bottomNavSVG/BottomProfile";
+import BottomAdd from "../assets/svgComponents/bottomNavSVG/BottomAdd";
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);
 
@@ -65,38 +77,65 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const name = descriptors[route.key].route.name;
-          let useIcon = true;
-          let iconName = "home";
           let showText = true;
+          let iconPath = home;
+          const [color, setColor] = useState(COLORS.standardBlack);
+          const isFocused = state.index === index;
+
           switch (name) {
             case "Home":
-              iconName = "home";
+              iconPath = (
+                <BottomHome
+                  width="29"
+                  height="29"
+                  color={COLORS.standardBlack}
+                  active = {isFocused}
+                />
+              );
               break;
             case "Files":
-              iconName = "folder-open";
+              iconPath = (
+                <BottomFolder
+                  width="29"
+                  height="29"
+                  color={COLORS.standardBlack}
+                  active = {isFocused}
+                />
+              );
               break;
-            case "Friends":
-              iconName = "people";
+            case "Notification":
+              iconPath = (
+                <BottomNotification
+                  width="29"
+                  height="29"
+                  color={COLORS.standardBlack}
+                  active = {isFocused}
+                />
+              );
               break;
-            case "Settings":
-              iconName = "settings";
+            case "Profile":
+              iconPath = (
+                <BottomProfile
+                  width="29"
+                  height="29"
+                  color={COLORS.standardBlack}
+                  active = {isFocused}
+                />
+              );
               break;
             case "Add":
-              useIcon = false;
-              showText = false;
+              iconPath = (
+                <BottomAdd
+                  width="49"
+                  height="49"
+                  color={COLORS.standardBlack}
+                />
+              );
+              break;
               break;
             default:
               break;
           }
-
-          const label =
-            options.tabBarLabel !== undefined
-              ? options.tabBarLabel()
-              : options.title !== undefined
-              ? options.title()
-              : route.name;
-
-          const isFocused = state.index === index;
 
           const onPress = () => {
             const event = navigation.emit({
@@ -135,28 +174,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                   isFocused && name === "Add" ? [{ translateY: -10 }] : [],
               }}
             >
-              {useIcon ? (
-                <Ionicons
-                  name={
-                    isFocused
-                      ? (iconName as typeof name)
-                      : ((iconName + "-outline") as typeof name)
-                  }
-                  size={
-                    isFocused ? screenHeight * 0.03 * 1.2 : screenHeight * 0.03
-                  }
-                  color={isFocused ? COLORS.themeYellow : COLORS.darkGrey}
-                />
-              ) : (
-                <Image
-                  source={BottomAddIcon}
-                  style={{
-                    width: isFocused && name === "Add" ? 75 : 60,
-                    height: isFocused && name === "Add" ? 75 : 60,
-                    marginBottom: isFocused && name === "Add" ? 20 : 10,
-                  }}
-                />
-              )}
+             {iconPath}
 
               {showText && (
                 <Text style={{ fontSize: 10, color: COLORS.darkGrey }}>
@@ -201,14 +219,14 @@ export const BottomTabNavigators = () => {
         options={{
           headerShown: false,
         }}
-        name="Friends"
+        name="Notification"
         component={Friends}
       />
       <Tab.Screen
         options={{
           headerShown: false,
         }}
-        name="Settings"
+        name="Profile"
         component={SettingNavigators}
       />
     </Tab.Navigator>

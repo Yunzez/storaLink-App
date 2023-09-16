@@ -19,6 +19,10 @@ export interface SvgBasicProps {
 export interface SvgPropsWithAdvanced extends SvgBasicProps{
     color?:string
 }
+
+export interface SvgPropsAdvancedWithTrigger extends SvgPropsWithAdvanced {
+  active: boolean
+}
 const SvgComponent: React.FC<SvgComponentProps> = (props) => {
   const {
     children,

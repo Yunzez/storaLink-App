@@ -33,6 +33,8 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { BottomModalProps } from "../components/BottomModal";
 import { FolderCardProps } from "../components/FolderCard";
 import PinnedFolderBadge from "../components/PinnedFolderBadge";
+import BottomAdd from "../assets/svgComponents/bottomNavSVG/BottomAdd";
+import { COLORS } from "../theme/constants";
 export const Home = () => {
   const {
     navigator,
@@ -114,6 +116,7 @@ export const Home = () => {
         </ScrollView>
         
       </View>
+      <BottomAdd fill={COLORS.themeYellow} color={COLORS.themeYellow}/>
 
       <RecentFolder />
       <RecentLinks />
