@@ -20,7 +20,6 @@ import { SocialMediaSrc } from "../utils";
 import { useModalContext } from "../context/ModalContext";
 import BottomModal, { ModalDataProps } from "../components/BottomModal";
 import OutLinedButton from "../components/OutLinedButton";
-import { coverImages } from "../assets/imageAssetsPrerequire";
 export const Files = () => {
   const { screenHeight, folderCache, navigator } = useContext(GlobalContext);
   const [blockView, setBlockView] = useState(true);
