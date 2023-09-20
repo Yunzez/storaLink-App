@@ -12,7 +12,7 @@ export enum SocialMediaSrc {
 }
 
 export interface LinkViewProps extends SmallLinkViewProps {
-  id?: number;
+  id?: number | string;
   title: string;
   socialMediaType: SocialMediaSrc;
   imgUrl?: string;

@@ -18,6 +18,7 @@ import { postCreateFolder } from "./createFiles";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 
 import { statusType } from "./createFiles";
+import AddIcon from "../../assets/svgComponents/AddIcon";
 const AddFolders = () => {
   const {
     navigator,
@@ -27,16 +28,33 @@ const AddFolders = () => {
     dispatchFolderCovers,
     dispatchFolderCache,
     backendLink,
-    user
+    user,
   } = useContext(GlobalContext);
+
+  // coverImages.js
+  const assetPath = "../../assets/coverImg/";
+  const coverImages = [
+    require(`${assetPath}cover_1.jpg`),
+    require(`${assetPath}cover_2.jpg`),
+    require(`${assetPath}cover_3.jpg`),
+    require(`${assetPath}cover_4.jpg`),
+    require(`${assetPath}cover_5.jpg`),
+    require(`${assetPath}cover_6.jpg`),
+    require(`${assetPath}cover_7.jpg`),
+    require(`${assetPath}cover_8.jpg`),
+    require(`${assetPath}cover_9.jpg`),
+    "your own",
+  ];
+
   const [valid, setValid] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [des, setDes] = useState("");
-  const [image, setImage] = useState("");
+  const [customImage, setCustomImage] = useState("");
   const [update, setUpdate] = useState(false);
   const navigation = useNavigation();
   const [status, setStatus] = useState<statusType>(statusType.initialize);
   const [newFolderId, setNewFolderId] = useState(-1);
+  const [selectedCover, setSelectedCover] = useState(0);
   const LoadingContainer = styled(View)`
     align-items: center;
     justify-content: center;
@@ -53,7 +71,7 @@ const AddFolders = () => {
   const newFolderObject: FolderCardProps = {
     id: -1,
     title: folderName,
-    imgUrl: image,
+    imgUrl: customImage == "" ? coverImages[selectedCover] : customImage,
     desc: des,
     linksNumber: 0,
     onClick: () => {
@@ -62,26 +80,30 @@ const AddFolders = () => {
   };
 
   const resetFileRoute = () => {
-    setValid(false)
-    setDes('')
-    setFolderName('')
-    setImage('')
-    setNewFolderId(-1)
+    setValid(false);
+    setDes("");
+    setFolderName("");
+    setCustomImage("");
+    setNewFolderId(-1);
     navigation.dispatch(
-        CommonActions.reset({
-          index: 0, // Reset stack to the first screen
-          routes: [
-            { name: "add_main" }, // Replace 'MainRoute' with the main route's name
-            { name: "add_main" }, // Replace 'TargetScreen' with the screen you want to navigate to
-          ],
-        })
-      );
-  }
+      CommonActions.reset({
+        index: 0, // Reset stack to the first screen
+        routes: [
+          { name: "add_main" }, // Replace 'MainRoute' with the main route's name
+          { name: "add_main" }, // Replace 'TargetScreen' with the screen you want to navigate to
+        ],
+      })
+    );
+  };
 
-  const createFolder = () => {
+  const createFolder = async () => {
     console.log("run create folder");
     setStatus(statusType.creating);
-    const folderWithId = postCreateFolder(newFolderObject, backendLink, user.id);
+    const folderWithId = await postCreateFolder(
+      newFolderObject,
+      backendLink,
+      user.id
+    );
     setNewFolderId(folderWithId.id ?? -1);
     dispatchFolderCovers({ type: "ADD", folder: folderWithId });
     //TODO add fetch api to create folder here
@@ -101,7 +123,7 @@ const AddFolders = () => {
     if (!result.canceled) {
       delete result.cancelled;
       console.log(result);
-      setImage(result.assets[0].uri);
+      setCustomImage(result.assets[0].uri);
     }
   };
 
@@ -147,6 +169,92 @@ const AddFolders = () => {
 
               <ScrollView style={{ marginTop: 30 }}>
                 <View style={{ marginBottom: 20 }}>
+                  <Text>Select a cover *</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {coverImages.map((cover, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => {
+                          setSelectedCover(index);
+                          if (index == 9) {
+                            pickImage();
+                          }
+                          console.log("click");
+                        }}
+                      >
+                        {cover == "your own" ? (
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              width: screenWidth * 0.38,
+                              height: screenWidth * 0.12,
+                              borderRadius: 50,
+                              margin: 2,
+                              marginVertical: 5,
+                              borderWidth: 2,
+                              borderColor:
+                                selectedCover == index
+                                  ? COLORS.themeYellow
+                                  : COLORS.standardBlack,
+                              alignItems: "center",
+                            }}
+                          >
+                            {customImage == "" ? (
+                              <AddIcon
+                                height={String(screenWidth * 0.1)}
+                                width={String(screenWidth * 0.1)}
+                                fill="black"
+                                color="black"
+                              />
+                            ) : (
+                              <Image
+                                alt={"custom image selection"}
+                                source={{ uri: customImage }}
+                                style={{
+                                  width: screenWidth * 0.11,
+                                  height: screenWidth * 0.11,
+                                  borderRadius: 50,
+                                  marginVertical: 5,
+                                  marginEnd: 5,
+                                }}
+                              />
+                            )}
+
+                            <Text style={{ fontSize: 14 }}>
+                              {customImage == ""
+                                ? "Add your own"
+                                : "Change image"}
+                            </Text>
+                          </View>
+                        ) : (
+                          <Image
+                          alt={"custom image selection"}
+                            source={cover}
+                            style={{
+                              width: screenWidth * 0.12,
+                              height: screenWidth * 0.12,
+                              borderRadius: 50,
+                              marginHorizontal: 2,
+                              marginVertical: 5,
+                              borderWidth: 2,
+                              borderColor:
+                                selectedCover == index
+                                  ? COLORS.themeYellow
+                                  : COLORS.standardBlack,
+                            }}
+                          />
+                        )}
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+                <View style={{ marginBottom: 20 }}>
                   <Text>Folder Name *</Text>
                   <AGeneralTextInput
                     onChangeText={(text: string) => {
@@ -155,7 +263,7 @@ const AddFolders = () => {
                     placeholder="Your most creative name here..."
                   />
                 </View>
-                <View style={{ marginBottom: 20 }}>
+                {/* <View style={{ marginBottom: 20 }}>
                   <Text>Cover</Text>
 
                   <TouchableOpacity onPress={pickImage}>
@@ -171,7 +279,7 @@ const AddFolders = () => {
                         alignItems: "center",
                       }}
                     >
-                      {image.length == 0 ? (
+                      {customImage.length == 0 ? (
                         <Ionicons
                           name="image-outline"
                           size={70}
@@ -180,13 +288,13 @@ const AddFolders = () => {
                       ) : (
                         <Image
                           alt="user image"
-                          source={{ uri: image }} // Use the uri property to show the selected image
+                          source={{ uri: customImage }} // Use the uri property to show the selected image
                           style={{ height: 100, width: 100 }}
                         />
                       )}
                     </View>
                   </TouchableOpacity>
-                </View>
+                </View> */}
 
                 <View>
                   <Text>Description</Text>
@@ -228,7 +336,7 @@ const AddFolders = () => {
                 onPress={() => {
                   navigator.navigate("Home");
                   setStatus(statusType.initialize);
-                  resetFileRoute()
+                  resetFileRoute();
                 }}
                 style={{
                   width: screenWidth * 0.7,
@@ -244,7 +352,7 @@ const AddFolders = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                    resetFileRoute()
+                  resetFileRoute();
                   newFolderId > 0
                     ? navigator.navigate("SingleFolderView", {
                         name: folderName,
@@ -252,7 +360,6 @@ const AddFolders = () => {
                       })
                     : navigator.navigate("Home");
                   setStatus(statusType.initialize);
-
                 }}
                 style={{
                   width: screenWidth * 0.7,

@@ -41,6 +41,7 @@ export const fetchFolderDataById = (
     return null;
   }
   console.log('looking in ', folderCache)
+  console.log('links:', folderCache[0].links)
   const target = folderCache.find((value) => {
     return value.id === id;
   });
@@ -118,9 +119,9 @@ export const SingleFolderView = () => {
             <ImageBackground
               source={
                 currData.thumbNailUrl
-                  ? isLocalPath(currData.thumbNailUrl)
+                  ? typeof currData.thumbNailUrl === 'number' 
                     ? currData.thumbNailUrl
-                    : { uri: currData.thumbNailUrl }
+                    : { uri: currData.thumbNailUrl } // Remote image
                   : require("../assets/mockImg/placeholder.png")
               }
               style={{

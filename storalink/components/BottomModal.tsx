@@ -42,14 +42,13 @@ export type BottomModalProps = {
 
 const BottomModal = (props: BottomModalProps) => {
   // hooks
-  console.log('bottom modal triggered', props.header.name)
+  // console.log('bottom modal triggered', props.header.name)
   const sheetRef = useRef<BottomSheet>(null);
 
   // variables
   const snapPoints = useMemo(() => ["45%", "75%", "90%"], []);
 
   useEffect(() => {
-    console.log("modal status change", props.openIndicator);
     if (props.openIndicator) {
       console.log("open modal");
       handleSnapPress(2); // Open to 90% by default

@@ -18,7 +18,10 @@ import { SPACE, COLORS } from "../theme/constants";
 
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import { AGeneralErrorBlock, AGeneralTextInput } from "../theme/genericComponents";
+import {
+  AGeneralErrorBlock,
+  AGeneralTextInput,
+} from "../theme/genericComponents";
 import LoadingScreen from "../components/LoadingScreen";
 import { checkEmail, checkPassword } from "../utils";
 
@@ -57,7 +60,7 @@ const SignInText = styled(Text)`
 `;
 
 export const Signup = () => {
-  const {backendLink} = useContext(GlobalContext)
+  const { backendLink } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { navigator, user, setUser } = useContext(GlobalContext);
@@ -67,23 +70,22 @@ export const Signup = () => {
   const handleLogin = () => {
     // Handle login action here
     if (checkEmail(username).length > 0) {
-        setError("Invalid email address");
-        alert("Please enter a valid email address");
-        return
-      }
-  
-      if (checkPassword(password).length > 0) {
-        setError("Invalid password");
-        return
-      }
-    const url =
-    backendLink + '/api/v1/auth/signup';
+      setError("Invalid email address");
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    if (checkPassword(password).length > 0) {
+      setError("Invalid password");
+      return;
+    }
+    const url = backendLink + "/api/v1/auth/signup";
     const requestBody = {
       username: username,
       password: password,
       email: username,
       dob: "2000-01-01",
-      authorities: ['user']
+      authorities: ["USER"],
     };
 
     fetch(url, {
@@ -93,40 +95,35 @@ export const Signup = () => {
       },
       body: JSON.stringify(requestBody),
     })
-    .then((response) => {
-      if (response.ok) {
-        console.log(response);
-        return response.json();
-      } else {
-        console.log("error:", response);
-        return response.json().then((errorData) => {
-          // Assuming the backend sends a JSON with an 'error' field
+      .then((response) => {
+        if (response.ok) {
+          console.log(response);
+          return response.json();
+        } else {
+          console.log("error:", response);
+          return response.json().then((errorData) => {
+            // Assuming the backend sends a JSON with an 'error' field
 
-          const error = new Error();
-          error.message = errorData.error; // Set the error message
-          throw error;
-        });
-      }
-    })
-    .then((data) => {
-      console.log("Response data:", data);
-      navigator.navigate("Home");
-      console.log("Username: ", username);
-      console.log("Password: ", password);
-      setLoading(false);
-      setUser({ username: username, email: username, dob: "" });
-      // Handle the response data here
-    })
-    .catch((error) => {
-      setLoading(false);
-      console.log("Error:", error.message);  // Access the error message here
-      // Handle any errors here
-  });
-
-
-    navigator.navigate("Home");
-    console.log("Username: ", username);
-    console.log("Password: ", password);
+            const error = new Error();
+            error.message = errorData.error; // Set the error message
+            throw error;
+          });
+        }
+      })
+      .then((data) => {
+        console.log("Response data:", data);
+        navigator.navigate("BottomNavigater");
+        console.log("Username: ", username);
+        console.log("Password: ", password);
+        setLoading(false);
+        setUser({ username: username, email: username, dob: "", id: data.id});
+        // Handle the response data here
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log("Error:", error.message); // Access the error message here
+        // Handle any errors here
+      });
   };
 
   return (
@@ -141,7 +138,9 @@ export const Signup = () => {
                 style={{ width: 50, height: 50 }}
                 source={require("../assets/img/YellowIcon.png")}
               />
-              <Text style={{marginTop: 10, fontSize: 18, fontWeight: '500'}}>Sign Up </Text>
+              <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "500" }}>
+                Sign Up{" "}
+              </Text>
             </View>
             <AGeneralErrorBlock errorText={error} />
             <Text style={{ paddingTop: 15 }}>Email</Text>
@@ -184,7 +183,13 @@ export const Signup = () => {
             </SignInBtnContainer>
             <View style={{ flexDirection: "row" }}>
               <Text>Have an Account?</Text>
-              <SignInText onPress={() => {navigator.navigate('Login')}}>Sign in</SignInText>
+              <SignInText
+                onPress={() => {
+                  navigator.navigate("Login");
+                }}
+              >
+                Sign in
+              </SignInText>
             </View>
 
             {/* <Button

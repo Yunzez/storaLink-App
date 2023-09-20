@@ -22,7 +22,6 @@ import { useShare } from "./hooks/useShare";
 import useAsyncStorage from "./hooks/useAsyncStorage";
 import SingleLinkView from "./screens/SingleLinkView";
 import * as Font from 'expo-font';
-
 const GlobalStack = createNativeStackNavigator();
 WebBrowser.maybeCompleteAuthSession();
 type ProvidersProps = {

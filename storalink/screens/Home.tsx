@@ -35,6 +35,7 @@ import { FolderCardProps } from "../components/FolderCard";
 import PinnedFolderBadge from "../components/PinnedFolderBadge";
 import BottomAdd from "../assets/svgComponents/bottomNavSVG/BottomAdd";
 import { COLORS } from "../theme/constants";
+import ProgressBar from "../components/ProgressBar";
 export const Home = () => {
   const {
     navigator,
@@ -116,8 +117,6 @@ export const Home = () => {
         </ScrollView>
         
       </View>
-      <BottomAdd fill={COLORS.themeYellow} color={COLORS.themeYellow}/>
-
       <RecentFolder />
       <RecentLinks />
     </SafeAreaView>

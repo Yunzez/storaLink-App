@@ -16,7 +16,7 @@ const CardImage = styled(Image)`
 const ImagePreview = styled(Image)`
   width: 50px;
   height: 40px;
-  border-radius: ${SPACE.nativeRoundSm};
+  border-radius: ${SPACE.roundSm};
 `;
 
 export type SmallLinkViewProps = {

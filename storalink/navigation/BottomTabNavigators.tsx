@@ -19,7 +19,6 @@ import SettingNavigators from "./SettingNavigators";
 import AddFile from "../screens/AddFile";
 import AddFilesNavigators from "./AddFileNavigators";
 import BottomAddIcon from "../assets/bottomNavigatorIcons/BottomAdd.png";
-import home from "../assets/bottomNavigatorIcons/home.png";
 import home_selected from "../assets/bottomNavigatorIcons/home_selected.png";
 import folder from "../assets/bottomNavigatorIcons/folder.png";
 import folder_selected from "../assets/bottomNavigatorIcons/folder_selected.png";
@@ -78,7 +77,14 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
           const { options } = descriptors[route.key];
           const name = descriptors[route.key].route.name;
           let showText = true;
-          let iconPath = home;
+          let iconPath = (
+            <BottomHome
+              width="29"
+              height="29"
+              color={COLORS.standardBlack}
+              active={false}
+            />
+          );
           const [color, setColor] = useState(COLORS.standardBlack);
           const isFocused = state.index === index;
 
@@ -89,7 +95,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                   width="29"
                   height="29"
                   color={COLORS.standardBlack}
-                  active = {isFocused}
+                  active={isFocused}
                 />
               );
               break;
@@ -99,17 +105,17 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                   width="29"
                   height="29"
                   color={COLORS.standardBlack}
-                  active = {isFocused}
+                  active={isFocused}
                 />
               );
               break;
-            case "Notification":
+            case "Notices":
               iconPath = (
                 <BottomNotification
                   width="29"
                   height="29"
                   color={COLORS.standardBlack}
-                  active = {isFocused}
+                  active={isFocused}
                 />
               );
               break;
@@ -119,7 +125,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                   width="29"
                   height="29"
                   color={COLORS.standardBlack}
-                  active = {isFocused}
+                  active={isFocused}
                 />
               );
               break;
@@ -174,9 +180,9 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                   isFocused && name === "Add" ? [{ translateY: -10 }] : [],
               }}
             >
-             {iconPath}
+              {iconPath}
 
-              {showText && (
+              {showText && name !== "Add" && (
                 <Text style={{ fontSize: 10, color: COLORS.darkGrey }}>
                   {name}
                 </Text>
@@ -219,7 +225,7 @@ export const BottomTabNavigators = () => {
         options={{
           headerShown: false,
         }}
-        name="Notification"
+        name="Notices"
         component={Friends}
       />
       <Tab.Screen

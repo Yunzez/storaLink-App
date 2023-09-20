@@ -14,6 +14,7 @@ import {
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
+import * as Keychain from 'react-native-keychain';
 import { Dimensions } from "react-native";
 import { LinkViewProps } from "../Test/MockData";
 import { FolderCardProps } from "../components/FolderCard";
@@ -167,7 +168,7 @@ const FolderCacheReducer = (
       console.log("clear all folders");
       return null;
     case "DUMP":
-      console.log("dump all folders");
+      console.log("dump all folders", action.folders);
       return action.folders
     default:
       return state;
@@ -323,6 +324,7 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
 
   useEffect(() => {
     console.log("global provider see changes in folder cache", folderCache);
+    
   }, [folderCache]);
 
   useEffect(() => {

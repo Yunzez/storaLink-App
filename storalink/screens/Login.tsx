@@ -10,6 +10,7 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
+import * as Keychain from "react-native-keychain";
 import Checkbox from "expo-checkbox";
 import { NavigationProp } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
@@ -23,10 +24,12 @@ import {
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import LoadingScreen from "../components/LoadingScreen";
-import { checkEmail, checkPassword } from "../utils";
+import { SocialMediaSrc, checkEmail, checkPassword } from "../utils";
 import { useShare } from "../hooks/useShare";
 import { ShareMenuReactView } from "react-native-share-menu";
 import { FolderProps } from "../context/GlobalProvider";
+import ProgressBar from "../components/ProgressBar";
+import { LinkViewProps } from "../Test/MockData";
 const Container = styled(SafeAreaView)`
   flex: 1;
   flex-direction: row;
@@ -60,7 +63,21 @@ const SignInText = styled(Text)`
   margin-left: 8px;
 `;
 
+const cleanLinkData = (linkData: any[]): LinkViewProps[] => {
+  return linkData.map((link: any) => ({
+    id: link.id,
+    title: link.linkName,
+    socialMediaType: link.sourceType as SocialMediaSrc, // Assuming SocialMediaSrc is an enum or type that matches the sourceType strings
+    imgUrl: link.imageUrl,
+    linkUrl: link.linkUrl,
+    onClick: () => {
+      // Define your onClick function here
+    },
+  }));
+};
+
 const cleanFolderData = (folderData: any[]): FolderProps[] => {
+  console.log("cleaning folder: ", folderData);
   return folderData.map((folder: any) => ({
     id: folder.id,
     name: folder.folderName || null,
@@ -68,8 +85,27 @@ const cleanFolderData = (folderData: any[]): FolderProps[] => {
     thumbNailUrl: folder.imageUrl || null,
     desc: "", // You can set this to a default value or derive it from the original data
     pinned: false, // You can set this to a default value or derive it from the original data
-    links: folder.linkIds.length > 0 ? folder.linkIds : null // Assuming linkIds can be used to derive LinkViewProps
+    links: folder.linkIds.length > 0 ? folder.linkIds : null, // Assuming linkIds can be used to derive LinkViewProps
   }));
+};
+
+const mergeFolderLink = (
+  folderData: FolderProps[],
+  linkData: LinkViewProps[]
+): FolderProps[] => {
+  for (const folder of folderData) {
+    const foundLinks = [];
+    if(folder.links != null) {
+      for (const linkId of folder.links) {
+        linkData.find((link) => {
+          link.id === (linkId as unknown) && foundLinks.push(link);
+        });
+      }
+    }
+    folder.links = foundLinks;
+  }
+
+  return folderData;
 };
 
 export const Login = () => {
@@ -86,12 +122,19 @@ export const Login = () => {
   const [remeber, setRemenber] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingProgess, setLoadingProgress] = useState(0);
+  const [loadingText, setLoadingText] = useState("");
 
+  let userData: FolderProps[];
   useEffect(() => {
     console.log("dev mode is: ", devMode);
   }, [devMode]);
+
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
   const handleLogin = async () => {
     setLoading(true);
+
     let userId = "";
     const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
     if (checkEmail(username, emailRegex).length > 0) {
@@ -100,37 +143,11 @@ export const Login = () => {
       setLoading(false);
       return;
     }
-
-    // if (checkPassword(password).length > 0) {
-    //   setError("Invalid password");
-    //   setLoading(false);
-    //   return;
-    // }
-    // * logging in
-    const url = backendLink + "/api/v1/auth/login";
-    const csrfTokenLink = backendLink + "/api/v1/auth/csrf-token";
-
-    // fetch(csrfTokenLink, {
-    //   method: 'GET',
-    //   credentials: 'include',
-    // })
-    // .then(response => {
-    //   if (!response.ok) {
-    //     throw new Error('Network response was not ok');
-    //   }
-    //   return response.text().then(text => {
-    //     return text ? JSON.parse(text) : {}
-    //   })
-    // })
-    // .then(data => {
-    //   const csrfToken = data.token;
-    //   // Now you can use csrfToken in your subsequent requests
-    // })
-    // .catch(error => {
-    //   console.error('Error fetching CSRF token:', error);
-    // });
-
-    fetch(url);
+    if (checkPassword(password).length > 0) {
+      setError("Invalid password");
+      setLoading(false);
+      return;
+    }
     const requestBody = {
       username: username,
       password: password,
@@ -147,70 +164,112 @@ export const Login = () => {
     //   setUser({ username: username, email: username, dob: "" });
     //   return;
     // }
-    console.log("fetching", url);
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log(response);
-          return response.json();
-        } else {
-          console.log("error:", response);
-          return response.json().then((errorData) => {
-            // Assuming the backend sends a JSON with an 'error' field
 
-            const error = new Error();
-            error.message = errorData.error; // Set the error message
-            throw error;
-          });
-        }
-      })
-      .then((data) => {
-        console.log("Response data id:", data.id);
-        navigator.navigate("BottomNavigater");
-        userId = data.id;
-        setUser({ id: data.id, username: username, email: username, dob: "" });
-        console.log("new user", {
-          id: data.id,
-          username: username,
-          email: username,
-          dob: "",
-        });
-        // * update user folder
-        fetchUserFolderInfo(data.id);
-        // Handle the response data here
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log("Error:", error.message); // Access the error message here
-        // Handle any errors here
+    const url = backendLink + "/api/v1/auth/login";
+    console.log("login url", url);
+    setLoadingText("Logging you in");
+    setLoadingProgress(30);
+    await delay(2000);
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
       });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Response data", data);
+        setUser({ id: data.id, username: username, email: username, dob: "" });
+
+        if (data.jwtToken) {
+          console.log("jwt token", data.jwtToken);
+          await Keychain.setGenericPassword("jwt", data.jwtToken);
+
+          await fetchUserFolderInfo(data.id); // Make sure this function is also async
+
+          await fetchUserLinkInfo(data.id);
+        }
+      } else {
+        const errorData = await response.json();
+        const error = new Error();
+        error.message = errorData.error;
+        throw error;
+      }
+    } catch (error) {
+      // setLoading(false);
+      console.log("Error:", error.message);
+    }
+    setLoadingText("Getting your folder");
+    setLoadingProgress(60);
+    await delay(1000);
+
+    setLoadingText("Getting your link");
+    setLoadingProgress(90);
+    await delay(1000);
+
+    setLoadingText("Welcome to Storalink");
+    setLoadingProgress(100);
+    await delay(1000);
+    setLoading(false);
+    navigator.navigate("BottomNavigater");
+  };
+
+  const fetchUserLinkInfo = async (userId: string | number) => {
+    const userFolderUrl = `${backendLink}/api/v1/link/user/${userId}`;
+    const token = await Keychain.getGenericPassword();
+    console.log("current userId", userId);
+    try {
+      const rep = await fetch(userFolderUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token.password}`,
+        },
+        credentials: "include",
+      });
+
+      if (rep.ok) {
+        const linkData = await rep.json(); // Wait for the data to be parsed
+        console.log("linkData data: ", linkData); // Now log the data
+        const cleanedLinkData = cleanLinkData(linkData);
+        userData = mergeFolderLink(userData, cleanedLinkData);
+        console.log("merged userData", userData);
+        dispatchFolderCache({
+          type: "DUMP",
+          folders: userData as FolderProps[],
+        });
+      }
+    } catch (error) {
+      console.log("Error in fetching link", error);
+    }
   };
 
   const fetchUserFolderInfo = async (userId: string | number) => {
-    const userFolderUrl = `${backendLink}/api/v1/folder/user/${userId}`; // Make sure to include the full API path
+    const userFolderUrl = `${backendLink}/api/v1/folder/user/${userId}`;
+    const token = await Keychain.getGenericPassword();
+    console.log("current userId", userId);
     try {
-      const rep = await fetch(userFolderUrl);
+      const rep = await fetch(userFolderUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token.password}`,
+        },
+        credentials: "include",
+      });
+
       if (rep.ok) {
-        const folderData = await rep.json();
-        console.log("folderData:", folderData);
-        const cleanedFolderData = cleanFolderData(folderData);
-        dispatchFolderCache({
-          type: "DUMP",
-          folders: cleanedFolderData as FolderProps[],
-        });
+        const folderData = await rep.json(); // Wait for the data to be parsed
+        console.log("folder data: ", folderData); // Now log the data
+
+        userData = cleanFolderData(folderData);
       } else {
-        console.log("Error:", rep.status, rep.statusText);
+        console.log("Error in fetching folder:", rep.status, rep.statusText);
       }
     } catch (error) {
       console.log("Fetch error:", error);
     }
-    setLoading(false);
   };
 
   ShareMenuReactView.data().then((data) => {
@@ -220,7 +279,24 @@ export const Login = () => {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       {loading ? (
-        <LoadingScreen loadingText={"We are logging you in"} />
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            height: "100%",
+          }}
+        >
+          <View
+            style={{ justifyContent: "center", height: "100%", width: "80%" }}
+          >
+            <ProgressBar
+              progress={loadingProgess}
+              fillColor={COLORS.themeYellow}
+              statusText={loadingText}
+            />
+            {/* <LoadingScreen loadingText={"We are logging you in"} /> */}
+          </View>
+        </View>
       ) : (
         <Container>
           <View style={{ width: "75%", justifyContent: "center" }}>
@@ -291,14 +367,6 @@ export const Login = () => {
                 Sign up
               </SignInText>
             </View>
-
-            {/* <Button
-          title="Go test"
-          onPress={() => {
-            navigator.navigate("Test");
-          }}
-          color={COLORS.standardBlack}
-        /> */}
           </View>
         </Container>
       )}

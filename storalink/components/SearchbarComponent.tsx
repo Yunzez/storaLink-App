@@ -17,14 +17,13 @@ import {
 } from "react-native";
 import { COLORS, SPACE } from "../theme/constants";
 
-
 /**
  * * if you do not wanna have the drop down, use useSearchDropDown = false, and pass in your own onCHangeText
  */
 type SearchComponentProps = {
   placeHolder: string;
   algorithm?: (searchInput: string) => Map<string, any>;
-  useSearchDropDown?: boolean
+  useSearchDropDown?: boolean;
   onChangeText?: (text: string) => void;
 };
 
@@ -40,7 +39,7 @@ export type searchResultType = {
   valueType?: searchValueType;
 };
 export const SearchComponent = (props: SearchComponentProps) => {
-  const useSearchDropDown = props.useSearchDropDown ?? true
+  const useSearchDropDown = props.useSearchDropDown ?? true;
   const [isFocused, setFocus] = useState(false);
   const [value, setValue] = useState("");
   const initialResultMap = new Map<string, searchResultType>();
@@ -130,7 +129,7 @@ export const SearchComponent = (props: SearchComponentProps) => {
   };
 
   const handleChangeText = (text: string) => {
-    if(props.useSearchDropDown == null || props.useSearchDropDown) {
+    if (props.useSearchDropDown == null || props.useSearchDropDown) {
       setValue(text);
       text.length > 0 ? animateDropDownHeight(1) : animateDropDownHeight(0);
       const newValues = props.algorithm?.(text);
@@ -139,9 +138,8 @@ export const SearchComponent = (props: SearchComponentProps) => {
         setResult(newValues);
       }
     } else {
-      props.onChangeText?.(text)
+      props.onChangeText?.(text);
     }
-    
   };
 
   const selectValue = (result: string) => {
@@ -260,6 +258,12 @@ export const SearchComponent = (props: SearchComponentProps) => {
                         onPress={() => {
                           handleTextTouchIn();
                           selectValue(value);
+                          console.log(
+                            "select folder: ",
+                            value,
+                            ", ",
+                            result.get(value)
+                          );
                           result.get(value)?.onClick?.();
                         }}
                         onPressOut={handleTextTouchOut}

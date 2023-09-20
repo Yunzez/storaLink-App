@@ -1,5 +1,5 @@
 import { View } from "native-base";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useId, useRef, useState } from "react";
 import {
   TouchableOpacity,
   Text,
@@ -31,7 +31,9 @@ const AddLinks = () => {
     folderCovers,
     folderCache,
     dispatchFolderCache,
-    dispatchRecentLinkCache
+    dispatchRecentLinkCache,
+    backendLink,
+    user
   } = useContext(GlobalContext);
   const [valid, setValid] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
@@ -47,7 +49,7 @@ const AddLinks = () => {
     align-items: center;
     justify-content: center;
 
-    height: ${screenHeight * 0.8};
+    height: ${screenHeight * 0.8}px;
   `;
 
   const LoadingText = styled(Text)`
@@ -100,11 +102,11 @@ const AddLinks = () => {
       return retMap;
     }
     for (const cover of folderCache) {
-      console.log(cover);
+      console.log('run search algorithm: ',cover);
       if(cover.name?.includes(value)) {
         retMap.set(cover.name, {
             onClick: () => {
-              console.log(cover.id);
+              console.log( cover.id);
               setSelectedFolder(cover.id as number);
               setSelectedFolderName(cover.name)
             },
@@ -119,7 +121,7 @@ const AddLinks = () => {
     return retMap;
   };
 
-  const onCreateLink = () => {
+  const onCreateLink = async () => {
     console.log(description)
     setStatus(statusType.creating)
     if (selectedFolder == -1) {
@@ -131,9 +133,9 @@ const AddLinks = () => {
       socialMediaType: SocialMediaSrc.INS,
       imgUrl: image 
     };
-
-   const completeLink = postCreateLink(newLink, description)
-
+    console.log('save to folder with id of ', selectedFolder)
+   const completeLink = await postCreateLink(newLink, backendLink, user.id, selectedFolder, description)
+    console.log('get complete link', completeLink)
     dispatchFolderCache({
       type: "ADD_LINK",
       folderId: selectedFolder,
