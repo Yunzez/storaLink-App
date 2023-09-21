@@ -13,6 +13,7 @@ import RightArrowIcon from "../assets/svgComponents/RightArrowIcon";
 import AddIcon from "../assets/svgComponents/AddIcon";
 import placeholder from "../assets/mockImg/placeholder.png";
 import { isLocalPath } from "../utils";
+import { coverImagesMap } from "../assets/imageAssetsPrerequire";
 const PinnedBadge = styled(View)`
   border-radius: ${SPACE.roundMd};
   border: 1px solid ${COLORS.lightGrey};
@@ -71,12 +72,14 @@ const PinnedFolderBadge = ({ folder }: PinnedFolderBadge) => {
                   })}}>
         <PinnedBadge style={{ justifyContent: "space-around" }}>
           {
-            folder.thumbNailUrl?.length === 0 || !folder.thumbNailUrl ? (
+            typeof folder.thumbNailUrl === "string" && folder.thumbNailUrl?.length === 0 || !folder.thumbNailUrl ? (
               // precheck if the imgUrl is not filled out, we use default value if not
               <BadgeImage source={placeholder as ImageSourcePropType} />
-            ) : isLocalPath(folder.thumbNailUrl) ? ( // Check if imgUrl is a local path
+            ) : typeof folder.thumbNailUrl === "number" ? ( // Check if imgUrl is a local path
               <BadgeImage source={folder.thumbNailUrl as ImageSourcePropType} />
-            ) : (
+            ) :folder.thumbNailUrl.includes("cover_") ? (
+                <BadgeImage source={coverImagesMap[folder.thumbNailUrl as string]} />
+              ) :(
               <BadgeImage source={{ uri: folder.thumbNailUrl }} />
             ) // Use the image URI
           }

@@ -12,44 +12,45 @@ export async function postCreateFolder(
   backendLink: string,
   userId: any
 ): Promise<FolderCardProps> {
-  const randomId = Math.floor(Math.random() * 99999) + 1; // Generate a random ID between 1 and 99999
   const token = await getToken(); 
   console.log("create folder: ", folder);
 
-  // Map FolderCardProps to CreateFolderRequest
   const createFolderRequest = {
     folderDescription: folder.desc,
-    creatorId: userId, // Assuming this is correct; you might want to get this from somewhere else
+    creatorId: userId,
     folderName: folder.title,
     imageUrl: folder.imgUrl,
-    linkIds: [], // Empty array since it's a new folder
-    parentFolderId: null, // Assuming no parent folder; you might want to set this
-    subFolderIds: [], // Empty array since it's a new folder
-    modifierId: null, // Assuming no modifier; you might want to set this
+    linkIds: [],
+    parentFolderId: null,
+    subFolderIds: [],
+    modifierId: null,
   };
 
-  fetch(backendLink + "/api/v1/folder", {
-    method: "POST",
-    headers: {
-      'Authorization': `Bearer ${token.password}`,
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include',
-    body: JSON.stringify(createFolderRequest),
-  }).then((response) => {
+  try {
+    const response = await fetch(backendLink + "/api/v1/folder", {
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token.password}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify(createFolderRequest),
+    });
+
     if (response.ok) {
-      console.log(response);
-      return response.json();
+      const data = await response.json();
+      return {...folder, id: data.id};
     } else {
       console.log("status not ok");
       console.log(response);
+      return folder; // You might want to throw an error or return a different value here
     }
-  }).then((data) => {
-    folder = {...folder, id: data.id};
-  });
-
-  return folder
+  } catch (error) {
+    console.error("Error in postCreateFolder:", error);
+    return folder; // You might want to throw an error or return a different value here
+  }
 }
+
 
 const getToken = async () => { 
   const token = await Keychain.getGenericPassword()

@@ -21,10 +21,11 @@ import { useModalContext } from "../context/ModalContext";
 import PinnedFolderIcon from "../assets/svgComponents/PinnedFolderIcon";
 import LinkNumberIcon from "../assets/svgComponents/LinkNumberIcon";
 import StoraModal from "./StoraModal";
+import { coverImages, coverImagesMap } from "../assets/imageAssetsPrerequire";
 export type FolderCardProps = {
   id: number;
   title: string;
-  imgUrl: string;
+  imgUrl: string | number;
   desc?: string;
   linksNumber: number;
   onClick: () => void;
@@ -103,6 +104,13 @@ const FolderCard = React.memo((props: FolderCardProps) => {
   ];
 
   console.log("test url:", props.imgUrl, props.id, props.pinned);
+  let currentImage = props.imgUrl;
+  if (typeof currentImage === "number") {
+    currentImage = coverImages.find((image) => {
+      if (image === props.imgUrl) return image;
+    });
+  }
+  console.log("current image", currentImage, coverImages);
 
   useEffect(() => {
     console.log(props.pinned);
@@ -126,21 +134,22 @@ const FolderCard = React.memo((props: FolderCardProps) => {
               Long Link Title Placeholder 1?
             </Text>
           </Text>
-          <View style={{flexDirection: "row", justifyContent: 'flex-end'}}>
-          <TouchableOpacity
-             
+          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <TouchableOpacity
               style={{
                 borderColor: COLORS.standardBlack,
                 padding: 8,
                 borderWidth: 2,
                 borderRadius: SPACE.nativeRoundMd,
-                marginEnd: 10
+                marginEnd: 10,
               }}
               onPress={() => {
                 setShowModal(false);
               }}
             >
-              <Text style={{color: COLORS.standardBlack, fontWeight: '500'}}>No, Keep It</Text>
+              <Text style={{ color: COLORS.standardBlack, fontWeight: "500" }}>
+                No, Keep It
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -158,9 +167,10 @@ const FolderCard = React.memo((props: FolderCardProps) => {
                 });
               }}
             >
-              <Text style={{color: COLORS.white, fontWeight: '500'}}>Yes, Delete</Text>
+              <Text style={{ color: COLORS.white, fontWeight: "500" }}>
+                Yes, Delete
+              </Text>
             </TouchableOpacity>
-            
           </View>
         </View>
       </StoraModal>
@@ -180,15 +190,19 @@ const FolderCard = React.memo((props: FolderCardProps) => {
         </View>
       )}
       {
-        props.imgUrl?.length === 0 || !props.imgUrl ? (
+        !props.imgUrl ||
+        (typeof props.imgUrl === "string" && props.imgUrl.length === 0) ? (
           // precheck if the imgUrl is not filled out, we use default value if not
           <CardImage source={placeholder as ImageSourcePropType} />
-        ) : isLocalPath(props.imgUrl) ? ( // Check if imgUrl is a local path
-          <CardImage source={props.imgUrl as ImageSourcePropType} />
+        ) : typeof props.imgUrl === "number" ? ( // Check if imgUrl is a number
+          <CardImage source={currentImage as ImageSourcePropType} />
+        ) : props.imgUrl.includes("cover_") ? (
+          <CardImage source={coverImagesMap[props.imgUrl as string]} />
         ) : (
-          <CardImage source={{ uri: props.imgUrl }} />
+          <CardImage source={{ uri: props.imgUrl as string }} />
         ) // Use the image URI
       }
+
       <View
         style={{
           flexDirection: "row",

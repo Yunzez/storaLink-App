@@ -1,4 +1,4 @@
-import { ScrollView, View, Image } from "native-base";
+import { ScrollView, View } from "native-base";
 import React, { useContext, useEffect, useState } from "react";
 import {
   TouchableOpacity,
@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TextInput,
   ActivityIndicator,
+  Image
 } from "react-native"; // Import ActivityIndicator from react-native
 import { GlobalContext } from "../../context/GlobalProvider";
 import { RetrunButton, AGeneralTextInput } from "../../theme/genericComponents";
@@ -16,7 +17,7 @@ import { FolderCardProps } from "../../components/FolderCard";
 import styled from "styled-components";
 import { postCreateFolder } from "./createFiles";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-
+import { coverImagesMap } from "../../assets/imageAssetsPrerequire";
 import { statusType } from "./createFiles";
 import AddIcon from "../../assets/svgComponents/AddIcon";
 const AddFolders = () => {
@@ -33,18 +34,7 @@ const AddFolders = () => {
 
   // coverImages.js
   const assetPath = "../../assets/coverImg/";
-  const coverImages = [
-    require(`${assetPath}cover_1.jpg`),
-    require(`${assetPath}cover_2.jpg`),
-    require(`${assetPath}cover_3.jpg`),
-    require(`${assetPath}cover_4.jpg`),
-    require(`${assetPath}cover_5.jpg`),
-    require(`${assetPath}cover_6.jpg`),
-    require(`${assetPath}cover_7.jpg`),
-    require(`${assetPath}cover_8.jpg`),
-    require(`${assetPath}cover_9.jpg`),
-    "your own",
-  ];
+ 
 
   const [valid, setValid] = useState(false);
   const [folderName, setFolderName] = useState("");
@@ -71,7 +61,7 @@ const AddFolders = () => {
   const newFolderObject: FolderCardProps = {
     id: -1,
     title: folderName,
-    imgUrl: customImage == "" ? coverImages[selectedCover] : customImage,
+    imgUrl: customImage == "" ? `cover_${selectedCover}` : customImage,
     desc: des,
     linksNumber: 0,
     onClick: () => {
@@ -99,14 +89,16 @@ const AddFolders = () => {
   const createFolder = async () => {
     console.log("run create folder");
     setStatus(statusType.creating);
-    const folderWithId = await postCreateFolder(
-      newFolderObject,
-      backendLink,
-      user.id
-    );
-    setNewFolderId(folderWithId.id ?? -1);
-    dispatchFolderCovers({ type: "ADD", folder: folderWithId });
-    //TODO add fetch api to create folder here
+    try {
+      console.log('creating folder: ', newFolderObject)
+      const folderWithId = await postCreateFolder(newFolderObject, backendLink, user.id);
+      console.log("Received folderWithId:", folderWithId);
+      setNewFolderId(folderWithId.id ?? -1);
+      dispatchFolderCovers({ type: "ADD", folder: folderWithId });
+    } catch (error) {
+      console.error("Error creating folder:", error);
+    }
+  
     console.log("finished creating folder");
     setStatus(statusType.finished);
   };
@@ -137,6 +129,7 @@ const AddFolders = () => {
     if (update) setUpdate(false);
   }, [update, folderCovers]);
 
+  const coverImagesArray = Object.values(coverImagesMap);
   return (
     <SafeAreaView>
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -177,10 +170,11 @@ const AddFolders = () => {
                       justifyContent: "space-between",
                     }}
                   >
-                    {coverImages.map((cover, index) => (
+                    {coverImagesArray.map((cover, index) => (
                       <TouchableOpacity
                         key={index}
                         onPress={() => {
+                          console.log('selecting ', index)
                           setSelectedCover(index);
                           if (index == 9) {
                             pickImage();

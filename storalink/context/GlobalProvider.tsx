@@ -324,7 +324,7 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
 
   useEffect(() => {
     console.log("global provider see changes in folder cache", folderCache);
-    
+
   }, [folderCache]);
 
   useEffect(() => {
