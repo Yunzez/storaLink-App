@@ -22,8 +22,9 @@ import PinnedFolderIcon from "../assets/svgComponents/PinnedFolderIcon";
 import LinkNumberIcon from "../assets/svgComponents/LinkNumberIcon";
 import StoraModal from "./StoraModal";
 import { coverImages, coverImagesMap } from "../assets/imageAssetsPrerequire";
+import { postDeleteFolder } from "../hooks/usePostFiles";
 export type FolderCardProps = {
-  id: number;
+  id: number | string;
   title: string;
   imgUrl: string | number;
   desc?: string;
@@ -63,12 +64,9 @@ const CardTitle = styled(Text)`
 
 const FolderCard = React.memo((props: FolderCardProps) => {
   const {
-    navigator,
-    setCurrentFocusedFolder,
-    screenHeight,
-    folderCache,
     dispatchFolderCache,
     dispatchFolderCovers,
+    backendLink
   } = useContext(GlobalContext);
 
   const [showModal, setShowModal] = useState(false);
@@ -105,11 +103,7 @@ const FolderCard = React.memo((props: FolderCardProps) => {
 
   console.log("test url:", props.imgUrl, props.id, props.pinned);
   let currentImage = props.imgUrl;
-  if (typeof currentImage === "number") {
-    currentImage = coverImages.find((image) => {
-      if (image === props.imgUrl) return image;
-    });
-  }
+  
   console.log("current image", currentImage, coverImages);
 
   useEffect(() => {
@@ -160,11 +154,12 @@ const FolderCard = React.memo((props: FolderCardProps) => {
                 borderRadius: SPACE.nativeRoundMd,
               }}
               onPress={() => {
-                dispatchFolderCovers({ type: "REMOVE", folderId: props.id });
                 dispatchFolderCache({
                   type: "REMOVE_FOLDER",
                   folderId: props.id,
                 });
+                dispatchFolderCovers({ type: "REMOVE", folderId: props.id });
+                postDeleteFolder(props.id, backendLink);
               }}
             >
               <Text style={{ color: COLORS.white, fontWeight: "500" }}>

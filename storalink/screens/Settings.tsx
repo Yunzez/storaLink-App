@@ -19,22 +19,31 @@ import StoraModal, { StoraModalProps } from "../components/StoraModal";
 import Pencil from "../assets/svgComponents/Pencil";
 import { Switch } from "native-base";
 import { getEmptyUser } from "../utils";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Settings = () => {
-  const { navigator, user, setUser, dispatchFolderCache, dispatchFolderCovers, dispatchRecentLinkCache } = useContext(GlobalContext);
+  const {
+    navigator,
+    user,
+    setUser,
+    dispatchFolderCache,
+    dispatchFolderCovers,
+    dispatchRecentLinkCache,
+  } = useContext(GlobalContext);
 
-  const handleButtonPress = () => {};
-
-  const onLogOut = () => {
-    navigator.navigate("Login")
+  const onLogOut = async () => {
     // * refresh user data
-    if(user) {
-      setUser(getEmptyUser())
-      dispatchFolderCache({type: 'CLEAR'})
-      dispatchFolderCovers({type: 'CLEAR'})
-      dispatchRecentLinkCache({type: 'CLEAR'})
+    if (user) {
+      setUser(getEmptyUser());
+      dispatchFolderCache({ type: "CLEAR" });
+      dispatchFolderCovers({ type: "CLEAR" });
+      dispatchRecentLinkCache({ type: "CLEAR" });
+      await AsyncStorage.removeItem("userCredentials");
+      navigator.navigate("Login");
+    } else {
+      throw Error("user is null");
     }
-  }
+  };
 
   const mockOnPress = () => {};
   return (
@@ -95,17 +104,12 @@ export const Settings = () => {
         Icon={<Star width="24" height="24" />}
       />
 
-      <TouchableOpacity
-        style={styles.logoutBtn}
-        onPress={() => onLogOut()}
-      >
+      <TouchableOpacity style={styles.logoutBtn} onPress={() => onLogOut()}>
         <Text style={{ color: COLORS.themeYellow }}>Log out</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
-
-
 
 type SettingActionBtnProps = {
   title: string;
@@ -145,13 +149,13 @@ export const ToggleActionBtn = ({ title, onToggle }: ToggleActionBtnProps) => {
       <Text style={{ marginLeft: 10, fontSize: 16 }}>{title}</Text>
       <Switch
         size="md"
-        offTrackColor= {COLORS.lightGrey}
+        offTrackColor={COLORS.lightGrey}
         onTrackColor={COLORS.lightOrange}
         onThumbColor={COLORS.themeYellow}
         offThumbColor={COLORS.darkGrey}
         onValueChange={(value: boolean) => {
-          console.log('value change', value)
-          onToggle(value)
+          console.log("value change", value);
+          onToggle(value);
         }}
       />
     </View>

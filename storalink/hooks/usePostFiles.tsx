@@ -1,11 +1,13 @@
-import { LinkViewProps } from "../../Test/MockData";
-import { FolderCardProps } from "../../components/FolderCard";
+import { LinkViewProps } from "../Test/MockData";
+import { FolderCardProps } from "../components/FolderCard";
 import * as Keychain from 'react-native-keychain';
 /**
  *
  * @param folder, a folderCardProps object that do not have the folder id yet
  * @returns a folderCardProps object with a newly created ID
  */
+
+import { UserCredentials } from 'react-native-keychain';
 
 export async function postCreateFolder(
   folder: FolderCardProps,
@@ -30,7 +32,7 @@ export async function postCreateFolder(
     const response = await fetch(backendLink + "/api/v1/folder", {
       method: "POST",
       headers: {
-        'Authorization': `Bearer ${token.password}`,
+        'Authorization': `Bearer ${token?.password}`,
         'Content-Type': 'application/json'
       },
       credentials: 'include',
@@ -53,7 +55,7 @@ export async function postCreateFolder(
 
 
 const getToken = async () => { 
-  const token = await Keychain.getGenericPassword()
+  const token: UserCredentials | false = await Keychain.getGenericPassword()
   return token
 }
 
@@ -65,7 +67,6 @@ export async function postCreateLink(
   description?: string,
 ): Promise<LinkViewProps> {
   const token = await getToken(); 
-  const randomId = Math.floor(Math.random() * 99999) + 1;
   const finalDes =
     description.length > 0 ? description : "This link has no description";
   link = {
@@ -91,7 +92,7 @@ export async function postCreateLink(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      'Authorization': `Bearer ${token.password}`,  
+      'Authorization': `Bearer ${token?.password}`,  
     },
     credentials: 'include',
     body: JSON.stringify(createLinkRequest),
@@ -119,3 +120,42 @@ export enum statusType {
   creating,
   finished,
 }
+
+
+export const postDeleteFolder = async (id: string, backendLink: string): Promise<boolean> => {
+  const token = await getToken(); 
+  if(token === false || !token.password) {
+    console.log('no token, or no password')
+    return false
+  }
+  fetch(backendLink + "/api/v1/folder/" + id, {
+    method: "DELETE", 
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': `Bearer ${token.password}`,  
+    },
+    credentials: 'include',
+  }).then((response) => {
+    return response.ok
+  })
+}
+
+
+export const postDeleteLink = async (id: string, backendLink: string): Promise<boolean> => {
+  const token = await getToken(); 
+  if(token === false || !token.password) {
+    console.log('no token, or no password')
+    return false
+  }
+  fetch(backendLink + "/api/v1/link/" + id, {
+    method: "DELETE", 
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': `Bearer ${token.password}`,  
+    },
+    credentials: 'include',
+  }).then((response) => {
+    return response.ok
+  })
+}
+

@@ -10,6 +10,7 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Keychain from "react-native-keychain";
 import Checkbox from "expo-checkbox";
 import { NavigationProp } from "@react-navigation/native";
@@ -95,7 +96,7 @@ const mergeFolderLink = (
 ): FolderProps[] => {
   for (const folder of folderData) {
     const foundLinks = [];
-    if(folder.links != null) {
+    if (folder.links != null) {
       for (const linkId of folder.links) {
         linkData.find((link) => {
           link.id === (linkId as unknown) && foundLinks.push(link);
@@ -191,6 +192,13 @@ export const Login = () => {
           await fetchUserFolderInfo(data.id); // Make sure this function is also async
 
           await fetchUserLinkInfo(data.id);
+
+          if (remeber) {
+            await AsyncStorage.setItem(
+              "userCredentials",
+              JSON.stringify({ username, password })
+            );
+          }
         }
       } else {
         const errorData = await response.json();

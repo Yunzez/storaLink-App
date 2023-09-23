@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   TextInput,
   ActivityIndicator,
-  Image
+  Image,
 } from "react-native"; // Import ActivityIndicator from react-native
 import { GlobalContext } from "../../context/GlobalProvider";
 import { RetrunButton, AGeneralTextInput } from "../../theme/genericComponents";
@@ -15,11 +15,12 @@ import { COLORS, SPACE } from "../../theme/constants";
 import * as ImagePicker from "expo-image-picker";
 import { FolderCardProps } from "../../components/FolderCard";
 import styled from "styled-components";
-import { postCreateFolder } from "./createFiles";
+import { postCreateFolder } from "../../hooks/usePostFiles";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { coverImagesMap } from "../../assets/imageAssetsPrerequire";
-import { statusType } from "./createFiles";
+import { statusType } from "../../hooks/usePostFiles";
 import AddIcon from "../../assets/svgComponents/AddIcon";
+import UploadImageSVG from "../../assets/svgComponents/UpdaloadImageSVG";
 const AddFolders = () => {
   const {
     navigator,
@@ -34,7 +35,6 @@ const AddFolders = () => {
 
   // coverImages.js
   const assetPath = "../../assets/coverImg/";
- 
 
   const [valid, setValid] = useState(false);
   const [folderName, setFolderName] = useState("");
@@ -90,15 +90,19 @@ const AddFolders = () => {
     console.log("run create folder");
     setStatus(statusType.creating);
     try {
-      console.log('creating folder: ', newFolderObject)
-      const folderWithId = await postCreateFolder(newFolderObject, backendLink, user.id);
+      console.log("creating folder: ", newFolderObject);
+      const folderWithId = await postCreateFolder(
+        newFolderObject,
+        backendLink,
+        user.id
+      );
       console.log("Received folderWithId:", folderWithId);
       setNewFolderId(folderWithId.id ?? -1);
       dispatchFolderCovers({ type: "ADD", folder: folderWithId });
     } catch (error) {
       console.error("Error creating folder:", error);
     }
-  
+
     console.log("finished creating folder");
     setStatus(statusType.finished);
   };
@@ -174,7 +178,7 @@ const AddFolders = () => {
                       <TouchableOpacity
                         key={index}
                         onPress={() => {
-                          console.log('selecting ', index)
+                          console.log("selecting ", index);
                           setSelectedCover(index);
                           if (index == 9) {
                             pickImage();
@@ -191,7 +195,8 @@ const AddFolders = () => {
                               borderRadius: 50,
                               margin: 2,
                               marginVertical: 5,
-                              borderWidth: 2,
+                              borderWidth: 1,
+                              borderStyle: "dashed",
                               borderColor:
                                 selectedCover == index
                                   ? COLORS.themeYellow
@@ -200,35 +205,58 @@ const AddFolders = () => {
                             }}
                           >
                             {customImage == "" ? (
-                              <AddIcon
-                                height={String(screenWidth * 0.1)}
-                                width={String(screenWidth * 0.1)}
-                                fill="black"
-                                color="black"
-                              />
-                            ) : (
-                              <Image
-                                alt={"custom image selection"}
-                                source={{ uri: customImage }}
+                              <View
                                 style={{
-                                  width: screenWidth * 0.11,
+                                  borderRadius: 100,
+                                  borderWidth: 1,
+                                  marginHorizontal: 6,
+                                }}
+                              >
+                                <AddIcon
+                                  height={String(screenWidth * 0.07)}
+                                  width={String(screenWidth * 0.07)}
+                                  fill="black"
+                                  color="black"
+                                />
+                              </View>
+                            ) : (
+                              <View
+                                style={{
+                                  borderWidth: 2,
+                                  borderColor: COLORS.themeYellow,
+                                  borderTopLeftRadius: 50,
+                                  borderBottomLeftRadius: 50,
+                                  width: screenWidth * 0.25,
                                   height: screenWidth * 0.11,
-                                  borderRadius: 50,
                                   marginVertical: 5,
                                   marginEnd: 5,
+                                  marginStart: 2,
                                 }}
-                              />
+                              >
+                                <Image
+                                  alt={"custom image selection"}
+                                  source={{ uri: customImage }}
+                                  style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    borderTopLeftRadius: 50,
+                                    borderBottomLeftRadius: 50,
+                                  }}
+                                />
+                              </View>
                             )}
 
-                            <Text style={{ fontSize: 14 }}>
-                              {customImage == ""
-                                ? "Add your own"
-                                : "Change image"}
-                            </Text>
+                            {customImage == "" ? (
+                              <Text style={{ fontSize: 13 }}>
+                                Upload Costom
+                              </Text>
+                            ) : (
+                              <UploadImageSVG width="30" height="30" />
+                            )}
                           </View>
                         ) : (
                           <Image
-                          alt={"custom image selection"}
+                            alt={"custom image selection"}
                             source={cover}
                             style={{
                               width: screenWidth * 0.12,

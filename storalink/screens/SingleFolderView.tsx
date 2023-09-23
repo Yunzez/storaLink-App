@@ -8,7 +8,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Box, Text, VStack, Avatar, HStack, Flex, SearchIcon } from "native-base";
+import {
+  Box,
+  Text,
+  VStack,
+  Avatar,
+  HStack,
+  Flex,
+  SearchIcon,
+} from "native-base";
 import { FolderProps, GlobalContext } from "../context/GlobalProvider";
 import LoadingScreen from "../components/LoadingScreen";
 import { COLORS, SPACE } from "../theme/constants";
@@ -32,7 +40,8 @@ import { Share } from "react-native";
 import { LinkViewProps } from "../Test/MockData";
 import AddIcon from "../assets/svgComponents/AddIcon";
 import Filter from "../assets/svgComponents/Filter";
-
+import { coverImagesMap } from "../assets/imageAssetsPrerequire";
+import { postDeleteLink } from "../hooks/usePostFiles";
 export const fetchFolderDataById = (
   id: string | number,
   folderCache
@@ -40,8 +49,8 @@ export const fetchFolderDataById = (
   if (!folderCache) {
     return null;
   }
-  console.log('looking in ', folderCache)
-  console.log('links:', folderCache[0].links)
+  console.log("looking in ", folderCache);
+  console.log("links:", folderCache[0].links);
   const target = folderCache.find((value) => {
     return value.id === id;
   });
@@ -59,6 +68,7 @@ export const SingleFolderView = () => {
     screenWidth,
     dispatchFolderCache,
     folderCache,
+    backendLink
   } = useContext(GlobalContext);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -101,6 +111,10 @@ export const SingleFolderView = () => {
       },
     },
   ];
+
+  const placeHolder = require("../assets/mockImg/placeholder.png");
+  // let currentImage = currData.thumbNailUrl;
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
       {isLoading && <LoadingScreen />}
@@ -118,11 +132,16 @@ export const SingleFolderView = () => {
           >
             <ImageBackground
               source={
-                currData.thumbNailUrl
-                  ? typeof currData.thumbNailUrl === 'number' 
-                    ? currData.thumbNailUrl
-                    : { uri: currData.thumbNailUrl } // Remote image
-                  : require("../assets/mockImg/placeholder.png")
+                !currData.thumbNailUrl ||
+                (typeof currData.thumbNailUrl === "string" &&
+                  currData.thumbNailUrl.length === 0)
+                  ? // precheck if the imgUrl is not filled out, we use default value if not
+                    placeholder
+                  : typeof currData.thumbNailUrl === "number" // Check if imgUrl is a number
+                  ? currData.thumbNailUrl
+                  : currData.thumbNailUrl.includes("cover_")
+                  ? coverImagesMap[currData.thumbNailUrl]
+                  : { uri: currData.thumbNailUrl as string } // Use the image URIz
               }
               style={{
                 width: screenWidth,
@@ -131,8 +150,10 @@ export const SingleFolderView = () => {
             >
               <LinearGradient
                 colors={[
-                  hexToRGBA(COLORS.white, 0.5),
-                  hexToRGBA(COLORS.themeYellow, 0.5),
+                  hexToRGBA(COLORS.white, 0),
+                  hexToRGBA(COLORS.white, 0),
+                  hexToRGBA(COLORS.white, 0),
+                  hexToRGBA(COLORS.white, 0.7),
                 ]} // set your gradient colors
                 style={{ flex: 1, width: screenWidth, height: "100%" }} // make it take up the full space of the parent
               >
@@ -154,14 +175,13 @@ export const SingleFolderView = () => {
                       alignItems={"center"}
                       justifyContent={"space-between"}
                     >
-                      {" "}
                       <Text
                         fontSize="lg"
                         marginRight={3}
                         bold
-                        color={COLORS.white}
+                        color={COLORS.standardBlack}
                       >
-                      {currData.name}
+                        {currData.name}
                       </Text>
                       <Flex flexDirection={"row"}>
                         <Avatar
@@ -210,13 +230,13 @@ export const SingleFolderView = () => {
             </Text>
             <Flex flexDirection={"row"} justifyContent={"space-between"} mb={3}>
               <Flex flexDirection={"row"}>
-              <OutLinedButton
+                <OutLinedButton
                   style={{ marginRight: 5 }}
                   onClick={() => {
                     console.log("hello");
                   }}
                   text=""
-                  icon={<SearchIcon color={COLORS.themeYellow}/>}
+                  icon={<SearchIcon color={COLORS.themeYellow} />}
                 />
                 <OutLinedButton
                   style={{ marginRight: 5 }}
@@ -224,17 +244,24 @@ export const SingleFolderView = () => {
                     console.log("hello");
                   }}
                   text="Sort By"
-                  icon={<Filter width="20" height="20" color={COLORS.themeYellow}/>}
+                  icon={
+                    <Filter width="20" height="20" color={COLORS.themeYellow} />
+                  }
                 />
-               
+
                 <OutLinedButton
                   onClick={() => {
                     console.log("hello");
                   }}
                   text="Add item"
-                  icon={<AddIcon width="20" height="20" color={COLORS.themeYellow}/>}
+                  icon={
+                    <AddIcon
+                      width="20"
+                      height="20"
+                      color={COLORS.themeYellow}
+                    />
+                  }
                 />
-                  
               </Flex>
 
               <View style={{ flexDirection: "row" }}>
@@ -346,6 +373,7 @@ export const SingleFolderView = () => {
                             {
                               name: "Delete",
                               onClick: () => {
+                                postDeleteLink(link.id as string, backendLink)
                                 dispatchFolderCache({
                                   type: "REMOVE_LINK",
                                   linkId: link.id ?? -1,

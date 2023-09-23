@@ -20,7 +20,7 @@ import SearchComponent, {
 } from "../../components/SearchbarComponent";
 import { LinkViewProps } from "../../Test/MockData";
 import { SocialMediaSrc } from "../../utils";
-import { postCreateLink, statusType } from "./createFiles";
+import { postCreateLink, statusType } from "../../hooks/usePostFiles";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import placeholder from '../../assets/mockImg/placeholder.png'
 const AddLinks = () => {
