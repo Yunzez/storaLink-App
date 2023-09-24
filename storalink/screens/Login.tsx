@@ -53,7 +53,7 @@ const SignInBtnContainer = styled(TouchableOpacity)`
   margin-bottom: ${SPACE.lg};
 `;
 
-const StyledCheckbox = styled(Checkbox)`
+export const StyledCheckbox = styled(Checkbox)`
   border-radius: ${SPACE.roundSm};
   padding: ${SPACE.sm};
   margin-right: ${SPACE.sm};

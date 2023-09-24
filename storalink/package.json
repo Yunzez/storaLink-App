@@ -60,7 +60,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@types/react-native-share-menu": "^5.0.2"
+    "@types/react-native-share-menu": "^5.0.2",
+    "@types/whatwg-url": "^11.0.0"
   },
   "private": true
 }

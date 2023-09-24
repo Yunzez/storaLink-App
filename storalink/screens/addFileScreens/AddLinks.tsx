@@ -1,4 +1,4 @@
-import { View } from "native-base";
+import { Checkbox, View } from "native-base";
 import React, { useContext, useEffect, useId, useRef, useState } from "react";
 import {
   TouchableOpacity,
@@ -19,10 +19,12 @@ import SearchComponent, {
   searchValueType,
 } from "../../components/SearchbarComponent";
 import { LinkViewProps } from "../../Test/MockData";
-import { SocialMediaSrc } from "../../utils";
+import { SocialMediaSrc, isValidUrl } from "../../utils";
 import { postCreateLink, statusType } from "../../hooks/usePostFiles";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import placeholder from '../../assets/mockImg/placeholder.png'
+import placeholder from "../../assets/mockImg/placeholder.png";
+import { StyledCheckbox } from "../Login";
+import { getLinkPreview } from "link-preview-js";
 const AddLinks = () => {
   const {
     navigator,
@@ -33,18 +35,19 @@ const AddLinks = () => {
     dispatchFolderCache,
     dispatchRecentLinkCache,
     backendLink,
-    user
+    user,
   } = useContext(GlobalContext);
   const [valid, setValid] = useState(false);
-  const [linkUrl, setLinkUrl] = useState("");
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState("");
   const [selectedFolder, setSelectedFolder] = useState(-1);
   const [selectedFolderName, setSelectedFolderName] = useState(placeholder);
   const [status, setStatus] = useState<statusType>(statusType.initialize);
   const [url, setUrl] = useState("");
-  const navigation = useNavigation()
-  const [description, setDescription] = useState('')
-  const desRef = useRef()
+  const navigation = useNavigation();
+  const [description, setDescription] = useState("");
+  const desRef = useRef();
+
+  const [autoFill, setAutoFill] = useState(false);
   const LoadingContainer = styled(View)`
     align-items: center;
     justify-content: center;
@@ -102,28 +105,28 @@ const AddLinks = () => {
       return retMap;
     }
     for (const cover of folderCache) {
-      console.log('run search algorithm: ',cover);
-      if(cover.name?.includes(value)) {
+      console.log("run search algorithm: ", cover);
+      if (cover.name?.includes(value)) {
         retMap.set(cover.name, {
-            onClick: () => {
-              console.log( cover.id);
-              setSelectedFolder(cover.id as number);
-              setSelectedFolderName(cover.name)
-            },
-          });
+          onClick: () => {
+            console.log(cover.id);
+            setSelectedFolder(cover.id as number);
+            setSelectedFolderName(cover.name);
+          },
+        });
       }
     }
-    console.log('searching', retMap.size)
-    if(retMap.size === 0) {
-        retMap.set('There is no result', {onClick: () => {}})
+    console.log("searching", retMap.size);
+    if (retMap.size === 0) {
+      retMap.set("There is no result", { onClick: () => {} });
     }
     console.log("search result", retMap);
     return retMap;
   };
 
   const onCreateLink = async () => {
-    console.log(description)
-    setStatus(statusType.creating)
+    console.log(description);
+    setStatus(statusType.creating);
     if (selectedFolder == -1) {
       return;
     }
@@ -131,20 +134,30 @@ const AddLinks = () => {
       title: url,
       linkUrl: url,
       socialMediaType: SocialMediaSrc.INS,
-      imgUrl: image 
+      imgUrl: image,
     };
-    console.log('save to folder with id of ', selectedFolder)
-   const completeLink = await postCreateLink(newLink, backendLink, user.id, selectedFolder, description)
-    console.log('get complete link', completeLink)
+    console.log("save to folder with id of ", selectedFolder);
+    const completeLink = await postCreateLink(
+      newLink,
+      backendLink,
+      user.id,
+      selectedFolder,
+      description
+    );
+    console.log("get complete link", completeLink);
     dispatchFolderCache({
       type: "ADD_LINK",
       folderId: selectedFolder,
       link: completeLink,
     });
 
-    dispatchRecentLinkCache({type: 'ADD', link: completeLink, folderId: selectedFolder } )
+    dispatchRecentLinkCache({
+      type: "ADD",
+      link: completeLink,
+      folderId: selectedFolder,
+    });
 
-    setStatus(statusType.finished)
+    setStatus(statusType.finished);
   };
 
   return (
@@ -172,7 +185,7 @@ const AddLinks = () => {
             </View>
 
             <ScrollView style={{ marginTop: 30 }}>
-              <View style={{ marginBottom: 20 }}>
+              <View style={{ marginBottom: 10 }}>
                 <Text>Link URL *</Text>
                 <AGeneralTextInput
                   placeholder="https://..."
@@ -181,6 +194,24 @@ const AddLinks = () => {
                   }}
                 />
               </View>
+              <View style={{ flexDirection: "row", marginBottom: 10 }}>
+                <StyledCheckbox
+                  style={{ marginRight: 6 }}
+                  disabled={false}
+                  value={autoFill}
+                  onValueChange={async (newValue) => {
+                    setAutoFill(newValue)
+                    console.log('is url valid? ',isValidUrl(url), url)
+                    if(isValidUrl(url)){
+                      const previewInfo = await getLinkPreview(url.toLowerCase());
+                      console.log('preview, ', previewInfo)
+                    }
+                  }}
+                  color={autoFill ? COLORS.themeYellow : undefined}
+                />
+                <Text>Auto-fill info using URL</Text>
+              </View>
+
               <View style={{ marginBottom: 20, zIndex: 5 }}>
                 <Text>Save Link To *</Text>
                 <SearchComponent
@@ -223,12 +254,13 @@ const AddLinks = () => {
               <View>
                 <Text>Description</Text>
                 <AGeneralTextInput
-                value={description}
+                  value={description}
                   multiline={true}
                   numberOfLines={4}
                   placeholder="What’s this folder about?"
-
-                  onChangeText={(text: string) => {setDescription(text)}}
+                  onChangeText={(text: string) => {
+                    setDescription(text);
+                  }}
                 />
               </View>
 
@@ -252,64 +284,65 @@ const AddLinks = () => {
             </ScrollView>
           </View>
         )}
-        { 
-        status == statusType.creating && 
+        {status == statusType.creating && (
           <LoadingContainer>
             <ActivityIndicator size="large" color={COLORS.themeYellow} />
             <LoadingText>status...</LoadingText>
           </LoadingContainer>
-        }
-        {status == statusType.finished &&
-        <LoadingContainer>
-        <Text style={{ fontSize: 18 }}>
-          You just created the new link in folder:
-        </Text>
-        <Text style={{ fontSize: 22 }}>{selectedFolderName}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigator.navigate("Home");
-            setStatus(statusType.initialize);
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0, // Reset stack to the first screen
-                routes: [
-                  { name: "add_main" }, // Replace 'MainRoute' with the main route's name
-                  { name: "add_main" }, // Replace 'TargetScreen' with the screen you want to navigate to
-                ],
-              })
-            );
-          }}
-          style={{
-            width: screenWidth * 0.7,
-            borderRadius: SPACE.nativeRoundMd,
-            backgroundColor: COLORS.darkGrey,
-            padding: 15,
-            marginVertical: 10,
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <Text style={{ fontSize: 15 }}>Back to Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigator.navigate("Home");
-            setStatus(statusType.initialize);
-          }}
-          style={{
-            width: screenWidth * 0.7,
-            borderRadius: SPACE.nativeRoundMd,
-            backgroundColor: COLORS.themeYellow,
-            padding: 15,
-            marginVertical: 10,
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <Text style={{ fontSize: 15 }}>Go to the {selectedFolderName}</Text>
-        </TouchableOpacity>
-      </LoadingContainer>
-        }
+        )}
+        {status == statusType.finished && (
+          <LoadingContainer>
+            <Text style={{ fontSize: 18 }}>
+              You just created the new link in folder:
+            </Text>
+            <Text style={{ fontSize: 22 }}>{selectedFolderName}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigator.navigate("Home");
+                setStatus(statusType.initialize);
+                navigation.dispatch(
+                  CommonActions.reset({
+                    index: 0, // Reset stack to the first screen
+                    routes: [
+                      { name: "add_main" }, // Replace 'MainRoute' with the main route's name
+                      { name: "add_main" }, // Replace 'TargetScreen' with the screen you want to navigate to
+                    ],
+                  })
+                );
+              }}
+              style={{
+                width: screenWidth * 0.7,
+                borderRadius: SPACE.nativeRoundMd,
+                backgroundColor: COLORS.darkGrey,
+                padding: 15,
+                marginVertical: 10,
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={{ fontSize: 15 }}>Back to Home</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigator.navigate("Home");
+                setStatus(statusType.initialize);
+              }}
+              style={{
+                width: screenWidth * 0.7,
+                borderRadius: SPACE.nativeRoundMd,
+                backgroundColor: COLORS.themeYellow,
+                padding: 15,
+                marginVertical: 10,
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={{ fontSize: 15 }}>
+                Go to the {selectedFolderName}
+              </Text>
+            </TouchableOpacity>
+          </LoadingContainer>
+        )}
       </View>
     </SafeAreaView>
   );

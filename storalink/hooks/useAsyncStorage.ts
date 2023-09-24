@@ -1,45 +1,67 @@
-
+import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Define the shape of the methods that will be returned by the hook
+type StorageMethods<T> = {
+  data: T | null;
+  storeData: (value: T) => Promise<void>;
+  retrieveData: () => Promise<void>;
+  removeData: () => Promise<void>;
+};
 
-export const useAsyncStorage = () => {
-     const storeData = async (key: string, value: string) => {
-        try {
-          await AsyncStorage.setItem(key, value);
-        } catch (e) {
-          // saving error
-        }
-      };
-      const storeDataObject = async (value: any) => {
-        try {
-          const jsonValue = JSON.stringify(value);
-          await AsyncStorage.setItem('my-key', jsonValue);
-        } catch (e) {
-          // saving error
-        }
-      };
-    
-      const getData = async (key: string) => {
-        try {
-          const value = await AsyncStorage.getItem(key);
-          if (value !== null) {
-            // value previously stored
-          }
-        } catch (e) {
-          // error reading value
-        }
-      };
+// Generic hook for using AsyncStorage
+export const useAsyncStorage = <T>(key: string, initialValue: T | null = null): StorageMethods<T> => {
+  // Local state to hold the data
+  const [data, setData] = useState<T | null>(initialValue);
 
-      const getDataObject = async () => {
-        try {
-          const jsonValue = await AsyncStorage.getItem('my-key');
-          return jsonValue != null ? JSON.parse(jsonValue) : null;
-        } catch (e) {
-          // error reading value
-        }
-      };
+  // Retrieve data from AsyncStorage when the component mounts
+  useEffect(() => {
+    retrieveData();
+  }, []);
 
-    return {storeData, getData, getDataObject, storeDataObject}
-}
+  // Method to store data in AsyncStorage
+  const storeData = async (value: T) => {
+    try {
+      // Convert the data to a JSON string and store it
+      await AsyncStorage.setItem(key, JSON.stringify(value));
+      // Update the local state
+      setData(value);
+    } catch (e) {
+      console.error(`Error saving data to ${key}:`, e);
+    }
+  };
 
-export default useAsyncStorage
+  // Method to retrieve data from AsyncStorage
+  const retrieveData = async () => {
+    try {
+      // Fetch the data from AsyncStorage
+      const value = await AsyncStorage.getItem(key);
+      // If data exists, update the local state
+      if (value !== null) {
+        setData(JSON.parse(value));
+      }
+    } catch (e) {
+      console.error(`Error reading data from ${key}:`, e);
+    }
+  };
+
+  // Method to remove data from AsyncStorage
+  const removeData = async () => {
+    try {
+      // Remove the data from AsyncStorage
+      await AsyncStorage.removeItem(key);
+      // Reset the local state
+      setData(null);
+    } catch (e) {
+      console.error(`Error removing data from ${key}:`, e);
+    }
+  };
+
+  // Return the local data and methods to interact with AsyncStorage
+  return {
+    data,
+    storeData,
+    retrieveData,
+    removeData,
+  };
+};

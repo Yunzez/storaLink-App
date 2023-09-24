@@ -19,7 +19,6 @@ import { ShareContextProvider } from "./context/ShareContext";
 import * as Linking from 'expo-linking';
 import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 import { useShare } from "./hooks/useShare";
-import useAsyncStorage from "./hooks/useAsyncStorage";
 import SingleLinkView from "./screens/SingleLinkView";
 import * as Font from 'expo-font';
 const GlobalStack = createNativeStackNavigator();
@@ -56,7 +55,6 @@ export default function App() {
   const [sharedMimeType, setSharedMimeType] = useState('');
   const [sharedExtraData, setSharedExtraData] = useState(null);
   const {navigator} = useContext(GlobalContext)
-  const {getData} = useAsyncStorage()
   // ShareMenu.getInitialShare(handleShare);
 
   // useEffect(() => {
