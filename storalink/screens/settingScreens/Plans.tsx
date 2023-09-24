@@ -9,7 +9,7 @@ const Plans = () => {
       <View width={"80%"}>
         <HeaderWithBackButton
           title="Plans"
-          navigateToScreen="Settings"
+          navigateToScreen="Profile"
           navigateToParams={"setting_main"}
         />
       </View>

@@ -19,7 +19,7 @@ const Notification = () => {
       <View width={"80%"}>
         <HeaderWithBackButton
           title="Notifications"
-          navigateToScreen="Settings"
+          navigateToScreen="Profile"
           navigateToParams={"setting_main"}
         />
         {/* <TouchableOpacity

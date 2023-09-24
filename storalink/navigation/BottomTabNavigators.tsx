@@ -18,7 +18,7 @@ import { GlobalContext } from "../context/GlobalProvider";
 import SettingNavigators from "./SettingNavigators";
 import AddFile from "../screens/AddFile";
 import AddFilesNavigators from "./AddFileNavigators";
-import BottomAddIcon from "../assets/bottomNavigatorIcons/BottomAdd.png";
+import BottomAddIcon from "../assets/svgComponents/BottomAddIcon";
 import home_selected from "../assets/bottomNavigatorIcons/home_selected.png";
 import folder from "../assets/bottomNavigatorIcons/folder.png";
 import folder_selected from "../assets/bottomNavigatorIcons/folder_selected.png";
@@ -131,11 +131,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               break;
             case "Add":
               iconPath = (
-                <BottomAdd
-                  width="49"
-                  height="49"
-                  color={COLORS.standardBlack}
-                />
+                <BottomAddIcon focus= {isFocused}/>
               );
               break;
               break;
@@ -176,8 +172,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                 marginLeft: 10,
                 marginRight: 10,
                 alignItems: "center",
-                transform:
-                  isFocused && name === "Add" ? [{ translateY: -10 }] : [],
+                marginBottom: name === "Add" ? 5 : 0,
               }}
             >
               {iconPath}

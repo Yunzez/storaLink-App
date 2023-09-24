@@ -32,7 +32,7 @@ const Account = () => {
       <View width={"80%"}>
         <HeaderWithBackButton
           title="Account"
-          navigateToScreen="Settings"
+          navigateToScreen="Profile"
           navigateToParams={"setting_main"}
         />
 

@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import BottomFolder from "../assets/svgComponents/bottomNavSVG/BottomFolder";
 import LogoSVG from "../assets/svgComponents/LogoSVG";
 import Link from "../assets/svgComponents/Link";
+import BottomAddIcon from "../assets/svgComponents/BottomAddIcon";
 
 const AddFile = () => {
   const { navigator, screenHeight, screenWidth } = useContext(GlobalContext);

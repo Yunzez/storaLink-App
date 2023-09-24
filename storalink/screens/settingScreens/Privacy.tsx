@@ -8,7 +8,7 @@ const Privacy = () => {
     <SafeAreaView>
       <HeaderWithBackButton
         title="Plans"
-        navigateToScreen="Settings"
+        navigateToScreen="Profile"
         navigateToParams={"setting_main"}
       />
     </SafeAreaView>
