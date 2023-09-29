@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SearchBar, ResultsDropdown } from "../theme/genericComponents";
 import {
   StyleSheet,
@@ -25,6 +25,7 @@ type SearchComponentProps = {
   algorithm?: (searchInput: string) => Map<string, any>;
   useSearchDropDown?: boolean;
   onChangeText?: (text: string) => void;
+    preSelectValue?: string;
 };
 
 export enum searchValueType {
@@ -53,7 +54,7 @@ export const SearchComponent = (props: SearchComponentProps) => {
     onClick: () => {},
     valueType: searchValueType.error,
   });
-  const inputBoxRef = useRef<TextInput>(null);
+  const inputBoxRef = useRef<TextInput>();
   const [result, setResult] =
     useState<Map<string, searchResultType>>(initialResultMap);
   const colorAnimation = useState(new Animated.Value(0))[0];
@@ -158,6 +159,11 @@ export const SearchComponent = (props: SearchComponentProps) => {
       useNativeDriver: false,
     }).start();
   };
+  useEffect(() => {
+    inputBoxRef.current?.setNativeProps({ text: props.preSelectValue });
+    console.log('updated text', props.preSelectValue)
+  }, );
+  
 
   const animatedTextOpacity = {
     opacity: textOpacityAnimation.interpolate({

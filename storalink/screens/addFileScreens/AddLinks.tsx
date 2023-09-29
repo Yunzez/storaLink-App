@@ -19,9 +19,13 @@ import SearchComponent, {
   searchValueType,
 } from "../../components/SearchbarComponent";
 import { LinkViewProps } from "../../Test/MockData";
-import { SocialMediaSrc, isValidUrl } from "../../utils";
+import { SocialMediaSrc, getFolderNameById, isValidUrl } from "../../utils";
 import { postCreateLink, statusType } from "../../hooks/usePostFiles";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import placeholder from "../../assets/mockImg/placeholder.png";
 import { StyledCheckbox } from "../Login";
 import { getLinkPreview } from "link-preview-js";
@@ -46,6 +50,7 @@ const AddLinks = () => {
   const navigation = useNavigation();
   const [description, setDescription] = useState("");
   const desRef = useRef();
+  const [preSelectedFolder, setPreSelectFolder] = useState("");
 
   const [autoFill, setAutoFill] = useState(false);
   const LoadingContainer = styled(View)`
@@ -79,6 +84,18 @@ const AddLinks = () => {
     }
   };
 
+  const route = useRoute();
+  useEffect(() => {
+    if (route.params) {
+      params = route.params.folderId ?? -1;
+      if (params != -1) {
+        setSelectedFolder(params);
+        const name = getFolderNameById(params, folderCache);
+        setPreSelectFolder(name)
+      }
+    }
+  }, [route.params]);
+
   useEffect(() => {
     console.log("add image path");
     console.log("alter selected folder id", selectedFolder);
@@ -88,13 +105,13 @@ const AddLinks = () => {
     selectedFolder != -1 && url.length != 0 ? setValid(true) : setValid(false);
     console.log("update folderCovers", selectedFolder);
   }, [selectedFolder, url]);
+
   /**
    *
    * @param value a string that is the value of user input
    * @returns a map of string: searchResultType, the searchResultType comes with a onClick method that is essetinal
    */
   const searchAlgorithm = (value: string): Map<string, searchResultType> => {
-    console.log("run search", value);
     const retMap = new Map();
     if (!folderCache) {
       retMap.set("You have no folder yet, go create your first folder", {
@@ -105,7 +122,6 @@ const AddLinks = () => {
       return retMap;
     }
     for (const cover of folderCache) {
-      console.log("run search algorithm: ", cover);
       if (cover.name?.includes(value)) {
         retMap.set(cover.name, {
           onClick: () => {
@@ -116,7 +132,6 @@ const AddLinks = () => {
         });
       }
     }
-    console.log("searching", retMap.size);
     if (retMap.size === 0) {
       retMap.set("There is no result", { onClick: () => {} });
     }
@@ -136,7 +151,6 @@ const AddLinks = () => {
       socialMediaType: SocialMediaSrc.INS,
       imgUrl: image,
     };
-    console.log("save to folder with id of ", selectedFolder);
     const completeLink = await postCreateLink(
       newLink,
       backendLink,
@@ -165,9 +179,11 @@ const AddLinks = () => {
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         {status == statusType.initialize && (
           <View style={{ width: screenWidth * 0.8 }}>
-            <View style={{ position: "absolute" }}>
+            <View style={{ position: "absolute", zIndex: 10 }}>
               <RetrunButton
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 onPress={() => {
+                  console.log("go back");
                   navigator.navigate("add_main");
                 }}
               >
@@ -200,11 +216,13 @@ const AddLinks = () => {
                   disabled={false}
                   value={autoFill}
                   onValueChange={async (newValue) => {
-                    setAutoFill(newValue)
-                    console.log('is url valid? ',isValidUrl(url), url)
-                    if(isValidUrl(url)){
-                      const previewInfo = await getLinkPreview(url.toLowerCase());
-                      console.log('preview, ', previewInfo)
+                    setAutoFill(newValue);
+                    console.log("is url valid? ", isValidUrl(url), url);
+                    if (isValidUrl(url)) {
+                      const previewInfo = await getLinkPreview(
+                        url.toLowerCase()
+                      );
+                      console.log("preview, ", previewInfo);
                     }
                   }}
                   color={autoFill ? COLORS.themeYellow : undefined}
@@ -217,6 +235,7 @@ const AddLinks = () => {
                 <SearchComponent
                   placeHolder="Search a folder"
                   algorithm={searchAlgorithm}
+                  preSelectValue={preSelectedFolder}
                 />
               </View>
               <View style={{ marginBottom: 20 }}>

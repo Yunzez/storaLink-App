@@ -31,7 +31,7 @@ type RootStackParamList = {
 };
 
 export type FolderProps = {
-  id: number;
+  id: number| string;
   name: string | null;
   description: string | null;
   thumbNailUrl: string | null;

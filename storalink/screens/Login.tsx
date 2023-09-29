@@ -295,7 +295,11 @@ export const Login = () => {
           }}
         >
           <View
-            style={{ justifyContent: "center", height: "100%", width: "80%" }}
+            style={{
+              justifyContent: "center",
+              height: "100%",
+              width: "80%",
+            }}
           >
             <ProgressBar
               progress={loadingProgess}

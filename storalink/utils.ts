@@ -1,5 +1,5 @@
 import { MockSingleFolderData } from "./Test/MockData";
-import { User } from "./context/GlobalProvider";
+import { FolderProps, User } from "./context/GlobalProvider";
 export enum SocialMediaSrc {
   INS = "Instagram",
   FB = "Facebook",
@@ -59,6 +59,14 @@ export const isValidUrl = (url: string): boolean => {
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
   return !!pattern.test(url);
 };
+
+
+export const getFolderNameById = (id: string | number, folderCache: FolderProps[]) => { 
+  const target = folderCache.find((value) => {
+    return value.id === id;
+  });
+  return target?.name;
+}
 
 
 /**

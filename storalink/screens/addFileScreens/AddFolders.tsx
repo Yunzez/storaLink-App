@@ -61,7 +61,7 @@ const AddFolders = () => {
   const newFolderObject: FolderCardProps = {
     id: -1,
     title: folderName,
-    imgUrl: customImage == "" ? `cover_${selectedCover}` : customImage,
+    imgUrl: customImage == "" ? `cover_${selectedCover + 1}` : customImage,
     desc: des,
     linksNumber: 0,
     onClick: () => {

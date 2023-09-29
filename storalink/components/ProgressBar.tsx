@@ -11,11 +11,13 @@ interface ProgressBarProps {
 
 const Container = styled.View`
   width: 100%;
-  height: 20px;
+  height: 26px;
   background-color: #e0e0e0;
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 10px;
+  padding: 3px;
+  border: 1px solid black;
 `;
 
 const Filler = styled(Animated.View)<{ color: string }>`
@@ -55,11 +57,13 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     <Wrapper>
       <Container>
         <Filler
-          style={{
+          style={
+            {
             width: widthAnim.interpolate({
               inputRange: [0, 100],
               outputRange: ["0%", "100%"],
             }),
+            borderRadius: 8,
           }}
           color={fillColor}
         />

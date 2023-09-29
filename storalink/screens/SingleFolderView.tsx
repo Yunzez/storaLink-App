@@ -68,7 +68,7 @@ export const SingleFolderView = () => {
     screenWidth,
     dispatchFolderCache,
     folderCache,
-    backendLink
+    backendLink,
   } = useContext(GlobalContext);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -251,7 +251,12 @@ export const SingleFolderView = () => {
 
                 <OutLinedButton
                   onClick={() => {
-                    console.log("hello");
+                    navigator.navigate("Add", {
+                      screen: "add_new_link",
+                      params: {
+                        folderId: route.params.id,
+                      },
+                    });
                   }}
                   text="Add item"
                   icon={
@@ -373,7 +378,7 @@ export const SingleFolderView = () => {
                             {
                               name: "Delete",
                               onClick: () => {
-                                postDeleteLink(link.id as string, backendLink)
+                                postDeleteLink(link.id as string, backendLink);
                                 dispatchFolderCache({
                                   type: "REMOVE_LINK",
                                   linkId: link.id ?? -1,
