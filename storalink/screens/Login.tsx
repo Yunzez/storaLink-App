@@ -31,6 +31,7 @@ import { ShareMenuReactView } from "react-native-share-menu";
 import { FolderProps } from "../context/GlobalProvider";
 import ProgressBar from "../components/ProgressBar";
 import { LinkViewProps } from "../Test/MockData";
+import useNativeStorage from "../hooks/useNativeStorage";
 const Container = styled(SafeAreaView)`
   flex: 1;
   flex-direction: row;
@@ -125,6 +126,7 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [loadingProgess, setLoadingProgress] = useState(0);
   const [loadingText, setLoadingText] = useState("");
+  const {saveNativeData, getNativeData} = useNativeStorage()
 
   let userData: FolderProps[];
   useEffect(() => {
@@ -282,6 +284,25 @@ export const Login = () => {
 
   ShareMenuReactView.data().then((data) => {
     console.log("current data", data);
+  });
+
+  // * store username in local storage
+  useEffect(() => {
+    if (remeber) {
+      AsyncStorage.setItem("username", username);
+      saveNativeData('username', username)
+      console.log('save user name',username)
+    }
+  }, [remeber]);
+
+  // * restore username in local storage 
+  useEffect(() => {
+    AsyncStorage.getItem("username").then((res) => {
+      if (res) {
+        setUsername(res);
+        setRemenber(true)
+      }
+    });
   });
 
   return (

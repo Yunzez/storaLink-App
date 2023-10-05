@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {
   AGeneralTextInput,
   NormalTitle,
-  RetrunButton,
+  ReturnButton,
 } from "../../theme/genericComponents";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalContext } from "../../context/GlobalProvider";

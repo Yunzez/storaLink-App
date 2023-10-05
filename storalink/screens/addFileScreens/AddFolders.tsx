@@ -9,7 +9,7 @@ import {
   Image,
 } from "react-native"; // Import ActivityIndicator from react-native
 import { GlobalContext } from "../../context/GlobalProvider";
-import { RetrunButton, AGeneralTextInput } from "../../theme/genericComponents";
+import { ReturnButton, AGeneralTextInput } from "../../theme/genericComponents";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SPACE } from "../../theme/constants";
 import * as ImagePicker from "expo-image-picker";
@@ -146,7 +146,7 @@ const AddFolders = () => {
           ) : status == statusType.initialize ? (
             <View>
               <View style={{ position: "absolute", zIndex: 99 }}>
-                <RetrunButton
+                <ReturnButton
                   onPress={() => {
                     navigator.navigate("add_main");
                   }}
@@ -156,7 +156,7 @@ const AddFolders = () => {
                     size={25}
                     color={COLORS.standardBlack}
                   />
-                </RetrunButton>
+                </ReturnButton>
               </View>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
                 <Text style={{ fontSize: 18, marginTop: 5 }}>

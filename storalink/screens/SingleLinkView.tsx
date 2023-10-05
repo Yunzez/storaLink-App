@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, Text, SafeAreaView, Image } from "react-native";
 import { GlobalContext } from "../context/GlobalProvider";
-import { HelveticaBold, RetrunButton } from "../theme/genericComponents";
+import { HelveticaBold, ReturnButton } from "../theme/genericComponents";
 import HeaderWithBackButton from "../components/HeaderWithBackBtn";
 import { useRoute } from "@react-navigation/native";
 import { fetchFolderDataById } from "./SingleFolderView";

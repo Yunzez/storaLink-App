@@ -10,18 +10,18 @@ import {
 } from "react-native";
 import { COLORS, SPACE } from "../theme/constants";
 import { GlobalContext } from "../context/GlobalProvider";
-import { AGeneralTextInput, RetrunButton } from "../theme/genericComponents";
+import { AGeneralTextInput, ReturnButton } from "../theme/genericComponents";
 import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 import LoadingScreen from "../components/LoadingScreen";
 import { getLinkPreview } from "link-preview-js";
 import { useNavigation } from "@react-navigation/native";
 import SearchComponent, { searchResultType, searchValueType } from "../components/SearchbarComponent";
-
+import useNativeStorage from "../hooks/useNativeStorage";
 
 const ShareScreen = () => {
   const defaultImage = require("../assets/img/YellowIcon.png");
   
-  const { folderCache, setShareUrl } = useContext(GlobalContext);
+  const { folderCache, setShareUrl, user } = useContext(GlobalContext);
   const [sharedData, setSharedData] = useState("");
   const [linkMetadata, setLinkMetadata] = useState(null);
   const [title, setTitle] = useState("");
@@ -30,7 +30,7 @@ const ShareScreen = () => {
   const [image, setImage] = useState("");
 
   const [folderID, setFolderID] = useState(0)
-
+  const {getNativeData} = useNativeStorage()
   const handleAddPress = () => {
     ShareMenuReactView.continueInApp();
 
@@ -38,10 +38,13 @@ const ShareScreen = () => {
     // ShareMenuReactView.dismissExtension();
   };
   useEffect(() => {
+    console.log('user: ', user)
+    const userName = getNativeData('username').then((data) => {
+      console.log('got username:', data)
+    })
     try {
       ShareMenuReactView.data().then((data) => {
 
-        console.log("current data", data);
         const link = data.data[0].data;
         setShareUrl(link)
 

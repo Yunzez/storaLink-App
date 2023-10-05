@@ -12,7 +12,7 @@ import { GlobalContext } from "../../context/GlobalProvider";
 import styled from "styled-components";
 import { COLORS, SPACE } from "../../theme/constants";
 import { Ionicons } from "@expo/vector-icons";
-import { AGeneralTextInput, RetrunButton } from "../../theme/genericComponents";
+import { AGeneralTextInput, ReturnButton } from "../../theme/genericComponents";
 import * as ImagePicker from "expo-image-picker";
 import SearchComponent, {
   searchResultType,
@@ -91,7 +91,7 @@ const AddLinks = () => {
       if (params != -1) {
         setSelectedFolder(params);
         const name = getFolderNameById(params, folderCache);
-        setPreSelectFolder(name)
+        setPreSelectFolder(name);
       }
     }
   }, [route.params]);
@@ -180,7 +180,7 @@ const AddLinks = () => {
         {status == statusType.initialize && (
           <View style={{ width: screenWidth * 0.8 }}>
             <View style={{ position: "absolute", zIndex: 10 }}>
-              <RetrunButton
+              <ReturnButton
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 onPress={() => {
                   console.log("go back");
@@ -192,7 +192,7 @@ const AddLinks = () => {
                   size={20}
                   color={COLORS.standardBlack}
                 />
-              </RetrunButton>
+              </ReturnButton>
             </View>
             <View style={{ flexDirection: "row", justifyContent: "center" }}>
               <Text style={{ fontSize: 18, marginTop: 5 }}>
@@ -211,23 +211,22 @@ const AddLinks = () => {
                 />
               </View>
               <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                <StyledCheckbox
-                  style={{ marginRight: 6 }}
-                  disabled={false}
-                  value={autoFill}
-                  onValueChange={async (newValue) => {
-                    setAutoFill(newValue);
+                <TouchableOpacity
+                style={{padding: 10, backgroundColor: COLORS.themeYellow, borderRadius: SPACE.nativeRoundMd}}
+                  onPress={async () => {
                     console.log("is url valid? ", isValidUrl(url), url);
                     if (isValidUrl(url)) {
-                      const previewInfo = await getLinkPreview(
-                        url.toLowerCase()
-                      );
-                      console.log("preview, ", previewInfo);
+                      try {
+                        const previewInfo = await getLinkPreview('https://www.google.com/');
+                        console.log(previewInfo);
+                      } catch (error) {
+                        console.error("An error occurred:", error);
+                      }
                     }
                   }}
-                  color={autoFill ? COLORS.themeYellow : undefined}
-                />
-                <Text>Auto-fill info using URL</Text>
+                >
+                  <Text style={{color: COLORS.white, fontWeight: "700"}}>Auto-fill info using URL</Text>
+                </TouchableOpacity>
               </View>
 
               <View style={{ marginBottom: 20, zIndex: 5 }}>

@@ -114,10 +114,10 @@ export const HelveticaBold = styled.Text`
   font-weight: bold; /* Make the text bold */
 `;
 
-export const RetrunButton = styled(TouchableOpacity)`
+export const ReturnButton = styled(TouchableOpacity)`
   width: 40px;
   height: 40px;
-  background-color: ${COLORS.lightOrange};
+  background-color: ${COLORS.white};
   border-radius: ${SPACE.roundMd};
   display: flex;
   flex-direction: row;

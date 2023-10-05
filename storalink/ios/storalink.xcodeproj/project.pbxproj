@@ -16,6 +16,8 @@
 		96905EF65AED1B983A6B3ABC /* libPods-storalink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-storalink.a */; };
 		9F2D7AF92A9FF9F4002090D9 /* Bridging-Header.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D7AF82A9FF9F4002090D9 /* Bridging-Header.m */; };
 		9F2D7AFB2A9FFA74002090D9 /* ReactShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D7AFA2A9FFA74002090D9 /* ReactShareViewController.swift */; };
+		9F2D7B022ACE33D7002090D9 /* SharedUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D7B012ACE33D7002090D9 /* SharedUserDefaults.m */; };
+		9F2D7B032ACE35C4002090D9 /* SharedUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D7B012ACE33D7002090D9 /* SharedUserDefaults.m */; };
 		9FF1629D2A9C376900DBEB0F /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FF1629B2A9C376900DBEB0F /* MainInterface.storyboard */; };
 		9FF162A12A9C376900DBEB0F /* ShareStoralink.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9FF162972A9C376900DBEB0F /* ShareStoralink.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9FF162A62A9C37F900DBEB0F /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF162A52A9C37F900DBEB0F /* ShareViewController.swift */; };
@@ -68,6 +70,8 @@
 		9F2D7AF72A9FF9F4002090D9 /* ShareStoralink-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShareStoralink-Bridging-Header.h"; sourceTree = "<group>"; };
 		9F2D7AF82A9FF9F4002090D9 /* Bridging-Header.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Bridging-Header.m"; sourceTree = "<group>"; };
 		9F2D7AFA2A9FFA74002090D9 /* ReactShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReactShareViewController.swift; path = "../../node_modules/react-native-share-menu/ios/ReactShareViewController.swift"; sourceTree = "<group>"; };
+		9F2D7B002ACE33AF002090D9 /* SharedUserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedUserDefaults.h; sourceTree = "<group>"; };
+		9F2D7B012ACE33D7002090D9 /* SharedUserDefaults.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedUserDefaults.m; sourceTree = "<group>"; };
 		9FF162972A9C376900DBEB0F /* ShareStoralink.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareStoralink.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FF1629C2A9C376900DBEB0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		9FF1629E2A9C376900DBEB0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -113,6 +117,8 @@
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
 				D1332359AED746DC8082EAC7 /* noop-file.swift */,
 				3E647CF8B3884EEAB47D6E53 /* storalink-Bridging-Header.h */,
+				9F2D7B002ACE33AF002090D9 /* SharedUserDefaults.h */,
+				9F2D7B012ACE33D7002090D9 /* SharedUserDefaults.m */,
 			);
 			name = storalink;
 			sourceTree = "<group>";
@@ -528,6 +534,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				9F2D7B022ACE33D7002090D9 /* SharedUserDefaults.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
 				7514E6BE62DA48CCAF73C0DF /* noop-file.swift in Sources */,
@@ -539,6 +546,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FF162A62A9C37F900DBEB0F /* ShareViewController.swift in Sources */,
+				9F2D7B032ACE35C4002090D9 /* SharedUserDefaults.m in Sources */,
 				12453457626F25C61D1D6876 /* ExpoModulesProvider.swift in Sources */,
 				9F2D7AFB2A9FFA74002090D9 /* ReactShareViewController.swift in Sources */,
 				9F2D7AF92A9FF9F4002090D9 /* Bridging-Header.m in Sources */,

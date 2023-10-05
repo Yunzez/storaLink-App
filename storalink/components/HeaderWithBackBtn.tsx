@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { RetrunButton } from "../theme/genericComponents";
+import { ReturnButton } from "../theme/genericComponents";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS } from "../theme/constants";
 import { GlobalContext } from "../context/GlobalProvider";
@@ -35,7 +35,7 @@ const HeaderWithBackButton: React.FC<HeaderWithBackButtonProps> = ({
       }}
     >
       <View style={{ position: "absolute", left: 0 }}>
-        <RetrunButton
+        <ReturnButton
           onPress={() => {
             navigator.navigate(navigateToScreen, navigationChoice);
           }}
@@ -45,7 +45,7 @@ const HeaderWithBackButton: React.FC<HeaderWithBackButtonProps> = ({
             size={20}
             color={COLORS.standardBlack}
           />
-        </RetrunButton>
+        </ReturnButton>
       </View>
       <View>
         <Text style={{ fontSize: 18, fontWeight: "500" }}>{title}</Text>
