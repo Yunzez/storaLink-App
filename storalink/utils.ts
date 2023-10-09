@@ -50,24 +50,43 @@ export function fetchFolderDataById(id: string | number) {
 }
 
 export const isValidUrl = (url: string): boolean => {
-  const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name and extension
-    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-    '(\\:\\d+)?'+ // port
-    '(\\/[-a-z\\d%_.~+]*)*'+ // path
-    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  const pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name and extension
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?" + // port
+      "(\\/[-a-z\\d%_.~+]*)*" + // path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
   return !!pattern.test(url);
 };
 
-
-export const getFolderNameById = (id: string | number, folderCache: FolderProps[]) => { 
+export const getFolderNameById = (
+  id: string | number,
+  folderCache: FolderProps[]
+) => {
   const target = folderCache.find((value) => {
     return value.id === id;
   });
   return target?.name;
-}
+};
 
+export const getLinkById = (
+  folderId: string | number,
+  linkId: string | number,
+  folderCache: FolderProps[]
+) => {
+  const target = folderCache.find((value) => {
+    return value.id === folderId;
+  });
+
+  const targetLink = target?.links.find((value) => {
+    return value.id === linkId;
+  });
+  return targetLink;
+};
 
 /**
  *

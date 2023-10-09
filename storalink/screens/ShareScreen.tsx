@@ -159,7 +159,9 @@ const ShareScreen = () => {
             </View>
 
             <View style={{ width: "40%", height: 100, paddingHorizontal: 15 }}>
-              <Image
+              {
+                image && 
+                <Image
                 style={{
                   width: "100%",
                   height: "100%",
@@ -168,6 +170,8 @@ const ShareScreen = () => {
                 source={image.length == 0 ? defaultImage : { uri: image }}
                 resizeMode="cover"
               />
+              }
+             
             </View>
           </View>
 

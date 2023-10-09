@@ -19,7 +19,12 @@ import SearchComponent, {
   searchValueType,
 } from "../../components/SearchbarComponent";
 import { LinkViewProps } from "../../Test/MockData";
-import { SocialMediaSrc, getFolderNameById, isValidUrl } from "../../utils";
+import {
+  SocialMediaSrc,
+  getFolderNameById,
+  getLinkById,
+  isValidUrl,
+} from "../../utils";
 import { postCreateLink, statusType } from "../../hooks/usePostFiles";
 import {
   CommonActions,
@@ -53,6 +58,7 @@ const AddLinks = () => {
   const [preSelectedFolder, setPreSelectFolder] = useState("");
 
   const [autoFill, setAutoFill] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const LoadingContainer = styled(View)`
     align-items: center;
     justify-content: center;
@@ -92,6 +98,21 @@ const AddLinks = () => {
         setSelectedFolder(params);
         const name = getFolderNameById(params, folderCache);
         setPreSelectFolder(name);
+      }
+
+      if (route.params.actionType == "edit") {
+        setIsEdit(true);
+        const currentLink = getLinkById(
+          route.params.folderId,
+          route.params.linkId ?? -1,
+          folderCache
+        );
+        console.log("edit link", currentLink);
+        if (currentLink) {
+          setUrl(currentLink.linkUrl);
+          setImage(currentLink.imgUrl);
+          setDescription(currentLink.description);
+        }
       }
     }
   }, [route.params]);
@@ -196,7 +217,7 @@ const AddLinks = () => {
             </View>
             <View style={{ flexDirection: "row", justifyContent: "center" }}>
               <Text style={{ fontSize: 18, marginTop: 5 }}>
-                Create New Link
+                {isEdit ? "Edit Link" : "Create New Link"}
               </Text>
             </View>
 
@@ -204,6 +225,7 @@ const AddLinks = () => {
               <View style={{ marginBottom: 10 }}>
                 <Text>Link URL *</Text>
                 <AGeneralTextInput
+                  value={url}
                   placeholder="https://..."
                   onChangeText={(text: string) => {
                     setUrl(text);
@@ -212,12 +234,18 @@ const AddLinks = () => {
               </View>
               <View style={{ flexDirection: "row", marginBottom: 10 }}>
                 <TouchableOpacity
-                style={{padding: 10, backgroundColor: COLORS.themeYellow, borderRadius: SPACE.nativeRoundMd}}
+                  style={{
+                    padding: 10,
+                    backgroundColor: COLORS.themeYellow,
+                    borderRadius: SPACE.nativeRoundMd,
+                  }}
                   onPress={async () => {
                     console.log("is url valid? ", isValidUrl(url), url);
                     if (isValidUrl(url)) {
                       try {
-                        const previewInfo = await getLinkPreview('https://www.google.com/');
+                        const previewInfo = await getLinkPreview(
+                          "https://www.google.com/"
+                        );
                         console.log(previewInfo);
                       } catch (error) {
                         console.error("An error occurred:", error);
@@ -225,7 +253,9 @@ const AddLinks = () => {
                     }
                   }}
                 >
-                  <Text style={{color: COLORS.white, fontWeight: "700"}}>Auto-fill info using URL</Text>
+                  <Text style={{ color: COLORS.white, fontWeight: "700" }}>
+                    Auto-fill info using URL
+                  </Text>
                 </TouchableOpacity>
               </View>
 
@@ -294,10 +324,10 @@ const AddLinks = () => {
                   marginTop: 20,
                 }}
                 onPress={() => {
-                  onCreateLink();
+                  isEdit ? console.log("update") : onCreateLink();
                 }}
               >
-                <Text>Create</Text>
+                <Text>{isEdit ? "Update" : "Create"}</Text>
               </TouchableOpacity>
             </ScrollView>
           </View>

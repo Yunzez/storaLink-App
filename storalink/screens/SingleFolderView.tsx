@@ -255,6 +255,7 @@ export const SingleFolderView = () => {
                       screen: "add_new_link",
                       params: {
                         folderId: route.params.id,
+                        actionType: 'add'
                       },
                     });
                   }}
@@ -393,6 +394,20 @@ export const SingleFolderView = () => {
                                 Share.share({
                                   message: "share link",
                                   url: "https://www.baidu.com",
+                                });
+                              },
+                            },
+                            {
+                              name: "Edit",
+                              onClick: () => {
+                                console.log("edit this");
+                                navigator.navigate("Add", {
+                                  screen: "add_new_link",
+                                  params: {
+                                    folderId: route.params.id,
+                                    linkId: link.id,
+                                    actionType: 'edit'
+                                  },
                                 });
                               },
                             },
