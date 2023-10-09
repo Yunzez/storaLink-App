@@ -13,7 +13,8 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		7514E6BE62DA48CCAF73C0DF /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1332359AED746DC8082EAC7 /* noop-file.swift */; };
-		96905EF65AED1B983A6B3ABC /* libPods-storalink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-storalink.a */; };
+		86496DD61216472D5A7FF8A7 /* Pods_ShareStoralink.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA2E0D194D3C596267DD84A /* Pods_ShareStoralink.framework */; };
+		98E61D355D9D85678734E60B /* Pods_storalink.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34510F6C0E2421FA193FF3F1 /* Pods_storalink.framework */; };
 		9F2D7AF92A9FF9F4002090D9 /* Bridging-Header.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D7AF82A9FF9F4002090D9 /* Bridging-Header.m */; };
 		9F2D7AFB2A9FFA74002090D9 /* ReactShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D7AFA2A9FFA74002090D9 /* ReactShareViewController.swift */; };
 		9F2D7B022ACE33D7002090D9 /* SharedUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D7B012ACE33D7002090D9 /* SharedUserDefaults.m */; };
@@ -23,13 +24,12 @@
 		9FF162A62A9C37F900DBEB0F /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF162A52A9C37F900DBEB0F /* ShareViewController.swift */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		E9A8FBAD8687FF9E8468824E /* libPods-storalink-ShareStoralink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 029331179A34AC69D60BC33B /* libPods-storalink-ShareStoralink.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		9FF1629F2A9C376900DBEB0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			containerPortal = 83CBB9F71A601CBA00E9B192;
 			proxyType = 1;
 			remoteGlobalIDString = 9FF162962A9C376900DBEB0F;
 			remoteInfo = ShareStoralink;
@@ -51,22 +51,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		029331179A34AC69D60BC33B /* libPods-storalink-ShareStoralink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-storalink-ShareStoralink.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		04C73B972A7C41EF7FEE3C9E /* Pods-storalink-ShareStoralink.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-storalink-ShareStoralink.debug.xcconfig"; path = "Target Support Files/Pods-storalink-ShareStoralink/Pods-storalink-ShareStoralink.debug.xcconfig"; sourceTree = "<group>"; };
-		0ADE93044A4561CB7B1AE84A /* Pods-storalink-Share.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-storalink-Share.debug.xcconfig"; path = "Target Support Files/Pods-storalink-Share/Pods-storalink-Share.debug.xcconfig"; sourceTree = "<group>"; };
+		058753B6281AF5F5FEB00B2C /* Pods-storalink.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-storalink.debug.xcconfig"; path = "Target Support Files/Pods-storalink/Pods-storalink.debug.xcconfig"; sourceTree = "<group>"; };
+		0DF03E546C32FA2312100312 /* Pods-storalink.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-storalink.release.xcconfig"; path = "Target Support Files/Pods-storalink/Pods-storalink.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* storalink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = storalink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = storalink/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = storalink/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = storalink/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = storalink/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = storalink/main.m; sourceTree = "<group>"; };
-		17BCC37B2D0C49E0CB28DD94 /* Pods-storalink-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-storalink-Share.release.xcconfig"; path = "Target Support Files/Pods-storalink-Share/Pods-storalink-Share.release.xcconfig"; sourceTree = "<group>"; };
+		34510F6C0E2421FA193FF3F1 /* Pods_storalink.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_storalink.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E647CF8B3884EEAB47D6E53 /* storalink-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "storalink-Bridging-Header.h"; path = "storalink/storalink-Bridging-Header.h"; sourceTree = "<group>"; };
 		4AD3144A964074C195031117 /* libPods-storalink-Share.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-storalink-Share.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-storalink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-storalink.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C2E3173556A471DD304B334 /* Pods-storalink.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-storalink.debug.xcconfig"; path = "Target Support Files/Pods-storalink/Pods-storalink.debug.xcconfig"; sourceTree = "<group>"; };
+		6AA2E0D194D3C596267DD84A /* Pods_ShareStoralink.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareStoralink.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F710251E13E8C9E77E13E0E /* Pods-ShareStoralink.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareStoralink.release.xcconfig"; path = "Target Support Files/Pods-ShareStoralink/Pods-ShareStoralink.release.xcconfig"; sourceTree = "<group>"; };
 		717FDFA48C2A058626EF886C /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-storalink-ShareStoralink/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		7A4D352CD337FB3A3BF06240 /* Pods-storalink.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-storalink.release.xcconfig"; path = "Target Support Files/Pods-storalink/Pods-storalink.release.xcconfig"; sourceTree = "<group>"; };
 		9F2D7AF72A9FF9F4002090D9 /* ShareStoralink-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShareStoralink-Bridging-Header.h"; sourceTree = "<group>"; };
 		9F2D7AF82A9FF9F4002090D9 /* Bridging-Header.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Bridging-Header.m"; sourceTree = "<group>"; };
 		9F2D7AFA2A9FFA74002090D9 /* ReactShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReactShareViewController.swift; path = "../../node_modules/react-native-share-menu/ios/ReactShareViewController.swift"; sourceTree = "<group>"; };
@@ -79,7 +77,7 @@
 		9FF162A72A9C393700DBEB0F /* ShareStoralink.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareStoralink.entitlements; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = storalink/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		CEE684E41FC67E5D87E2E85A /* Pods-storalink-ShareStoralink.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-storalink-ShareStoralink.release.xcconfig"; path = "Target Support Files/Pods-storalink-ShareStoralink/Pods-storalink-ShareStoralink.release.xcconfig"; sourceTree = "<group>"; };
+		C1E1144A85ED238772D8942A /* Pods-ShareStoralink.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareStoralink.debug.xcconfig"; path = "Target Support Files/Pods-ShareStoralink/Pods-ShareStoralink.debug.xcconfig"; sourceTree = "<group>"; };
 		D1332359AED746DC8082EAC7 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "storalink/noop-file.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-storalink/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
@@ -90,7 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96905EF65AED1B983A6B3ABC /* libPods-storalink.a in Frameworks */,
+				98E61D355D9D85678734E60B /* Pods_storalink.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9A8FBAD8687FF9E8468824E /* libPods-storalink-ShareStoralink.a in Frameworks */,
+				86496DD61216472D5A7FF8A7 /* Pods_ShareStoralink.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,9 +125,9 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-storalink.a */,
 				4AD3144A964074C195031117 /* libPods-storalink-Share.a */,
-				029331179A34AC69D60BC33B /* libPods-storalink-ShareStoralink.a */,
+				6AA2E0D194D3C596267DD84A /* Pods_ShareStoralink.framework */,
+				34510F6C0E2421FA193FF3F1 /* Pods_storalink.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -149,7 +147,7 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
-		83CBB9F61A601CBA00E9B192 = {
+		83CBB9F61A601CBA00E9B192 /* PBXGroup */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAE1A68108700A75B9A /* storalink */,
@@ -157,8 +155,8 @@
 				9FF162982A9C376900DBEB0F /* ShareStoralink */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				D65327D7A22EEC0BE12398D9 /* Pods */,
 				D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */,
+				FF114CBA7BE5E78A24B13267 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -205,19 +203,6 @@
 			path = storalink/Supporting;
 			sourceTree = "<group>";
 		};
-		D65327D7A22EEC0BE12398D9 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6C2E3173556A471DD304B334 /* Pods-storalink.debug.xcconfig */,
-				7A4D352CD337FB3A3BF06240 /* Pods-storalink.release.xcconfig */,
-				0ADE93044A4561CB7B1AE84A /* Pods-storalink-Share.debug.xcconfig */,
-				17BCC37B2D0C49E0CB28DD94 /* Pods-storalink-Share.release.xcconfig */,
-				04C73B972A7C41EF7FEE3C9E /* Pods-storalink-ShareStoralink.debug.xcconfig */,
-				CEE684E41FC67E5D87E2E85A /* Pods-storalink-ShareStoralink.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +210,18 @@
 				57C577958945148F26053721 /* ShareStoralink */,
 			);
 			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		FF114CBA7BE5E78A24B13267 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C1E1144A85ED238772D8942A /* Pods-ShareStoralink.debug.xcconfig */,
+				6F710251E13E8C9E77E13E0E /* Pods-ShareStoralink.release.xcconfig */,
+				058753B6281AF5F5FEB00B2C /* Pods-storalink.debug.xcconfig */,
+				0DF03E546C32FA2312100312 /* Pods-storalink.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,8 +238,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				580615A5DBD122103CC8D411 /* [CP] Embed Pods Frameworks */,
 				9FF162772A9C16E600DBEB0F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -264,7 +259,6 @@
 				9FF162932A9C376900DBEB0F /* Sources */,
 				9FF162942A9C376900DBEB0F /* Frameworks */,
 				9FF162952A9C376900DBEB0F /* Resources */,
-				B42A88E48B9348974ADC96D5 /* [CP] Copy Pods Resources */,
 				9F2D7AFC2A9FFB47002090D9 /* Bundle React Native code and images */,
 			);
 			buildRules = (
@@ -279,7 +273,7 @@
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		83CBB9F71A601CBA00E9B192 /* Project object */ = {
+		83CBB9F71A601CBA00E9B192 = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1430;
@@ -302,7 +296,7 @@
 				en,
 				Base,
 			);
-			mainGroup = 83CBB9F61A601CBA00E9B192;
+			mainGroup = 83CBB9F61A601CBA00E9B192 /* PBXGroup */;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -347,7 +341,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios relative | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli')\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n\n";
+			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios relative | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli')\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n";
 		};
 		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -405,29 +399,11 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-storalink-ShareStoralink-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ShareStoralink-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		580615A5DBD122103CC8D411 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-storalink/Pods-storalink-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-storalink/Pods-storalink-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		793530384298507DD49A0864 /* [Expo] Configure project */ = {
@@ -449,26 +425,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-storalink-ShareStoralink/expo-configure-project.sh\"\n";
 		};
-		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-storalink/Pods-storalink-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-storalink/Pods-storalink-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		9F2D7AFC2A9FFB47002090D9 /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -485,27 +441,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport NODE_BINARY=/opt/homebrew/bin/node\nexport ENTRY_FILE=index.share.js\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
-		};
-		B42A88E48B9348974ADC96D5 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-storalink-ShareStoralink/Pods-storalink-ShareStoralink-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-storalink-ShareStoralink/Pods-storalink-ShareStoralink-resources.sh\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios relative | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli')\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n";
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -577,7 +513,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C2E3173556A471DD304B334 /* Pods-storalink.debug.xcconfig */;
+			baseConfigurationReference = 058753B6281AF5F5FEB00B2C /* Pods-storalink.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -615,7 +551,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A4D352CD337FB3A3BF06240 /* Pods-storalink.release.xcconfig */;
+			baseConfigurationReference = 0DF03E546C32FA2312100312 /* Pods-storalink.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -766,7 +702,7 @@
 		};
 		9FF162A22A9C376900DBEB0F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 04C73B972A7C41EF7FEE3C9E /* Pods-storalink-ShareStoralink.debug.xcconfig */;
+			baseConfigurationReference = C1E1144A85ED238772D8942A /* Pods-ShareStoralink.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -810,7 +746,7 @@
 		};
 		9FF162A32A9C376900DBEB0F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CEE684E41FC67E5D87E2E85A /* Pods-storalink-ShareStoralink.release.xcconfig */;
+			baseConfigurationReference = 6F710251E13E8C9E77E13E0E /* Pods-ShareStoralink.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -884,5 +820,5 @@
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
+	rootObject = 83CBB9F71A601CBA00E9B192;
 }
