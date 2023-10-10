@@ -74,6 +74,7 @@ const cleanLinkData = (linkData: any[]): LinkViewProps[] => {
     socialMediaType: link.sourceType as SocialMediaSrc, // Assuming SocialMediaSrc is an enum or type that matches the sourceType strings
     imgUrl: link.imageUrl,
     linkUrl: link.linkUrl,
+    description: link.description,
     onClick: () => {
       // Define your onClick function here
     },

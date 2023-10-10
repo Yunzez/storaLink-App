@@ -10,7 +10,7 @@ type StoralinkSwiperProps = {
 const StoralinkSwiper: React.FC<StoralinkSwiperProps> = ({ children, style, onCardScolled }) => {
   const scrollViewRef = useRef(null);
   const { width } = Dimensions.get('window');
-  const cardWidth = width * 0.8;
+  const cardWidth = width * 0.78;
   const offset = (width - cardWidth) / 2;
   const [scrollX] = useState(new Animated.Value(0));
   const [lastScrollPosition, setLastScrollPosition] = useState(0);
@@ -24,8 +24,9 @@ const StoralinkSwiper: React.FC<StoralinkSwiperProps> = ({ children, style, onCa
 
   const handleScrollEndDrag = (event) => {
     const currentScrollPosition = event.nativeEvent.contentOffset.x;
-    const cardIndex = Math.round(currentScrollPosition / cardWidth);
-    const snapTo = cardIndex * cardWidth;
+    const cardIndex = Math.round(currentScrollPosition / (cardWidth + 10));
+  const snapTo = (cardIndex * cardWidth) + (cardIndex * 10); // 10 is marginEnd value
+
     const totalCards = React.Children.count(children);
   
     if (cardIndex !== initialCardIndex) {

@@ -7,6 +7,7 @@ import { useRoute } from "@react-navigation/native";
 import { fetchFolderDataById } from "./SingleFolderView";
 import { COLORS, SPACE } from "../theme/constants";
 import StoralinkSwiper from "../components/StoralinkSwiper";
+import { coverImagesMap } from "../assets/imageAssetsPrerequire";
 
 const SingleLinkView = () => {
   const {
@@ -24,29 +25,29 @@ const SingleLinkView = () => {
   const [selectedLinkSeq, setSelectedLinkSeq] = useState(route.params.linkSeq);
   const folder = fetchFolderDataById(route.params?.id, folderCache);
   const links = folder.links;
+  console.log('current links', links)
   const linkOnScroll = (direction: string) => {
-    console.log('triggered scroll', direction)
-    if(direction == 'left') {
-      setSelectedLinkSeq(selectedLinkSeq - 1)
-      console.log('decrease seq')
+    console.log("triggered scroll", direction);
+    if (direction == "left") {
+      setSelectedLinkSeq(selectedLinkSeq - 1);
+      console.log("decrease seq");
     } else {
-      setSelectedLinkSeq(selectedLinkSeq + 1)
+      setSelectedLinkSeq(selectedLinkSeq + 1);
     }
-  }
-
-  console.log("got folder", folder, selectedLinkSeq);
+  };
   return (
     <SafeAreaView>
       <StoralinkSwiper
-      onCardScolled={(direction: string) => linkOnScroll(direction)}
+        onCardScolled={(direction: string) => linkOnScroll(direction)}
         style={{
           width: screenWidth,
           position: "absolute",
-          top: 120,
+          top: 110,
           left: 0,
           right: 0,
           height: screenHeight * 0.35,
-          zIndex: 10
+          zIndex: 10,
+          borderRadius: SPACE.nativeRoundMd,
         }}
       >
         {links.map((link, index) => (
@@ -56,20 +57,32 @@ const SingleLinkView = () => {
               backgroundColor: COLORS.white,
               padding: SPACE.nativeMd,
               borderRadius: SPACE.nativeRoundMd,
-              height: screenHeight * 0.4,
-              width: '100%'
+              height: screenHeight * 0.35,
+              width: "100%",
             }}
           >
             <View style={{ marginVertical: SPACE.nativeSm }}>
               <Text>@Some_Auther</Text>
             </View>
+           
             <Image
               style={{
-                width: '100%',
+                width: "100%",
                 height: screenHeight * 0.3, // Set a fixed height
                 borderRadius: SPACE.nativeRoundMd,
               }}
-              source={link.imgUrl ? link.imgUrl : placeHolder}
+              source={
+                !link.imgUrl ||
+                (typeof link.imgUrl === "string" && link.imgUrl.length === 0)
+                  ? // precheck if the imgUrl is not filled out, we use default value if not
+                    placeHolder
+                  : typeof link.imgUrl === "number" // Check if imgUrl is a number
+                  ? link.imgUrl
+                  : link.imgUrl.includes("cover_")
+                  ? coverImagesMap[link.imgUrl as string]
+                  : { uri: link.imgUrl as string }
+              }
+              //source={link.imgUrl ? link.imgUrl : placeHolder}
             />
           </View>
         ))}

@@ -17,6 +17,7 @@ export interface LinkViewProps extends SmallLinkViewProps {
   socialMediaType: SocialMediaSrc;
   imgUrl?: string;
   linkUrl?: string;
+  description?: string;
   onClick?: () => void;
 }
 export const MockCardList: FolderCardProps[] = [

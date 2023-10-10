@@ -143,7 +143,7 @@ const ShareScreen = () => {
       name: folder.folderName || null,
       description: folder.folderDescription || null,
       thumbNailUrl: folder.imageUrl || null,
-      desc: "", // You can set this to a default value or derive it from the original data
+      desc: '', // You can set this to a default value or derive it from the original data
       pinned: false, // You can set this to a default value or derive it from the original data
       links: folder.linkIds.length > 0 ? folder.linkIds : null, // Assuming linkIds can be used to derive LinkViewProps
     }));
@@ -186,6 +186,7 @@ const ShareScreen = () => {
         linkUrl: sharedData,
         socialMediaType: SocialMediaSrc.INS,
         imgUrl: image,
+        description: description,
       };
 
       // TODO add folder id
