@@ -41,6 +41,7 @@ const ShareScreen = () => {
   const { getNativeData } = useNativeStorage();
   const [jwtToken, setJwtToken] = useState("");
   const [username, setUsername] = useState("");
+  const [status, setStatus] = useState("initial");
 
   useEffect(() => {
     console.log("user: ", user);
@@ -87,7 +88,7 @@ const ShareScreen = () => {
         service: "idService",
         accessGroup: "group.com.storalink.app",
       });
-      const userId =userIdKey.password;
+      const userId = userIdKey.password;
       if (credentials && userId) {
         setJwtToken(credentials.password);
         setUserId(userId);
@@ -115,7 +116,7 @@ const ShareScreen = () => {
             console.log("folder data: ", folderData); // Now log the data
 
             const userData = cleanFolderData(folderData);
-            setShareScreenFolders(userData)
+            setShareScreenFolders(userData);
             console.log(userData);
           } else {
             console.log(
@@ -176,6 +177,7 @@ const ShareScreen = () => {
   };
 
   const handleAddPress = async () => {
+    setStatus("loading");
     console.log("save", shareScreenFolders, sharedData);
     if (jwtToken.length != 0 && username) {
       console.log("add link for", username, "with token", jwtToken);
@@ -187,29 +189,31 @@ const ShareScreen = () => {
       };
 
       // TODO add folder id
-      console.log(userId, folderID)
-      const completeLink = await postCreateLinkShareScreen(
+      console.log(userId, folderID);
+      await postCreateLinkShareScreen(
         newLink,
         userId,
         folderID,
         jwtToken,
-        description,
-      );
-      console.log("get complete link", completeLink);
-    // ! no more to do, since share screen does not trigger local update
+        description
+      ).then((link) => {
+        console.log("link: ", link);
+        setStatus("success");
+      });
+
+      // ! no more to do, since share screen does not trigger local update
     }
 
     // ShareMenuReactView.dismissExtension();
   };
 
-
-  // ! this is used for share screen only 
+  // ! this is used for share screen only
   async function postCreateLinkShareScreen(
     link: LinkViewProps,
     userId: any,
     folderId: any,
     jwt: string,
-    description?: string,
+    description?: string
   ): Promise<LinkViewProps> {
     const finalDes =
       description.length > 0 ? description : "This link has no description";
@@ -236,9 +240,9 @@ const ShareScreen = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        'Authorization': `Bearer ${jwt}`,  
+        Authorization: `Bearer ${jwt}`,
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(createLinkRequest),
     })
       .then((response) => {
@@ -247,17 +251,26 @@ const ShareScreen = () => {
         } else {
           console.log("add link status not ok");
           console.log(response);
+          setStatus("error");
         }
       })
       .then((data) => {
         link = { ...link, id: data.id };
-        console.log('data: ', data); // Log the JSON data
+        console.log("data: ", data); // Log the JSON data
       })
       .catch((error) => {
         console.log("Error:", error);
       });
     return link;
   }
+
+  useEffect(() => {
+    if (status === "success") {
+      setTimeout(() => {
+        ShareMenuReactView.dismissExtension();
+      }, 2000);
+    }
+  }, [status]);
 
   return (
     <SafeAreaView
@@ -272,101 +285,151 @@ const ShareScreen = () => {
           <LoadingScreen />
         </View>
       ) : (
-        <View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                ShareMenuReactView.dismissExtension();
+        (status == "initial" && (
+          <View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              <Text style={{ fontSize: 18, color: COLORS.themeYellow }}>
-                Cancel
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  ShareMenuReactView.dismissExtension();
+                }}
+              >
+                <Text style={{ fontSize: 18, color: COLORS.themeYellow }}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
 
-            <View style={{ width: 30, height: 30 }}>
-              <TouchableOpacity onPress={handleAddPress}>
-                <Image
-                  style={{ width: "100%", height: "100%" }}
-                  source={defaultImage}
-                />
+              <View style={{ width: 30, height: 30 }}>
+                <TouchableOpacity onPress={handleAddPress}>
+                  <Image
+                    style={{ width: "100%", height: "100%" }}
+                    source={defaultImage}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => {
+                  handleAddPress();
+                }}
+              >
+                <Text style={{ fontSize: 18, color: COLORS.themeYellow }}>
+                  Add
+                </Text>
               </TouchableOpacity>
             </View>
 
+            <View style={{ flexDirection: "row", height: 100, marginTop: 40 }}>
+              <View style={{ width: "60%" }}>
+                <Text>Link: {sharedData}</Text>
+              </View>
+
+              <View
+                style={{ width: "40%", height: 100, paddingHorizontal: 15 }}
+              >
+                {image && (
+                  <Image
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: SPACE.nativeRoundMd,
+                    }}
+                    source={image.length == 0 ? defaultImage : { uri: image }}
+                    resizeMode="cover"
+                  />
+                )}
+              </View>
+            </View>
+
+            <View style={{ marginTop: 20 }}>
+              <Text>Link Title:</Text>
+              <AGeneralTextInput
+                style={{
+                  marginTop: 5,
+                  borderColor: COLORS.themeYellow,
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  paddingVertical: 15,
+                  paddingHorizontal: 10,
+                }}
+                value={title}
+                onChangeText={(text) => setTitle(text)}
+              />
+            </View>
+            <View style={{ marginTop: 20, minHeight: 10 }}>
+              <Text>Description:</Text>
+              <AGeneralTextInput
+                multiline={true}
+                numberOfLines={3}
+                style={{
+                  marginTop: 5,
+                  borderColor: COLORS.themeYellow,
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  paddingVertical: 15,
+                  paddingHorizontal: 10,
+                }}
+                value={description}
+              />
+            </View>
+            <View style={{ marginTop: 20 }}>
+              <Text>Save in:</Text>
+              <SearchComponent
+                placeHolder="Search files, saved items, etc..."
+                algorithm={searchAlgorithm}
+              />
+            </View>
+          </View>
+        )) ||
+        (status == "success" && (
+          <View style={{ justifyContent: "center", height: "100%" }}>
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <Text>Successfully added link to your folder</Text>
+              <Text>This window will be closed in 2 seconds </Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: COLORS.themeYellow,
+                  padding: 10,
+                  borderRadius: 10,
+                  marginTop: 20,
+                }}
+                onPress={() => {
+                  ShareMenuReactView.dismissExtension();
+                }}
+              >
+                <Text>Close now</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )) ||
+        (status == "error" && (
+          <View style={{ justifyContent: "center", height: "100%" }}>
+            <Text>There was an error adding your link</Text>
             <TouchableOpacity
+              style={{
+                marginTop: 20,
+                backgroundColor: COLORS.themeYellow,
+                padding: 10,
+                borderRadius: 10,
+              }}
               onPress={() => {
-                handleAddPress();
+                setStatus("initial");
               }}
             >
-              <Text style={{ fontSize: 18, color: COLORS.themeYellow }}>
-                Add
-              </Text>
+              <Text>Try again</Text>
             </TouchableOpacity>
           </View>
-
-          <View style={{ flexDirection: "row", height: 100, marginTop: 40 }}>
-            <View style={{ width: "60%" }}>
-              <Text>Link: {sharedData}</Text>
-            </View>
-
-            <View style={{ width: "40%", height: 100, paddingHorizontal: 15 }}>
-              {image && (
-                <Image
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: SPACE.nativeRoundMd,
-                  }}
-                  source={image.length == 0 ? defaultImage : { uri: image }}
-                  resizeMode="cover"
-                />
-              )}
-            </View>
+        )) ||
+        (status == "loading" && (
+          <View style={{ justifyContent: "center", height: "100%" }}>
+            <LoadingScreen />
+            <Text>Adding your link...</Text>
           </View>
-
-          <View style={{ marginTop: 20 }}>
-            <Text>Link Title:</Text>
-            <AGeneralTextInput
-              style={{
-                marginTop: 5,
-                borderColor: COLORS.themeYellow,
-                borderWidth: 1,
-                borderRadius: 10,
-                paddingVertical: 15,
-                paddingHorizontal: 10,
-              }}
-              value={title}
-            />
-          </View>
-          <View style={{ marginTop: 20, minHeight: 10 }}>
-            <Text>Description:</Text>
-            <AGeneralTextInput
-              multiline={true}
-              numberOfLines={3}
-              style={{
-                marginTop: 5,
-                borderColor: COLORS.themeYellow,
-                borderWidth: 1,
-                borderRadius: 10,
-                paddingVertical: 15,
-                paddingHorizontal: 10,
-              }}
-              value={description}
-            />
-          </View>
-          <View style={{ marginTop: 20 }}>
-            <Text>Save in:</Text>
-            <SearchComponent
-              placeHolder="Search files, saved items, etc..."
-              algorithm={searchAlgorithm}
-            />
-          </View>
-        </View>
+        ))
       )}
     </SafeAreaView>
   );
