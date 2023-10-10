@@ -9,50 +9,48 @@ import {
   Linking,
 } from "react-native";
 import { COLORS, SPACE } from "../theme/constants";
-import { GlobalContext } from "../context/GlobalProvider";
+import { FolderProps, GlobalContext } from "../context/GlobalProvider";
 import { AGeneralTextInput, ReturnButton } from "../theme/genericComponents";
 import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 import LoadingScreen from "../components/LoadingScreen";
 import { getLinkPreview } from "link-preview-js";
 import { useNavigation } from "@react-navigation/native";
-import SearchComponent, { searchResultType, searchValueType } from "../components/SearchbarComponent";
+import SearchComponent, {
+  searchResultType,
+  searchValueType,
+} from "../components/SearchbarComponent";
 import useNativeStorage from "../hooks/useNativeStorage";
-
+import * as Keychain from "react-native-keychain";
+import { postCreateLink } from "../hooks/usePostFiles";
+import { LinkViewProps, SocialMediaSrc } from "../Test/MockData";
 const ShareScreen = () => {
   const defaultImage = require("../assets/img/YellowIcon.png");
-  
-  const { folderCache, setShareUrl, user } = useContext(GlobalContext);
+  const { setShareUrl, user, devMode } = useContext(GlobalContext);
+  const backendLink = devMode
+    ? "http://localhost:8080"
+    : "https://vast-garden-82865-6f202a95ef85.herokuapp.com/api/v1/auth/authenticate";
   const [sharedData, setSharedData] = useState("");
+  const [shareScreenFolders, setShareScreenFolders] = useState([]);
   const [linkMetadata, setLinkMetadata] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(true);
   const [image, setImage] = useState("");
+  const [userId, setUserId] = useState(0);
+  const [folderID, setFolderID] = useState(0);
+  const { getNativeData } = useNativeStorage();
+  const [jwtToken, setJwtToken] = useState("");
+  const [username, setUsername] = useState("");
 
-  const [folderID, setFolderID] = useState(0)
-  const {getNativeData} = useNativeStorage()
-  const handleAddPress = () => {
-    ShareMenuReactView.continueInApp();
-
-    // ShareMenuReactView.openApp()
-    // ShareMenuReactView.dismissExtension();
-  };
   useEffect(() => {
-    console.log('user: ', user)
-    const userName = getNativeData('username').then((data) => {
-      console.log('got username:', data)
-    })
+    console.log("user: ", user);
+
+    fetchData();
     try {
       ShareMenuReactView.data().then((data) => {
-
         const link = data.data[0].data;
-        setShareUrl(link)
-
-        //! for continue in app, it only works when we directly refer to the app, openning the 
-        //! share view will make it crashes
-        // ShareMenuReactView.continueInApp({hello: 'from the other side', link: link});
+        setShareUrl(link);
         setSharedData(link);
-        // setLoading(false);
         if (data) {
           getLinkPreview(link)
             .then((metadata) => {
@@ -74,9 +72,85 @@ const ShareScreen = () => {
     }
   }, []);
 
+  const fetchData = async () => {
+    const userName = await getNativeData("username");
+    setUsername(userName);
+    console.log("got username:", userName);
+    // Retrieving
+    try {
+      const credentials = await Keychain.getGenericPassword({
+        service: "jwtService",
+        accessGroup: "group.com.storalink.app",
+      });
+
+      const userIdKey = await Keychain.getGenericPassword({
+        service: "idService",
+        accessGroup: "group.com.storalink.app",
+      });
+      const userId =userIdKey.password;
+      if (credentials && userId) {
+        setJwtToken(credentials.password);
+        setUserId(userId);
+        console.log(
+          "Credentials successfully loaded",
+          credentials.password,
+          "  id:",
+          userId
+        );
+        // * get folder info
+        console.log("backend link: ", backendLink);
+        const userFolderUrl = `${backendLink}/api/v1/folder/user/${userId}`;
+        console.log("current userId", userId);
+        try {
+          const rep = await fetch(userFolderUrl, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${credentials.password}`,
+            },
+            credentials: "include",
+          });
+
+          if (rep.ok) {
+            const folderData = await rep.json(); // Wait for the data to be parsed
+            console.log("folder data: ", folderData); // Now log the data
+
+            const userData = cleanFolderData(folderData);
+            setShareScreenFolders(userData)
+            console.log(userData);
+          } else {
+            console.log(
+              "Error in fetching folder:",
+              rep.status,
+              rep.statusText
+            );
+          }
+        } catch (error) {
+          console.log("Fetch error:", error);
+        }
+      } else {
+        console.log("No credentials stored for this service.");
+      }
+    } catch (error) {
+      console.log("Error retrieving the jwt token: ", error);
+    }
+  };
+
+  const cleanFolderData = (folderData: any[]): FolderProps[] => {
+    console.log("cleaning folder: ", folderData);
+    return folderData.map((folder: any) => ({
+      id: folder.id,
+      name: folder.folderName || null,
+      description: folder.folderDescription || null,
+      thumbNailUrl: folder.imageUrl || null,
+      desc: "", // You can set this to a default value or derive it from the original data
+      pinned: false, // You can set this to a default value or derive it from the original data
+      links: folder.linkIds.length > 0 ? folder.linkIds : null, // Assuming linkIds can be used to derive LinkViewProps
+    }));
+  };
+
   const searchAlgorithm = (value: string): Map<string, searchResultType> => {
     const retMap = new Map();
-    if (!folderCache) {
+    if (!shareScreenFolders) {
       retMap.set("You have no folder yet, go create your first folder", {
         value: "no val",
         onClick: () => {},
@@ -84,13 +158,13 @@ const ShareScreen = () => {
       });
       return retMap;
     }
-    for (const cover of folderCache) {
+    for (const cover of shareScreenFolders) {
       console.log(cover);
       if (cover.name?.includes(value)) {
         retMap.set(cover.name, {
           onClick: () => {
             console.log(cover.id);
-            setFolderID(cover.id)
+            setFolderID(cover.id);
           },
         });
       }
@@ -100,6 +174,90 @@ const ShareScreen = () => {
     }
     return retMap;
   };
+
+  const handleAddPress = async () => {
+    console.log("save", shareScreenFolders, sharedData);
+    if (jwtToken.length != 0 && username) {
+      console.log("add link for", username, "with token", jwtToken);
+      const newLink: LinkViewProps = {
+        title: title,
+        linkUrl: sharedData,
+        socialMediaType: SocialMediaSrc.INS,
+        imgUrl: image,
+      };
+
+      // TODO add folder id
+      console.log(userId, folderID)
+      const completeLink = await postCreateLinkShareScreen(
+        newLink,
+        userId,
+        folderID,
+        jwtToken,
+        description,
+      );
+      console.log("get complete link", completeLink);
+    // ! no more to do, since share screen does not trigger local update
+    }
+
+    // ShareMenuReactView.dismissExtension();
+  };
+
+
+  // ! this is used for share screen only 
+  async function postCreateLinkShareScreen(
+    link: LinkViewProps,
+    userId: any,
+    folderId: any,
+    jwt: string,
+    description?: string,
+  ): Promise<LinkViewProps> {
+    const finalDes =
+      description.length > 0 ? description : "This link has no description";
+    link = {
+      ...link,
+      description: finalDes,
+      linkUrl: link.linkUrl ?? link.title,
+    };
+    console.log("add a link : ", link);
+    const createLinkRequest = {
+      folderId: folderId,
+      creatorId: userId,
+      modifierId: userId,
+      linkName: link.title,
+      description: finalDes,
+      note: "", // Add your note here
+      linkUrl: link.linkUrl || "",
+      imageUrl: link.imgUrl || "",
+      sourceType: link.socialMediaType,
+    };
+    console.log("add a link request: ", createLinkRequest);
+    console.log("logging backendlink", backendLink + "/api/v1/link");
+    fetch(backendLink + "/api/v1/link", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${jwt}`,  
+      },
+      credentials: 'include',
+      body: JSON.stringify(createLinkRequest),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log("add link status not ok");
+          console.log(response);
+        }
+      })
+      .then((data) => {
+        link = { ...link, id: data.id };
+        console.log('data: ', data); // Log the JSON data
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
+    return link;
+  }
 
   return (
     <SafeAreaView
@@ -142,9 +300,7 @@ const ShareScreen = () => {
 
             <TouchableOpacity
               onPress={() => {
-                console.log("save", folderCache, sharedData);
-                // ShareMenuReactView.dismissExtension();
-                ShareMenuReactView.continueInApp({hello: 'from the other side', link: sharedData});
+                handleAddPress();
               }}
             >
               <Text style={{ fontSize: 18, color: COLORS.themeYellow }}>
@@ -159,19 +315,17 @@ const ShareScreen = () => {
             </View>
 
             <View style={{ width: "40%", height: 100, paddingHorizontal: 15 }}>
-              {
-                image && 
+              {image && (
                 <Image
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: SPACE.nativeRoundMd,
-                }}
-                source={image.length == 0 ? defaultImage : { uri: image }}
-                resizeMode="cover"
-              />
-              }
-             
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: SPACE.nativeRoundMd,
+                  }}
+                  source={image.length == 0 ? defaultImage : { uri: image }}
+                  resizeMode="cover"
+                />
+              )}
             </View>
           </View>
 
@@ -208,9 +362,9 @@ const ShareScreen = () => {
           <View style={{ marginTop: 20 }}>
             <Text>Save in:</Text>
             <SearchComponent
-          placeHolder="Search files, saved items, etc..."
-          algorithm={searchAlgorithm}
-        />
+              placeHolder="Search files, saved items, etc..."
+              algorithm={searchAlgorithm}
+            />
           </View>
         </View>
       )}

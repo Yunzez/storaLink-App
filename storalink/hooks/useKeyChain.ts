@@ -1,12 +1,12 @@
 import * as Keychain from "react-native-keychain";
 
-export const useIOSKeychain = async (key: string, value: string) => {
+const useKeyChain =  () => {
   // Store the credentials
-  const storeCredentials = async () => {
+  const storeGenericCredentials = async (key: string, value: string) => {
     await Keychain.setGenericPassword(key, value);
   };
 
-  const loadCredentials = async () => {
+  const loadGenericCredentials = async () => {
     try {
       // Retrieve the credentials
       const credentials = await Keychain.getGenericPassword();
@@ -25,4 +25,8 @@ export const useIOSKeychain = async (key: string, value: string) => {
   const resetCredentials = async () => {
     await Keychain.resetGenericPassword();
   }
+
+  return { storeGenericCredentials, loadGenericCredentials, resetCredentials}
 };
+
+export default useKeyChain;

@@ -32,6 +32,8 @@ import { FolderProps } from "../context/GlobalProvider";
 import ProgressBar from "../components/ProgressBar";
 import { LinkViewProps } from "../Test/MockData";
 import useNativeStorage from "../hooks/useNativeStorage";
+import useKeyChain from "../hooks/useKeyChain";
+
 const Container = styled(SafeAreaView)`
   flex: 1;
   flex-direction: row;
@@ -126,8 +128,9 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [loadingProgess, setLoadingProgress] = useState(0);
   const [loadingText, setLoadingText] = useState("");
-  const {saveNativeData, getNativeData} = useNativeStorage()
-
+  const { saveNativeData, getNativeData } = useNativeStorage();
+  const { storeGenericCredentials, loadGenericCredentials, resetCredentials } =
+    useKeyChain();
   let userData: FolderProps[];
   useEffect(() => {
     console.log("dev mode is: ", devMode);
@@ -189,16 +192,36 @@ export const Login = () => {
 
         if (data.jwtToken) {
           console.log("jwt token", data.jwtToken);
-          await Keychain.setGenericPassword("jwt", data.jwtToken);
+          // Store JWT token
+          await Keychain.setGenericPassword("jwt", data.jwtToken, {
+            service: "jwtService",
+            accessGroup: 'group.com.storalink.app'
+          });
+
+          await Keychain.setGenericPassword(username, data.id, {
+            service: 'idService',
+            accessGroup: 'group.com.storalink.app'
+          });
 
           await fetchUserFolderInfo(data.id); // Make sure this function is also async
 
           await fetchUserLinkInfo(data.id);
 
           if (remeber) {
+            await Keychain.resetGenericPassword();
             await AsyncStorage.setItem(
               "userCredentials",
-              JSON.stringify({ username, password })
+              JSON.stringify({ username })
+            );
+            saveNativeData("username", username);
+            await Keychain.setGenericPassword(username, password, {
+              service: 'loginService',
+            });
+            
+            console.log(
+              "save user name in userDefaults:",
+              username,
+              " save password in keychain"
             );
           }
         }
@@ -229,7 +252,7 @@ export const Login = () => {
 
   const fetchUserLinkInfo = async (userId: string | number) => {
     const userFolderUrl = `${backendLink}/api/v1/link/user/${userId}`;
-    const token = await Keychain.getGenericPassword();
+    const token = await Keychain.getGenericPassword({service: 'jwtService'});
     console.log("current userId", userId);
     try {
       const rep = await fetch(userFolderUrl, {
@@ -258,7 +281,8 @@ export const Login = () => {
 
   const fetchUserFolderInfo = async (userId: string | number) => {
     const userFolderUrl = `${backendLink}/api/v1/folder/user/${userId}`;
-    const token = await Keychain.getGenericPassword();
+    const token = await Keychain.getGenericPassword({service: 'jwtService'});
+    console.log('token', token);
     console.log("current userId", userId);
     try {
       const rep = await fetch(userFolderUrl, {
@@ -286,24 +310,20 @@ export const Login = () => {
     console.log("current data", data);
   });
 
-  // * store username in local storage
-  useEffect(() => {
-    if (remeber) {
-      AsyncStorage.setItem("username", username);
-      saveNativeData('username', username)
-      console.log('save user name',username)
-    }
-  }, [remeber]);
-
-  // * restore username in local storage 
+  // * restore username in local storage
   useEffect(() => {
     AsyncStorage.getItem("username").then((res) => {
       if (res) {
         setUsername(res);
-        setRemenber(true)
+        setRemenber(true);
       }
     });
-  });
+    Keychain.getGenericPassword({service: 'userCredentials'}).then((res) => {
+      if (res) {
+        setPassword(res.password);
+      }
+    });
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -377,7 +397,9 @@ export const Login = () => {
               <StyledCheckbox
                 disabled={false}
                 value={remeber}
-                onValueChange={(newValue) => setRemenber(newValue)}
+                onValueChange={(newValue) => {
+                  setRemenber(newValue), console.log("new vakue", newValue);
+                }}
                 color={remeber ? COLORS.themeYellow : undefined}
               />
               <Text>Remember Me</Text>
