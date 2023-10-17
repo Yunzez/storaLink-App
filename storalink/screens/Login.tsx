@@ -33,6 +33,7 @@ import ProgressBar from "../components/ProgressBar";
 import { LinkViewProps } from "../Test/MockData";
 import useNativeStorage from "../hooks/useNativeStorage";
 import useKeyChain from "../hooks/useKeyChain";
+import useSse from "../hooks/useSse";
 
 const Container = styled(SafeAreaView)`
   flex: 1;
@@ -121,6 +122,8 @@ export const Login = () => {
     devMode,
     backendLink,
     dispatchFolderCache,
+    startSse,
+    setStartSse,
   } = useContext(GlobalContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -132,6 +135,10 @@ export const Login = () => {
   const { saveNativeData, getNativeData } = useNativeStorage();
   const { storeGenericCredentials, loadGenericCredentials, resetCredentials } =
     useKeyChain();
+
+  const [jwtToken, setJwtToken] = useState("");
+  useSse(backendLink + "/sse", startSse, jwtToken);
+
   let userData: FolderProps[];
   useEffect(() => {
     console.log("dev mode is: ", devMode);
@@ -196,17 +203,19 @@ export const Login = () => {
           // Store JWT token
           await Keychain.setGenericPassword("jwt", data.jwtToken, {
             service: "jwtService",
-            accessGroup: 'group.com.storalink.app'
+            accessGroup: "group.com.storalink.app",
           });
 
           await Keychain.setGenericPassword(username, data.id, {
-            service: 'idService',
-            accessGroup: 'group.com.storalink.app'
+            service: "idService",
+            accessGroup: "group.com.storalink.app",
           });
 
           await fetchUserFolderInfo(data.id); // Make sure this function is also async
 
           await fetchUserLinkInfo(data.id);
+          setJwtToken(data.jwtToken)
+          setStartSse(true);
 
           if (remeber) {
             await Keychain.resetGenericPassword();
@@ -216,9 +225,9 @@ export const Login = () => {
             );
             saveNativeData("username", username);
             await Keychain.setGenericPassword(username, password, {
-              service: 'loginService',
+              service: "loginService",
             });
-            
+
             console.log(
               "save user name in userDefaults:",
               username,
@@ -226,6 +235,7 @@ export const Login = () => {
             );
           }
         }
+
       } else {
         const errorData = await response.json();
         const error = new Error();
@@ -253,7 +263,7 @@ export const Login = () => {
 
   const fetchUserLinkInfo = async (userId: string | number) => {
     const userFolderUrl = `${backendLink}/api/v1/link/user/${userId}`;
-    const token = await Keychain.getGenericPassword({service: 'jwtService'});
+    const token = await Keychain.getGenericPassword({ service: "jwtService" });
     console.log("current userId", userId);
     try {
       const rep = await fetch(userFolderUrl, {
@@ -282,8 +292,8 @@ export const Login = () => {
 
   const fetchUserFolderInfo = async (userId: string | number) => {
     const userFolderUrl = `${backendLink}/api/v1/folder/user/${userId}`;
-    const token = await Keychain.getGenericPassword({service: 'jwtService'});
-    console.log('token', token);
+    const token = await Keychain.getGenericPassword({ service: "jwtService" });
+    console.log("token", token);
     console.log("current userId", userId);
     try {
       const rep = await fetch(userFolderUrl, {
@@ -319,7 +329,7 @@ export const Login = () => {
         setRemenber(true);
       }
     });
-    Keychain.getGenericPassword({service: 'userCredentials'}).then((res) => {
+    Keychain.getGenericPassword({ service: "userCredentials" }).then((res) => {
       if (res) {
         setPassword(res.password);
       }

@@ -29,6 +29,7 @@ export async function postCreateFolder(
   };
 
   try {
+
     const response = await fetch(backendLink + "/api/v1/folder", {
       method: "POST",
       headers: {
@@ -55,7 +56,7 @@ export async function postCreateFolder(
 
 
 const getToken = async () => { 
-  const token: UserCredentials | false = await Keychain.getGenericPassword()
+  const token = await Keychain.getGenericPassword({service: 'jwtService'})
   return token
 }
 

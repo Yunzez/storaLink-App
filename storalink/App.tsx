@@ -16,11 +16,16 @@ import { NativeBaseProvider } from "native-base";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ShareContextProvider } from "./context/ShareContext";
-import * as Linking from 'expo-linking';
+import * as Linking from "expo-linking";
 import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 import { useShare } from "./hooks/useShare";
 import SingleLinkView from "./screens/SingleLinkView";
-import * as Font from 'expo-font';
+import * as Font from "expo-font";
+import useSse from "./hooks/useSse";
+import React from "react";
+import useNativeStorage from "./hooks/useNativeStorage";
+import Welcome from "./screens/Welcome";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const GlobalStack = createNativeStackNavigator();
 WebBrowser.maybeCompleteAuthSession();
 type ProvidersProps = {
@@ -41,77 +46,88 @@ type FolderViewRouteParams = {
 };
 
 const linking = {
-  prefixes: ['com.storalink.app://'],
+  prefixes: ["com.storalink.app://"],
   config: {
     screens: {
-      Home: 'home?sharedData=:sharedData',
+      Home: "home?sharedData=:sharedData",
     },
   },
 };
 
-
 export default function App() {
-  const [sharedData, setSharedData] = useState('');
-  const [sharedMimeType, setSharedMimeType] = useState('');
+  const [sharedData, setSharedData] = useState("");
+  const [sharedMimeType, setSharedMimeType] = useState("");
   const [sharedExtraData, setSharedExtraData] = useState(null);
-  const {navigator} = useContext(GlobalContext)
-  // ShareMenu.getInitialShare(handleShare);
+  const [welcome, setWelcome] = useState(null); // if user went thru welcome screen
+  const { navigator, backendLink } = useContext(GlobalContext);
+  const { saveNativeData, getNativeData } = useNativeStorage();
 
-  // useEffect(() => {
-  //   async function loadFont() {
-  //     await Font.loadAsync({
-  //       'Helvetica-Bold': require('./assets/fonts/FreeSans.ttf'), // Replace with the actual path to your font file
-  //     });
-  //   }
+  useEffect(() => {
+    (async () => {
+      const welcome = await AsyncStorage.getItem("NeedWelcome");
+      console.log("welcome is", welcome);
+      if (welcome === "true") {
+        setWelcome(true);
+      } else {
+        setWelcome(false);
+      }
+    })();
+  }, []);
 
-  //   loadFont();
-  // }, []);
-
-  useShare(navigator)
+  useShare(navigator);
   return (
     <Providers>
       <ShareContextProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <GlobalStack.Navigator>
-            <GlobalStack.Screen
-              options={{
-                headerShown: false,
-              }}
-              name="Login"
-              component={Login}
-            />
-            <GlobalStack.Screen name="Signup" component={Signup} />
-            <GlobalStack.Screen name="Test" component={Test} />
-            <GlobalStack.Screen
-              options={({ route }) => {
-                const params = route.params as FolderViewRouteParams;
-                return {
-                  headerTitle: params?.name ?? "Title",
-                };
-              }}
-              name="SingleFolderView"
-              component={SingleFolderView}
-            />
-            <GlobalStack.Screen
-              options={({ route }) => {
-                const params = route.params as FolderViewRouteParams;
-                return {
-                  headerTitle: params?.name ?? "Title",
-                  headerShown: false
-                };
-              }}
-              name="SingleLinkView"
-              component={SingleLinkView}
-            />
-            <GlobalStack.Screen
-              options={{
-                headerShown: false,
-              }}
-              name="BottomNavigater"
-              component={BottomTabNavigators}
-            />
-            {/* Add more Settings screens here */}
-          </GlobalStack.Navigator>
+          {welcome !== null && (
+            <GlobalStack.Navigator
+              initialRouteName={welcome ? "Welcome" : "Login"}
+            >
+              <GlobalStack.Screen
+                name="Welcome"
+                component={Welcome}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <GlobalStack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="Login"
+                component={Login}
+              />
+              <GlobalStack.Screen name="Signup" component={Signup} />
+              <GlobalStack.Screen
+                options={({ route }) => {
+                  const params = route.params as FolderViewRouteParams;
+                  return {
+                    headerTitle: params?.name ?? "Title",
+                  };
+                }}
+                name="SingleFolderView"
+                component={SingleFolderView}
+              />
+              <GlobalStack.Screen
+                options={({ route }) => {
+                  const params = route.params as FolderViewRouteParams;
+                  return {
+                    headerTitle: params?.name ?? "Title",
+                    headerShown: false,
+                  };
+                }}
+                name="SingleLinkView"
+                component={SingleLinkView}
+              />
+              <GlobalStack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="BottomNavigater"
+                component={BottomTabNavigators}
+              />
+            </GlobalStack.Navigator>
+          )}
         </GestureHandlerRootView>
       </ShareContextProvider>
     </Providers>

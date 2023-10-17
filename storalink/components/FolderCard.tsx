@@ -101,15 +101,11 @@ const FolderCard = React.memo((props: FolderCardProps) => {
     },
   ];
 
-  console.log("test url:", props.imgUrl, props.id, props.pinned);
   let currentImage = props.imgUrl;
-  
-  console.log("current image", currentImage, coverImages);
 
   useEffect(() => {
     console.log(props.pinned);
   });
-  console.log("image url: ", props.imgUrl);
   return (
     <Card
       onPress={() => {

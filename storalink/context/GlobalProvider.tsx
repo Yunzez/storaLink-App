@@ -244,6 +244,8 @@ interface GlobalContextProps {
   defaultImage: any;
   placeHolder: any;
   backendLink: string;
+  startSse: boolean;
+  setStartSse: Dispatch<SetStateAction<boolean>>;
 }
 
 export const GlobalContext = createContext<GlobalContextProps>({
@@ -283,6 +285,8 @@ export const GlobalContext = createContext<GlobalContextProps>({
   defaultImage: "",
   placeHolder: "",
   backendLink: "",
+  startSse : false,
+  setStartSse: () => {},
 });
 
 interface GlobalContextProviderProps {
@@ -321,6 +325,8 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
     recentLinkCacheReducer,
     null
   );
+
+  const [startSse, setStartSse] = useState(false);
 
   useEffect(() => {
     console.log("global provider see changes in folder cache", folderCache);
@@ -449,6 +455,8 @@ export const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
         defaultImage,
         placeHolder,
         backendLink,
+        startSse,
+        setStartSse
       }}
     >
       {children}

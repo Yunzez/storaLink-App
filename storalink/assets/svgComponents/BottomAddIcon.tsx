@@ -31,7 +31,7 @@ const BottomAddIcon = (props: BottomAddIconProps) => {
       borderRadius: 100,
       borderWidth: 2,
       borderColor: COLORS.white,
-      padding: 5,
+      padding: 2,
       transform: [{ rotate: "-45deg" }],
     },
   });

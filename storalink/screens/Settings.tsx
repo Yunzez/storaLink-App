@@ -107,6 +107,9 @@ export const Settings = () => {
       <TouchableOpacity style={styles.logoutBtn} onPress={() => onLogOut()}>
         <Text style={{ color: COLORS.themeYellow }}>Log out</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.logoutBtn} onPress={() => {navigator.navigate('Welcome'), AsyncStorage.setItem('NeedWelcome' , "true")}}>
+        <Text style={{ color: COLORS.themeYellow }}>test welcome</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
