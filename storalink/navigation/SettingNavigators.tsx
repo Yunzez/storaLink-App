@@ -11,6 +11,8 @@ import Appearance from "../screens/settingScreens/Appearance";
 import Notification from "../screens/settingScreens/Notification";
 import Plans from "../screens/settingScreens/Plans";
 import About from "../screens/settingScreens/About";
+import React from 'react';
+import PlansDetail from "../screens/settingScreens/PlansDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +61,15 @@ export default function SettingNavigators() {
         }}
         name="plans"
         component={Plans}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          headerBackTitleVisible: true,
+          headerTitle: "Plans", // or null to hide the screen title in the header
+        }}
+        name="plans-detail"
+        component={PlansDetail}
       />
       <Stack.Screen
         options={{

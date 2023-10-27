@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
 import Settings from "../screens/Settings";
 import Files from "../screens/Files";
-import Friends from "../screens/Friends";
+import Notices from "../screens/Notices";
 import Test from "../screens/Test";
 import HomeNavigators from "./HomeNavigators";
 import { Ionicons } from "@expo/vector-icons";
@@ -221,7 +221,7 @@ export const BottomTabNavigators = () => {
           headerShown: false,
         }}
         name="Notices"
-        component={Friends}
+        component={Notices}
       />
       <Tab.Screen
         options={{
