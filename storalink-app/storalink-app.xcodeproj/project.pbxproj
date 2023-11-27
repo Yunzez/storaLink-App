@@ -1,0 +1,449 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
+		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
+		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
+		9FD082DA2B1437A5004021FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FD082D92B1437A5004021FC /* Assets.xcassets */; };
+		9FD082DD2B1437A5004021FC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FD082DC2B1437A5004021FC /* Preview Assets.xcassets */; };
+		9FD082E52B143C58004021FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082E42B143C58004021FC /* Constants.swift */; };
+		9FD082EB2B143E34004021FC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082EA2B143E34004021FC /* DataManager.swift */; };
+		9FD082ED2B144263004021FC /* LinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082EC2B144263004021FC /* LinkViewModel.swift */; };
+		9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082EE2B14426D004021FC /* FolderViewModel.swift */; };
+		9FD082F12B14427A004021FC /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082F02B14427A004021FC /* UserViewModel.swift */; };
+		9FD082F32B144287004021FC /* ShareExtensionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082F22B144287004021FC /* ShareExtensionViewModel.swift */; };
+		9FD082F72B1443B2004021FC /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082F62B1443B2004021FC /* HomeView.swift */; };
+		9FD082F92B1443D3004021FC /* FilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082F82B1443D3004021FC /* FilesView.swift */; };
+		9FD082FB2B14440D004021FC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082FA2B14440D004021FC /* LoginView.swift */; };
+		9FD082FD2B14490B004021FC /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082FC2B14490B004021FC /* UserModel.swift */; };
+		9FD082FF2B144E21004021FC /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082FE2B144E21004021FC /* CreateView.swift */; };
+		9FD083012B144E30004021FC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD083002B144E30004021FC /* SettingsView.swift */; };
+		9FD083032B144E40004021FC /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD083022B144E40004021FC /* InfoView.swift */; };
+		9FD083052B145856004021FC /* MainNavStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD083042B145856004021FC /* MainNavStack.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9FD082D02B1437A4004021FC /* storalink-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storalink-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
+		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9FD082D72B1437A4004021FC /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		9FD082D92B1437A5004021FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9FD082DC2B1437A5004021FC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9FD082E42B143C58004021FC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		9FD082EA2B143E34004021FC /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		9FD082EC2B144263004021FC /* LinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkViewModel.swift; sourceTree = "<group>"; };
+		9FD082EE2B14426D004021FC /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
+		9FD082F02B14427A004021FC /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		9FD082F22B144287004021FC /* ShareExtensionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionViewModel.swift; sourceTree = "<group>"; };
+		9FD082F62B1443B2004021FC /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		9FD082F82B1443D3004021FC /* FilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesView.swift; sourceTree = "<group>"; };
+		9FD082FA2B14440D004021FC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		9FD082FC2B14490B004021FC /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		9FD082FE2B144E21004021FC /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
+		9FD083002B144E30004021FC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		9FD083022B144E40004021FC /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		9FD083042B145856004021FC /* MainNavStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavStack.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9FD082CD2B1437A4004021FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9FD082C72B1437A4004021FC = {
+			isa = PBXGroup;
+			children = (
+				9FD082D22B1437A4004021FC /* storalink-app */,
+				9FD082D12B1437A4004021FC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9FD082D12B1437A4004021FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9FD082D02B1437A4004021FC /* storalink-app.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9FD082D22B1437A4004021FC /* storalink-app */ = {
+			isa = PBXGroup;
+			children = (
+				9FD082E92B143E24004021FC /* Managers */,
+				9FD082E82B143E18004021FC /* ViewModels */,
+				9FD082E72B143E11004021FC /* Models */,
+				9FD082E62B143DE2004021FC /* Views */,
+				9FD082E32B143C3E004021FC /* Utilities */,
+				9FD082D32B1437A4004021FC /* storalink_appApp.swift */,
+				9FD082D52B1437A4004021FC /* ContentView.swift */,
+				9FD082D72B1437A4004021FC /* Item.swift */,
+				9FD082D92B1437A5004021FC /* Assets.xcassets */,
+				9FD082DB2B1437A5004021FC /* Preview Content */,
+			);
+			path = "storalink-app";
+			sourceTree = "<group>";
+		};
+		9FD082DB2B1437A5004021FC /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9FD082DC2B1437A5004021FC /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9FD082E32B143C3E004021FC /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				9FD082E42B143C58004021FC /* Constants.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		9FD082E62B143DE2004021FC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9FD082F62B1443B2004021FC /* HomeView.swift */,
+				9FD082F82B1443D3004021FC /* FilesView.swift */,
+				9FD082FA2B14440D004021FC /* LoginView.swift */,
+				9FD082FE2B144E21004021FC /* CreateView.swift */,
+				9FD083002B144E30004021FC /* SettingsView.swift */,
+				9FD083022B144E40004021FC /* InfoView.swift */,
+				9FD083042B145856004021FC /* MainNavStack.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9FD082E72B143E11004021FC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9FD082FC2B14490B004021FC /* UserModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9FD082E82B143E18004021FC /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				9FD082EC2B144263004021FC /* LinkViewModel.swift */,
+				9FD082EE2B14426D004021FC /* FolderViewModel.swift */,
+				9FD082F02B14427A004021FC /* UserViewModel.swift */,
+				9FD082F22B144287004021FC /* ShareExtensionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		9FD082E92B143E24004021FC /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				9FD082EA2B143E34004021FC /* DataManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9FD082CF2B1437A4004021FC /* storalink-app */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9FD082E02B1437A5004021FC /* Build configuration list for PBXNativeTarget "storalink-app" */;
+			buildPhases = (
+				9FD082CC2B1437A4004021FC /* Sources */,
+				9FD082CD2B1437A4004021FC /* Frameworks */,
+				9FD082CE2B1437A4004021FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "storalink-app";
+			productName = "storalink-app";
+			productReference = 9FD082D02B1437A4004021FC /* storalink-app.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9FD082C82B1437A4004021FC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					9FD082CF2B1437A4004021FC = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 9FD082CB2B1437A4004021FC /* Build configuration list for PBXProject "storalink-app" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9FD082C72B1437A4004021FC;
+			productRefGroup = 9FD082D12B1437A4004021FC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9FD082CF2B1437A4004021FC /* storalink-app */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9FD082CE2B1437A4004021FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9FD082DD2B1437A5004021FC /* Preview Assets.xcassets in Resources */,
+				9FD082DA2B1437A5004021FC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9FD082CC2B1437A4004021FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9FD083032B144E40004021FC /* InfoView.swift in Sources */,
+				9FD083012B144E30004021FC /* SettingsView.swift in Sources */,
+				9FD082D62B1437A4004021FC /* ContentView.swift in Sources */,
+				9FD082F12B14427A004021FC /* UserViewModel.swift in Sources */,
+				9FD083052B145856004021FC /* MainNavStack.swift in Sources */,
+				9FD082EB2B143E34004021FC /* DataManager.swift in Sources */,
+				9FD082D82B1437A4004021FC /* Item.swift in Sources */,
+				9FD082FF2B144E21004021FC /* CreateView.swift in Sources */,
+				9FD082F32B144287004021FC /* ShareExtensionViewModel.swift in Sources */,
+				9FD082FD2B14490B004021FC /* UserModel.swift in Sources */,
+				9FD082F72B1443B2004021FC /* HomeView.swift in Sources */,
+				9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */,
+				9FD082ED2B144263004021FC /* LinkViewModel.swift in Sources */,
+				9FD082F92B1443D3004021FC /* FilesView.swift in Sources */,
+				9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */,
+				9FD082FB2B14440D004021FC /* LoginView.swift in Sources */,
+				9FD082E52B143C58004021FC /* Constants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9FD082DE2B1437A5004021FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9FD082DF2B1437A5004021FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9FD082E12B1437A5004021FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"storalink-app/Preview Content\"";
+				DEVELOPMENT_TEAM = 2JF8FU3N7N;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.storalink.storalink-app";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9FD082E22B1437A5004021FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"storalink-app/Preview Content\"";
+				DEVELOPMENT_TEAM = 2JF8FU3N7N;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.storalink.storalink-app";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9FD082CB2B1437A4004021FC /* Build configuration list for PBXProject "storalink-app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9FD082DE2B1437A5004021FC /* Debug */,
+				9FD082DF2B1437A5004021FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9FD082E02B1437A5004021FC /* Build configuration list for PBXNativeTarget "storalink-app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9FD082E12B1437A5004021FC /* Debug */,
+				9FD082E22B1437A5004021FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9FD082C82B1437A4004021FC /* Project object */;
+}

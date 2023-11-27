@@ -165,6 +165,7 @@ export const Login = () => {
     const requestBody = {
       username: username,
       password: password,
+      rePassword: password,
       email: username,
     };
     console.log(requestBody, devMode);

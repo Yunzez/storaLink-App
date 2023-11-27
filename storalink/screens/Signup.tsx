@@ -83,6 +83,7 @@ export const Signup = () => {
     const requestBody = {
       username: username,
       password: password,
+      rePassword: password,
       email: username,
       dob: "2000-01-01",
       authorities: ["USER"],
