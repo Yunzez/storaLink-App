@@ -36,6 +36,7 @@
 		9FEB2E7D2B197C64005A300C /* SearchBarDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E7C2B197C64005A300C /* SearchBarDropDownView.swift */; };
 		9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */; };
 		9FEB2E822B328064005A300C /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E812B328064005A300C /* FolderView.swift */; };
+		9FEB2E852B3282E7005A300C /* UserInfoSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E842B3282E7005A300C /* UserInfoSettingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		9FEB2E7C2B197C64005A300C /* SearchBarDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarDropDownView.swift; sourceTree = "<group>"; };
 		9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingTab.swift; sourceTree = "<group>"; };
 		9FEB2E812B328064005A300C /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
+		9FEB2E842B3282E7005A300C /* UserInfoSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 		9FD082E62B143DE2004021FC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9FEB2E832B3282CC005A300C /* SettingViews */,
 				9FD083082B147842004021FC /* Components */,
 				9FD082F62B1443B2004021FC /* HomeView.swift */,
 				9FD082F82B1443D3004021FC /* FilesView.swift */,
@@ -196,6 +199,14 @@
 				9FEB2E7C2B197C64005A300C /* SearchBarDropDownView.swift */,
 			);
 			path = Searchbar;
+			sourceTree = "<group>";
+		};
+		9FEB2E832B3282CC005A300C /* SettingViews */ = {
+			isa = PBXGroup;
+			children = (
+				9FEB2E842B3282E7005A300C /* UserInfoSettingView.swift */,
+			);
+			path = SettingViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,6 +279,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FEB2E852B3282E7005A300C /* UserInfoSettingView.swift in Sources */,
 				9FD0830E2B14792F004021FC /* FolderItemTabView.swift in Sources */,
 				9FD083032B144E40004021FC /* InfoView.swift in Sources */,
 				9FD083012B144E30004021FC /* SettingsView.swift in Sources */,
