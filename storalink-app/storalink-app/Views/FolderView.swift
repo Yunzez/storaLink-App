@@ -1,19 +1,18 @@
 //
-//  InfoView.swift
+//  FolderView.swift
 //  storalink-app
 //
-//  Created by Yunze Zhao on 11/26/23.
+//  Created by Yunze Zhao on 12/19/23.
 //
 
 import SwiftUI
 
-struct InfoView: View {
+struct FolderView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        Image("LinkDefaultImg")
     }
 }
 
 #Preview {
-    InfoView()
+    FolderView()
 }

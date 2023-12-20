@@ -32,6 +32,10 @@
 		9FD0830E2B14792F004021FC /* FolderItemTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD0830D2B14792F004021FC /* FolderItemTabView.swift */; };
 		9FD083102B147C6A004021FC /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD0830F2B147C6A004021FC /* SearchBarView.swift */; };
 		9FD083122B147CC6004021FC /* SearchBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD083112B147CC6004021FC /* SearchBarViewModel.swift */; };
+		9FEB2E792B19739E005A300C /* FrameGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E782B19739E005A300C /* FrameGetter.swift */; };
+		9FEB2E7D2B197C64005A300C /* SearchBarDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E7C2B197C64005A300C /* SearchBarDropDownView.swift */; };
+		9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */; };
+		9FEB2E822B328064005A300C /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E812B328064005A300C /* FolderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +65,10 @@
 		9FD0830D2B14792F004021FC /* FolderItemTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderItemTabView.swift; sourceTree = "<group>"; };
 		9FD0830F2B147C6A004021FC /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		9FD083112B147CC6004021FC /* SearchBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarViewModel.swift; sourceTree = "<group>"; };
+		9FEB2E782B19739E005A300C /* FrameGetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameGetter.swift; sourceTree = "<group>"; };
+		9FEB2E7C2B197C64005A300C /* SearchBarDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarDropDownView.swift; sourceTree = "<group>"; };
+		9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingTab.swift; sourceTree = "<group>"; };
+		9FEB2E812B328064005A300C /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				9FD082E42B143C58004021FC /* Constants.swift */,
+				9FEB2E782B19739E005A300C /* FrameGetter.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -135,6 +144,7 @@
 				9FD083022B144E40004021FC /* InfoView.swift */,
 				9FD083042B145856004021FC /* MainNavStack.swift */,
 				9FD083062B146AB1004021FC /* SingupView.swift */,
+				9FEB2E812B328064005A300C /* FolderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -170,12 +180,22 @@
 		9FD083082B147842004021FC /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				9FEB2E7E2B198FFB005A300C /* Searchbar */,
 				9FD083092B147857004021FC /* LinkItemView.swift */,
 				9FD0830B2B147883004021FC /* FolderItemView.swift */,
 				9FD0830D2B14792F004021FC /* FolderItemTabView.swift */,
-				9FD0830F2B147C6A004021FC /* SearchBarView.swift */,
+				9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		9FEB2E7E2B198FFB005A300C /* Searchbar */ = {
+			isa = PBXGroup;
+			children = (
+				9FD0830F2B147C6A004021FC /* SearchBarView.swift */,
+				9FEB2E7C2B197C64005A300C /* SearchBarDropDownView.swift */,
+			);
+			path = Searchbar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,15 +278,19 @@
 				9FD082EB2B143E34004021FC /* DataManager.swift in Sources */,
 				9FD0830A2B147857004021FC /* LinkItemView.swift in Sources */,
 				9FD082D82B1437A4004021FC /* Item.swift in Sources */,
+				9FEB2E792B19739E005A300C /* FrameGetter.swift in Sources */,
 				9FD082FF2B144E21004021FC /* CreateView.swift in Sources */,
+				9FEB2E7D2B197C64005A300C /* SearchBarDropDownView.swift in Sources */,
 				9FD0830C2B147883004021FC /* FolderItemView.swift in Sources */,
 				9FD082F32B144287004021FC /* ShareExtensionViewModel.swift in Sources */,
 				9FD082FD2B14490B004021FC /* UserModel.swift in Sources */,
 				9FD082F72B1443B2004021FC /* HomeView.swift in Sources */,
+				9FEB2E822B328064005A300C /* FolderView.swift in Sources */,
 				9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */,
 				9FD082ED2B144263004021FC /* LinkViewModel.swift in Sources */,
 				9FD082F92B1443D3004021FC /* FilesView.swift in Sources */,
 				9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */,
+				9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */,
 				9FD083102B147C6A004021FC /* SearchBarView.swift in Sources */,
 				9FD082FB2B14440D004021FC /* LoginView.swift in Sources */,
 				9FD083072B146AB1004021FC /* SingupView.swift in Sources */,

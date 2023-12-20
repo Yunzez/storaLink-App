@@ -10,7 +10,10 @@ import SwiftUI
 struct SearchBarView: View {
     @ObservedObject var viewModel: SearchBarViewModel
     @FocusState private var inputFocus: Bool
-        var body: some View {
+    
+    @State private var searchBarFrame: CGRect = .zero
+    var body: some View {
+        ZStack {
             VStack {
                 HStack {
                     Image(systemName: "magnifyingglass")
@@ -20,12 +23,12 @@ struct SearchBarView: View {
                         .padding(.vertical)
                     
                     TextField("Search files or saved items", text: $viewModel.searchText)
-                    .foregroundColor(.primary)
-                    .focused($inputFocus)
-                    .onChange(of: viewModel.searchText) { newValue, _ in
-                          print("Search term changed to: \(newValue)")
-                          viewModel.search()
-                      }
+                        .foregroundColor(.primary)
+                        .focused($inputFocus)
+                        .onChange(of: viewModel.searchText) { newValue, _ in
+                            print("Search term changed to: \(newValue)")
+                            viewModel.search()
+                        }
                 } .background(Color(.systemGray6))
                     .cornerRadius(10)
                     .overlay(
@@ -34,20 +37,10 @@ struct SearchBarView: View {
                     )
                     .padding(.horizontal)
                 
-                // Results list
-                if viewModel.isSearching && !viewModel.results.isEmpty {
-                    List(viewModel.results, id: \.self) { result in
-                        Text(result).onTapGesture {
-                            // Handle result tap
-                            print("Tapped on \(result)")
-                            // Here you would typically do something like close the search and navigate to the detail view of the tapped item.
-                        }
-                    }
-                    .listStyle(PlainListStyle())
-                }
-                
             }
-        }
+            
+        }.environmentObject(viewModel)
+    }
 }
 
 // Extend UIApplication to dismiss the keyboard

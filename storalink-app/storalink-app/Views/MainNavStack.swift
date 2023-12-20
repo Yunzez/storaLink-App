@@ -44,7 +44,7 @@ struct MainNavStack: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity) // Take up all available space
             
             
-            // Custom Tab Bar
+            // MARK: - Custom Tab Bar
             VStack{
                 HStack {
                     Button(action: { self.selectedTab = 0 }) {
@@ -75,8 +75,12 @@ struct MainNavStack: View {
                 .shadow(radius: 8)
                 .padding(.horizontal, 10)
                 .padding(.vertical, -19)
+                
             }.edgesIgnoringSafeArea(.bottom)
+                .frame(height: Spacing.customNavigationBarHeight)
                 .frame(maxHeight: .infinity, alignment: .bottom)
+                
+            
             
 //                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/) // for testing only
         }
