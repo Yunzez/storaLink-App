@@ -37,6 +37,7 @@
 		9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */; };
 		9FEB2E822B328064005A300C /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E812B328064005A300C /* FolderView.swift */; };
 		9FEB2E852B3282E7005A300C /* UserInfoSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E842B3282E7005A300C /* UserInfoSettingView.swift */; };
+		9FEB2E872B33AD9F005A300C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E862B33AD9F005A300C /* LoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,7 @@
 		9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingTab.swift; sourceTree = "<group>"; };
 		9FEB2E812B328064005A300C /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
 		9FEB2E842B3282E7005A300C /* UserInfoSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingView.swift; sourceTree = "<group>"; };
+		9FEB2E862B33AD9F005A300C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 		9FD082E82B143E18004021FC /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				9FEB2E862B33AD9F005A300C /* LoginViewModel.swift */,
 				9FD082EC2B144263004021FC /* LinkViewModel.swift */,
 				9FD082EE2B14426D004021FC /* FolderViewModel.swift */,
 				9FD082F02B14427A004021FC /* UserViewModel.swift */,
@@ -300,6 +303,7 @@
 				9FEB2E822B328064005A300C /* FolderView.swift in Sources */,
 				9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */,
 				9FD082ED2B144263004021FC /* LinkViewModel.swift in Sources */,
+				9FEB2E872B33AD9F005A300C /* LoginViewModel.swift in Sources */,
 				9FD082F92B1443D3004021FC /* FilesView.swift in Sources */,
 				9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */,
 				9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */,

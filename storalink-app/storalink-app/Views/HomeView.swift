@@ -9,6 +9,7 @@ import SwiftUI
 struct HomeView: View {
     @StateObject var viewModel = SearchBarViewModel()
     @State  var searchBarFrame: CGRect = .zero
+    
     let searchBarHeight: CGFloat = 50
     var body: some View {
         NavigationView {
