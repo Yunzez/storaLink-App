@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainNavStack: View {
-    
+    @EnvironmentObject var navigationStateManager: NavigationStateManager
     @State private var selectedTab: Int = 0
     init() {
         let appearance = UITabBarAppearance()
@@ -45,48 +45,46 @@ struct MainNavStack: View {
             
             
             // MARK: - Custom Tab Bar
-            VStack{
-                HStack {
-                    Button(action: { self.selectedTab = 0 }) {
-                        Image(self.selectedTab == 0 ? "HomeSelected" : "Home")
+                VStack{
+                    if !navigationStateManager.isInSubMenu {
+                        HStack {
+                            Button(action: { self.selectedTab = 0 }) {
+                                Image(self.selectedTab == 0 ? "HomeSelected" : "Home")
+                            }.frame(width: 50)
+                            Spacer()
+                            Button(action: { self.selectedTab = 1 }) {
+                                Image(self.selectedTab == 1 ? "FileSelected" : "File")
+                            }.frame(width: 50)
+                            Spacer()
+                            Button(action: { self.selectedTab = 2 }) {
+                                Image(self.selectedTab == 2 ? "CreateSelected" : "Create")
+                            }.frame(width: 70)
+                            Spacer()
+                            Button(action: { self.selectedTab = 3 }) {
+                                Image(self.selectedTab == 3 ? "NoticeSelected" : "Notice").resizable().frame(width: 30, height: 30)
+                            }.frame(width: 50)
+                            Spacer()
+                            Button(action: { self.selectedTab = 4 }) {
+                                Image(self.selectedTab == 4 ? "SettingSelected" : "Setting")
+                            }.frame(width: 50)
+                            // Add other buttons for your tabs
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 5)
+                        .background(Color("ThemeWhite").opacity(1))
+                        .shadow(radius: 2)
+                        .transition(.move(edge: .bottom)) // Transition for sliding in and out from the
                     }
-                    Spacer()
-                    Button(action: { self.selectedTab = 1 }) {
-                        Image(self.selectedTab == 1 ? "FileSelected" : "File")
-                    }
-                    Spacer()
-                    Button(action: { self.selectedTab = 2 }) {
-                        Image(self.selectedTab == 2 ? "CreateSelected" : "Create")
-                    }
-                    Spacer()
-                    Button(action: { self.selectedTab = 3 }) {
-                        Image(self.selectedTab == 3 ? "NoticeSelected" : "Notice")
-                    }
-                    Spacer()
-                    Button(action: { self.selectedTab = 4 }) {
-                        Image(self.selectedTab == 4 ? "SettingSelected" : "Setting")
-                    }
-                    // Add other buttons for your tabs
+                    
                 }
-                .padding(.horizontal)
-                .padding(.vertical, 6)
-                .background(Color("ThemeWhite").opacity(1))
-                .cornerRadius(20)
-                .shadow(radius: 8)
-                .padding(.horizontal, 10)
-                .padding(.vertical, -19)
-                
-            }.edgesIgnoringSafeArea(.bottom)
-                .frame(height: Spacing.customNavigationBarHeight)
-                .frame(maxHeight: .infinity, alignment: .bottom)
-                
-            
-            
-//                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/) // for testing only
+                    .frame(height: navigationStateManager.isInSubMenu ? 0 : Spacing.customNavigationBarHeight)
+                    .animation(Animation.easeInOut(duration: 0.3), value: navigationStateManager.isInSubMenu)
+                    .edgesIgnoringSafeArea(.bottom)
+
         }
     }
 }
 
 #Preview {
-    MainNavStack()
+    MainNavStack().environmentObject(NavigationStateManager())
 }
