@@ -39,12 +39,27 @@ struct LinkView: View {
             
             ScrollView(.horizontal , showsIndicators: true){
                 HStack {
-                    ForEach(1..<5) { i in
-                        Text("i is \(i)")
+                    ForEach(1..<5) { _ in
+                        LinkViewCard()
                     }
                 }
-            }.padding()
+            }.padding(.horizontal)
+            
+            HStack{
+                Text("01/10")
+                Spacer()
+            }.padding(.horizontal)
+            
+            VStack{
+                Text("Long Link Title Placeholder 1").font(.title2).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                Text("Decently Long Link Description Placeholder and ipsum dolor sit amet consectetur. Elementum viverra urna aenean et orci risus tellus. Donec egestas velit purus vitae.Et platea phasellus mattis cursus euismod nunc lacus felis sit. Adipiscing pellentesque nisl maecenas vel egestas vulputate tempor consectetur. ")
+            }.padding(.horizontal)
             Spacer()
+
+            HStack{
+                Image(systemName: "ellipsis")
+                CustomButton(action: {print("go to link")}, label: "View Live Media", imageSystemName: "link", style: .fill)
+            }
         }.onAppear {
             // This is called when the view appears
             navigationStateManager.enterSubMenu()
