@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainNavStack: View {
+    
     @EnvironmentObject var navigationStateManager: NavigationStateManager
     @State private var selectedTab: Int = 0
     init() {

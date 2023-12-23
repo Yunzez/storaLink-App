@@ -36,7 +36,7 @@ struct FilesView: View {
                 Spacer()
             }
             
-        }
+        }.padding(.bottom, Spacing.customNavigationBarHeight )
         
     }
     

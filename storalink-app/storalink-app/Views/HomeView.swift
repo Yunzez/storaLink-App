@@ -67,7 +67,11 @@ struct HomeView: View {
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 10) {
                                 ForEach(0..<10) { _ in // Replace with your data source
-                                    LinkItemView() // Define this custom view to represent a link
+                                    LinkItemView(){ viewModel in
+                                        // Define what should happen when a link item is clicked.
+                                        // You can access the viewModel here to perform actions.
+                                        print("Link clicked")
+                                    } // Define this custom view to represent a link
                                 }
                             }
                             .padding()

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FolderView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var navigationStateManager: NavigationStateManager
     @StateObject var folderViewModel: FolderViewModel
     
@@ -30,6 +31,7 @@ struct FolderView: View {
                     HStack {
                         Button(action: {
                             print("Click return")
+                            self.presentationMode.wrappedValue.dismiss()
                         }, label: {
                             Image(systemName: "arrow.uturn.backward")
                                 .foregroundColor(.black)
@@ -90,23 +92,69 @@ struct FolderView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding([.horizontal, .top])
             
-            HStack {
-                CustomButton(action: {
-                    print("Button tapped")
-                }, label: "", imageSystemName: "magnifyingglass", style: .outline)
-                
-                CustomButton(action: {
-                    print("Button tapped")
-                }, label: "Sort By", imageSystemName: "line.3.horizontal.decrease.circle", style: .outline)
-                
-                CustomButton(action: {
-                    print("Button tapped")
-                }, label: "Add Item", imageSystemName: "plus.circle", style: .fill)
-                
-                Spacer()
+            if !folderViewModel.searchOpen {
+                HStack {
+                    
+                    Button(action: {
+                        folderViewModel.searchButtonClick()  // This should toggle the clicked status in your ViewModel
+                    }, label: {
+                        HStack {
+                            // The magnifying glass icon
+                            Image(systemName: "magnifyingglass")
+                                .imageScale(.medium)
+                                .padding(Spacing.small)
+                                .foregroundColor(.accentColor)
+                            
+                        }
+                        .cornerRadius(Spacing.small)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: Spacing.small)
+                                .stroke(Color("ThemeColor"), lineWidth: 2)
+                        )
+                    })
+                    .animation(.easeInOut, value: folderViewModel.searchOpen)  // Animate the changes
+                    
+                    CustomButton(action: {
+                        folderViewModel.sortButtonClick()
+                    }, label: "Sort", imageSystemName: "line.3.horizontal.decrease.circle", style: .outline)
+                    .sheet(isPresented: $folderViewModel.sortOpen) {
+                        // Your bottom sheet view
+                        VStack {
+                            Text("Option 1").padding()
+                            Text("Option 2").padding()
+                            // Add more options as needed
+                        }.presentationDetents([.height(200)])
+                    }
+                    
+                    CustomButton(action: {
+                        print("Button tapped")
+                    }, label: "Add", imageSystemName: "plus.circle", style: .fill)
+                    
+                    Spacer()
+                }
+                .padding([.horizontal])
             }
-            .padding([.horizontal])
             
+            if folderViewModel.searchOpen {
+                GeometryReader { geometry in
+                    HStack{
+                        TextField("Search...", text: $folderViewModel.searchText)
+                            .padding(Spacing.small)
+                            .frame(width:  geometry.size.width * 0.7).cornerRadius(Spacing.small)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: Spacing.small)
+                                    .stroke(Color("ThemeColor"), lineWidth: 2)
+                            )
+                        Button {
+                            folderViewModel.searchButtonClick()
+                        } label: {
+                            Text("Cancel").foregroundColor(.black)
+                        }
+                        Spacer()
+                    }.padding(.horizontal)
+                }.frame(height: 35)
+                
+            }
             
             // Scrollable content
             HStack{
@@ -117,7 +165,9 @@ struct FolderView: View {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack(spacing: 10) {
                     ForEach(0..<10) { _ in
-                        LinkItemView() // Your custom view representing a link
+                        LinkItemView(onClick: { viewModel in
+                            print("Link clicked")
+                        })
                     }
                 }
             }
@@ -128,7 +178,7 @@ struct FolderView: View {
         .onDisappear {
             // This is called when the view is about to disappear
             navigationStateManager.exitSubMenu()
-        }
+        }.navigationBarBackButtonHidden(true)
     }
 }
 

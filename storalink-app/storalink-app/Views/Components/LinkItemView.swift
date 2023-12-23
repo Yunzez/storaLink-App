@@ -8,27 +8,47 @@
 import SwiftUI
 
 struct LinkItemView: View {
+    @StateObject var linkItemViewModel = LinkViewModel()
+    var onClick: (LinkViewModel) -> Void
     var body: some View {
-        HStack(spacing: Spacing.small) {
-            Image("LinkPlaceholder") // Replace with actual image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .cornerRadius(Spacing.roundMd)
-                .frame(width: 80, height: 80)
-            VStack(alignment: .leading) {
-                Text("Long Link Title Placeholder 1")
-                    .font(.headline)
-                Text("@author_author")
-                    .font(.subheadline)
+        Button(action: {
+            onClick(linkItemViewModel)  // Trigger the onClick action
+        }) {
+            HStack(spacing: Spacing.small) {
+                Image("LinkPlaceholder") // Replace with actual image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(Spacing.roundMd)
+                    .frame(width: 80, height: 80)
+                VStack(alignment: .leading) {
+                    Text("Long Link Title Placeholder 1")
+                        .font(.headline)
+                    Text("@author_author")
+                        .font(.subheadline)
+                }
+                Button(action: {
+                    print("clicked item")
+                    linkItemViewModel.toggleMore()
+                }, label: {
+                    Image(systemName: "ellipsis").foregroundColor(.black)
+                }).padding(.horizontal, Spacing.small)
+                    .sheet(isPresented: $linkItemViewModel.moreOpen) {
+                        VStack{
+                            Text("test")
+                        }.presentationDetents([.height(300)])
+                    }
             }
-        }
-        .padding()
-        .frame(height: 80) // Adjust size as needed
-        .background(Color.gray.opacity(0.1)) // Placeholder for card background
-        .cornerRadius(10)
+            .padding()
+            .frame(height: 80) // Adjust size as needed
+            .background(Color.gray.opacity(0.1)) // Placeholder for card background
+            .cornerRadius(10)
+        }.foregroundColor(.black)
     }
 }
 
 #Preview {
-    LinkItemView()
+    LinkItemView {_ in
+        print("Link item clicked")
+    }
 }
+

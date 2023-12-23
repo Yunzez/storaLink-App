@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9F7260602B35418700A49628 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72605F2B35418700A49628 /* CustomButton.swift */; };
 		9F7260622B365D6400A49628 /* NavigationStageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260612B365D6400A49628 /* NavigationStageManager.swift */; };
+		9F7260682B36827E00A49628 /* LinkItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260672B36827E00A49628 /* LinkItemViewModel.swift */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -45,6 +46,7 @@
 /* Begin PBXFileReference section */
 		9F72605F2B35418700A49628 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		9F7260612B365D6400A49628 /* NavigationStageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStageManager.swift; sourceTree = "<group>"; };
+		9F7260672B36827E00A49628 /* LinkItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkItemViewModel.swift; sourceTree = "<group>"; };
 		9FD082D02B1437A4004021FC /* storalink-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storalink-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -90,6 +92,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F7260662B36826C00A49628 /* ComponentsModel */ = {
+			isa = PBXGroup;
+			children = (
+				9F7260672B36827E00A49628 /* LinkItemViewModel.swift */,
+			);
+			path = ComponentsModel;
+			sourceTree = "<group>";
+		};
 		9FD082C72B1437A4004021FC = {
 			isa = PBXGroup;
 			children = (
@@ -169,6 +179,7 @@
 		9FD082E82B143E18004021FC /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				9F7260662B36826C00A49628 /* ComponentsModel */,
 				9FEB2E862B33AD9F005A300C /* LoginViewModel.swift */,
 				9FD082EC2B144263004021FC /* LinkViewModel.swift */,
 				9FD082EE2B14426D004021FC /* FolderViewModel.swift */,
@@ -315,6 +326,7 @@
 				9FD082F92B1443D3004021FC /* FilesView.swift in Sources */,
 				9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */,
 				9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */,
+				9F7260682B36827E00A49628 /* LinkItemViewModel.swift in Sources */,
 				9FD083102B147C6A004021FC /* SearchBarView.swift in Sources */,
 				9FD082FB2B14440D004021FC /* LoginView.swift in Sources */,
 				9FD083072B146AB1004021FC /* SingupView.swift in Sources */,
