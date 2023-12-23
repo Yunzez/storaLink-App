@@ -10,6 +10,9 @@
 		9F7260602B35418700A49628 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72605F2B35418700A49628 /* CustomButton.swift */; };
 		9F7260622B365D6400A49628 /* NavigationStageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260612B365D6400A49628 /* NavigationStageManager.swift */; };
 		9F7260682B36827E00A49628 /* LinkItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260672B36827E00A49628 /* LinkItemViewModel.swift */; };
+		9F72606A2B36966600A49628 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260692B36966600A49628 /* LinkView.swift */; };
+		9F72606C2B369D0700A49628 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72606B2B369D0600A49628 /* HomeView.swift */; };
+		9F72606E2B36A1F800A49628 /* LinkCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72606D2B36A1F800A49628 /* LinkCardView.swift */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -21,7 +24,6 @@
 		9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082EE2B14426D004021FC /* FolderViewModel.swift */; };
 		9FD082F12B14427A004021FC /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082F02B14427A004021FC /* UserViewModel.swift */; };
 		9FD082F32B144287004021FC /* ShareExtensionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082F22B144287004021FC /* ShareExtensionViewModel.swift */; };
-		9FD082F72B1443B2004021FC /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082F62B1443B2004021FC /* HomeView.swift */; };
 		9FD082F92B1443D3004021FC /* FilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082F82B1443D3004021FC /* FilesView.swift */; };
 		9FD082FB2B14440D004021FC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082FA2B14440D004021FC /* LoginView.swift */; };
 		9FD082FD2B14490B004021FC /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082FC2B14490B004021FC /* UserModel.swift */; };
@@ -47,6 +49,9 @@
 		9F72605F2B35418700A49628 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		9F7260612B365D6400A49628 /* NavigationStageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStageManager.swift; sourceTree = "<group>"; };
 		9F7260672B36827E00A49628 /* LinkItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkItemViewModel.swift; sourceTree = "<group>"; };
+		9F7260692B36966600A49628 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
+		9F72606B2B369D0600A49628 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = ../../../../../.Trash/HomeView.swift; sourceTree = "<group>"; };
+		9F72606D2B36A1F800A49628 /* LinkCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkCardView.swift; sourceTree = "<group>"; };
 		9FD082D02B1437A4004021FC /* storalink-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storalink-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -59,7 +64,6 @@
 		9FD082EE2B14426D004021FC /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
 		9FD082F02B14427A004021FC /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		9FD082F22B144287004021FC /* ShareExtensionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionViewModel.swift; sourceTree = "<group>"; };
-		9FD082F62B1443B2004021FC /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		9FD082F82B1443D3004021FC /* FilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesView.swift; sourceTree = "<group>"; };
 		9FD082FA2B14440D004021FC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		9FD082FC2B14490B004021FC /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -155,15 +159,16 @@
 			children = (
 				9FEB2E832B3282CC005A300C /* SettingViews */,
 				9FD083082B147842004021FC /* Components */,
-				9FD082F62B1443B2004021FC /* HomeView.swift */,
 				9FD082F82B1443D3004021FC /* FilesView.swift */,
 				9FD082FA2B14440D004021FC /* LoginView.swift */,
 				9FD082FE2B144E21004021FC /* CreateView.swift */,
 				9FD083002B144E30004021FC /* SettingsView.swift */,
 				9FD083022B144E40004021FC /* InfoView.swift */,
+				9F72606B2B369D0600A49628 /* HomeView.swift */,
 				9FD083042B145856004021FC /* MainNavStack.swift */,
 				9FD083062B146AB1004021FC /* SingupView.swift */,
 				9FEB2E812B328064005A300C /* FolderView.swift */,
+				9F7260692B36966600A49628 /* LinkView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -208,6 +213,7 @@
 				9FD0830D2B14792F004021FC /* FolderItemTabView.swift */,
 				9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */,
 				9F72605F2B35418700A49628 /* CustomButton.swift */,
+				9F72606D2B36A1F800A49628 /* LinkCardView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -299,6 +305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F72606E2B36A1F800A49628 /* LinkCardView.swift in Sources */,
 				9FEB2E852B3282E7005A300C /* UserInfoSettingView.swift in Sources */,
 				9FD0830E2B14792F004021FC /* FolderItemTabView.swift in Sources */,
 				9FD083032B144E40004021FC /* InfoView.swift in Sources */,
@@ -318,7 +325,6 @@
 				9FD0830C2B147883004021FC /* FolderItemView.swift in Sources */,
 				9FD082F32B144287004021FC /* ShareExtensionViewModel.swift in Sources */,
 				9FD082FD2B14490B004021FC /* UserModel.swift in Sources */,
-				9FD082F72B1443B2004021FC /* HomeView.swift in Sources */,
 				9FEB2E822B328064005A300C /* FolderView.swift in Sources */,
 				9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */,
 				9FD082ED2B144263004021FC /* LinkViewModel.swift in Sources */,
@@ -327,9 +333,11 @@
 				9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */,
 				9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */,
 				9F7260682B36827E00A49628 /* LinkItemViewModel.swift in Sources */,
+				9F72606C2B369D0700A49628 /* HomeView.swift in Sources */,
 				9FD083102B147C6A004021FC /* SearchBarView.swift in Sources */,
 				9FD082FB2B14440D004021FC /* LoginView.swift in Sources */,
 				9FD083072B146AB1004021FC /* SingupView.swift in Sources */,
+				9F72606A2B36966600A49628 /* LinkView.swift in Sources */,
 				9FD082E52B143C58004021FC /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

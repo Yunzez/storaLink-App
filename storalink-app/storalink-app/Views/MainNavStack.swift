@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainNavStack: View {
-    
+    @State private var navigationPath = NavigationPath()
     @EnvironmentObject var navigationStateManager: NavigationStateManager
     @State private var selectedTab: Int = 0
     init() {
@@ -25,27 +25,28 @@ struct MainNavStack: View {
     }
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            Group {
-                switch selectedTab {
-                case 0:
-                    HomeView()
-                case 1:
-                    FilesView()
-                case 2:
-                    CreateView()
-                case 3:
-                    InfoView()
-                case 4:
-                    SettingsView()
-                default:
-                    HomeView()
+        NavigationStack(path: $navigationPath) {
+            ZStack(alignment: .bottom) {
+                Group {
+                    switch selectedTab {
+                    case 0:
+                        HomeView()
+                    case 1:
+                        FilesView()
+                    case 2:
+                        CreateView()
+                    case 3:
+                        InfoView()
+                    case 4:
+                        SettingsView()
+                    default:
+                        HomeView()
+                    }
                 }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity) // Take up all available space
-            
-            
-            // MARK: - Custom Tab Bar
+                .frame(maxWidth: .infinity, maxHeight: .infinity) // Take up all available space
+                
+                
+                // MARK: - Custom Tab Bar
                 VStack{
                     if !navigationStateManager.isInSubMenu {
                         HStack {
@@ -78,10 +79,11 @@ struct MainNavStack: View {
                     }
                     
                 }
-                    .frame(height: navigationStateManager.isInSubMenu ? 0 : Spacing.customNavigationBarHeight)
-                    .animation(Animation.easeInOut(duration: 0.3), value: navigationStateManager.isInSubMenu)
-                    .edgesIgnoringSafeArea(.bottom)
-
+                .frame(height: navigationStateManager.isInSubMenu ? 0 : Spacing.customNavigationBarHeight)
+                .animation(Animation.easeInOut(duration: 0.3), value: navigationStateManager.isInSubMenu)
+                .edgesIgnoringSafeArea(.bottom)
+                
+            }
         }
     }
 }
