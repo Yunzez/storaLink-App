@@ -8,11 +8,8 @@
 import SwiftUI
 
 struct CreateFolderView: View {
-    @State private var folderName: String = ""
-    @State private var folderDescription: String = ""
-    @State private var searchUser: String = ""
-    @State private var selectedCover: Int = -1
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @ObservedObject private var viewModel = CreateFolderViewModel()
     var body: some View {
         VStack {
             HStack {
@@ -33,10 +30,17 @@ struct CreateFolderView: View {
                 Image("Folder").resizable().frame(width: 25, height: 25 )
                 Text("New Folder")
             }
-            
             .padding(.horizontal)
             ScrollView {
                 VStack(alignment: .leading) {
+                    if viewModel.error {
+                        Text(viewModel.errorMessage).foregroundColor(Color("Warning"))
+                            .padding()
+                            .background(Color("LightWarning"))
+                            .overlay(RoundedRectangle(cornerRadius: Spacing.small) // Match this radius with the cornerRadius value above
+                            .stroke(Color("Warning"), lineWidth: 2)).padding(.horizontal)
+                        
+                    }
                     Text("Select A Cover")
                         .font(.headline)
                         .padding(.top)
@@ -50,9 +54,9 @@ struct CreateFolderView: View {
                                     .scaledToFill()
                                     .frame(width: 80, height: 80)
                                     .clipShape(Circle())
-                                    .overlay(Circle().stroke(Color.gray, lineWidth: selectedCover == index ? 3 : 0))
+                                    .overlay(Circle().stroke(Color("ThemeColor"), lineWidth: viewModel.selectedCoverIndex == index ? 3 : 0))
                                     .onTapGesture {
-                                        self.selectedCover = index
+                                        viewModel.selectedCoverIndex = index
                                     }
                                     .padding(4)
                             }
@@ -62,26 +66,38 @@ struct CreateFolderView: View {
 
                     // Cover selection will go here
                     Text("Folder Name").padding(.horizontal)
-                    TextField("Your most creative name", text: $folderName)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding([.bottom, .horizontal])
-                        
-                    HStack{
+                    StandardTextField( placeholder:"Your most creative name", text: $viewModel.folderName).padding([.bottom, .horizontal])
+
+                    HStack {
                         Text("Description")
-                        Text("Optional").fontWeight(.light).foregroundColor(Color("Gray"))
+                        Text("(Optional)").fontWeight(.light).foregroundColor(Color.gray)
+                    }
+                    .padding(.horizontal)
+
+                    TextEditor(text: $viewModel.folderDescription)
+                        .padding(4) // This padding is for inside the TextEditor, between the text and the border
+                        .frame(minHeight: 100)
+                        .background(Color.white) // Set the background color to white or any other color as needed
+                        .cornerRadius(10) // Set the corner radius as needed
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10) // Match this radius with the cornerRadius value above
+                                .stroke(Color(UIColor.separator), lineWidth: 1)
+                        )
+                        .padding([.bottom, .horizontal])
+
+                    
+                    
+                    HStack{
+                        Text("Share")
+                        Text("(Optional)").fontWeight(.light).foregroundColor(Color("Gray"))
                     }.padding(.horizontal)
-                    
-                    TextField("What's this folder about?", text: $folderDescription)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding([.bottom, .horizontal])
-                    
-                    TextField("Search other Storalink users", text: $searchUser)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding([.bottom, .horizontal])
+                    StandardTextField( placeholder:"search other user", text: $viewModel.searchUser).padding([.bottom, .horizontal])
+                        
                 }
                 
                 Button(action: {
                     // Action for folder creation
+                    viewModel.createFolder()
                 }) {
                     Text("Create Folder")
                         .frame(minWidth: 0, maxWidth: .infinity)

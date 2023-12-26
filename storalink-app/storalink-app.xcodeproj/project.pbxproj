@@ -15,6 +15,10 @@
 		9F72606E2B36A1F800A49628 /* LinkCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72606D2B36A1F800A49628 /* LinkCardView.swift */; };
 		9F7260722B3A1F8700A49628 /* CreateLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260712B3A1F8700A49628 /* CreateLinkView.swift */; };
 		9F7260742B3A1F9300A49628 /* CreateFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260732B3A1F9300A49628 /* CreateFolderView.swift */; };
+		9F7260762B3A2C5800A49628 /* StandardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260752B3A2C5800A49628 /* StandardTextField.swift */; };
+		9F7260782B3A2E1E00A49628 /* CreateFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260772B3A2E1E00A49628 /* CreateFolderViewModel.swift */; };
+		9F72607A2B3A325100A49628 /* CreateLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260792B3A325100A49628 /* CreateLinkViewModel.swift */; };
+		9F72607C2B3A453E00A49628 /* LinkMetaDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72607B2B3A453E00A49628 /* LinkMetaDataFetcher.swift */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -56,6 +60,10 @@
 		9F72606D2B36A1F800A49628 /* LinkCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkCardView.swift; sourceTree = "<group>"; };
 		9F7260712B3A1F8700A49628 /* CreateLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLinkView.swift; sourceTree = "<group>"; };
 		9F7260732B3A1F9300A49628 /* CreateFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFolderView.swift; sourceTree = "<group>"; };
+		9F7260752B3A2C5800A49628 /* StandardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTextField.swift; sourceTree = "<group>"; };
+		9F7260772B3A2E1E00A49628 /* CreateFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFolderViewModel.swift; sourceTree = "<group>"; };
+		9F7260792B3A325100A49628 /* CreateLinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLinkViewModel.swift; sourceTree = "<group>"; };
+		9F72607B2B3A453E00A49628 /* LinkMetaDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMetaDataFetcher.swift; sourceTree = "<group>"; };
 		9FD082D02B1437A4004021FC /* storalink-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storalink-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -163,6 +171,7 @@
 			children = (
 				9FD082E42B143C58004021FC /* Constants.swift */,
 				9FEB2E782B19739E005A300C /* FrameGetter.swift */,
+				9F72607B2B3A453E00A49628 /* LinkMetaDataFetcher.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -205,6 +214,8 @@
 				9FD082F02B14427A004021FC /* UserViewModel.swift */,
 				9FD082F22B144287004021FC /* ShareExtensionViewModel.swift */,
 				9FD083112B147CC6004021FC /* SearchBarViewModel.swift */,
+				9F7260772B3A2E1E00A49628 /* CreateFolderViewModel.swift */,
+				9F7260792B3A325100A49628 /* CreateLinkViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -228,6 +239,7 @@
 				9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */,
 				9F72605F2B35418700A49628 /* CustomButton.swift */,
 				9F72606D2B36A1F800A49628 /* LinkCardView.swift */,
+				9F7260752B3A2C5800A49628 /* StandardTextField.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -323,6 +335,7 @@
 				9FEB2E852B3282E7005A300C /* UserInfoSettingView.swift in Sources */,
 				9FD0830E2B14792F004021FC /* FolderItemTabView.swift in Sources */,
 				9FD083032B144E40004021FC /* InfoView.swift in Sources */,
+				9F7260782B3A2E1E00A49628 /* CreateFolderViewModel.swift in Sources */,
 				9FD083012B144E30004021FC /* SettingsView.swift in Sources */,
 				9FD082D62B1437A4004021FC /* ContentView.swift in Sources */,
 				9FD082F12B14427A004021FC /* UserViewModel.swift in Sources */,
@@ -331,12 +344,14 @@
 				9FD082EB2B143E34004021FC /* DataManager.swift in Sources */,
 				9FD0830A2B147857004021FC /* LinkItemView.swift in Sources */,
 				9FD082D82B1437A4004021FC /* Item.swift in Sources */,
+				9F7260762B3A2C5800A49628 /* StandardTextField.swift in Sources */,
 				9FEB2E792B19739E005A300C /* FrameGetter.swift in Sources */,
 				9FD082FF2B144E21004021FC /* CreateView.swift in Sources */,
 				9FEB2E7D2B197C64005A300C /* SearchBarDropDownView.swift in Sources */,
 				9F7260602B35418700A49628 /* CustomButton.swift in Sources */,
 				9F7260622B365D6400A49628 /* NavigationStageManager.swift in Sources */,
 				9FD0830C2B147883004021FC /* FolderItemView.swift in Sources */,
+				9F72607C2B3A453E00A49628 /* LinkMetaDataFetcher.swift in Sources */,
 				9FD082F32B144287004021FC /* ShareExtensionViewModel.swift in Sources */,
 				9FD082FD2B14490B004021FC /* UserModel.swift in Sources */,
 				9FEB2E822B328064005A300C /* FolderView.swift in Sources */,
@@ -348,6 +363,7 @@
 				9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */,
 				9F7260682B36827E00A49628 /* LinkItemViewModel.swift in Sources */,
 				9F72606C2B369D0700A49628 /* HomeView.swift in Sources */,
+				9F72607A2B3A325100A49628 /* CreateLinkViewModel.swift in Sources */,
 				9FD083102B147C6A004021FC /* SearchBarView.swift in Sources */,
 				9FD082FB2B14440D004021FC /* LoginView.swift in Sources */,
 				9FD083072B146AB1004021FC /* SingupView.swift in Sources */,
