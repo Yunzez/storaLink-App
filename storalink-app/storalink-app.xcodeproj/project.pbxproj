@@ -24,6 +24,9 @@
 		9F7260912B3A84C900A49628 /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260902B3A84C900A49628 /* ShareView.swift */; };
 		9F7260932B3B8BF700A49628 /* UITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260922B3B8BF700A49628 /* UITest.swift */; };
 		9F7260962B3B909300A49628 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FD082D92B1437A5004021FC /* Assets.xcassets */; };
+		9F7260982B3BF30E00A49628 /* LinkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260972B3BF30E00A49628 /* LinkModel.swift */; };
+		9F72609A2B3BF31900A49628 /* FolderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260992B3BF31900A49628 /* FolderModel.swift */; };
+		9F72609C2B3BFB6900A49628 /* PreviewSampleFolders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72609B2B3BFB6900A49628 /* PreviewSampleFolders.swift */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -98,6 +101,9 @@
 		9F7260882B3A831F00A49628 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F7260902B3A84C900A49628 /* ShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
 		9F7260922B3B8BF700A49628 /* UITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITest.swift; sourceTree = "<group>"; };
+		9F7260972B3BF30E00A49628 /* LinkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkModel.swift; sourceTree = "<group>"; };
+		9F7260992B3BF31900A49628 /* FolderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderModel.swift; sourceTree = "<group>"; };
+		9F72609B2B3BFB6900A49628 /* PreviewSampleFolders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSampleFolders.swift; sourceTree = "<group>"; };
 		9FD082D02B1437A4004021FC /* storalink-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storalink-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -226,6 +232,7 @@
 				9FEB2E782B19739E005A300C /* FrameGetter.swift */,
 				9F72607B2B3A453E00A49628 /* LinkMetaDataFetcher.swift */,
 				9F7260922B3B8BF700A49628 /* UITest.swift */,
+				9F72609B2B3BFB6900A49628 /* PreviewSampleFolders.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -254,6 +261,8 @@
 			isa = PBXGroup;
 			children = (
 				9FD082FC2B14490B004021FC /* UserModel.swift */,
+				9F7260972B3BF30E00A49628 /* LinkModel.swift */,
+				9F7260992B3BF31900A49628 /* FolderModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -441,11 +450,13 @@
 				9FD082D82B1437A4004021FC /* Item.swift in Sources */,
 				9F7260762B3A2C5800A49628 /* StandardTextField.swift in Sources */,
 				9FEB2E792B19739E005A300C /* FrameGetter.swift in Sources */,
+				9F72609C2B3BFB6900A49628 /* PreviewSampleFolders.swift in Sources */,
 				9FD082FF2B144E21004021FC /* CreateView.swift in Sources */,
 				9FEB2E7D2B197C64005A300C /* SearchBarDropDownView.swift in Sources */,
 				9F7260602B35418700A49628 /* CustomButton.swift in Sources */,
 				9F7260622B365D6400A49628 /* NavigationStageManager.swift in Sources */,
 				9FD0830C2B147883004021FC /* FolderItemView.swift in Sources */,
+				9F7260982B3BF30E00A49628 /* LinkModel.swift in Sources */,
 				9F72607C2B3A453E00A49628 /* LinkMetaDataFetcher.swift in Sources */,
 				9FD082F32B144287004021FC /* ShareExtensionViewModel.swift in Sources */,
 				9FD082FD2B14490B004021FC /* UserModel.swift in Sources */,
@@ -455,6 +466,7 @@
 				9FEB2E872B33AD9F005A300C /* LoginViewModel.swift in Sources */,
 				9FD082F92B1443D3004021FC /* FilesView.swift in Sources */,
 				9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */,
+				9F72609A2B3BF31900A49628 /* FolderModel.swift in Sources */,
 				9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */,
 				9F7260682B36827E00A49628 /* LinkItemViewModel.swift in Sources */,
 				9F72606C2B369D0700A49628 /* HomeView.swift in Sources */,

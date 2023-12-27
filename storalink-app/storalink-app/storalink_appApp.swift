@@ -11,9 +11,9 @@ import SwiftData
 @main
 struct storalink_appApp: App {
     @StateObject var navigationStateManager = NavigationStateManager()
-    var sharedModelContainer: ModelContainer = {
+    var folderModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Folder.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -28,7 +28,7 @@ struct storalink_appApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(folderModelContainer)
         .environmentObject(navigationStateManager)
 
     }
