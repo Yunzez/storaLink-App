@@ -7,33 +7,94 @@
 
 import UIKit
 import SwiftUI
-
+import Social
+import MobileCoreServices
+import UniformTypeIdentifiers
 class ShareViewController: UIViewController {
-    
     override func viewDidLoad() {
-        super.viewDidLoad()
+        let textDataType = UTType.plainText.identifier
+        let urlType = UTType.url.identifier
         
-        let swiftUIView = ShareView()  // Replace with your actual SwiftUI view
-        let hostingController = UIHostingController(rootView: swiftUIView)
-
-        addChild(hostingController)
-        hostingController.view.frame = self.view.bounds
-        view.addSubview(hostingController.view)
-        hostingController.didMove(toParent: self)
-
-        // Set up any additional configurations...
-    }
-
-    // You'll need a method or way to handle when the user is done sharing
-    func completeSharing() {
-        // Perform any necessary operations before completing
+        print("start to get extension and item ", urlType)
+        // Create the SwiftUI view, passing a closure that calls completeSharing when executed
+        guard
+            let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
+            let itemProvider = extensionItem.attachments?.first else {
+            
+            close()
+            return
+        }
+        print("get extension and item successfully")
+        print(itemProvider.copy())
         
-        // Then complete the extension context
-        extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-    }
+        print("has url", itemProvider.hasItemConformingToTypeIdentifier(urlType))
+        if itemProvider.hasItemConformingToTypeIdentifier(textDataType){
+            
+            itemProvider.loadItem(forTypeIdentifier: textDataType , options: nil) { (providedText, error) in
+                if let error {
+                    self.close()
+                    //                    return
+                }
+                
+                if let text = providedText as? String {
+                    DispatchQueue.main.async {
+                        
+                        let swiftUIView = ShareView( sharedURL: text, onCancel: self.close)
+                        // Set up the hosting controller as before
+                        let hostingController = UIHostingController(rootView: swiftUIView)
+                        self.addChild(hostingController)
+                        self.view.addSubview(hostingController.view)
+                        hostingController.view.frame = self.view.bounds
+                        self.view.addSubview(hostingController.view)
+                        hostingController.didMove(toParent: self)
+                    }
+                }else {
+                    self.close()
+                    return
+                }
+                
+            }
+        }
+            
+            
+            
+            if itemProvider.hasItemConformingToTypeIdentifier(urlType) {
+                print("detect public url")
+                // if we get here, we're good and can show the View :D
+                itemProvider.loadItem(forTypeIdentifier: urlType , options: nil) { (providedText, error) in
+                    if let error {
+                        self.close()
+                        //                    return
+                    }
+                    if let url = providedText as? URL {
+                        
+                        DispatchQueue.main.async {
+                            
+                            let swiftUIView = ShareView( sharedURL: url.absoluteString, onCancel: self.close)
+                            // Set up the hosting controller as before
+                            let hostingController = UIHostingController(rootView: swiftUIView)
+                            self.addChild(hostingController)
+                            self.view.addSubview(hostingController.view)
+                            hostingController.view.frame = self.view.bounds
+                            self.view.addSubview(hostingController.view)
+                            hostingController.didMove(toParent: self)
+                        }
+                    } else {
+                        self.close()
+                        return
+                    }
+                }
+            }
+            
+            print("info", itemProvider.copy())
+        }
+        
+        
+        func close() {
+            self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+        }
+        
+        
+        
     
-    // Handle incoming content and pass it to your SwiftUI view
-    func handleIncomingContent() {
-        // Access and handle the content from extensionContext
-    }
 }

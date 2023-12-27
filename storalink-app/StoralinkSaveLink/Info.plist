@@ -7,7 +7,16 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>NSExtensionActivationRule</key>
-			<string>TRUEPREDICATE</string>
+			<dict>
+				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
+				<string>1</string>
+				<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
+				<string>1</string>
+				<key>NSExtensionActivationSupportsText</key>
+				<string>True</string>
+			</dict>
+			<key>New item</key>
+			<string></string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>

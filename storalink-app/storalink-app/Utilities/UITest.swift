@@ -1,14 +1,14 @@
 //
-//  ShareView.swift
-//  StoralinkSaveLink
+//  UITest.swift
+//  storalink-app
 //
-//  Created by Yunze Zhao on 12/25/23.
+//  Created by Yunze Zhao on 12/26/23.
 //
 
 import SwiftUI
 
-struct ShareView: View {
-    @State var sharedURL: String?
+struct UITest: View {
+    
     @State var linkText: String = ""
     @State var titleText: String = ""
     @State var authorText: String = ""
@@ -17,7 +17,7 @@ struct ShareView: View {
     @FocusState private var isTitleInputFocused: Bool
     @FocusState private var isAuthorInputFocused: Bool
     @FocusState private var isDescriptionInputFocused: Bool
-    var onCancel: () -> Void
+    
     struct NoBorderTextFieldStyle: TextFieldStyle {
         func _body(configuration: TextField<_Label>) -> some View {
             configuration
@@ -30,24 +30,36 @@ struct ShareView: View {
         case field(Int)
     }
     
-    init(sharedURL: String, onCancel: @escaping () -> Void) {
-        _sharedURL = State(initialValue: sharedURL)
-        _titleText = State(initialValue: "") // Provide an initial value for titleText
-        _authorText = State(initialValue: "") // Provide an initial value for authorText
-        _descriptionText = State(initialValue: "") // Provide an initial value for descriptionText
-        _selectedText = State(initialValue: -1) // Provide an initial value for selectedText
-        self.onCancel = onCancel
-        _linkText = State(initialValue: self.sharedURL ?? "") // Provide an initial value for linkText
+    func getExtensionContext() -> NSExtensionContext? {
+            // Find the active UIWindowScene
+            guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene else {
+                return nil
+            }
 
-    }
+            // Access the key window's root view controller from the scene
+            guard let rootViewController = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController else {
+                return nil
+            }
 
+            // Traverse presented view controllers to find the host of the Share Extension
+            var currentViewController = rootViewController
+            while let presentedViewController = currentViewController.presentedViewController {
+                currentViewController = presentedViewController
+            }
+
+            // Attempt to cast the view controller to a UIViewController that has an extension context
+            return (currentViewController as UIViewController).extensionContext
+        }
     
     var body: some View {
         ScrollView{
             VStack{
                 HStack{
                     Button {
-                        onCancel()
+                        print("cancel")
+                        if let extensionContext = getExtensionContext() {
+                                            extensionContext.completeRequest(returningItems: nil, completionHandler: nil)
+                                        }
                     } label: {
                         Text("Cancel").foregroundColor(Color("ThemeColor"))
                     }
@@ -164,7 +176,7 @@ struct ShareView: View {
 //                    Text("Description")
 //                    Spacer()
 //                }.padding(.horizontal)
-//
+//                
 //                TextEditor(text: $linkText)
 //                    .padding(2) // This padding is for inside the TextEditor, between the text and the border
 //                    .frame(minHeight: 100)
@@ -181,6 +193,8 @@ struct ShareView: View {
             selectedText = -1
         }
     }
-    
 }
 
+#Preview {
+    UITest()
+}
