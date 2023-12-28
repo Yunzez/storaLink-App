@@ -11,7 +11,7 @@ import SwiftUI
 
 
 class LoginViewModel: ObservableObject {
-//    var context: ModelContext
+    //    var context: ModelContext
     
     @Published var email: String = ""
     @Published var password: String = ""
@@ -20,16 +20,28 @@ class LoginViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var isLoading: Bool = false // For showing loading indicator
     @Published var loadingProgress: Int = 0
-
+    
     var userViewModel: UserViewModel // Assuming this is needed for authentication
-
+    
     init(userViewModel: UserViewModel/*, modelContext: ModelContext*/) {
-//        self.context = modelContext
+        //        self.context = modelContext
         self.userViewModel = userViewModel
     }
-
-    func handleLogin(user: [User]) {
-        print("login", user)
+    
+    func handleLogin(modelContext: ModelContext) {
+        
+        do {
+            print("login")
+            let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
+            let users = try modelContext.fetch(descriptor)
+            for user in users {
+                print(user.name)
+            }
+            
+        } catch {
+            print("Fetch failed")
+        }
+        
         if email.count < 8 || password.count < 8 {
             print("email or password need to be longer than 8 characters", email.count, password.count)
             errorMessage = "email or password need to be longer than 8 characters"
@@ -41,22 +53,22 @@ class LoginViewModel: ObservableObject {
             handleLoading(loadingProgress: loadingProgress)
         }
         
-//        do {
-//            let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
-//            let users = try context.fetch(descriptor)
-//            if !users.isEmpty {
-//                // Log out the user
-//                for user in users {
-//                    print("Logged out user: \(user.name)")
-//                }
-//            } else {
-//                print("No user found")
-//            }
-//        } catch {
-//            print("Error fetching user: \(error)")
-//        }
-
-         // Hide loading indicator
+        //        do {
+        //            let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
+        //            let users = try context.fetch(descriptor)
+        //            if !users.isEmpty {
+        //                // Log out the user
+        //                for user in users {
+        //                    print("Logged out user: \(user.name)")
+        //                }
+        //            } else {
+        //                print("No user found")
+        //            }
+        //        } catch {
+        //            print("Error fetching user: \(error)")
+        //        }
+        
+        // Hide loading indicator
     }
     
     func handleLoading(loadingProgress: Int){
@@ -65,8 +77,8 @@ class LoginViewModel: ObservableObject {
         let duration = 3 // Total duration of loading in seconds
         let interval = 0.1 // Time interval for each increment
         var timeElapsed = 0.0
-
-        Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { 
+        
+        Timer.scheduledTimer(withTimeInterval: interval, repeats: true) {
             timer in DispatchQueue.main.async {
                 self.loadingProgress = Int((timeElapsed / Double(duration)) * 100)
                 if timeElapsed >= Double(duration) {

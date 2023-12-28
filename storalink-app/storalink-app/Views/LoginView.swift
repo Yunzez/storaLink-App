@@ -16,6 +16,7 @@ struct LoginView: View {
     // swift always initalize stateObject first, so we cannot direcly assign the ObservedObject into the LoginViewModel
     init(userViewModel: UserViewModel) {
         self.userViewModel = userViewModel
+        
         _loginViewModel = StateObject(wrappedValue: LoginViewModel(userViewModel: userViewModel))
     }
     
@@ -94,8 +95,7 @@ struct LoginView: View {
                     
                     // Sign in button
                     Button(action: {
-                        let capturedUser = user
-                        loginViewModel.handleLogin(user: capturedUser)
+                        loginViewModel.handleLogin(modelContext: modelContext)
                     }) {
                         Text("Sign In")
                             .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
@@ -109,8 +109,7 @@ struct LoginView: View {
                     
                     // Google sign in button
                     Button(action: {
-                        let capturedUser = user
-                        loginViewModel.handleLogin(user: capturedUser)
+                        loginViewModel.handleLogin(modelContext: modelContext)
                     }) {
                         HStack {
                             Image(systemName: "globe")
@@ -147,5 +146,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(userViewModel: UserViewModel())
+    LoginView(userViewModel: UserViewModel()).modelContainer(PreviewContainer)
 }
