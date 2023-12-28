@@ -6,7 +6,13 @@
 //
 
 import Foundation
+import SwiftData
+import SwiftUI
+
+
 class LoginViewModel: ObservableObject {
+//    var context: ModelContext
+    
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var rememberMe: Bool = false
@@ -17,12 +23,13 @@ class LoginViewModel: ObservableObject {
 
     var userViewModel: UserViewModel // Assuming this is needed for authentication
 
-    init(userViewModel: UserViewModel) {
+    init(userViewModel: UserViewModel/*, modelContext: ModelContext*/) {
+//        self.context = modelContext
         self.userViewModel = userViewModel
     }
 
-    func handleLogin() {
-        print("login ")
+    func handleLogin(user: [User]) {
+        print("login", user)
         if email.count < 8 || password.count < 8 {
             print("email or password need to be longer than 8 characters", email.count, password.count)
             errorMessage = "email or password need to be longer than 8 characters"
@@ -34,6 +41,20 @@ class LoginViewModel: ObservableObject {
             handleLoading(loadingProgress: loadingProgress)
         }
         
+//        do {
+//            let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
+//            let users = try context.fetch(descriptor)
+//            if !users.isEmpty {
+//                // Log out the user
+//                for user in users {
+//                    print("Logged out user: \(user.name)")
+//                }
+//            } else {
+//                print("No user found")
+//            }
+//        } catch {
+//            print("Error fetching user: \(error)")
+//        }
 
          // Hide loading indicator
     }

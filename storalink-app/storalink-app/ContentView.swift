@@ -79,8 +79,9 @@ func prepareSampleFolder()  -> [Folder]{
     
     Group{
         ContentView()
-            .modelContainer(for: Folder.self)
+            .modelContainer(PreviewContainer)
             .environmentObject(NavigationStateManager())
     }
   
 }
+

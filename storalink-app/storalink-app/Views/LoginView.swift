@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
-
+import SwiftData
 struct LoginView: View {
-    
+    @Query var user: [User]
+    @Environment(\.modelContext) var modelContext
     @ObservedObject var userViewModel: UserViewModel
     @StateObject var loginViewModel: LoginViewModel
     
@@ -92,7 +93,10 @@ struct LoginView: View {
                     .padding() // Add padding if necessary
                     
                     // Sign in button
-                    Button(action: loginViewModel.handleLogin) {
+                    Button(action: {
+                        let capturedUser = user
+                        loginViewModel.handleLogin(user: capturedUser)
+                    }) {
                         Text("Sign In")
                             .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                             .foregroundColor(.white)
@@ -104,7 +108,10 @@ struct LoginView: View {
                     .padding(.horizontal)
                     
                     // Google sign in button
-                    Button(action: loginViewModel.handleLogin) {
+                    Button(action: {
+                        let capturedUser = user
+                        loginViewModel.handleLogin(user: capturedUser)
+                    }) {
                         HStack {
                             Image(systemName: "globe")
                             Text("Sign in with Google")
