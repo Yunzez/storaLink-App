@@ -61,7 +61,6 @@ func prepareSampleFolder()  -> [Folder]{
 
     for folderData in sampleFolders {
         let folder = Folder(
-            id: folderData.id,
             title: folderData.title,
             imgUrl: folderData.imgUrl,
             desc: folderData.desc,

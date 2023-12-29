@@ -19,7 +19,7 @@ struct FilesView: View {
                                 ForEach(0..<numberOfRows(items.count), id: \.self) { rowIndex in
                                     HStack {
                                         ForEach(0..<2, id: \.self) { columnIndex in
-                                                FolderItemView(currentFolder: Folder(id: -1, title: "", imgUrl: "", linksNumber: 2))
+                                                FolderItemView(currentFolder: Folder(title: "", imgUrl: "", linksNumber: 2))
                                         }
                                     }
                                 }

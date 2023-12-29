@@ -36,9 +36,24 @@ class CreateFolderViewModel: ObservableObject {
             errorMessage = ""
         }
         // For example, save the folder information to a database or send it to a server
+        let imgUrl = "folderAsset\(selectedCoverIndex)"
         
         if let context = context {
-            context.insert(Folder(id: 1, title: "some new folder", imgUrl: "LinkDefaultImg", linksNumber: 0))
+            print("imgurl: ", imgUrl)
+            context.insert(Folder(title: folderName, imgUrl: imgUrl, linksNumber: 0))
+            
+            do {
+                try context.save()
+                print("change saved")
+                let folders = try context.fetch(FetchDescriptor<Folder>())
+                print("now have folder:")
+                for folder in folders {
+                    print(folder.title)
+                }
+            } catch {
+                
+            }
+            
         }
     }
     
