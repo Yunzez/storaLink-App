@@ -7,8 +7,9 @@
 
 import Foundation
 import Combine
-
+import SwiftData
 class CreateFolderViewModel: ObservableObject {
+    var context: ModelContext?
     // Published properties that the view can subscribe to
     @Published var folderName: String = ""
     @Published var folderDescription: String = "This is a folder description"
@@ -27,11 +28,18 @@ class CreateFolderViewModel: ObservableObject {
         if !validateFolderName() {
             error = true
             errorMessage = "Please input a folder name"
+        } else if selectedCoverIndex == -1{
+            error = true
+            errorMessage = "Please choose a folder cover"
         } else {
             error = false
             errorMessage = ""
         }
         // For example, save the folder information to a database or send it to a server
+        
+        if let context = context {
+            context.insert(Folder(id: 1, title: "some new folder", imgUrl: "LinkDefaultImg", linksNumber: 0))
+        }
     }
     
     // More business logic functions as needed
@@ -49,6 +57,10 @@ class CreateFolderViewModel: ObservableObject {
     // Initiate any necessary setup
     init() {
         setupSubscriptions()
+    }
+    
+    func setup(modelContext: ModelContext){
+        self.context = modelContext
     }
     
     private func setupSubscriptions() {

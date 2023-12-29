@@ -38,12 +38,12 @@ var PreviewContainer: ModelContainer {
 }
 
 func getExampleFolders() -> [Folder] {
-    let sampleLinks = getExampleLinks()
+//    let sampleLinks = getExampleLinks()
     
     let sampleFolders = [
-        (id: 1, title: "Travel", imgUrl: "travel_image_url", desc: "Places to visit", linksNumber: 15, pinned: true, links: sampleLinks),
-        (id: 2, title: "Recipes", imgUrl: "recipes_image_url", desc: "Favorite recipes", linksNumber: 20, pinned: false, links: sampleLinks),
-        (id: 3, title: "Work", imgUrl: "work_image_url", desc: "Work-related links", linksNumber: 10, pinned: true, links: sampleLinks)
+        (id: 1, title: "Travel", imgUrl: "travel_image_url", desc: "Places to visit", linksNumber: 15, pinned: true),
+        (id: 2, title: "Recipes", imgUrl: "recipes_image_url", desc: "Favorite recipes", linksNumber: 20, pinned: false/*, links: sampleLinks*/),
+        (id: 3, title: "Work", imgUrl: "work_image_url", desc: "Work-related links", linksNumber: 10, pinned: true/*, links: sampleLinks*/)
     ]
     
     var folders: [Folder] = []
@@ -55,8 +55,8 @@ func getExampleFolders() -> [Folder] {
             imgUrl: folderData.imgUrl,
             desc: folderData.desc,
             linksNumber: folderData.linksNumber,
-            pinned: folderData.pinned,
-            links: folderData.links
+            pinned: folderData.pinned
+//            links: folderData.links
         )
         folders.append(folder)
     }

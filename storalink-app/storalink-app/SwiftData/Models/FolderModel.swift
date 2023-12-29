@@ -16,16 +16,16 @@ class Folder {
     var linksNumber: Int
 //    var onClick: () => Void
     var pinned: Bool?
-    @Relationship(deleteRule: .cascade) var links: [Link]?
+//    @Relationship(deleteRule: .cascade) var links: [Link]?
     
-    init(id: Int, title: String, imgUrl: String, desc: String? = nil, linksNumber: Int, pinned: Bool? = nil, links: [Link]? = [] ) {
+    init(id: Int, title: String, imgUrl: String, desc: String? = nil, linksNumber: Int, pinned: Bool? = nil/*, links: [Link]? = []*/ ) {
         self.id = id
         self.title = title
         self.imgUrl = imgUrl
         self.desc = desc
         self.linksNumber = linksNumber
         self.pinned = pinned
-        self.links = links
+//        self.links = links
     }
     
 }

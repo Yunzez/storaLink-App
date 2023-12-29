@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(AppViewModel.self) private var appleViewModel
+//    @Bindable var appView = appleViewModel
     var body: some View {
         NavigationView {
             VStack {
@@ -28,7 +30,7 @@ struct SettingsView: View {
                                     .padding()
                                 Spacer()
                             }
-                            Text("Eddy Peng").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                            Text(appleViewModel.userName ?? "Nil").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         }
                     }
                    
@@ -98,5 +100,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView()
+    SettingsView().environment(AppViewModel())
 }

@@ -19,15 +19,11 @@ struct FilesView: View {
                                 ForEach(0..<numberOfRows(items.count), id: \.self) { rowIndex in
                                     HStack {
                                         ForEach(0..<2, id: \.self) { columnIndex in
-                                            if let item = itemForRowAndColumn(row: rowIndex, column: columnIndex) {
-                                                FolderItemView()
-                                            } else {
-                                                Spacer() // Ensures the HStack keeps its structure even if there's only one item in the last row
-                                            }
+                                                FolderItemView(currentFolder: Folder(id: -1, title: "", imgUrl: "", linksNumber: 2))
                                         }
                                     }
                                 }
-                            }
+                            }.padding(.vertical)
                         }
             }
             

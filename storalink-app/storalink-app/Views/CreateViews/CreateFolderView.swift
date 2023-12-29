@@ -9,7 +9,9 @@ import SwiftUI
 
 struct CreateFolderView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Environment(\.modelContext) var modelContext
     @ObservedObject private var viewModel = CreateFolderViewModel()
+    
     var body: some View {
         VStack {
             HStack {
@@ -108,13 +110,15 @@ struct CreateFolderView: View {
                         .padding([.leading, .bottom, .trailing])
                 }
             }
+        }.onAppear{
+                viewModel.setup(modelContext: modelContext)
         }
-        .navigationTitle("Folder Creation")
+        
     }
 }
 
 struct CreateFolderView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateFolderView()
+        CreateFolderView().modelContainer(PreviewContainer).environment(AppViewModel())
     }
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LinkItemView: View {
+    var currentLink: Link
     @StateObject var linkItemViewModel = LinkViewModel()
     @State private var navigateToLink = false
 
@@ -22,11 +23,13 @@ struct LinkItemView: View {
                         .cornerRadius(Spacing.roundMd)
                         .frame(width: 80, height: 80)
                     VStack(alignment: .leading) {
-                        Text("Long Link Title Placeholder 1")
+                        Text(currentLink.desc ?? "No description" )
                             .font(.headline)
-                        Text("@author_author")
+                        Text("@author")
                             .font(.subheadline)
                     }
+                    
+                    Spacer()
                     Button(action: {
                         print("clicked item")
                         linkItemViewModel.toggleMore()
@@ -41,8 +44,10 @@ struct LinkItemView: View {
                 }
                 .padding()
                 .frame(height: 80) // Adjust size as needed
+                .frame(maxWidth: .infinity)
                 .background(Color.gray.opacity(0.1)) // Placeholder for card background
                 .cornerRadius(10)
+                
             }.foregroundColor(.black)
         
 
@@ -51,6 +56,6 @@ struct LinkItemView: View {
 }
 
 #Preview {
-    LinkItemView()
+    LinkItemView(currentLink: Link(id: -1, title: "link", imgUrl: "", desc: "a testing link", linksNumber: 2))
 }
 

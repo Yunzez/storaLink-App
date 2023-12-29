@@ -10,14 +10,15 @@ import SwiftData
 struct LoginView: View {
     @Query var user: [User]
     @Environment(\.modelContext) var modelContext
+    @Environment(AppViewModel.self) private var appViewModel : AppViewModel
     @ObservedObject var userViewModel: UserViewModel
-    @StateObject var loginViewModel: LoginViewModel
+    @Bindable var loginViewModel: LoginViewModel
     
     // swift always initalize stateObject first, so we cannot direcly assign the ObservedObject into the LoginViewModel
     init(userViewModel: UserViewModel) {
         self.userViewModel = userViewModel
         
-        _loginViewModel = StateObject(wrappedValue: LoginViewModel(userViewModel: userViewModel))
+        loginViewModel = LoginViewModel(userViewModel: userViewModel)
     }
     
     @FocusState private var isEmailInputActive: Bool
@@ -52,7 +53,7 @@ struct LoginView: View {
                         .fontWeight(.semibold)
                     
                     // Email field
-                    TextField("Email", text: $loginViewModel.email)
+                    TextField("Email", text:  $loginViewModel.email)
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
                         .padding(.horizontal)
@@ -95,7 +96,7 @@ struct LoginView: View {
                     
                     // Sign in button
                     Button(action: {
-                        loginViewModel.handleLogin(modelContext: modelContext)
+                        loginViewModel.handleLogin()
                     }) {
                         Text("Sign In")
                             .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
@@ -109,7 +110,7 @@ struct LoginView: View {
                     
                     // Google sign in button
                     Button(action: {
-                        loginViewModel.handleLogin(modelContext: modelContext)
+                        loginViewModel.handleLogin()
                     }) {
                         HStack {
                             Image(systemName: "globe")
@@ -128,7 +129,7 @@ struct LoginView: View {
                     // Sign up navigation
                     HStack {
                         Text("Don't have an account?")
-                        NavigationLink(destination: SingupView()) {
+                        NavigationLink(destination: SignupView()) {
                             Text("Sign Up")
                                 .fontWeight(.semibold)
                         }
@@ -139,12 +140,17 @@ struct LoginView: View {
                 }
                 .padding()
             }
-        }
-            
+        }.onAppear {
+            loginViewModel.setup(modelContext: modelContext, appViewModel: appViewModel)
+          }
     }
     
+    
+  
 }
 
+
+
 #Preview {
-    LoginView(userViewModel: UserViewModel()).modelContainer(PreviewContainer)
+    LoginView(userViewModel: UserViewModel()).modelContainer(PreviewContainer).environment(AppViewModel())
 }

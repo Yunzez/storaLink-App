@@ -81,6 +81,7 @@ func prepareSampleFolder()  -> [Folder]{
         ContentView()
             .modelContainer(PreviewContainer)
             .environmentObject(NavigationStateManager())
+            .environment(AppViewModel())
     }
   
 }

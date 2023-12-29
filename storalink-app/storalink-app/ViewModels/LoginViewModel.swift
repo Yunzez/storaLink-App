@@ -10,37 +10,32 @@ import SwiftData
 import SwiftUI
 
 
-class LoginViewModel: ObservableObject {
-    //    var context: ModelContext
+@Observable class LoginViewModel {
+    var context: ModelContext?
+    var appData: AppViewModel?
     
-    @Published var email: String = ""
-    @Published var password: String = ""
-    @Published var rememberMe: Bool = false
-    @Published var error: Bool = false
-    @Published var errorMessage: String = ""
-    @Published var isLoading: Bool = false // For showing loading indicator
-    @Published var loadingProgress: Int = 0
+     var email: String = ""
+     var password: String = ""
+     var rememberMe: Bool = false
+     var error: Bool = false
+     var errorMessage: String = ""
+     var isLoading: Bool = false // For showing loading indicator
+     var loadingProgress: Int = 0
     
     var userViewModel: UserViewModel // Assuming this is needed for authentication
     
-    init(userViewModel: UserViewModel/*, modelContext: ModelContext*/) {
-        //        self.context = modelContext
+    init(userViewModel: UserViewModel) {
         self.userViewModel = userViewModel
     }
     
-    func handleLogin(modelContext: ModelContext) {
+    func setup(modelContext: ModelContext, appViewModel: AppViewModel) {
+        context = modelContext
+        appData = appViewModel
+    }
+    
+    func handleLogin() {
         
-        do {
-            print("login")
-            let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
-            let users = try modelContext.fetch(descriptor)
-            for user in users {
-                print(user.name)
-            }
-            
-        } catch {
-            print("Fetch failed")
-        }
+        
         
         if email.count < 8 || password.count < 8 {
             print("email or password need to be longer than 8 characters", email.count, password.count)
@@ -53,22 +48,28 @@ class LoginViewModel: ObservableObject {
             handleLoading(loadingProgress: loadingProgress)
         }
         
-        //        do {
-        //            let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
-        //            let users = try context.fetch(descriptor)
-        //            if !users.isEmpty {
-        //                // Log out the user
-        //                for user in users {
-        //                    print("Logged out user: \(user.name)")
-        //                }
-        //            } else {
-        //                print("No user found")
-        //            }
-        //        } catch {
-        //            print("Error fetching user: \(error)")
-        //        }
+        if let context = context {
+            do {
+                print("login")
+                let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
+                let users = try context.fetch(descriptor)
+                
+                for user in users {
+                    print(user.name)
+                    if(user.name == "Eddie Eidde" ) {
+                        print("login user", user.name)
+                        appData?.userName = user.name
+                        appData?.setUser(user: user)
+                    }
+                }
+            } catch {
+                print("Fetch failed: \(error)")
+            }
+        } else {
+            print("Model context is nil")
+        }
         
-        // Hide loading indicator
+        
     }
     
     func handleLoading(loadingProgress: Int){

@@ -163,14 +163,20 @@ struct FolderView: View {
                     Text("Links: 10")
                     Spacer()
                 }.padding([.horizontal, .top])
-                
-                ScrollView(.vertical, showsIndicators: true) {
-                    VStack(spacing: 10) {
-                        ForEach(0..<10) { _ in
-                            LinkItemView()
+                HStack{
+                    Spacer()
+                    GeometryReader { geometry in
+                        ScrollView(.vertical, showsIndicators: true) {
+                            VStack(spacing: 10) {
+                                ForEach(0..<10) { index in
+                                    LinkItemView(currentLink: Link(id: -1, title: "link", imgUrl: "", desc: "test link \(index * 2) ", linksNumber: 2)).frame(width: geometry.size.width )
+                                }
+                            }
                         }
-                    }
+                    }.padding(.horizontal)
+                    Spacer()
                 }
+                
             }
         }.onAppear {
             // This is called when the view appears

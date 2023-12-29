@@ -8,22 +8,36 @@
 import SwiftUI
 
 struct FolderItemView: View {
+    var currentFolder: Folder
     // Placeholder data - replace with your actual data models
     var imageName: String = "FolderPlaceholder" // The image name for the folder
     var title: String = "Travel Tips"
     var likesCount: Int = 35
-    var userImages: [String] = ["User1", "User2", "User3"] // Replace with actual user images
+    
     
     var body: some View {
-        NavigationLink(destination: FolderView()) {
-                VStack(alignment: .leading, spacing: 6) {
-                    ZStack(alignment: Alignment(horizontal: .trailing, vertical: .top)) {
-                        Image(imageName) // Replace with actual image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 150, height: 100)
-                            .clipped()
-                        
+            NavigationLink(destination: FolderView()) {
+                VStack(alignment: .leading, spacing: Spacing.small) {
+                    ZStack(alignment: .topTrailing) {
+                        AsyncImage(url: URL(string: currentFolder.imgUrl)) { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(height: 100)
+                                        .clipped()
+                                } placeholder: {
+                                    Image("FolderPlaceholder")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(height: 100)
+                                        .clipped()
+                                }
+                                .padding(.bottom, Spacing.small)
+                                .cornerRadius(Spacing.small)
+                                .padding(.bottom, -Spacing.small)
+                        // this give the only top corner radius
+                       
+                           
                         Button(action: {
                             // Handle favorite action
                         }) {
@@ -33,11 +47,12 @@ struct FolderItemView: View {
                                 .background(Color.white)
                                 .clipShape(Circle())
                         }
-                        .padding([.top, .trailing], 10)
+                        .padding([.top], Spacing.small)
                     }
                     
+                    Spacer()
                     HStack {
-                        Text(title)
+                        Text(currentFolder.title)
                             .font(.headline)
                             .lineLimit(1)
                         Spacer()
@@ -47,32 +62,24 @@ struct FolderItemView: View {
                     .padding([.leading, .trailing], 10)
                     
                     HStack(spacing: 0) {
-                        Image(systemName: "eye") // Use your own views icon
-                            .foregroundColor(.gray)
-                        Text("\(likesCount)")
+                        Image(systemName: "link").foregroundColor(.gray)
+                        Text("\(currentFolder.linksNumber)")
                             .font(.subheadline)
                             .foregroundColor(.gray)
-                        
-                        HStack(spacing: -8) {
-                            ForEach(userImages, id: \.self) { userImage in
-                                Image(userImage) // Replace with actual user images
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 20, height: 20)
-                                    .clipShape(Circle())
-                            }
-                        }
+                            .padding([.leading], 2)
+                        //
                     }
-                    .padding([.leading, .trailing], 10)
+                    .padding([.leading, .trailing], Spacing.small)
+                    Spacer()
                 }
-                .frame(width: 140, height: 180) // Adjust size as needed
+                .frame(width: 160, height: 180) // Adjust size as needed
                 .background(Color.white) // Use actual card background color
-                .cornerRadius(15)
+                .cornerRadius(Spacing.small)
                 .shadow(radius: 5)
             }
-        }
+    }
 }
 
 #Preview {
-    FolderItemView()
+    FolderItemView(currentFolder: Folder(id: -1, title: "A test", imgUrl: "", linksNumber: 2))
 }
