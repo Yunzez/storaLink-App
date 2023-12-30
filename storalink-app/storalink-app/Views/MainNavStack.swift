@@ -7,9 +7,15 @@
 
 import SwiftUI
 
+enum NavigationItem: Hashable {
+    case createFolderView
+    // Add other cases for different navigation destinations
+}
+
+
 struct MainNavStack: View {
     @State private var navigationPath = NavigationPath()
-    @EnvironmentObject var navigationStateManager: NavigationStateManager
+    @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @State private var selectedTab: Int = 0
     init() {
         let appearance = UITabBarAppearance()
@@ -25,7 +31,7 @@ struct MainNavStack: View {
     }
     
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: Bindable(navigationStateManager).navigationPath) {
             ZStack(alignment: .bottom) {
                 Group {
                     switch selectedTab {
@@ -44,7 +50,6 @@ struct MainNavStack: View {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity) // Take up all available space
-                
                 
                 // MARK: - Custom Tab Bar
                 VStack{
@@ -83,11 +88,20 @@ struct MainNavStack: View {
                 .animation(Animation.easeInOut(duration: 0.3), value: navigationStateManager.isInSubMenu)
                 .edgesIgnoringSafeArea(.bottom)
                 
+            }.navigationDestination(for: NavigationItem.self) { item in
+                switch item {
+                case .createFolderView:
+                    CreateFolderView() // The destination for CreateFolderView
+                // Handle other cases as needed
+                }
             }
         }
     }
 }
 
 #Preview {
-    MainNavStack().environmentObject(NavigationStateManager())
+    MainNavStack()
+        .modelContainer(PreviewContainer)
+        .environment(NavigationStateManager())
+        .environment(AppViewModel())
 }

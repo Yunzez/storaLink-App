@@ -10,8 +10,7 @@ import SwiftData
 
 @main
 struct storalink_appApp: App {
-    @StateObject var navigationStateManager = NavigationStateManager()
-    
+    @State var navigationStateManager = NavigationStateManager()
     @State private var appViewModel = AppViewModel()
     var folderModelContainer: ModelContainer = {
         let schema = Schema([
@@ -31,7 +30,7 @@ struct storalink_appApp: App {
             ContentView()
         }
         .modelContainer(folderModelContainer)
-        .environmentObject(navigationStateManager)
+        .environment(navigationStateManager)
         .environment(appViewModel)
     }
 }

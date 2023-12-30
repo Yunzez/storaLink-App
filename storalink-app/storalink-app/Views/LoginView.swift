@@ -11,14 +11,13 @@ struct LoginView: View {
     @Query var user: [User]
     @Environment(\.modelContext) var modelContext
     @Environment(AppViewModel.self) private var appViewModel : AppViewModel
-    @ObservedObject var userViewModel: UserViewModel
+//    @ObservedObject var userViewModel: UserViewModel
     @Bindable var loginViewModel: LoginViewModel
     
     // swift always initalize stateObject first, so we cannot direcly assign the ObservedObject into the LoginViewModel
-    init(userViewModel: UserViewModel) {
-        self.userViewModel = userViewModel
+    init() {
         
-        loginViewModel = LoginViewModel(userViewModel: userViewModel)
+        loginViewModel = LoginViewModel()
     }
     
     @FocusState private var isEmailInputActive: Bool
@@ -152,5 +151,5 @@ struct LoginView: View {
 
 
 #Preview {
-    LoginView(userViewModel: UserViewModel()).modelContainer(PreviewContainer).environment(AppViewModel())
+    LoginView().modelContainer(PreviewContainer).environment(AppViewModel())
 }

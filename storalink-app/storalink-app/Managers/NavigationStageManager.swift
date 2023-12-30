@@ -5,9 +5,20 @@
 //  Created by Yunze Zhao on 12/22/23.
 //
 
+import SwiftUI
 import Foundation
-class NavigationStateManager: ObservableObject {
-    @Published var isInSubMenu: Bool = false
+import Observation
+@Observable class NavigationStateManager {
+    var isInSubMenu: Bool = false
+    var navigationPath = NavigationPath()
+    var lastNavigationSource: NavigationSource = .normal
+    
+    enum NavigationSource {
+            case normal
+            case createdFolder
+            // Add more cases as needed for different navigation contexts
+        }
+    
     
     func enterSubMenu() {
         isInSubMenu = true
@@ -16,4 +27,22 @@ class NavigationStateManager: ObservableObject {
     func exitSubMenu() {
         isInSubMenu = false
     }
+    
+//    func navigateTo(_ view: Any, source: NavigationSource = .normal) {
+//           navigationPath.append(view)
+//           lastNavigationSource = source  // Set the navigation source
+//       }
+//    
+    func navigateBack() {
+            if !navigationPath.isEmpty {
+                navigationPath.removeLast()
+            }
+            // Reset the navigation source or handle as needed
+            lastNavigationSource = .normal
+        }
+    
+    func navigateToRoot() {
+        navigationPath = NavigationPath()
+    }
+    
 }

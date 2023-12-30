@@ -8,21 +8,31 @@
 import Foundation
 import Combine
 import SwiftData
-class CreateFolderViewModel: ObservableObject {
+
+enum LoadingStage {
+    case none, loading, done
+}
+
+@Observable class CreateFolderViewModel: ObservableObject {
     var context: ModelContext?
     // Published properties that the view can subscribe to
-    @Published var folderName: String = ""
-    @Published var folderDescription: String = "This is a folder description"
-    @Published var searchUser: String = ""
-    @Published var selectedCoverIndex: Int = -1
-    @Published var error: Bool = false
-    @Published var errorMessage: String = ""
+     var folderName: String = ""
+     var folderDescription: String = "This is a folder description"
+     var searchUser: String = ""
+     var selectedCoverIndex: Int = -1
+     var error: Bool = false
+     var errorMessage: String = ""
+    var loadingStage: LoadingStage = .none
+    var navigateToFolder: Folder?
+    var readyToNavigate: Bool = false
+
 
     // Other properties for business logic
     private var cancellables = Set<AnyCancellable>()
 
     // Business logic functions
     func createFolder() {
+        loadingStage = .loading
         // Implement folder creation logic here
         print("Creating folder with name: \(folderName) and description: \(folderDescription)")
         if !validateFolderName() {
@@ -40,7 +50,8 @@ class CreateFolderViewModel: ObservableObject {
         
         if let context = context {
             print("imgurl: ", imgUrl)
-            context.insert(Folder(title: folderName, imgUrl: imgUrl, linksNumber: 0))
+            let newFolder = Folder(title: folderName, imgUrl: imgUrl, linksNumber: 0)
+            context.insert(newFolder)
             
             do {
                 try context.save()
@@ -50,12 +61,21 @@ class CreateFolderViewModel: ObservableObject {
                 for folder in folders {
                     print(folder.title)
                 }
+                
+                loadingStage = .done
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.navigateToFolder = newFolder
+                    self.readyToNavigate = true
+                }
             } catch {
                 
             }
             
         }
     }
+    
+    
     
     // More business logic functions as needed
     func validateFolderName() -> Bool {

@@ -26,11 +26,11 @@ struct FolderItemView: View {
                     Image(currentFolder.imgUrl.isEmpty ? "FolderPlaceholder" : currentFolder.imgUrl)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(height: 100)
                         .clipped()
                         .padding(.bottom, Spacing.small)
                         .cornerRadius(Spacing.small)
                         .padding(.bottom, -Spacing.small)
+                        .frame(width:160 , height: 130)
                     // this give the only top corner radius
                     
                     
@@ -44,7 +44,7 @@ struct FolderItemView: View {
                             .clipShape(Circle())
                     }
                     .padding([.top], Spacing.small)
-                }
+                }.frame(width:160 , height: 130)
                 
 //                Spacer()
                 HStack {
@@ -56,6 +56,7 @@ struct FolderItemView: View {
                         .foregroundColor(.gray)
                 }
                 .padding([.leading, .trailing], 10)
+                .frame(height: 25)
                 
                 HStack(spacing: 0) {
                     Image(systemName: "link").foregroundColor(.gray)
@@ -65,13 +66,15 @@ struct FolderItemView: View {
                         .padding([.leading], 2)
                 }
                 .padding([.leading, .trailing], Spacing.small)
+                .frame(height: 25)
+                
                 Spacer()
             }
-            .frame(width: 160, height: 180) // Adjust size as needed
-            .background(Color.white) // Use actual card background color
-            .cornerRadius(Spacing.small)
+            .frame(width: 160, height: 200) // Adjust size as needed
+            
+        }.background(Color.white) // Use actual card background color
+            .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
             .shadow(radius: 5)
-        }
     }
 }
 

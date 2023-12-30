@@ -22,10 +22,11 @@ import SwiftUI
      var isLoading: Bool = false // For showing loading indicator
      var loadingProgress: Int = 0
     
-    var userViewModel: UserViewModel // Assuming this is needed for authentication
+//    var userViewModel: UserViewModel // Assuming this is needed for authentication
     
-    init(userViewModel: UserViewModel) {
-        self.userViewModel = userViewModel
+    init() {
+        context = nil
+        appData = nil
     }
     
     func setup(modelContext: ModelContext, appViewModel: AppViewModel) {
@@ -86,9 +87,13 @@ import SwiftUI
                     timer.invalidate()
                     self.isLoading = false
                     print("loading finished")
-                    self.userViewModel.isAuthenticated = true
+                    if let appData = self.appData {
+                        appData.isAuthenticated = true
+                    } else {
+                        print("appData is nil")
+                    }
                     self.loadingProgress = 100
-                    print("User Authenticated: \(self.userViewModel.isAuthenticated)")
+
                 }
             }
             timeElapsed += interval

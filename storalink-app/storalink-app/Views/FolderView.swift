@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct FolderView: View {
+
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var navigationStateManager: NavigationStateManager
+    @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @StateObject var folderViewModel: FolderViewModel
     
     let buttonHeight: CGFloat = 25
@@ -33,7 +34,10 @@ struct FolderView: View {
                         HStack {
                             Button(action: {
                                 print("Click return")
-                                self.presentationMode.wrappedValue.dismiss()
+//                                self.presentationMode.wrappedValue.dismiss()
+                                print("Before reset:", navigationStateManager.navigationPath)
+                                   navigationStateManager.navigateToRoot()
+                                   print("After reset:", navigationStateManager.navigationPath)
                             }, label: {
                                 Image(systemName: "arrow.uturn.backward")
                                     .foregroundColor(.black)
@@ -190,5 +194,5 @@ struct FolderView: View {
 }
 
 #Preview {
-    FolderView().environmentObject(NavigationStateManager())
+    FolderView().environment(NavigationStateManager()).modelContainer(PreviewContainer).environment(AppViewModel())
 }

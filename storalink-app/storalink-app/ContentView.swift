@@ -22,16 +22,18 @@ struct BlurView: UIViewRepresentable {
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppViewModel.self) private var appViewModel
+    
     @Query private var items: [Item]
     
     @StateObject var userViewModel = UserViewModel()
     
     var body: some View {
-        
-        if userViewModel.isAuthenticated {
+        // switch back after testing
+        if !appViewModel.isAuthenticated {
             MainNavStack()
         } else {
-            LoginView(userViewModel: userViewModel)
+            LoginView()
         }
     }
     
@@ -51,27 +53,6 @@ struct ContentView: View {
     }
 }
 
-func prepareSampleFolder()  -> [Folder]{
-    let sampleFolders = [
-        (id: 1, title: "Travel", imgUrl: "travel_image_url", desc: "Places to visit", linksNumber: 15, pinned: true),
-        (id: 2, title: "Recipes", imgUrl: "recipes_image_url", desc: "Favorite recipes", linksNumber: 20, pinned: false),
-        (id: 3, title: "Work", imgUrl: "work_image_url", desc: "Work-related links", linksNumber: 10, pinned: true)
-    ]
-    var folders: [Folder] = []
-
-    for folderData in sampleFolders {
-        let folder = Folder(
-            title: folderData.title,
-            imgUrl: folderData.imgUrl,
-            desc: folderData.desc,
-            linksNumber: folderData.linksNumber,
-            pinned: folderData.pinned
-        )
-        folders.append(folder)
-    }
-    
-    return folders
-}
 
 #Preview {
 //    let folders = prepareSampleFolder()
@@ -79,7 +60,7 @@ func prepareSampleFolder()  -> [Folder]{
     Group{
         ContentView()
             .modelContainer(PreviewContainer)
-            .environmentObject(NavigationStateManager())
+            .environment(NavigationStateManager())
             .environment(AppViewModel())
     }
   

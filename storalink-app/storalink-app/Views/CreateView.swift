@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct CreateView: View {
+    @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     var body: some View {
-        NavigationView(content: {
+//        NavigationView(content: {
             VStack{
                 HStack{
                     Image(systemName: "plus.circle")
@@ -23,19 +24,25 @@ struct CreateView: View {
                     }.frame(width: 300, height: 200).background(.subtleTheme).cornerRadius(Spacing.medium).shadow(radius: 5)
                 }
                 Spacer()
-                NavigationLink(destination: CreateFolderView()) {
+                Button(action: {
+                    navigationStateManager.navigationPath.append(NavigationItem.createFolderView)
+                }) {
                     HStack{
                     Image("Folder")
                     Text("Folder")
                     }.frame(width: 300, height: 200).background(.subtleTheme).cornerRadius(Spacing.medium).shadow(radius: 5)
+//                    .navigationDestination(for: CreateFolderView.self) {_ in 
+//                            CreateFolderView()
+//                        }
                 }
                 Spacer()
-            }
-        }).padding(.bottom, Spacing.customNavigationBarHeight )
+            }.padding(.bottom, Spacing.customNavigationBarHeight )
         
     }
 }
 
 #Preview {
-    CreateView()
+    CreateView().modelContainer(PreviewContainer)
+        .environment(NavigationStateManager())
+        .environment(AppViewModel())
 }
