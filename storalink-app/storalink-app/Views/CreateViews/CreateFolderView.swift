@@ -10,6 +10,7 @@ import SwiftData
 struct CreateFolderView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.modelContext) var modelContext
+    @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @State private var viewModel = CreateFolderViewModel()
     
     var body: some View {
@@ -97,6 +98,7 @@ struct CreateFolderView: View {
                     
                     Button(action: {
                         // Action for folder creation
+                        navigationStateManager.lastNavigationSource = .createdFolder
                         viewModel.createFolder()
                     }) {
                         Text("Create Folder")
@@ -158,6 +160,6 @@ struct CreateFolderView: View {
 
 struct CreateFolderView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateFolderView().modelContainer(PreviewContainer).environment(AppViewModel())
+        CreateFolderView().modelContainer(PreviewContainer).environment(AppViewModel()).environment(NavigationStateManager())
     }
 }

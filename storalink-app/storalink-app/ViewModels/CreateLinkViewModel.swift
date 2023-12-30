@@ -15,12 +15,13 @@ class CreateLinkViewModel: ObservableObject {
     @Published var linkName: String = ""
     @Published var linkDescription: String = "This is a folder description"
     @Published var searchUser: String = ""
-    @Published var selectedFolderIndex: Int = -1
+    @Published var selectedFolderTitle: String = ""
     @Published var image: UIImage?
     @Published var title: String = ""
     @Published var author: String = ""
     @Published var error: Bool = false
     @Published var errorMessage: String = ""
+    @Published var searchFolder: String = ""
 
     // Other properties for business logic
     private var cancellables = Set<AnyCancellable>()
@@ -45,15 +46,22 @@ class CreateLinkViewModel: ObservableObject {
         return !linkName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
     
-    // Call this method when an image is selected
-    func selectCover(at index: Int) {
-        selectedFolderIndex = index
-        // Handle the cover selection, e.g., update the UI or store the selected cover
-    }
+   
     
     // Initiate any necessary setup
     init() {
         setupSubscriptions()
+    }
+    
+    func filterFolder(folders: [Folder]) -> [Folder]{
+        if(searchFolder.isEmpty) {
+            return folders
+        }
+        
+        let filteredFolders = folders.filter { folder in
+               folder.title.localizedCaseInsensitiveContains(searchFolder)
+        }
+        return filteredFolders
     }
     
     private func setupSubscriptions() {

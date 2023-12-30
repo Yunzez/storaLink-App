@@ -17,7 +17,9 @@ struct CreateView: View {
                     Text("Create New")
                 }
                 Spacer()
-                NavigationLink(destination: CreateLinkView()) {
+                Button(action: {
+                    navigationStateManager.navigationPath.append(NavigationItem.createLinkView)
+                }) {
                     HStack{
                         Image("Link")
                         Text("Link")
@@ -31,7 +33,7 @@ struct CreateView: View {
                     Image("Folder")
                     Text("Folder")
                     }.frame(width: 300, height: 200).background(.subtleTheme).cornerRadius(Spacing.medium).shadow(radius: 5)
-//                    .navigationDestination(for: CreateFolderView.self) {_ in 
+//                        .navigationDestination(for: NavigationItem.createFolderView.self) {_ in
 //                            CreateFolderView()
 //                        }
                 }

@@ -34,12 +34,15 @@ import Observation
 //       }
 //    
     func navigateBack() {
-            if !navigationPath.isEmpty {
-                navigationPath.removeLast()
-            }
-            // Reset the navigation source or handle as needed
-            lastNavigationSource = .normal
+        if(lastNavigationSource == .createdFolder) {
+            navigationPath = NavigationPath()
         }
+        else if !navigationPath.isEmpty {
+            navigationPath.removeLast()
+        }
+        // Reset the navigation source or handle as needed
+        lastNavigationSource = .normal
+    }
     
     func navigateToRoot() {
         navigationPath = NavigationPath()

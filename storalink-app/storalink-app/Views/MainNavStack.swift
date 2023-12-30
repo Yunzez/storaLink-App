@@ -9,6 +9,9 @@ import SwiftUI
 
 enum NavigationItem: Hashable {
     case createFolderView
+    case createLinkView
+    case folderView
+    case linkView
     // Add other cases for different navigation destinations
 }
 
@@ -92,8 +95,16 @@ struct MainNavStack: View {
                 switch item {
                 case .createFolderView:
                     CreateFolderView() // The destination for CreateFolderView
-                // Handle other cases as needed
+                    // Handle other cases as needed
+                case .createLinkView:
+                    CreateLinkView()
+                    
+                case .folderView:
+                    FolderView()
+                case .linkView:
+                    LinkView()
                 }
+                
             }
         }
     }

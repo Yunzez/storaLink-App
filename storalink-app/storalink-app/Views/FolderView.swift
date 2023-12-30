@@ -35,9 +35,7 @@ struct FolderView: View {
                             Button(action: {
                                 print("Click return")
 //                                self.presentationMode.wrappedValue.dismiss()
-                                print("Before reset:", navigationStateManager.navigationPath)
-                                   navigationStateManager.navigateToRoot()
-                                   print("After reset:", navigationStateManager.navigationPath)
+                                   navigationStateManager.navigateBack()
                             }, label: {
                                 Image(systemName: "arrow.uturn.backward")
                                     .foregroundColor(.black)
