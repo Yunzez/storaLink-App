@@ -9,7 +9,6 @@ import Foundation
 import SwiftData
 @Model
 class Link {
-    @Attribute(.unique) var id: Int;
     var title: String;
     var imgUrl: String
     var desc: String?
@@ -19,13 +18,13 @@ class Link {
     
     var linkUrl: String?
     
-    init(id: Int, title: String, imgUrl: String, desc: String? = nil, linksNumber: Int, linkUrl: String? = nil) {
-        self.id = id
+    init(title: String, imgUrl: String, desc: String? = nil, linksNumber: Int, linkUrl: String? = nil) {
         self.title = title
         self.imgUrl = imgUrl
         self.desc = desc
         self.linksNumber = linksNumber
         self.linkUrl = linkUrl
+        
     }
 //      onClick?: () => void;
    

@@ -13,11 +13,13 @@ class User {
     @Attribute(.unique) var id: Int
     var name: String
     var email: String
+    var folders: [Folder]?
     // Other user properties
     
     init(id: Int, name: String, email: String) {
         self.id = id
         self.name = name
         self.email = email
+        self.folders = []
     }
 }

@@ -8,20 +8,23 @@
 import Foundation
 import Combine
 import SwiftUI
-class CreateLinkViewModel: ObservableObject {
+import SwiftData
+@Observable class CreateLinkViewModel {
     // Published properties that the view can subscribe to
     private let metadataFetcher = LinkMetadataFetcher()
-    @Published var linkMetadata: LinkMetadata?
-    @Published var linkName: String = ""
-    @Published var linkDescription: String = "This is a folder description"
-    @Published var searchUser: String = ""
-    @Published var selectedFolderTitle: String = ""
-    @Published var image: UIImage?
-    @Published var title: String = ""
-    @Published var author: String = ""
-    @Published var error: Bool = false
-    @Published var errorMessage: String = ""
-    @Published var searchFolder: String = ""
+    
+     var modelContext: ModelContext?
+     var linkMetadata: LinkMetadata?
+var linkName: String = ""
+    var linkDescription: String = "This is a folder description"
+    var searchUser: String = ""
+    var selectedFolderTitle: String = ""
+    var image: UIImage?
+    var title: String = ""
+    var author: String = ""
+    var error: Bool = false
+    var errorMessage: String = ""
+    var searchFolder: String = ""
 
     // Other properties for business logic
     private var cancellables = Set<AnyCancellable>()
@@ -68,8 +71,10 @@ class CreateLinkViewModel: ObservableObject {
         // Set up Combine subscriptions if needed
     }
     
+    func setup(modelConext: ModelContext) {
+        
+    }
     
-      
     func fetchLinkMetadata() async {
             let fetchedMetadata = await metadataFetcher.fetchMetadata(for: linkName)
             linkMetadata = fetchedMetadata

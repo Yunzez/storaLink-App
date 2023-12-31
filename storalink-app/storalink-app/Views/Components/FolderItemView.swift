@@ -78,11 +78,11 @@ struct FolderItemView: View {
             .onTapGesture(perform: {
                 print("Folder tapped")
                 navigationStateManager.navigationPath.append(NavigationItem.folderView)
-                
+                navigationStateManager.focusFolder = currentFolder
             })
     }
 }
 
 #Preview {
-    FolderItemView(currentFolder: Folder(title: "A test", imgUrl: "", linksNumber: 2)).environment(NavigationStateManager())
+    FolderItemView(currentFolder: Folder(title: "A test", imgUrl: "")).environment(NavigationStateManager())
 }

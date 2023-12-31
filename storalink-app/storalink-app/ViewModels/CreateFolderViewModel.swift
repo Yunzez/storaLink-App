@@ -50,7 +50,7 @@ enum LoadingStage {
         
         if let context = context {
             print("imgurl: ", imgUrl)
-            let newFolder = Folder(title: folderName, imgUrl: imgUrl, linksNumber: 0)
+            let newFolder = Folder(title: folderName, imgUrl: imgUrl)
             context.insert(newFolder)
             
             do {

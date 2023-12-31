@@ -10,8 +10,9 @@ import SwiftData
 struct CreateLinkView: View {
     @Query var folders: [Folder]
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Environment(\.modelContext) var modelContext
     @State private var shouldFetchMetadata = false
-    @ObservedObject private var viewModel = CreateLinkViewModel()
+    @State private var viewModel = CreateLinkViewModel()
     @State private var showingSearchResults = false
     @State var test = ""
     var body: some View {
@@ -34,6 +35,7 @@ struct CreateLinkView: View {
                 Image("Link").resizable().frame(width: 25, height: 25 )
                 Text("New Link")
             }.padding(.horizontal)
+            .onAppear{viewModel.setup(modelConext: modelContext)}
 
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false){
@@ -100,13 +102,6 @@ struct CreateLinkView: View {
                             }
                         }
                     }
-                   
-                    
-                    
-                   
-                        Text( viewModel.selectedFolderTitle)
-                    
-                   
                     
                     CustomButton(action: {
                         print("click")
@@ -122,7 +117,7 @@ struct CreateLinkView: View {
                     StandardTextField(placeholder: "https://", text: $viewModel.title).padding([.horizontal, .bottom])
                     Text("Author")
                     StandardTextField(placeholder: "author", text: $viewModel.author).padding([.horizontal, .bottom])
-                    Text("Source")
+//                    Text("Source")
                     Text("ThumbNail")
                     Image(uiImage: viewModel.linkMetadata?.icon ?? UIImage(named: "LinkDefaultImage") ?? UIImage())
                         .resizable() // Allows the image to be resized

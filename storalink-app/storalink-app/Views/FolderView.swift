@@ -12,7 +12,9 @@ struct FolderView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @StateObject var folderViewModel: FolderViewModel
-    
+    var currentFolder: Folder {
+        navigationStateManager.focusFolder ?? Folder(title: "Oops, Error X:C",imgUrl: "", desc: "Try to restart the app" )
+        }
     let buttonHeight: CGFloat = 25
     
     init() {
@@ -34,8 +36,13 @@ struct FolderView: View {
                         HStack {
                             Button(action: {
                                 print("Click return")
-//                                self.presentationMode.wrappedValue.dismiss()
-                                   navigationStateManager.navigateBack()
+
+                                if(navigationStateManager.lastNavigationSource != .normal) {
+                                    navigationStateManager.navigateBack()
+                                } else {
+                                    self.presentationMode.wrappedValue.dismiss()
+                                }
+                                   
                             }, label: {
                                 Image(systemName: "arrow.uturn.backward")
                                     .foregroundColor(.black)
@@ -51,7 +58,7 @@ struct FolderView: View {
                         Spacer()
                         // Placeholder Title Text
                         HStack{
-                            Text("Placeholder")
+                            Text(currentFolder.title)
                                 .font(.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .foregroundColor(.black)
@@ -92,7 +99,7 @@ struct FolderView: View {
                 
                 
                 // Description Text
-                Text("This is a folder for tips and resources that I found helpful during my trip to London. Resources are from many places.")
+                Text(currentFolder.desc ?? "No description for this folder")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding([.horizontal, .top])
                 
@@ -162,22 +169,40 @@ struct FolderView: View {
                 
                 // Scrollable content
                 HStack{
-                    Text("Links: 10")
+                    Text("Links: \(currentFolder.linksNumber)")
                     Spacer()
                 }.padding([.horizontal, .top])
-                HStack{
-                    Spacer()
-                    GeometryReader { geometry in
-                        ScrollView(.vertical, showsIndicators: true) {
-                            VStack(spacing: 10) {
-                                ForEach(0..<10) { index in
-                                    LinkItemView(currentLink: Link(id: -1, title: "link", imgUrl: "", desc: "test link \(index * 2) ", linksNumber: 2)).frame(width: geometry.size.width )
+                
+               
+                    HStack{
+                        Spacer()
+                        GeometryReader { geometry in
+                            if currentFolder.linksNumber != 0 {
+                                ScrollView(.vertical, showsIndicators: true) {
+                                    VStack(spacing: 10) {
+                                        ForEach(currentFolder.links! ) { link in
+                                            LinkItemView(currentLink: link).frame(width: geometry.size.width )
+                                        }
+                                    }
+                                }
+                            } else {
+                                HStack{
+                                    Spacer()
+                                    VStack{
+                                        Image("Empty")
+                                        Text("This folder is empty!")
+                                        CustomButton(action: {
+                                            print("create link")
+                                        }, label: "Add your first item", imageSystemName: "plus.circle", style: .fill)
+                                    }
+                                    Spacer()
                                 }
                             }
-                        }
-                    }.padding(.horizontal)
-                    Spacer()
-                }
+                        }.padding(.horizontal)
+                        Spacer()
+                    }
+                
+               
                 
             }
         }.onAppear {

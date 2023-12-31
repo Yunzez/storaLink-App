@@ -12,7 +12,7 @@ import Observation
     var isInSubMenu: Bool = false
     var navigationPath = NavigationPath()
     var lastNavigationSource: NavigationSource = .normal
-    
+    var focusFolder: Folder?
     enum NavigationSource {
             case normal
             case createdFolder

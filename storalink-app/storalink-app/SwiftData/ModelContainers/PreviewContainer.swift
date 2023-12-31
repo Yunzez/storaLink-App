@@ -41,11 +41,11 @@ func getExampleFolders() -> [Folder] {
 //    let sampleLinks = getExampleLinks()
     
     let sampleFolders = [
-        (id: 1, title: "Travel", imgUrl: "folderAsset8", desc: "Places to visit", linksNumber: 15, pinned: true),
-        (id: 2, title: "Recipes", imgUrl: "folderAsset7", desc: "Favorite recipes", linksNumber: 20, pinned: false/*, links: sampleLinks*/),
-        (id: 3, title: "Work", imgUrl: "folderAsset6", desc: "Work-related links", linksNumber: 10, pinned: true/*, links: sampleLinks*/),
-        (id: 4, title: "Fram", imgUrl: "folderAsset2", desc: "Framing tips", linksNumber: 10, pinned: true/*, links: sampleLinks*/),
-        (id: 5, title: "Gym", imgUrl: "folderAsset1", desc: "Nice gyms around", linksNumber: 40, pinned: true/*, links: sampleLinks*/)
+        (id: 1, title: "Travel", imgUrl: "folderAsset8", desc: "Places to visit", linksNumber: 15, pinned: true, links: getExampleLinks()),
+        (id: 2, title: "Recipes", imgUrl: "folderAsset7", desc: "Favorite recipes", linksNumber: 20, pinned: false, links: getExampleLinks()),
+        (id: 3, title: "Work", imgUrl: "folderAsset6", desc: "Work-related links", linksNumber: 10, pinned: true, links: getExampleLinks()),
+        (id: 4, title: "Fram", imgUrl: "folderAsset2", desc: "Framing tips", linksNumber: 10, pinned: true, links: getExampleLinks()),
+        (id: 5, title: "Gym", imgUrl: "folderAsset1", desc: "Nice gyms around", linksNumber: 40, pinned: true, links: getExampleLinks())
     ]
     
     var folders: [Folder] = []
@@ -55,10 +55,10 @@ func getExampleFolders() -> [Folder] {
             title: folderData.title,
             imgUrl: folderData.imgUrl,
             desc: folderData.desc,
-            linksNumber: folderData.linksNumber,
-            pinned: folderData.pinned
-//            links: folderData.links
+            pinned: folderData.pinned,
+            links: folderData.links
         )
+        
         folders.append(folder)
     }
     return folders
@@ -67,9 +67,10 @@ func getExampleFolders() -> [Folder] {
 func getExampleLinks() -> [Link] {
     let sampleLinks =
     [
-        Link(id: 1, title: "OpenAI", imgUrl: "openai_logo", desc: "Advanced AI research", linksNumber: 5, linkUrl: "https://www.openai.com"),
-        Link(id: 2, title: "NASA", imgUrl: "nasa_logo", desc: "Space exploration", linksNumber: 3, linkUrl: "https://www.nasa.gov"),
-        Link(id: 3, title: "Wikipedia", imgUrl: "wikipedia_logo", desc: "Online encyclopedia", linksNumber: 8, linkUrl: "https://www.wikipedia.org")
+        Link( title: "OpenAI", imgUrl: "openai_logo", desc: "Advanced AI research", linksNumber: 5, linkUrl: "https://www.openai.com"),
+        Link( title: "NASA", imgUrl: "nasa_logo", desc: "Space exploration", linksNumber: 3, linkUrl: "https://www.nasa.gov"),
+        Link( title: "Wikipedia", imgUrl: "wikipedia_logo", desc: "Online encyclopedia", linksNumber: 8, linkUrl: "https://www.wikipedia.org"),
+        Link( title: "UW", imgUrl: "wikipedia_logo", desc: "University of Wash", linksNumber: 8, linkUrl: "https://www.uw.edu")
     ]
     
     return sampleLinks

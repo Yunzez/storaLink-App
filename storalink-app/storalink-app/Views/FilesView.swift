@@ -6,25 +6,23 @@
 //
 
 import SwiftUI
+import SwiftData
 struct FilesView: View {
+    @Query var folders: [Folder]
     @StateObject var viewModel = SearchBarViewModel()
     let items = Array(1...9)
     var body: some View {
         ZStack{
             VStack{
-               SearchBarView(viewModel: viewModel)
+                SearchBarView(viewModel: viewModel)
                     .padding(.bottom)
                 ScrollView(.vertical, showsIndicators: false) {
-                            VStack {
-                                ForEach(0..<numberOfRows(items.count), id: \.self) { rowIndex in
-                                    HStack {
-                                        ForEach(0..<2, id: \.self) { columnIndex in
-                                                FolderItemView(currentFolder: Folder(title: "", imgUrl: "", linksNumber: 2))
-                                        }
-                                    }
-                                }
-                            }.padding(.vertical)
+                    VStack {
+                        ForEach(folders, id: \.self) { folder in
+                            FolderItemView(currentFolder:folder)
                         }
+                    }.padding(.vertical)
+                }
             }
             
             VStack{
@@ -37,15 +35,15 @@ struct FilesView: View {
     }
     
     func numberOfRows(_ count: Int) -> Int {
-            return (count + 1) / 2
-        }
+        return (count + 1) / 2
+    }
     
     func itemForRowAndColumn(row: Int, column: Int) -> Int? {
-            let index = row * 2 + column
-            return index < items.count ? items[index] : nil
-        }
+        let index = row * 2 + column
+        return index < items.count ? items[index] : nil
+    }
 }
 
 #Preview {
-    FilesView(viewModel: SearchBarViewModel())
+    FilesView(viewModel: SearchBarViewModel()).environment(NavigationStateManager()).modelContainer(PreviewContainer).environment(AppViewModel())
 }

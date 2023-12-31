@@ -56,6 +56,6 @@ struct LinkItemView: View {
 }
 
 #Preview {
-    LinkItemView(currentLink: Link(id: -1, title: "link", imgUrl: "", desc: "a testing link", linksNumber: 2))
+    LinkItemView(currentLink: Link( title: "link", imgUrl: "", desc: "a testing link", linksNumber: 2))
 }
 
