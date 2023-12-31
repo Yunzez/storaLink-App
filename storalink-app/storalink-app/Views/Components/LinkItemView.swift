@@ -23,7 +23,7 @@ struct LinkItemView: View {
                         .cornerRadius(Spacing.roundMd)
                         .frame(width: 80, height: 80)
                     VStack(alignment: .leading) {
-                        Text(currentLink.desc ?? "No description" )
+                        Text(currentLink.title )
                             .font(.headline)
                         Text("@author")
                             .font(.subheadline)
@@ -56,6 +56,6 @@ struct LinkItemView: View {
 }
 
 #Preview {
-    LinkItemView(currentLink: Link( title: "link", imgUrl: "", desc: "a testing link", linksNumber: 2))
+    LinkItemView(currentLink: Link( title: "link", imgUrl: "", desc: "a testing link"))
 }
 

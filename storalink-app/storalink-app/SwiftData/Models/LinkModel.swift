@@ -12,17 +12,15 @@ class Link {
     var title: String;
     var imgUrl: String
     var desc: String?
-    var linksNumber: Int
     
 //      socialMediaType: SocialMediaSrc;
     
     var linkUrl: String?
     
-    init(title: String, imgUrl: String, desc: String? = nil, linksNumber: Int, linkUrl: String? = nil) {
+    init(title: String, imgUrl: String, desc: String? = nil, linkUrl: String? = nil) {
         self.title = title
         self.imgUrl = imgUrl
         self.desc = desc
-        self.linksNumber = linksNumber
         self.linkUrl = linkUrl
         
     }

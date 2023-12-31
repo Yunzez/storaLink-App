@@ -11,25 +11,31 @@ struct FolderView: View {
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
-    @StateObject var folderViewModel: FolderViewModel
+    @Bindable var folderViewModel: FolderViewModel
+    
     var currentFolder: Folder {
-        navigationStateManager.focusFolder ?? Folder(title: "Oops, Error X:C",imgUrl: "", desc: "Try to restart the app" )
+        navigationStateManager.focusFolder ?? Folder(title: "Oops, Error X:C",imgUrl: "folderAsset8", desc: "Try to restart the app" )
         }
     let buttonHeight: CGFloat = 25
     
     init() {
-        _folderViewModel = StateObject(wrappedValue: FolderViewModel())
+        folderViewModel = FolderViewModel()
     }
     
     var body: some View {
         NavigationView {
             
-            VStack() {
+            VStack(spacing: 0) {
                 // Custom Navigation Bar with Background Image
                 ZStack {
-                    Image("FolderPlaceHolder") // Replace with your actual background image
+                    Image(currentFolder.imgUrl)
                         .resizable()
+                        .aspectRatio(contentMode: .fill)
                         .blur(radius: 2)
+                        .frame(height: 200)  // Fixed height for the image
+                        .clipped()  // Ensure the image doesn't overlap other content
+                        .edgesIgnoringSafeArea(.top)
+                        
                     
                     VStack {
                         Spacer()
@@ -93,6 +99,8 @@ struct FolderView: View {
                             
                             
                         }.padding(Spacing.small)
+                        
+                        
                     }
                 }.edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: 150)
@@ -101,7 +109,7 @@ struct FolderView: View {
                 // Description Text
                 Text(currentFolder.desc ?? "No description for this folder")
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding([.horizontal, .top])
+                    .padding([.horizontal, .bottom])
                 
                 if !folderViewModel.searchOpen {
                     HStack {
@@ -139,7 +147,11 @@ struct FolderView: View {
                         
                         CustomButton(action: {
                             print("Button tapped")
+                            folderViewModel.showCreateSheet = true
                         }, label: "Add", imageSystemName: "plus.circle", style: .fill)
+                        .sheet(isPresented: $folderViewModel.showCreateSheet) {
+                            CreateLinkView().padding([.top])
+                        }
                         
                         Spacer()
                     }
@@ -193,7 +205,9 @@ struct FolderView: View {
                                         Text("This folder is empty!")
                                         CustomButton(action: {
                                             print("create link")
+                                            folderViewModel.showCreateSheet = true
                                         }, label: "Add your first item", imageSystemName: "plus.circle", style: .fill)
+                                        
                                     }
                                     Spacer()
                                 }

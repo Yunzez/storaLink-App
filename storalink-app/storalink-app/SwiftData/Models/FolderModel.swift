@@ -15,7 +15,7 @@ class Folder {
     var desc: String?
     var linksNumber: Int
 //    var onClick: () => Void
-    var pinned: Bool?
+    var pinned: Bool
     var creationDate: Date
     @Relationship(deleteRule: .cascade) var links: [Link]?
     
@@ -25,7 +25,7 @@ class Folder {
         self.imgUrl = imgUrl
         self.desc = desc
         self.linksNumber = links?.count ?? 0
-        self.pinned = pinned
+        self.pinned = pinned ?? false
         self.links = links
         self.creationDate = Date()
     }

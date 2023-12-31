@@ -67,10 +67,10 @@ func getExampleFolders() -> [Folder] {
 func getExampleLinks() -> [Link] {
     let sampleLinks =
     [
-        Link( title: "OpenAI", imgUrl: "openai_logo", desc: "Advanced AI research", linksNumber: 5, linkUrl: "https://www.openai.com"),
-        Link( title: "NASA", imgUrl: "nasa_logo", desc: "Space exploration", linksNumber: 3, linkUrl: "https://www.nasa.gov"),
-        Link( title: "Wikipedia", imgUrl: "wikipedia_logo", desc: "Online encyclopedia", linksNumber: 8, linkUrl: "https://www.wikipedia.org"),
-        Link( title: "UW", imgUrl: "wikipedia_logo", desc: "University of Wash", linksNumber: 8, linkUrl: "https://www.uw.edu")
+        Link( title: "OpenAI", imgUrl: "openai_logo", desc: "Advanced AI research",  linkUrl: "https://www.openai.com"),
+        Link( title: "NASA", imgUrl: "nasa_logo", desc: "Space exploration", linkUrl: "https://www.nasa.gov"),
+        Link( title: "Wikipedia", imgUrl: "wikipedia_logo", desc: "Online encyclopedia", linkUrl: "https://www.wikipedia.org"),
+        Link( title: "UW", imgUrl: "wikipedia_logo", desc: "University of Wash", linkUrl: "https://www.uw.edu")
     ]
     
     return sampleLinks

@@ -113,7 +113,7 @@ struct CreateFolderView: View {
                     
                 }
             }.onAppear{
-                viewModel.setup(modelContext: modelContext)
+                viewModel.setup(modelContext: modelContext, navigationStateManager: navigationStateManager)
             }.disabled(viewModel.loadingStage != .none  )
             
             

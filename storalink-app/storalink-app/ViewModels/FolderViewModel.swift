@@ -6,16 +6,17 @@
 //
 
 import Foundation
-class FolderViewModel: ObservableObject {
-    @Published var like: Bool
-    @Published var likeIconPath: String
-    @Published var menu: Bool
-    @Published var linkNum: Int
-    @Published var searchFieldLength: CGFloat
-    @Published var searchOpen: Bool
-    @Published var searchText: String
-    
-    @Published var sortOpen: Bool
+import SwiftData
+@Observable class FolderViewModel {
+    var like: Bool
+    var likeIconPath: String
+    var menu: Bool
+    var linkNum: Int
+    var searchFieldLength: CGFloat
+    var searchOpen: Bool
+    var searchText: String
+    var showCreateSheet: Bool
+    var sortOpen: Bool
 
     
     init() {
@@ -27,6 +28,7 @@ class FolderViewModel: ObservableObject {
         searchOpen = false
         searchText = ""
         sortOpen = false
+        showCreateSheet = false
     }
     
     func toggleLike() {

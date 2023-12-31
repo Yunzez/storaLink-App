@@ -13,12 +13,13 @@ import SwiftData
     // Published properties that the view can subscribe to
     private let metadataFetcher = LinkMetadataFetcher()
     
+    var showingSearchResults: Bool = false
      var modelContext: ModelContext?
      var linkMetadata: LinkMetadata?
 var linkName: String = ""
     var linkDescription: String = "This is a folder description"
     var searchUser: String = ""
-    var selectedFolderTitle: String = ""
+    var selectedFolder: Folder?
     var image: UIImage?
     var title: String = ""
     var author: String = ""
@@ -30,15 +31,24 @@ var linkName: String = ""
     private var cancellables = Set<AnyCancellable>()
 
     // Business logic functions
-    func createFolder() {
+    func createLink() {
         // Implement folder creation logic here
+        
         print("Creating folder with name: \(linkName) and description: \(linkDescription)")
         if !validateLinkName() {
             error = true
-            errorMessage = "Please input a folder name"
+            errorMessage = "Please input a link name"
         } else {
             error = false
             errorMessage = ""
+        }
+        title = title.isEmpty ? linkName : title
+        let newLink = Link(title: title, imgUrl: "", desc: linkDescription, linkUrl: linkName)
+        selectedFolder?.links?.append(newLink)
+        do {
+            try modelContext?.save()
+        } catch {
+            print("saving failed")
         }
         // For example, save the folder information to a database or send it to a server
     }

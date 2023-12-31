@@ -25,7 +25,7 @@ enum LoadingStage {
     var loadingStage: LoadingStage = .none
     var navigateToFolder: Folder?
     var readyToNavigate: Bool = false
-
+    var navigationStateManager: NavigationStateManager?
 
     // Other properties for business logic
     private var cancellables = Set<AnyCancellable>()
@@ -56,6 +56,7 @@ enum LoadingStage {
             do {
                 try context.save()
                 print("change saved")
+                navigationStateManager?.focusFolder = newFolder
                 let folders = try context.fetch(FetchDescriptor<Folder>())
                 print("now have folder:")
                 for folder in folders {
@@ -65,7 +66,7 @@ enum LoadingStage {
                 loadingStage = .done
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.navigateToFolder = newFolder
+                    
                     self.readyToNavigate = true
                 }
             } catch {
@@ -94,8 +95,9 @@ enum LoadingStage {
         setupSubscriptions()
     }
     
-    func setup(modelContext: ModelContext){
+    func setup(modelContext: ModelContext, navigationStateManager: NavigationStateManager){
         self.context = modelContext
+        self.navigationStateManager = navigationStateManager
     }
     
     private func setupSubscriptions() {

@@ -15,7 +15,7 @@ struct FolderItemView: View {
     var imageName: String = "FolderPlaceholder" // The image name for the folder
     var title: String = "Travel Tips"
     var likesCount: Int = 35
-    
+    @State var showSheet: Bool = false
     
     var body: some View {
         //        NavigationLink(destination: FolderView()) {
@@ -35,9 +35,9 @@ struct FolderItemView: View {
                 
                 
                 Button(action: {
-                    // Handle favorite action
+                    currentFolder.pinned.toggle()
                 }) {
-                    Image(systemName: "heart.fill") // Use your own favorite icon
+                    Image(systemName: currentFolder.pinned ? "heart.fill" : "heart") // Use your own favorite icon
                         .foregroundColor(Color("ThemeColor"))
                         .padding(10)
                         .background(Color.white)
@@ -52,8 +52,34 @@ struct FolderItemView: View {
                     .font(.headline)
                     .lineLimit(1)
                 Spacer()
-                Image(systemName: "ellipsis") // Use your own more icon
-                    .foregroundColor(.gray)
+                Button {
+                    print("test")
+                    showSheet = true
+                } label: {
+                    Image(systemName: "ellipsis")
+                }.foregroundColor(.gray).sheet(isPresented: $showSheet, content: {
+                    VStack{
+                        Spacer()
+                        BottomSheetOption(onClick: {
+                            print("Pin")
+                        }, text: "Pin", assetImageString: "Folder")
+                        Spacer()
+                        BottomSheetOption(onClick: {
+                            print("Pin")
+                        }, text: "Unpin", assetImageString: "Folder")
+                        Spacer()
+                        BottomSheetOption(onClick: {
+                            print("Pin")
+                        }, text: "Edit",  assetImageString: "Pencil")
+                        Spacer()
+                        BottomSheetOption(onClick: {
+                            print("Pin")
+                        }, text: "Delete", assetImageString: "Trash")
+                        Spacer()
+                    }.presentationDetents([.height(300)])
+                })
+                    
+
             }
             .padding([.leading, .trailing], 10)
             .frame(height: 25)
@@ -71,8 +97,7 @@ struct FolderItemView: View {
             Spacer()
         }
         .frame(width: 160, height: 200) // Adjust size as needed
-        
-        /*  }*/.background(Color.white) // Use actual card background color
+        .background(Color.white) // Use actual card background color
             .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
             .shadow(radius: 5)
             .onTapGesture(perform: {

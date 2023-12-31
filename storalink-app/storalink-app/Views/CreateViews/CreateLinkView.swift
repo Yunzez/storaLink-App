@@ -11,9 +11,7 @@ struct CreateLinkView: View {
     @Query var folders: [Folder]
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.modelContext) var modelContext
-    @State private var shouldFetchMetadata = false
     @State private var viewModel = CreateLinkViewModel()
-    @State private var showingSearchResults = false
     @State var test = ""
     var body: some View {
         
@@ -60,10 +58,10 @@ struct CreateLinkView: View {
                                 .padding([.horizontal, .bottom]).onTapGesture {
                                     // Show the results when the TextField is tapped
                                     withAnimation {
-                                        showingSearchResults = true
+                                        viewModel.showingSearchResults = true
                                     }
                                 }
-                            if showingSearchResults {
+                            if viewModel.showingSearchResults {
                                 ScrollView(.vertical) {
                                     VStack(alignment: .leading) {
                                         ForEach(viewModel.filterFolder(folders: folders)) { folder in
@@ -72,9 +70,9 @@ struct CreateLinkView: View {
                                             Button {
                                                
                                                     viewModel.searchFolder = folder.title
-                                                    viewModel.selectedFolderTitle = folder.title
+                                                    viewModel.selectedFolder = folder
                                                 withAnimation {
-                                                    showingSearchResults = false
+                                                    viewModel.showingSearchResults = false
                                                 }
                                             } label: {
                                                 HStack {
@@ -97,7 +95,7 @@ struct CreateLinkView: View {
                                                         insertion: .identity.combined(with: .opacity),
                                                         removal: AnyTransition.opacity.combined(with: .scale(scale: 0.5, anchor: .top))
                                                     ))
-                                                    .animation(.easeInOut, value: showingSearchResults)
+                                                    .animation(.easeInOut, value: viewModel.showingSearchResults)
                                     .frame(maxWidth: .infinity, maxHeight: 200)
                             }
                         }
@@ -105,8 +103,6 @@ struct CreateLinkView: View {
                     
                     CustomButton(action: {
                         print("click")
-                        shouldFetchMetadata = true
-                        print(shouldFetchMetadata, "in button")
                         Task {
                             print("fetching data")
                             await viewModel.fetchLinkMetadata()
@@ -138,7 +134,7 @@ struct CreateLinkView: View {
                     
                     Button(action: {
                         // Action for folder creation
-                        viewModel.createFolder()
+                        viewModel.createLink()
                     }) {
                         Text("Create Link")
                             .frame(minWidth: 0, maxWidth: .infinity)
@@ -152,7 +148,7 @@ struct CreateLinkView: View {
             }.onTapGesture {
                 // Show the results when the TextField is tapped
                 withAnimation {
-                    showingSearchResults = false
+                    viewModel.showingSearchResults = false
                 }
             }
         }
