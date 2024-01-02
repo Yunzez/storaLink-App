@@ -6,11 +6,24 @@
 //
 
 import SwiftUI
-
+import SwiftData
 struct LinkView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
-    
+    @Query var folders: [Folder]
+    var currentFolder: Folder {
+        if let focusedFolder = navigationStateManager.focusFolder {
+            return focusedFolder
+        } else if let firstFolder = folders.first {
+            return firstFolder
+        } else {
+            // Return a default Folder if no focused or first folder is available
+            return Folder(title: "Test", imgUrl: "", links: [
+                Link(title: "Test Link 1", imgUrl: "", desc: "testing link one"),
+                Link(title: "Test Link 2", imgUrl: "", desc: "testing link two")
+            ])
+        }
+    }
     
     var body: some View {
         VStack{
@@ -30,7 +43,7 @@ struct LinkView: View {
                         .shadow(radius:7)
                         Spacer()
                         
-                        Text("In some folder")
+                        Text("In Folder: \(currentFolder.title)")
                     }
                     .padding(.horizontal)
                     
@@ -41,14 +54,16 @@ struct LinkView: View {
             
             ScrollView(.horizontal , showsIndicators: true){
                 HStack {
-                    ForEach(1..<5) { _ in
-                        LinkViewCard()
+                        if let links = currentFolder.links {
+                            ForEach(links, id: \.self.id) { link in
+                                LinkViewCard()  // Assuming LinkViewCard takes a Link object
+                            }
+                        }
                     }
-                }
             }.padding(.horizontal)
             
             HStack{
-                Text("01/10")
+                Text("01/\(currentFolder.getLinkNum())")
                 Spacer()
             }.padding(.horizontal)
             
@@ -74,6 +89,6 @@ struct LinkView: View {
     }
 }
 
-#Preview {
-    LinkView().environment(NavigationStateManager()).modelContainer(PreviewContainer).environment(AppViewModel())
-}
+//#Preview {
+//    LinkView().environment(NavigationStateManager()).modelContainer(PreviewContainer)
+//}
