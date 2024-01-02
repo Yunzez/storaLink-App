@@ -30,6 +30,7 @@
 		9F7260A62B3D21DB00A49628 /* PreviewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260A52B3D21DB00A49628 /* PreviewContainer.swift */; };
 		9F7260A82B3E203300A49628 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260A72B3E203300A49628 /* AppViewModel.swift */; };
 		9F7260AA2B4207E500A49628 /* BottomSheetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260A92B4207E500A49628 /* BottomSheetOption.swift */; };
+		9F7260AC2B4295D100A49628 /* FolderItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260AB2B4295D100A49628 /* FolderItemViewModel.swift */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -110,6 +111,7 @@
 		9F7260A52B3D21DB00A49628 /* PreviewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewContainer.swift; sourceTree = "<group>"; };
 		9F7260A72B3E203300A49628 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		9F7260A92B4207E500A49628 /* BottomSheetOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetOption.swift; sourceTree = "<group>"; };
+		9F7260AB2B4295D100A49628 /* FolderItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderItemViewModel.swift; sourceTree = "<group>"; };
 		9FD082D02B1437A4004021FC /* storalink-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storalink-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				9F7260672B36827E00A49628 /* LinkItemViewModel.swift */,
+				9F7260AB2B4295D100A49628 /* FolderItemViewModel.swift */,
 			);
 			path = ComponentsModel;
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				9FD082FB2B14440D004021FC /* LoginView.swift in Sources */,
 				9FD083072B146AB1004021FC /* SignupView.swift in Sources */,
 				9F7260742B3A1F9300A49628 /* CreateFolderView.swift in Sources */,
+				9F7260AC2B4295D100A49628 /* FolderItemViewModel.swift in Sources */,
 				9F7260A42B3D1A6600A49628 /* SwiftDataSchema.swift in Sources */,
 				9F72606A2B36966600A49628 /* LinkView.swift in Sources */,
 				9FD082E52B143C58004021FC /* Constants.swift in Sources */,

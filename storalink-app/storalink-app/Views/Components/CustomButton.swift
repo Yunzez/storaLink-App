@@ -15,14 +15,17 @@ struct CustomButton: View {
     
     let action: () -> Void
     let label: String
-    let imageSystemName: String
+    var imageSystemName: String? = nil
     let style: ButtonStyle
     
     var body: some View {
         Button(action: action) {
             HStack {
-                Image(systemName: imageSystemName)
-                    .imageScale(.medium)
+                if imageSystemName != nil{
+                    Image(systemName: imageSystemName!)
+                        .imageScale(.medium)
+                }
+                
                 if !label.isEmpty {
                     Text(label)
                         .fontWeight(.semibold)
@@ -46,7 +49,7 @@ struct CustomButton: View {
     Group{
         CustomButton(action: {
             print("Button tapped")
-        }, label: "Search", imageSystemName: "magnifyingglass", style: .outline)
+        }, label: "Search", style: .outline)
 
         CustomButton(action: {
             print("Button tapped")

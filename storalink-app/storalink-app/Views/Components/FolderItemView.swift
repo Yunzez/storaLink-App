@@ -11,10 +11,8 @@ import SwiftData
 struct FolderItemView: View {
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     var currentFolder: Folder
-    // Placeholder data - replace with your actual data models
-    var imageName: String = "FolderPlaceholder" // The image name for the folder
-    var title: String = "Travel Tips"
-    var likesCount: Int = 35
+    @Environment(\.modelContext) var modelContext
+    @State var folderItemViewModel = FolderItemViewModel()
     @State var showSheet: Bool = false
     
     var body: some View {
@@ -37,7 +35,7 @@ struct FolderItemView: View {
                 Button(action: {
                     currentFolder.pinned.toggle()
                 }) {
-                    Image(systemName: currentFolder.pinned ? "heart.fill" : "heart") // Use your own favorite icon
+                    Image(systemName: currentFolder.pinned ? "heart.fill" : "heart") 
                         .foregroundColor(Color("ThemeColor"))
                         .padding(10)
                         .background(Color.white)
@@ -54,29 +52,45 @@ struct FolderItemView: View {
                 Spacer()
                 Button {
                     print("test")
-                    showSheet = true
+                    folderItemViewModel.showDetailSheet = true
                 } label: {
                     Image(systemName: "ellipsis")
-                }.foregroundColor(.gray).sheet(isPresented: $showSheet, content: {
+                }.foregroundColor(.gray)
+                .sheet(isPresented: $folderItemViewModel.showDetailSheet, content: {
                     VStack{
                         Spacer()
                         BottomSheetOption(onClick: {
-                            print("Pin")
+                            currentFolder.pinned = true
                         }, text: "Pin", assetImageString: "Folder")
                         Spacer()
                         BottomSheetOption(onClick: {
-                            print("Pin")
+                            currentFolder.pinned = false
                         }, text: "Unpin", assetImageString: "Folder")
                         Spacer()
                         BottomSheetOption(onClick: {
-                            print("Pin")
+                            print("Edit")
+                            folderItemViewModel.showDetailSheet = false
+                            
+                            // add a delay to wait for the sheet to be closed
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                folderItemViewModel.showEditSheet = true
+                            }
+                            
                         }, text: "Edit",  assetImageString: "Pencil")
                         Spacer()
                         BottomSheetOption(onClick: {
                             print("Pin")
+                            modelContext.delete(currentFolder)
+                            do {
+                                try modelContext.save()
+                            } catch {
+                                print("saving deletion error")
+                            }
                         }, text: "Delete", assetImageString: "Trash")
                         Spacer()
                     }.presentationDetents([.height(300)])
+                }).sheet(isPresented: $folderItemViewModel.showEditSheet, content: {
+                    Text("Test")
                 })
                     
 

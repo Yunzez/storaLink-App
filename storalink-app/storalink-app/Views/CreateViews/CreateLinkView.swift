@@ -12,7 +12,7 @@ struct CreateLinkView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.modelContext) var modelContext
     @State private var viewModel = CreateLinkViewModel()
-    @State var test = ""
+        
     var body: some View {
         
             HStack {
@@ -35,7 +35,7 @@ struct CreateLinkView: View {
             }.padding(.horizontal)
             .onAppear{viewModel.setup(modelConext: modelContext)}
 
-        NavigationStack {
+        
             ScrollView(.vertical, showsIndicators: false){
                 VStack{
                     if viewModel.error {
@@ -107,7 +107,7 @@ struct CreateLinkView: View {
                             print("fetching data")
                             await viewModel.fetchLinkMetadata()
                         }
-                    }, label: "Auto-fill using URL", imageSystemName: "", style: .fill)
+                    }, label: "Auto-fill using URL", style: .fill)
                     
                     Text("Title")
                     StandardTextField(placeholder: "https://", text: $viewModel.title).padding([.horizontal, .bottom])
@@ -115,10 +115,12 @@ struct CreateLinkView: View {
                     StandardTextField(placeholder: "author", text: $viewModel.author).padding([.horizontal, .bottom])
 //                    Text("Source")
                     Text("ThumbNail")
-                    Image(uiImage: viewModel.linkMetadata?.icon ?? UIImage(named: "LinkDefaultImage") ?? UIImage())
-                        .resizable() // Allows the image to be resized
-                        .aspectRatio(contentMode: .fit) // Maintain the aspect ratio of the image
-                        .frame(width: 100, height: 100) // Specify the frame size as needed
+                
+                        Image("LinkDefaultImg").resizable() // Allows the image to be resized
+                            .aspectRatio(contentMode: .fit) // Maintain the aspect ratio of the image
+                            .frame(width: 100, height: 100)
+
+                    
                     
                     Text("Description")
                     TextEditor(text: $viewModel.linkDescription)
@@ -150,8 +152,12 @@ struct CreateLinkView: View {
                 withAnimation {
                     viewModel.showingSearchResults = false
                 }
+            }.onAppear{
+                print("create link show up")
+            }.onDisappear{
+                print("leave create link")
             }
-        }
+        
     }
 }
 

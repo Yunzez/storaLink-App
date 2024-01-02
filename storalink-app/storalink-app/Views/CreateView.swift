@@ -33,9 +33,6 @@ struct CreateView: View {
                     Image("Folder")
                     Text("Folder")
                     }.frame(width: 300, height: 200).background(.subtleTheme).cornerRadius(Spacing.medium).shadow(radius: 5)
-//                        .navigationDestination(for: NavigationItem.createFolderView.self) {_ in
-//                            CreateFolderView()
-//                        }
                 }
                 Spacer()
             }.padding(.bottom, Spacing.customNavigationBarHeight )
@@ -44,6 +41,7 @@ struct CreateView: View {
 }
 
 #Preview {
+    
     CreateView().modelContainer(PreviewContainer)
         .environment(NavigationStateManager())
         .environment(AppViewModel())

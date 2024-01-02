@@ -10,6 +10,8 @@ import SwiftUI
 struct LinkView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
+    
+    
     var body: some View {
         VStack{
             ZStack {
@@ -73,5 +75,5 @@ struct LinkView: View {
 }
 
 #Preview {
-    LinkView().environment(NavigationStateManager())
+    LinkView().environment(NavigationStateManager()).modelContainer(PreviewContainer).environment(AppViewModel())
 }

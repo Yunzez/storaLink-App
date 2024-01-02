@@ -221,6 +221,7 @@ struct FolderView: View {
             }
         }.onAppear {
             // This is called when the view appears
+            print(currentFolder.links)
             navigationStateManager.enterSubMenu()
         }
         .onDisappear {

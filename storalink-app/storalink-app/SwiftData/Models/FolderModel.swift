@@ -8,28 +8,34 @@
 import Foundation
 import SwiftData
 @Model
-class Folder {
-//    @Attribute(.unique) var id: Int;
+final class Folder {
+    @Attribute(.unique)
+    let id = UUID()
     var title: String;
     var  imgUrl: String
     var desc: String?
     var linksNumber: Int
-//    var onClick: () => Void
     var pinned: Bool
     var creationDate: Date
-    @Relationship(deleteRule: .cascade) var links: [Link]?
+    @Relationship(deleteRule: .cascade, inverse: \Link.parentFolder) var links: [Link]?
     
     init( title: String, imgUrl: String, desc: String? = nil, pinned: Bool? = nil, links: [Link]? = [] ) {
-//        self.id = id
+        //        self.id = id
         self.title = title
         self.imgUrl = imgUrl
         self.desc = desc
         self.linksNumber = links?.count ?? 0
         self.pinned = pinned ?? false
-        self.links = links
+        print("inserting link to folder: ", title, links!.count)
+
         self.creationDate = Date()
+        self.links = links // Initialize the links array
+
     }
     
+    func getLinkNum() -> Int {
+        return links?.count ?? 0
+    }
 }
 
 

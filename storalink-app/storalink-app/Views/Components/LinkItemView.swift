@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LinkItemView: View {
     var currentLink: Link
-    @StateObject var linkItemViewModel = LinkViewModel()
+    @StateObject var linkItemViewModel = LinkItemViewModel()
     @State private var navigateToLink = false
 
     var body: some View {
@@ -49,6 +49,11 @@ struct LinkItemView: View {
                 .cornerRadius(10)
                 
             }.foregroundColor(.black)
+            .onAppear{
+                
+                print(currentLink.parentFolder?.desc ?? "fail to find folder")
+                print(currentLink.id)
+            }
         
 
         
@@ -56,6 +61,6 @@ struct LinkItemView: View {
 }
 
 #Preview {
-    LinkItemView(currentLink: Link( title: "link", imgUrl: "", desc: "a testing link"))
+    LinkItemView(currentLink: Link( title: "link", imgUrl: "", desc: "a testing link")).modelContainer(PreviewContainer).environment(AppViewModel())
 }
 

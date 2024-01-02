@@ -82,7 +82,7 @@ var linkName: String = ""
     }
     
     func setup(modelConext: ModelContext) {
-        
+        self.modelContext = modelConext
     }
     
     func fetchLinkMetadata() async {

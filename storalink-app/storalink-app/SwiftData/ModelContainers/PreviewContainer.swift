@@ -16,14 +16,9 @@ var PreviewContainer: ModelContainer {
         Task{
             let context = container.mainContext
             let folders = getExampleFolders() // Ensure this returns [Folder]
-            let links = getExampleLinks()
-            let user = User(id: 1, name: "Eddie Eidde", email: "test")
+            let user = User(name: "Eddie Eidde", email: "test")
             for folder in folders {
                 context.insert(folder)
-            }
-            
-            for link in links {
-                context.insert(link)
             }
             
             context.insert(user)
@@ -41,11 +36,11 @@ func getExampleFolders() -> [Folder] {
 //    let sampleLinks = getExampleLinks()
     
     let sampleFolders = [
-        (id: 1, title: "Travel", imgUrl: "folderAsset8", desc: "Places to visit", linksNumber: 15, pinned: true, links: getExampleLinks()),
-        (id: 2, title: "Recipes", imgUrl: "folderAsset7", desc: "Favorite recipes", linksNumber: 20, pinned: false, links: getExampleLinks()),
-        (id: 3, title: "Work", imgUrl: "folderAsset6", desc: "Work-related links", linksNumber: 10, pinned: true, links: getExampleLinks()),
-        (id: 4, title: "Fram", imgUrl: "folderAsset2", desc: "Framing tips", linksNumber: 10, pinned: true, links: getExampleLinks()),
-        (id: 5, title: "Gym", imgUrl: "folderAsset1", desc: "Nice gyms around", linksNumber: 40, pinned: true, links: getExampleLinks())
+        ( title: "Travel", imgUrl: "folderAsset8", desc: "Places to visit", linksNumber: 15, pinned: true, links: getExampleLinks()),
+        ( title: "Recipes", imgUrl: "folderAsset7", desc: "Favorite recipes", linksNumber: 20, pinned: false, links: getExampleLinks()),
+        ( title: "Work", imgUrl: "folderAsset6", desc: "Work-related links", linksNumber: 10, pinned: true, links: getExampleLinks()),
+        ( title: "Fram", imgUrl: "folderAsset2", desc: "Framing tips", linksNumber: 10, pinned: true, links: getExampleLinks()),
+        ( title: "Gym", imgUrl: "folderAsset1", desc: "Nice gyms around", linksNumber: 40, pinned: true, links: getExampleLinks())
     ]
     
     var folders: [Folder] = []

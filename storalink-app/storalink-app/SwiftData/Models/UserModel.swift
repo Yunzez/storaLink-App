@@ -9,15 +9,15 @@ import Foundation
 import SwiftData
 
 @Model
-class User {
-    @Attribute(.unique) var id: Int
+final class User {
+    @Attribute(.unique)
+        let id = UUID()
     var name: String
     var email: String
     var folders: [Folder]?
     // Other user properties
     
-    init(id: Int, name: String, email: String) {
-        self.id = id
+    init( name: String, email: String) {
         self.name = name
         self.email = email
         self.folders = []
