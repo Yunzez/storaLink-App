@@ -16,7 +16,7 @@ struct LinkItemView: View {
     var body: some View {
         Button(action: {
             navigationStateManager.navigationPath.append(NavigationItem.linkView)
-            navigationStateManager.focusFolder = currentLink.parentFolder
+            navigationStateManager.focusLink = currentLink
         }, label: {
             HStack(spacing: Spacing.small) {
                 Image("LinkPlaceholder") // Replace with actual image

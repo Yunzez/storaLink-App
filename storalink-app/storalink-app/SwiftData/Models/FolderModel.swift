@@ -26,8 +26,6 @@ final class Folder {
         self.desc = desc
         self.linksNumber = links?.count ?? 0
         self.pinned = pinned ?? false
-        print("inserting link to folder: ", title, links!.count)
-
         self.creationDate = Date()
         self.links = links // Initialize the links array
 

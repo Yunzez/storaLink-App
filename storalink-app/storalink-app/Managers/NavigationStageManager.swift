@@ -13,6 +13,7 @@ import Observation
     var navigationPath = NavigationPath()
     var lastNavigationSource: NavigationSource = .normal
     var focusFolder: Folder?
+    var focusLink: Link? 
     enum NavigationSource {
             case normal
             case createdFolder
