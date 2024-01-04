@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(AppViewModel.self) private var appleViewModel
+    @Environment(AppViewModel.self) private var appViewModel
 //    @Bindable var appView = appleViewModel
     var body: some View {
         NavigationView {
@@ -30,7 +30,7 @@ struct SettingsView: View {
                                     .padding()
                                 Spacer()
                             }
-                            Text(appleViewModel.userName ?? "Nil").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                            Text(appViewModel.userName ?? "Nil").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         }
                     }
                    
@@ -77,6 +77,8 @@ struct SettingsView: View {
                         Spacer()
                         Button("Log Out") {
                             // Handle log out
+                            appViewModel.logoutUser()
+                            
                         }
                         .padding()
                         .padding(.horizontal)
@@ -95,7 +97,7 @@ struct SettingsView: View {
                 
                 // Tab bar here...
             }.background(Color("ThemeWhite"))
-        }
+        }.padding(.bottom, Spacing.customNavigationBarHeight )
     }
 }
 

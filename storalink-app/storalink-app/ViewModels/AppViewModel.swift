@@ -14,6 +14,7 @@ class AppViewModel {
     var userName: String?
     var userEmail: String?
     var user: User?
+    
    init(userName: String? = nil) {
        self.userName = userName ?? ""
        self.user = nil
@@ -22,5 +23,12 @@ class AppViewModel {
     
     func setUser(user: User) {
         self.user = user
+    }
+    
+    func logoutUser() {
+        isAuthenticated = false
+        userEmail = ""
+        userName = ""
+        user = nil
     }
 }

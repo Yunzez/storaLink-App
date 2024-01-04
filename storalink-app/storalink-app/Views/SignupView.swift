@@ -10,16 +10,12 @@ import SwiftUI
 struct SignupView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(AppViewModel.self) private var appViewModel : AppViewModel
-    @State var email: String = ""
-    @FocusState var isEmailInputActive: Bool
-    @State var password: String = ""
-    @FocusState var isPasswordInputActive: Bool
-    @State var error: Bool = false
-    @State var errorMessage: String = ""
-    @FocusState var isNameInputActive: Bool
-    @State var name: String = ""
-    @State var rememberMe: Bool = false
+    @State var viewModel = SignupViewModel()
     
+    @FocusState var isEmailInputActive: Bool
+    @FocusState var isPasswordInputActive: Bool
+    @FocusState var isNameInputActive: Bool
+    @FocusState var isRePasswordInputActice: Bool
     
     var body: some View {
         VStack{
@@ -41,7 +37,7 @@ struct SignupView: View {
                 Spacer()
             }.padding([.top, .horizontal])
             
-            TextField("Name", text: $name)
+            TextField("Name", text: $viewModel.name)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
                 .padding(.horizontal)
@@ -59,7 +55,7 @@ struct SignupView: View {
                 Spacer()
             }.padding([.top, .horizontal])
             
-            TextField("Email", text: $email)
+            TextField("Email", text: $viewModel.email)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
                 .padding(.horizontal)
@@ -77,7 +73,7 @@ struct SignupView: View {
                 Text("Password")
                 Spacer()
             }.padding([.top, .horizontal])
-            SecureField("Password", text: $password)
+            SecureField("Password", text: $viewModel.password)
                 .padding(.horizontal)
                 .padding(.vertical, 12) // Increase vertical padding
                 .focused($isPasswordInputActive)
@@ -88,15 +84,32 @@ struct SignupView: View {
                 .padding(.horizontal)
                 .animation(.easeInOut, value: isPasswordInputActive)
             
-            if error {
-                Text(errorMessage)
+            // Password field
+            HStack{
+                Text("Confirm Your Password")
+                Spacer()
+            }.padding([.top, .horizontal])
+            SecureField("Password", text: $viewModel.repassword)
+                .padding(.horizontal)
+                .padding(.vertical, 12) // Increase vertical padding
+                .focused($isRePasswordInputActice)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(isRePasswordInputActice ? Color("ThemeColor") : Color.gray, lineWidth: 1)
+                )
+                .padding(.horizontal)
+                .animation(.easeInOut, value: isRePasswordInputActice)
+            
+            if viewModel.error {
+                Text(viewModel.errorMessage)
                         .foregroundColor(Color("Warning")) // Optional: Set the text color to red for visibility
                 }
+            
             
             // Remember me checkbox
             HStack(spacing: 8) {
                 
-                Toggle(isOn: $rememberMe){}.labelsHidden()
+                Toggle(isOn: $viewModel.rememberMe){}.labelsHidden()
                 .toggleStyle(SwitchToggleStyle(tint: Color("ThemeColor")))
                 .padding(.trailing, 3)// Customize the toggle color
                 Text("Remember Me")
