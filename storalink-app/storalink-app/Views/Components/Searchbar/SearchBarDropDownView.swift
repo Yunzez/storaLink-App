@@ -17,7 +17,7 @@ extension AnyTransition {
 }
 
 struct SearchBarDropDownView: View {
-    @ObservedObject var viewModel: SearchBarViewModel
+    @State var viewModel: SearchBarViewModel
     @State private var viewHeight: CGFloat = 0
     @State private var opacity: Double = 0
     var body: some View {

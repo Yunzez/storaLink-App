@@ -57,7 +57,7 @@ struct ShareView: View {
                     Button {
                         print("add")
                     } label: {
-                        Text("Add").foregroundColor(Color("Gray")).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                        Text("Add").foregroundColor(Color("ThemeGray")).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     }
                     
                 }.padding()
@@ -100,7 +100,7 @@ struct ShareView: View {
                         }
                         .overlay(
                             RoundedRectangle(cornerRadius: 10) // Overlay a rounded rectangle
-                                .stroke(selectedText == 0 ? Color("ThemeColor") : Color("Gray"), lineWidth: 2) // Set the border color based on selectedText
+                                .stroke(selectedText == 0 ? Color("ThemeColor") : Color("ThemeGray"), lineWidth: 2) // Set the border color based on selectedText
                         )
                         .padding(.horizontal) // Add padding around the overlay
             
@@ -131,7 +131,7 @@ struct ShareView: View {
                         }
                         .overlay(
                             RoundedRectangle(cornerRadius: 10) // Overlay a rounded rectangle
-                                .stroke(selectedText == 1 ? Color("ThemeColor") : Color("Gray"), lineWidth: 2) // Set the border color based on selectedText
+                                .stroke(selectedText == 1 ? Color("ThemeColor") : Color("ThemeGray"), lineWidth: 2) // Set the border color based on selectedText
                         )
                         .padding(.horizontal) // Add padding around the overlay
             
@@ -156,7 +156,7 @@ struct ShareView: View {
                         }
                         .overlay(
                             RoundedRectangle(cornerRadius: 10) // Overlay a rounded rectangle
-                                .stroke(selectedText == 2 ? Color("ThemeColor") : Color("Gray"), lineWidth: 2) // Set the border color based on selectedText
+                                .stroke(selectedText == 2 ? Color("ThemeColor") : Color("ThemeGray"), lineWidth: 2) // Set the border color based on selectedText
                         ).frame(height: 190)
                         .padding(.horizontal) // Add padding around the overlay
             

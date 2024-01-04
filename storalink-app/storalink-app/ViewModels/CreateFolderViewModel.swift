@@ -32,6 +32,7 @@ enum LoadingStage {
 
     // Business logic functions
     func createFolder() {
+        
         loadingStage = .loading
         // Implement folder creation logic here
         print("Creating folder with name: \(folderName) and description: \(folderDescription)")
@@ -50,7 +51,7 @@ enum LoadingStage {
         
         if let context = context {
             print("imgurl: ", imgUrl)
-            let newFolder = Folder(title: folderName, imgUrl: imgUrl)
+            let newFolder = Folder(title: folderName, imgUrl: imgUrl, links: [])
             context.insert(newFolder)
             
             do {

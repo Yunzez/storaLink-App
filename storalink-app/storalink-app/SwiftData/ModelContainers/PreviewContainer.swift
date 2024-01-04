@@ -12,7 +12,7 @@ import SwiftData
 var PreviewContainer: ModelContainer {
     
     do {
-        let container = try ModelContainer(for: Folder.self, Link.self, User.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+        let container = try ModelContainer(for: Folder.self, User.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
         Task{
             let context = container.mainContext
             let folders = getExampleFolders() // Ensure this returns [Folder]
@@ -23,6 +23,18 @@ var PreviewContainer: ModelContainer {
             
             context.insert(user)
             
+            try context.save()
+            
+//            let newFolders = try context.fetch(FetchDescriptor<Folder>())
+            
+            for folder in folders {
+                let links = getExampleLinks()
+                for link in links {
+                    folder.links.append(
+                        Link(title: link.title, imgUrl: link.imgUrl, desc: link.desc, linkUrl: link.linkUrl)
+                    )
+                }
+            }
         }
         return container
     } catch {
@@ -36,11 +48,11 @@ func getExampleFolders() -> [Folder] {
 //    let sampleLinks = getExampleLinks()
     
     let sampleFolders = [
-        ( title: "Travel", imgUrl: "folderAsset8", desc: "Places to visit", linksNumber: 15, pinned: true, links: getExampleLinks()),
-        ( title: "Recipes", imgUrl: "folderAsset7", desc: "Favorite recipes", linksNumber: 20, pinned: false, links: getExampleLinks()),
-        ( title: "Work", imgUrl: "folderAsset6", desc: "Work-related links", linksNumber: 10, pinned: true, links: getExampleLinks()),
-        ( title: "Fram", imgUrl: "folderAsset2", desc: "Framing tips", linksNumber: 10, pinned: true, links: getExampleLinks()),
-        ( title: "Gym", imgUrl: "folderAsset1", desc: "Nice gyms around", linksNumber: 40, pinned: true, links: getExampleLinks())
+        ( title: "Travel", imgUrl: "folderAsset8", desc: "Places to visit", linksNumber: 15, pinned: true, links: []),
+        ( title: "Recipes", imgUrl: "folderAsset7", desc: "Favorite recipes", linksNumber: 20, pinned: false, links: [])
+//        ( title: "Work", imgUrl: "folderAsset6", desc: "Work-related links", linksNumber: 10, pinned: true, links: getExampleLinks()),
+//        ( title: "Fram", imgUrl: "folderAsset2", desc: "Framing tips", linksNumber: 10, pinned: true, links: getExampleLinks()),
+//        ( title: "Gym", imgUrl: "folderAsset1", desc: "Nice gyms around", linksNumber: 40, pinned: true, links: getExampleLinks())
     ]
     
     var folders: [Folder] = []
@@ -51,7 +63,7 @@ func getExampleFolders() -> [Folder] {
             imgUrl: folderData.imgUrl,
             desc: folderData.desc,
             pinned: folderData.pinned,
-            links: folderData.links
+            links: []
         )
         
         folders.append(folder)
@@ -62,10 +74,10 @@ func getExampleFolders() -> [Folder] {
 func getExampleLinks() -> [Link] {
     let sampleLinks =
     [
-        Link( title: "OpenAI", imgUrl: "openai_logo", desc: "Advanced AI research",  linkUrl: "https://www.openai.com"),
+        Link( title: "Test OpenAI", imgUrl: "openai_logo", desc: "Advanced AI research",  linkUrl: "https://www.openai.com"),
         Link( title: "NASA", imgUrl: "nasa_logo", desc: "Space exploration", linkUrl: "https://www.nasa.gov"),
-        Link( title: "Wikipedia", imgUrl: "wikipedia_logo", desc: "Online encyclopedia", linkUrl: "https://www.wikipedia.org"),
-        Link( title: "UW", imgUrl: "wikipedia_logo", desc: "University of Wash", linkUrl: "https://www.uw.edu")
+//        Link( title: "Wikipedia", imgUrl: "wikipedia_logo", desc: "Online encyclopedia", linkUrl: "https://www.wikipedia.org"),
+//        Link( title: "UW", imgUrl: "wikipedia_logo", desc: "University of Wash", linkUrl: "https://www.uw.edu")
     ]
     
     return sampleLinks

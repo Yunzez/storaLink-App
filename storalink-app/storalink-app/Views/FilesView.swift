@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 struct FilesView: View {
     @Query var folders: [Folder]
-    @StateObject var viewModel = SearchBarViewModel()
+    @State var viewModel = SearchBarViewModel()
     let items = Array(1...9)
     var body: some View {
         ZStack{

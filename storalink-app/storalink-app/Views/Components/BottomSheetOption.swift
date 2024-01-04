@@ -31,7 +31,7 @@ struct BottomSheetOption: View {
                 
                 Spacer()
             }
-            .foregroundColor(Color("Gray"))
+            .foregroundColor(Color("ThemeGray"))
         }
     }
 }
@@ -52,7 +52,7 @@ struct CustomImageView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 25, height: 25)
-                    .foregroundColor(Color("Gray"))  
+                    .foregroundColor(Color("ThemeGray"))  
             }
         }
         .padding(.leading)

@@ -44,7 +44,13 @@ var linkName: String = ""
         }
         title = title.isEmpty ? linkName : title
         let newLink = Link(title: title, imgUrl: "", desc: linkDescription, linkUrl: linkName)
-        selectedFolder?.links?.append(newLink)
+        
+        if (selectedFolder?.getLinkNum() == 0) {
+            selectedFolder?.links = [newLink]
+        } else {
+            selectedFolder?.links.append(newLink)
+        }
+        
         do {
             try modelContext?.save()
         } catch {

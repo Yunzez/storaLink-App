@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct LinkItemView: View {
-    var currentLink: Link
+    @Bindable var currentLink: Link
     @StateObject var linkItemViewModel = LinkItemViewModel()
     @State private var navigateToLink = false
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
-
+    @Environment(\.modelContext) var modelContext
+    
     var body: some View {
         Button(action: {
             navigationStateManager.navigationPath.append(NavigationItem.linkView)
@@ -39,7 +40,20 @@ struct LinkItemView: View {
                 }).padding(.horizontal, Spacing.small)
                     .sheet(isPresented: $linkItemViewModel.moreOpen) {
                         VStack{
-                            Text("test")
+                            Spacer()
+                            BottomSheetOption(onClick: {
+                                modelContext.delete(currentLink)
+                            }, text: "Delete", assetImageString: "Trash")
+                            Spacer()
+                            BottomSheetOption(onClick: {
+                                print("test")
+                            }, text: "Move", assetImageString: "FolderMove")
+                            Spacer()
+                            BottomSheetOption(onClick: {
+                                print("test")
+                            }, text: "Edit", assetImageString: "Pencil")
+                            Spacer()
+                            
                         }.presentationDetents([.height(300)])
                     }
             }
@@ -51,8 +65,8 @@ struct LinkItemView: View {
             .foregroundColor(.black)
             .onAppear{
                 
-                print(currentLink.parentFolder?.desc ?? "fail to find folder")
-                print(currentLink.id)
+//                print(currentLink.parentFolder?.title ?? "fail to find folder")
+//                print(currentLink.id)
             }
         })
     }

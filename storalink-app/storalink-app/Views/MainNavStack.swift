@@ -105,9 +105,6 @@ struct MainNavStack: View {
                     FolderView()
                 case .linkView:
                     LinkView()
-                    
-//                default:
-//                    Text("Error")
                 
                 }
                 

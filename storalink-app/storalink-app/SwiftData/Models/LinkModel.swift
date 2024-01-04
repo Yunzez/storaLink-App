@@ -20,7 +20,7 @@ final class Link {
     var linkUrl: String?
     
     // inverse to Folder
-    @Relationship var parentFolder: Folder?
+    /*@Relationship(deleteRule: .cascade)*/ var parentFolder: Folder?
 
 
     
@@ -31,6 +31,10 @@ final class Link {
         self.linkUrl = linkUrl
         self.creationDate = Date()
         
+    }
+    
+    func toString() -> String {
+        return "Link: \(title), \(desc ?? "No description"), parent: \(parentFolder?.title ?? "No parent") "
     }
    
 }

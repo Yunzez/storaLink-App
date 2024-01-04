@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct FolderView: View {
-
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @Bindable var folderViewModel: FolderViewModel
+    @State var currentFolder: Folder = Folder(title: "Initial", imgUrl: "", desc: "Initial Folder", links: [])
     
-    var currentFolder: Folder {
-        navigationStateManager.focusFolder ?? Folder(title: "Oops, Error X:C",imgUrl: "folderAsset8", desc: "Try to restart the app" )
-        }
+    
+    
     let buttonHeight: CGFloat = 25
     
     init() {
@@ -31,24 +31,29 @@ struct FolderView: View {
                     Image(currentFolder.imgUrl)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .blur(radius: 2)
                         .frame(height: 200)  // Fixed height for the image
                         .clipped()  // Ensure the image doesn't overlap other content
                         .edgesIgnoringSafeArea(.top)
-                        
+                        .overlay(
+                            LinearGradient(
+                                gradient: Gradient(colors: [Color("ThemeWhite").opacity(0.0), Color("ThemeWhite").opacity(0.5)]),
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
                     
                     VStack {
                         Spacer()
                         HStack {
                             Button(action: {
                                 print("Click return")
-
+                                
                                 if(navigationStateManager.lastNavigationSource != .normal) {
                                     navigationStateManager.navigateBack()
                                 } else {
                                     self.presentationMode.wrappedValue.dismiss()
                                 }
-                                   
+                                
                             }, label: {
                                 Image(systemName: "arrow.uturn.backward")
                                     .foregroundColor(.black)
@@ -111,93 +116,103 @@ struct FolderView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding([.horizontal, .bottom])
                 
-                if !folderViewModel.searchOpen {
-                    HStack {
-                        
-                        Button(action: {
-                            folderViewModel.searchButtonClick()  // This should toggle the clicked status in your ViewModel
-                        }, label: {
-                            HStack {
-                                // The magnifying glass icon
-                                Image(systemName: "magnifyingglass")
-                                    .imageScale(.medium)
-                                    .padding(Spacing.small)
-                                    .foregroundColor(.accentColor)
-                                
-                            }
-                            .cornerRadius(Spacing.small)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: Spacing.small)
-                                    .stroke(Color("ThemeColor"), lineWidth: 2)
-                            )
-                        })
-                        .animation(.easeInOut, value: folderViewModel.searchOpen)  // Animate the changes
-                        
-                        CustomButton(action: {
-                            folderViewModel.sortButtonClick()
-                        }, label: "Sort", imageSystemName: "line.3.horizontal.decrease.circle", style: .outline)
-                        .sheet(isPresented: $folderViewModel.sortOpen) {
-                            // Your bottom sheet view
-                            VStack {
-                                Text("Option 1").padding()
-                                Text("Option 2").padding()
-                                // Add more options as needed
-                            }.presentationDetents([.height(200)])
-                        }
-                        
-                        CustomButton(action: {
-                            print("Button tapped")
-                            folderViewModel.showCreateSheet = true
-                        }, label: "Add", imageSystemName: "plus.circle", style: .fill)
-                        .sheet(isPresented: $folderViewModel.showCreateSheet) {
-                            CreateLinkView().padding([.top])
-                        }
-                        
-                        Spacer()
-                    }
-                    .padding([.horizontal])
-                }
                 
-                if folderViewModel.searchOpen {
-                    GeometryReader { geometry in
-                        HStack{
-                            TextField("Search...", text: $folderViewModel.searchText)
-                                .padding(Spacing.small)
-                                .frame(width:  geometry.size.width * 0.7).cornerRadius(Spacing.small)
+                HStack{
+                    if !folderViewModel.searchOpen {
+                        HStack {
+                            Button(action: {
+                                folderViewModel.searchButtonClick()  // This should toggle the clicked status in your ViewModel
+                            }, label: {
+                                HStack {
+                                    // The magnifying glass icon
+                                    Image(systemName: "magnifyingglass")
+                                        .imageScale(.medium)
+                                        .padding(Spacing.small)
+                                        .foregroundColor(.accentColor)
+                                    
+                                }
+                                .cornerRadius(Spacing.small)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: Spacing.small)
                                         .stroke(Color("ThemeColor"), lineWidth: 2)
                                 )
-                            Button {
-                                folderViewModel.searchButtonClick()
-                            } label: {
-                                Text("Cancel").foregroundColor(.black)
+                            })
+                            .animation(.easeInOut, value: folderViewModel.searchOpen)  // Animate the changes
+                            
+                            CustomButton(action: {
+                                folderViewModel.sortButtonClick()
+                            }, label: "Sort", imageSystemName: "line.3.horizontal.decrease.circle", style: .outline)
+                            .sheet(isPresented: $folderViewModel.sortOpen) {
+                                // Your bottom sheet view
+                                VStack {
+                                    Text("Option 1").padding()
+                                    Text("Option 2").padding()
+                                    // Add more options as needed
+                                }.presentationDetents([.height(200)])
                             }
+                            
+                            CustomButton(action: {
+                                print("Button tapped")
+                                folderViewModel.showCreateSheet = true
+                            }, label: "Add", imageSystemName: "plus.circle", style: .fill)
+                            .sheet(isPresented: $folderViewModel.showCreateSheet) {
+                                CreateLinkView().padding([.top])
+                            }
+                            
                             Spacer()
-                        }.padding(.horizontal)
-                    }.frame(height: 35)
+                        }
+                        .padding([.horizontal])
+                        .transition(.opacity.combined(with: .scale))
+                    }
                     
-                }
+                    
+                    if folderViewModel.searchOpen {
+                        
+                        GeometryReader { geometry in
+                            HStack{
+                                TextField("Search...", text: $folderViewModel.searchText)
+                                    .padding(Spacing.small)
+                                    .frame(width:  geometry.size.width * 0.7).cornerRadius(Spacing.small)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: Spacing.small)
+                                            .stroke(Color("ThemeColor"), lineWidth: 2)
+                                    )
+                                Button {
+                                    folderViewModel.searchButtonClick()
+                                } label: {
+                                    Text("Cancel").foregroundColor(.black)
+                                }
+                                Spacer()
+                            }.padding(.horizontal)
+                        }.frame(height: 35)
+                            .transition(.opacity.combined(with: .scale))
+                        
+                    }
+                }.animation(.easeInOut(duration: 0.3), value: folderViewModel.searchOpen)
                 
                 // Scrollable content
                 HStack{
-                    Text("Links: \(currentFolder.linksNumber)")
+                    Text("Links: \(currentFolder.getLinkNum())")
                     Spacer()
                 }.padding([.horizontal, .top])
                 
-               
-                    HStack{
-                        Spacer()
-                        GeometryReader { geometry in
-                            if currentFolder.linksNumber != 0 {
-                                ScrollView(.vertical, showsIndicators: true) {
-                                    VStack(spacing: 10) {
-                                        ForEach(currentFolder.links! ) { link in
-                                            LinkItemView(currentLink: link).frame(width: geometry.size.width )
-                                        }
+                
+                HStack{
+                    Spacer()
+                    GeometryReader { geometry in
+                        if currentFolder.getLinkNum() != 0 {
+                            ScrollView(.vertical, showsIndicators: true) {
+                                VStack(spacing: 10) {
+                                    ForEach(currentFolder.links.filter
+                                            { link in
+                                        folderViewModel.searchText.isEmpty || link.title.localizedCaseInsensitiveContains(folderViewModel.searchText)
+                                    } , id: \.self) { link in
+                                        LinkItemView(currentLink: link).frame(width: geometry.size.width).transition(.opacity)
                                     }
                                 }
-                            } else {
+                            }.animation(.easeInOut(duration: 0.3), value: folderViewModel.searchText.isEmpty)
+                        } else {
+                            VStack {
                                 HStack{
                                     Spacer()
                                     VStack{
@@ -212,25 +227,34 @@ struct FolderView: View {
                                     Spacer()
                                 }
                             }
-                        }.padding(.horizontal)
-                        Spacer()
-                    }
+                        }
+                    }.padding(.horizontal)
+                    Spacer()
+                }
                 
-               
+                
                 
             }
         }.onAppear {
             // This is called when the view appears
-            print(currentFolder.links)
+            currentFolder = navigationStateManager.focusFolder ?? Folder(title: "Oops, Error X:C",imgUrl: "folderAsset8", desc: "Try to restart the app", links: [] )
+            print("Folder ", currentFolder.toString())
+                for link in currentFolder.links {
+                    print(link.toString()) // Assuming you have a toString() method in your Link class
+                }
             navigationStateManager.enterSubMenu()
         }
         .onDisappear {
-            // This is called when the view is about to disappear
             navigationStateManager.exitSubMenu()
         }.navigationBarBackButtonHidden(true)
+        
     }
 }
 
 #Preview {
-    FolderView().environment(NavigationStateManager()).modelContainer(PreviewContainer).environment(AppViewModel())
+    //    FolderView().environment(NavigationStateManager()).modelContainer(PreviewContainer).environment(AppViewModel())
+    MainNavStack()
+        .modelContainer(PreviewContainer)
+        .environment(NavigationStateManager())
+        .environment(AppViewModel())
 }

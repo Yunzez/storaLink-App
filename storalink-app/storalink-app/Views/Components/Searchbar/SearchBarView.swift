@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct SearchBarView: View {
-    @ObservedObject var viewModel: SearchBarViewModel
+    @State var viewModel: SearchBarViewModel
     @FocusState private var inputFocus: Bool
-    
+    @State private var showResults = false
     @State private var searchBarFrame: CGRect = .zero
     var body: some View {
-        ZStack {
             VStack {
                 HStack {
                     Image(systemName: "magnifyingglass")
@@ -28,6 +27,10 @@ struct SearchBarView: View {
                         .onChange(of: viewModel.searchText) { newValue, _ in
                             print("Search term changed to: \(newValue)")
                             viewModel.search()
+                            withAnimation(.spring(response: 0.55, dampingFraction: 0.45)) {
+                                viewModel.isSearching = viewModel.searchText.isEmpty ? false : true
+                            }
+                            
                         }
                 } .background(Color(.systemGray6))
                     .cornerRadius(10)
@@ -36,10 +39,42 @@ struct SearchBarView: View {
                             .stroke( inputFocus ? Color("ThemeColor") : Color.gray , lineWidth: 2)
                     )
                     .padding(.horizontal)
-                
+                    .frame(height: Spacing.customSearchBarHeight)
+                // Search results list
+                if viewModel.isSearching && inputFocus {
+                    
+                    VStack{
+                        ScrollView {
+                            VStack {
+                                ForEach(viewModel.results, id: \.self) { result in
+                                    Button(action: {
+                                        print("Result selected: \(result)")
+                                        // Any state changes you want to animate go here
+                                        //                                        viewModel.selectResult(result)
+                                    }) {
+                                        BottomSheetOption(onClick: {
+                                            print("Click")
+                                        }, text: result, assetImageString: "Folder")
+                                    }
+                                    .foregroundColor(.primary)
+                                    .frame(width: UIScreen.main.bounds.width * 0.9)
+                                }
+                            }
+                        }
+                        .scrollIndicators(.visible)
+                        .contentMargins(.vertical, Spacing.medium)
+                        .background(Color("ThemeWhite"))
+                        .cornerRadius(Spacing.small)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: Spacing.small)
+                                .stroke(Color("ThemeColor"), lineWidth: 2)
+                        )
+                    }.frame(width: UIScreen.main.bounds.width * 0.9, height: Spacing.customSearchBarHeight * 3)
+                    .zIndex(2.0)
+                    .foregroundStyle(.white)
+                    .transition(.offset(x: 0, y: -Spacing.customSearchBarHeight * 3).combined(with: .opacity))
+                }
             }
-            
-        }.environmentObject(viewModel)
     }
 }
 

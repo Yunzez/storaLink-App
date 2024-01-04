@@ -18,4 +18,5 @@ struct Spacing {
     static let roundMd: CGFloat = 8.0
     static let roundLg: CGFloat = 12.0
     static let customNavigationBarHeight: CGFloat = 50.0
+    static let customSearchBarHeight: CGFloat = 60.0
 }

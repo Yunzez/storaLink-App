@@ -52,11 +52,9 @@ struct CreateLinkView: View {
                     Text("Save to folder")
                     
                     ZStack{
-                     
                         VStack {
                             StandardTextField(placeholder: "Search Folder...", text: $viewModel.searchFolder)
                                 .padding([.horizontal, .bottom]).onTapGesture {
-                                    // Show the results when the TextField is tapped
                                     withAnimation {
                                         viewModel.showingSearchResults = true
                                     }

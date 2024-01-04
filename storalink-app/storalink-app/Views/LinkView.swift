@@ -14,21 +14,26 @@ struct LinkView: View {
     @State private var currentLinkIndex = 0
     @State var dragOffSet: CGFloat = 0
     @State var screenWidth: CGFloat = 0
-    
-    var currentLink: Link {
-        if let focusedLink = navigationStateManager.focusLink {
-            return focusedLink
-        }
-        else {
-            return Link(title: "Test Link 1", imgUrl: "", desc: "testing link one")
-        }
-    }
+    @State private var currentLink: Link? = nil
+   
     var currentFolder: Folder {
-        if let folder = currentLink.parentFolder {
+        if let folder = currentLink?.parentFolder {
             return folder
         } else {
-            return Folder(title: "Error", imgUrl: "")
+            return Folder(title: "Error", imgUrl: "", links: [])
         }
+    }
+    
+    func adjustCurrentLinkIndex() -> Void {
+        let links = currentFolder.links
+            
+        for (index, link) in links.enumerated() {
+                if link == currentLink {
+                    currentLinkIndex = index
+                    break
+                }
+            }
+        
     }
     
     func cardOffSet(for index: Int) -> CGFloat{
@@ -37,6 +42,7 @@ struct LinkView: View {
         let initialOffset = cardSpacing * CGFloat(adjustedIndex)
         let maxCardMovement = cardSpacing
         let progress = min(abs(dragOffSet)/(screenWidth/2), 1)
+        
         if adjustedIndex < 0 { // card off screen
             if dragOffSet > 0 && index == currentLinkIndex - 1 {
                 let distanceToMove = (initialOffset + screenWidth) * progress
@@ -91,11 +97,9 @@ struct LinkView: View {
                 }.edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: 60)
                     .padding(.bottom)
-//                                .background(.red)
                 
-//                ScrollView(.horizontal, showsIndicators: true) {
                     ZStack {
-                        ForEach(Array(currentFolder.links?.enumerated() ?? [].enumerated()), id: \.element.id) { index, link in
+                        ForEach(Array(currentFolder.links.enumerated()), id: \.element.id) { index, link in
                             LinkViewCard()
                                 .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
                                 .offset(x: cardOffSet(for: index))
@@ -105,46 +109,64 @@ struct LinkView: View {
                                 .frame(width: screenWidth)
                                 .gesture(
                                     DragGesture().onChanged{ value in
-                                        print(value)
                                         self.dragOffSet = value.translation.width
                                     }.onEnded{ endVal in
-                                        print("end", endVal)
                                         let threshold = screenWidth * 0.3
                                         
                                         withAnimation{
                                             if endVal.translation.width < -threshold {
-                                                currentLinkIndex = min(currentLinkIndex + 1, currentFolder.links?.count ?? 0)
+                                                currentLinkIndex = min(currentLinkIndex + 1, currentFolder.links.count - 1)
                                             } else if(endVal.translation.width > threshold) {
                                                     currentLinkIndex = max(currentLinkIndex - 1,  0)
                                             }
+                                            
+                                            currentLink = (currentFolder.links[currentLinkIndex])
                                         }
                                         
                                         withAnimation{
                                             dragOffSet = 0
                                         }
                                     }
-                                )// Assuming LinkViewCard takes a Link object
+                                )
                         }
                     }
-                   
-//                }.padding(.horizontal)
                 
                 HStack{
-                    Text("0\(currentLinkIndex + 1)/\(currentFolder.getLinkNum())")
+                    Text("\(currentLinkIndex + 1)/\(currentFolder.getLinkNum())")
                     Spacer()
                 }.padding(.horizontal)
                 
                 VStack{
-                    Text("Title Placeholder 1").font(.title2).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                    Text("Decently Long Link Description Placeholder and ipsum dolor sit amet consectetur. Elementum viverra urna aenean et orci risus tellus. Donec egestas velit purus vitae.Et platea phasellus mattis cursus euismod nunc lacus felis sit. Adipiscing pellentesque nisl maecenas vel egestas vulputate tempor consectetur. ")
+                    Text(currentLink?.title ?? "  ").font(.title2).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                    Text(currentLink?.desc ?? "   ")
                 }.padding(.horizontal)
                 Spacer()
                 
                 HStack{
                     Image(systemName: "ellipsis")
-                    CustomButton(action: {print("go to link")}, label: "View Live Media", imageSystemName: "link", style: .fill)
+                    CustomButton(action: {
+                        if let url = URL(string: currentLink?.linkUrl ?? "") {
+                                UIApplication.shared.open(url)
+                            } else {
+                                print("Invalid URL")
+                            }
+                    }, label: "View Live Media", imageSystemName: "link", style: .fill)
                 }
             }.onAppear {
+                
+                adjustCurrentLinkIndex()
+                
+                if let focusedLink = navigationStateManager.focusLink {
+                        currentLink = focusedLink
+                        // Find the index of focusedLink in the currentFolder.links array
+                    if let index = currentFolder.links.firstIndex(where: { $0.id == focusedLink.id }) {
+                            currentLinkIndex = index
+                        }
+                    } else {
+                        // fallback
+                        currentLink = Link(title: "Test Link 1", imgUrl: "", desc: "testing link one")
+                    }
+                
                 screenWidth = reader.size.width
                 navigationStateManager.enterSubMenu()
             }

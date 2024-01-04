@@ -44,7 +44,7 @@ struct UserSettingOptionBar: View {
             }.padding()
                 .cornerRadius(Spacing.small)
                 .overlay(RoundedRectangle(cornerRadius: Spacing.small)
-                .stroke(Color("Gray"), lineWidth: 1))
+                .stroke(Color("ThemeGray"), lineWidth: 1))
                 .padding(.horizontal)
         })
        

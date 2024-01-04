@@ -90,7 +90,7 @@ struct CreateFolderView: View {
                         
                         HStack{
                             Text("Share")
-                            Text("(Optional)").fontWeight(.light).foregroundColor(Color("Gray"))
+                            Text("(Optional)").fontWeight(.light).foregroundColor(Color("ThemeGray"))
                         }.padding(.horizontal)
                         StandardTextField( placeholder:"search other user", text: $viewModel.searchUser).padding([.bottom, .horizontal])
                         
