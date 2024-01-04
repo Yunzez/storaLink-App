@@ -22,7 +22,7 @@ var PreviewContainer: ModelContainer {
             }
             
             context.insert(user)
-            
+            context.insert(User(name: "Fred Zhao", email: "yz8751@nyu.edu"))
             try context.save()
             
 //            let newFolders = try context.fetch(FetchDescriptor<Folder>())

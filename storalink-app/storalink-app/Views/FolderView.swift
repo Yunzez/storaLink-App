@@ -36,9 +36,9 @@ struct FolderView: View {
                         .edgesIgnoringSafeArea(.top)
                         .overlay(
                             LinearGradient(
-                                gradient: Gradient(colors: [Color("ThemeWhite").opacity(0.0), Color("ThemeWhite").opacity(0.5)]),
+                                gradient: Gradient(colors: [Color("ThemeWhite").opacity(0.0), Color("ThemeWhite").opacity(0.7)]),
                                 startPoint: .top,
-                                endPoint: .bottom
+                                endPoint: .bottomLeading
                             )
                         )
                     
@@ -107,8 +107,9 @@ struct FolderView: View {
                         
                         
                     }
+                    Spacer()
                 }.edgesIgnoringSafeArea(.top)
-                    .frame(maxWidth: .infinity, maxHeight: 150)
+                .frame(maxWidth: .infinity, maxHeight: 150)
                 
                 
                 // Description Text
@@ -247,8 +248,17 @@ struct FolderView: View {
         .onDisappear {
             navigationStateManager.exitSubMenu()
         }.navigationBarBackButtonHidden(true)
+//            .navigationBarItems(leading: backButton)
         
     }
+    
+    private var backButton: some View {
+            HStack {
+            }
+            .padding(.horizontal)
+        }
+    
+ 
 }
 
 #Preview {

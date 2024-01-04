@@ -31,6 +31,8 @@
 		9F7260A82B3E203300A49628 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260A72B3E203300A49628 /* AppViewModel.swift */; };
 		9F7260AA2B4207E500A49628 /* BottomSheetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260A92B4207E500A49628 /* BottomSheetOption.swift */; };
 		9F7260AC2B4295D100A49628 /* FolderItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260AB2B4295D100A49628 /* FolderItemViewModel.swift */; };
+		9F7260AE2B47619B00A49628 /* CredentialEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260AD2B47619B00A49628 /* CredentialEncryption.swift */; };
+		9F7260B12B4764C000A49628 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 9F7260B02B4764C000A49628 /* KeychainAccess */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -112,6 +114,7 @@
 		9F7260A72B3E203300A49628 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		9F7260A92B4207E500A49628 /* BottomSheetOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetOption.swift; sourceTree = "<group>"; };
 		9F7260AB2B4295D100A49628 /* FolderItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderItemViewModel.swift; sourceTree = "<group>"; };
+		9F7260AD2B47619B00A49628 /* CredentialEncryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialEncryption.swift; sourceTree = "<group>"; };
 		9FD082D02B1437A4004021FC /* storalink-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storalink-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -157,6 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F7260B12B4764C000A49628 /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +271,7 @@
 				9FEB2E782B19739E005A300C /* FrameGetter.swift */,
 				9F72607B2B3A453E00A49628 /* LinkMetaDataFetcher.swift */,
 				9F7260922B3B8BF700A49628 /* UITest.swift */,
+				9F7260AD2B47619B00A49628 /* CredentialEncryption.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -395,6 +400,9 @@
 				9F72608A2B3A831F00A49628 /* PBXTargetDependency */,
 			);
 			name = "storalink-app";
+			packageProductDependencies = (
+				9F7260B02B4764C000A49628 /* KeychainAccess */,
+			);
 			productName = "storalink-app";
 			productReference = 9FD082D02B1437A4004021FC /* storalink-app.app */;
 			productType = "com.apple.product-type.application";
@@ -426,6 +434,9 @@
 				Base,
 			);
 			mainGroup = 9FD082C72B1437A4004021FC;
+			packageReferences = (
+				9F7260AF2B4764C000A49628 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+			);
 			productRefGroup = 9FD082D12B1437A4004021FC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -511,6 +522,7 @@
 				9F72607A2B3A325100A49628 /* CreateLinkViewModel.swift in Sources */,
 				9FD083102B147C6A004021FC /* SearchBarView.swift in Sources */,
 				9FD082FB2B14440D004021FC /* LoginView.swift in Sources */,
+				9F7260AE2B47619B00A49628 /* CredentialEncryption.swift in Sources */,
 				9FD083072B146AB1004021FC /* SignupView.swift in Sources */,
 				9F7260742B3A1F9300A49628 /* CreateFolderView.swift in Sources */,
 				9F7260AC2B4295D100A49628 /* FolderItemViewModel.swift in Sources */,
@@ -792,6 +804,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9F7260AF2B4764C000A49628 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9F7260B02B4764C000A49628 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F7260AF2B4764C000A49628 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9FD082C82B1437A4004021FC /* Project object */;
 }

@@ -93,19 +93,16 @@ struct MainNavStack: View {
                 
             }.navigationDestination(for: NavigationItem.self) { item in
                 switch item {
-                   
+                    
                 case .createFolderView:
                     CreateFolderView() // The destination for CreateFolderView
-                    // Handle other cases as needed
                 case .createLinkView:
-                    
                     CreateLinkView()
-                    
                 case .folderView:
                     FolderView()
                 case .linkView:
                     LinkView()
-                
+                    
                 }
                 
             }

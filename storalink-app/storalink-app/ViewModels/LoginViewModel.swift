@@ -11,6 +11,9 @@ import SwiftUI
 
 
 @Observable class LoginViewModel {
+    
+    let keychainStorage = KeychainStorage()
+    
     var context: ModelContext?
     var appData: AppViewModel?
     
@@ -36,8 +39,6 @@ import SwiftUI
     
     func handleLogin() {
         
-        
-        
         if email.count < 8 || password.count < 8 {
             print("email or password need to be longer than 8 characters", email.count, password.count)
             errorMessage = "email or password need to be longer than 8 characters"
@@ -46,7 +47,21 @@ import SwiftUI
         } else {
             error = false
             errorMessage = ""
-            handleLoading(loadingProgress: loadingProgress)
+            authenticate()
+        }
+    }
+    
+    func authenticate() {
+        //Mark: -
+        
+        Task {
+            if let hash = hashPassword("12345678") {
+                do {
+                    try await keychainStorage.saveData(data: Data(hash.utf8), with: "yz8751@nyu.edu")
+                } catch {
+                    print("Error saving password hash: \(error)")
+                }
+            }
         }
         
         if let context = context {
@@ -57,11 +72,39 @@ import SwiftUI
                 
                 for user in users {
                     print(user.name)
-                    if(user.name == "Eddie Eidde" ) {
-                        print("login user", user.name)
-                        appData?.userName = user.name
-                        appData?.setUser(user: user)
+                    if(user.email == email ) {
+                        Task{
+                            do {
+                                let savedPasswordData = try await self.keychainStorage.getData(for: user.email)
+                                
+                                if savedPasswordData != nil {
+                                    if let savedPassword = String(data: savedPasswordData!, encoding: .utf8) {
+                                        // Now you have the saved password as a String and can compare it with the user's input.
+                                        print("Retrieved saved password: \(savedPassword)")
+                                        // Compare with user's input password here
+                                        if savedPassword == hashPassword(password) {  // Assuming you have the user's entered password as `userEnteredPassword`
+                                            print("Passwords match")
+                                            appData?.userName = user.name
+                                            appData?.setUser(user: user)
+                                            // this step we let user pass
+                                        } else {
+                                            print("Passwords do not match")
+                                            error = true
+                                            errorMessage = "Your password is incorrect"
+                                        }
+                                    } else {
+                                        print("Failed to convert saved password data to String")
+                                    }
+                                }
+                                
+                                
+                            }
+                        }
                     }
+                }
+                
+                if !error {
+                    handleLoading(loadingProgress: loadingProgress)
                 }
             } catch {
                 print("Fetch failed: \(error)")
@@ -69,8 +112,6 @@ import SwiftUI
         } else {
             print("Model context is nil")
         }
-        
-        
     }
     
     func handleLoading(loadingProgress: Int){

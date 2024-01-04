@@ -29,7 +29,7 @@ struct ContentView: View {
     
     var body: some View {
         // switch back after testing
-        if !appViewModel.isAuthenticated {
+        if appViewModel.isAuthenticated {
             MainNavStack()
         } else {
             LoginView()
