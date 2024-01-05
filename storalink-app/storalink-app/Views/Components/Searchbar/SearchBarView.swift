@@ -52,7 +52,18 @@ struct SearchBarView: View {
                     VStack{
                         ScrollView {
                             VStack {
-                                
+                                if (viewModel.results.isEmpty) {
+                                    VStack{
+                                        Image("NoResult")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: UIScreen.main.bounds.width * 0.9, height: Spacing.customSearchBarHeight * 2 )
+                                            .cornerRadius(8)
+                                            .padding(Spacing.small)
+                                        
+                                        Text("No Matching Results").foregroundColor(.black).fontWeight(.semibold)
+                                    }
+                                }
                                 ForEach(viewModel.results, id: \.id) { result in
                                         switch result {
                                         case .folder(let folder):
@@ -65,13 +76,13 @@ struct SearchBarView: View {
                                                     Image("Folder")
                                                         .resizable()
                                                         .aspectRatio(contentMode: .fit)
-                                                        .frame(width: 25, height: 25) // Example folder icon
+                                                        .frame(width: 30, height: 30) // Example folder icon
                                                     Text(folder.title) // Display folder title
                                                 }
                                             }
                                             .foregroundColor(.primary)
-                                            .frame(width: UIScreen.main.bounds.width * 0.9, height: Spacing.customSearchBarHeight/3, alignment: .leading )
-                                            .padding()
+                                            .frame(width: UIScreen.main.bounds.width * 0.9, height: Spacing.customSearchBarHeight/2, alignment: .leading )
+                                            .padding(Spacing.small)
                                             .cornerRadius(8)
 
                                         case .link(let link):
@@ -84,13 +95,13 @@ struct SearchBarView: View {
                                                     Image("Link")
                                                         .resizable()
                                                         .aspectRatio(contentMode: .fit)
-                                                        .frame(width: 25, height: 25)
+                                                        .frame(width: 30, height: 30)
                                                     Text(link.title) // Display folder title
                                                 }
                                             }
                                             .foregroundColor(.primary)
                                             .frame(width: UIScreen.main.bounds.width * 0.9, height: Spacing.customSearchBarHeight/2, alignment: .leading )
-                                            .padding()
+                                            .padding(Spacing.small)
                                             .cornerRadius(8)
                                         }
                                     }
@@ -106,10 +117,10 @@ struct SearchBarView: View {
                             RoundedRectangle(cornerRadius: Spacing.small)
                                 .stroke(Color("ThemeColor"), lineWidth: 2)
                         )
-                    }.frame(width: UIScreen.main.bounds.width * 0.9, height: Spacing.customSearchBarHeight * 3)
+                    }.frame(width: UIScreen.main.bounds.width * 0.9, height: Spacing.customSearchBarHeight * 4)
                     .zIndex(2.0)
                     .foregroundStyle(.white)
-                    .transition(.offset(x: 0, y: -Spacing.customSearchBarHeight * 3).combined(with: .opacity))
+                    .transition(.offset(x: 0, y: -Spacing.customSearchBarHeight * 4).combined(with: .opacity))
                 }
             }
     }
