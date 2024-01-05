@@ -34,6 +34,7 @@
 		9F7260AE2B47619B00A49628 /* CredentialEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260AD2B47619B00A49628 /* CredentialEncryption.swift */; };
 		9F7260B12B4764C000A49628 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 9F7260B02B4764C000A49628 /* KeychainAccess */; };
 		9F7260B32B4773DD00A49628 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260B22B4773DD00A49628 /* SignupViewModel.swift */; };
+		9F7260B52B47806C00A49628 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260B42B47806C00A49628 /* DeleteAccountView.swift */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -117,6 +118,7 @@
 		9F7260AB2B4295D100A49628 /* FolderItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderItemViewModel.swift; sourceTree = "<group>"; };
 		9F7260AD2B47619B00A49628 /* CredentialEncryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialEncryption.swift; sourceTree = "<group>"; };
 		9F7260B22B4773DD00A49628 /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
+		9F7260B42B47806C00A49628 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		9FD082D02B1437A4004021FC /* storalink-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storalink-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 			isa = PBXGroup;
 			children = (
 				9FEB2E842B3282E7005A300C /* UserInfoSettingView.swift */,
+				9F7260B42B47806C00A49628 /* DeleteAccountView.swift */,
 			);
 			path = SettingViews;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 				9FD083122B147CC6004021FC /* SearchBarViewModel.swift in Sources */,
 				9FD082EB2B143E34004021FC /* DataManager.swift in Sources */,
 				9FD0830A2B147857004021FC /* LinkItemView.swift in Sources */,
+				9F7260B52B47806C00A49628 /* DeleteAccountView.swift in Sources */,
 				9FD082D82B1437A4004021FC /* Item.swift in Sources */,
 				9F7260762B3A2C5800A49628 /* StandardTextField.swift in Sources */,
 				9FEB2E792B19739E005A300C /* FrameGetter.swift in Sources */,

@@ -50,9 +50,9 @@ func getExampleFolders() -> [Folder] {
     let sampleFolders = [
         ( title: "Travel", imgUrl: "folderAsset8", desc: "Places to visit", linksNumber: 15, pinned: true, links: []),
         ( title: "Recipes", imgUrl: "folderAsset7", desc: "Favorite recipes", linksNumber: 20, pinned: false, links: [])
-//        ( title: "Work", imgUrl: "folderAsset6", desc: "Work-related links", linksNumber: 10, pinned: true, links: getExampleLinks()),
-//        ( title: "Fram", imgUrl: "folderAsset2", desc: "Framing tips", linksNumber: 10, pinned: true, links: getExampleLinks()),
-//        ( title: "Gym", imgUrl: "folderAsset1", desc: "Nice gyms around", linksNumber: 40, pinned: true, links: getExampleLinks())
+//        ( title: "Work", imgUrl: "folderAsset6", desc: "Work-related links", linksNumber: 10, pinned: true, links: []),
+//        ( title: "Fram", imgUrl: "folderAsset2", desc: "Framing tips", linksNumber: 10, pinned: true, links: []),
+//        ( title: "Gym", imgUrl: "folderAsset1", desc: "Nice gyms around", linksNumber: 40, pinned: true, links: [])
     ]
     
     var folders: [Folder] = []

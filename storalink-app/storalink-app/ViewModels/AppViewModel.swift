@@ -17,9 +17,17 @@ class AppViewModel {
     
    init(userName: String? = nil) {
        self.userName = userName ?? ""
+       self.userEmail = ""
        self.user = nil
        self.isAuthenticated = false
    }
+    
+    init(userName: String, userEmail: String) {
+        self.userName = userName
+        self.userEmail = userEmail
+        self.user = nil
+        self.isAuthenticated = false
+    }
     
     func setUser(user: User) {
         self.user = user

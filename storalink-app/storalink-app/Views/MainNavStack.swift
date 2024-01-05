@@ -102,7 +102,6 @@ struct MainNavStack: View {
                     FolderView()
                 case .linkView:
                     LinkView()
-                    
                 }
                 
             }

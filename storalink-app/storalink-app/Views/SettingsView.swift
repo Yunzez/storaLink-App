@@ -36,8 +36,10 @@ struct SettingsView: View {
                    
                     
                     Section(header: Text("Application").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).padding(.top, -20)) {
-                        UserSettingTab(iconName: "person", title: "Account") {
-                            // Navigate to Account page
+                        NavigationLink(destination: UserInfoSettingView()) {
+                            UserSettingTab(iconName: "person", title: "Account") {
+                                // Navigate to Account page
+                            }
                         }
                         UserSettingTab(iconName: "paintbrush", title: "Appearance") {
                             // Navigate to Appearance page
