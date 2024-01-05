@@ -24,15 +24,16 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppViewModel.self) private var appViewModel
     
-    
-    @StateObject var userViewModel = UserViewModel()
-    
     var body: some View {
         // switch back after testing
-        if !appViewModel.isAuthenticated {
+        if appViewModel.isAuthenticated {
             MainNavStack()
         } else {
-            LoginView()
+            if appViewModel.isFirstLaunch ?? true {
+                TutorialView()
+            } else {
+                LoginView()
+            }
         }
     }
     

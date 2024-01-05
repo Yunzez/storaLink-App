@@ -10,13 +10,14 @@ import SwiftData
 
 @Observable
 class AppViewModel {
+    var isFirstLaunch: Bool?
     var isAuthenticated: Bool
     var userName: String?
     var userEmail: String?
     var user: User?
     
-   init(userName: String? = nil) {
-       self.userName = userName ?? ""
+   init() {
+       self.userName = ""
        self.userEmail = ""
        self.user = nil
        self.isAuthenticated = false

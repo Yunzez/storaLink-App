@@ -25,6 +25,24 @@ struct storalink_appApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
+    func checkFirstLaunch() {
+        let defaults = UserDefaults.standard
+
+        if defaults.bool(forKey: "HasLaunchedOnce") {
+            // App has already launched before, so you might not want to show the tutorial.
+            print("Not the first launch.")
+            appViewModel.isFirstLaunch = false
+        } else {
+            // This is the first launch, show the tutorial and set the flag.
+            print("First launch, setting UserDefaults.")
+            defaults.set(true, forKey: "HasLaunchedOnce")
+            defaults.synchronize()
+            appViewModel.isFirstLaunch = true
+            // Show tutorial or introductory content here.
+        }
+    }
+    
 
     var body: some Scene {
         WindowGroup {
