@@ -15,10 +15,17 @@ struct FilesView: View {
     private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
     var body: some View {
-        ZStack{
+        ZStack(alignment: .top){
+            VStack {
+                GeometryReader { geometry in
+                    VStack{
+                        SearchBarView(viewModel: viewModel)
+                    }
+                }
+            }.zIndex(2.0)
+          
             VStack{
-                SearchBarView(viewModel: viewModel)
-                    .padding(.bottom)
+               
                 ScrollView(.vertical, showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(folders, id: \.self) { folder in
@@ -27,12 +34,8 @@ struct FilesView: View {
                         }
                     }.padding(.horizontal) // Add horizontal padding
                 }
-            }
-            
-            VStack{
-                SearchBarDropDownView(viewModel: viewModel)
-                Spacer()
-            }
+            }.padding(.top, Spacing.customSearchBarHeight )
+            .padding(.top, Spacing.small)
             
         }.padding(.bottom, Spacing.customNavigationBarHeight )
         

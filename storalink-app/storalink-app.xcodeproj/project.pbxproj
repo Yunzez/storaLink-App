@@ -11,7 +11,6 @@
 		9F7260622B365D6400A49628 /* NavigationStageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260612B365D6400A49628 /* NavigationStageManager.swift */; };
 		9F7260682B36827E00A49628 /* LinkItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260672B36827E00A49628 /* LinkItemViewModel.swift */; };
 		9F72606A2B36966600A49628 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260692B36966600A49628 /* LinkView.swift */; };
-		9F72606C2B369D0700A49628 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72606B2B369D0600A49628 /* HomeView.swift */; };
 		9F72606E2B36A1F800A49628 /* LinkCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72606D2B36A1F800A49628 /* LinkCardView.swift */; };
 		9F7260722B3A1F8700A49628 /* CreateLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260712B3A1F8700A49628 /* CreateLinkView.swift */; };
 		9F7260742B3A1F9300A49628 /* CreateFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260732B3A1F9300A49628 /* CreateFolderView.swift */; };
@@ -37,6 +36,7 @@
 		9F7260B52B47806C00A49628 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260B42B47806C00A49628 /* DeleteAccountView.swift */; };
 		9F7260B72B47957900A49628 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260B62B47957900A49628 /* TutorialView.swift */; };
 		9F7260B92B47972600A49628 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F7260B82B47972600A49628 /* Launch Screen.storyboard */; };
+		9F7260BB2B48B67300A49628 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260BA2B48B67300A49628 /* HomeView.swift */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -62,7 +62,6 @@
 		9FD083102B147C6A004021FC /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD0830F2B147C6A004021FC /* SearchBarView.swift */; };
 		9FD083122B147CC6004021FC /* SearchBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD083112B147CC6004021FC /* SearchBarViewModel.swift */; };
 		9FEB2E792B19739E005A300C /* FrameGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E782B19739E005A300C /* FrameGetter.swift */; };
-		9FEB2E7D2B197C64005A300C /* SearchBarDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E7C2B197C64005A300C /* SearchBarDropDownView.swift */; };
 		9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */; };
 		9FEB2E822B328064005A300C /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E812B328064005A300C /* FolderView.swift */; };
 		9FEB2E852B3282E7005A300C /* UserInfoSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E842B3282E7005A300C /* UserInfoSettingView.swift */; };
@@ -98,7 +97,6 @@
 		9F7260612B365D6400A49628 /* NavigationStageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStageManager.swift; sourceTree = "<group>"; };
 		9F7260672B36827E00A49628 /* LinkItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkItemViewModel.swift; sourceTree = "<group>"; };
 		9F7260692B36966600A49628 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
-		9F72606B2B369D0600A49628 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = ../../../../../.Trash/HomeView.swift; sourceTree = "<group>"; };
 		9F72606D2B36A1F800A49628 /* LinkCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkCardView.swift; sourceTree = "<group>"; };
 		9F7260712B3A1F8700A49628 /* CreateLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLinkView.swift; sourceTree = "<group>"; };
 		9F7260732B3A1F9300A49628 /* CreateFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFolderView.swift; sourceTree = "<group>"; };
@@ -123,6 +121,7 @@
 		9F7260B42B47806C00A49628 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		9F7260B62B47957900A49628 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		9F7260B82B47972600A49628 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		9F7260BA2B48B67300A49628 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		9FD082D02B1437A4004021FC /* storalink-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storalink-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -149,7 +148,6 @@
 		9FD0830F2B147C6A004021FC /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		9FD083112B147CC6004021FC /* SearchBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarViewModel.swift; sourceTree = "<group>"; };
 		9FEB2E782B19739E005A300C /* FrameGetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameGetter.swift; sourceTree = "<group>"; };
-		9FEB2E7C2B197C64005A300C /* SearchBarDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarDropDownView.swift; sourceTree = "<group>"; };
 		9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingTab.swift; sourceTree = "<group>"; };
 		9FEB2E812B328064005A300C /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
 		9FEB2E842B3282E7005A300C /* UserInfoSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingView.swift; sourceTree = "<group>"; };
@@ -296,12 +294,12 @@
 				9FD083002B144E30004021FC /* SettingsView.swift */,
 				9FD082F82B1443D3004021FC /* FilesView.swift */,
 				9FD083022B144E40004021FC /* InfoView.swift */,
-				9F72606B2B369D0600A49628 /* HomeView.swift */,
 				9FD083042B145856004021FC /* MainNavStack.swift */,
 				9FD083062B146AB1004021FC /* SignupView.swift */,
 				9FEB2E812B328064005A300C /* FolderView.swift */,
 				9F7260692B36966600A49628 /* LinkView.swift */,
 				9F7260B62B47957900A49628 /* TutorialView.swift */,
+				9F7260BA2B48B67300A49628 /* HomeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -363,7 +361,6 @@
 			isa = PBXGroup;
 			children = (
 				9FD0830F2B147C6A004021FC /* SearchBarView.swift */,
-				9FEB2E7C2B197C64005A300C /* SearchBarDropDownView.swift */,
 			);
 			path = Searchbar;
 			sourceTree = "<group>";
@@ -513,7 +510,6 @@
 				9F7260762B3A2C5800A49628 /* StandardTextField.swift in Sources */,
 				9FEB2E792B19739E005A300C /* FrameGetter.swift in Sources */,
 				9FD082FF2B144E21004021FC /* CreateView.swift in Sources */,
-				9FEB2E7D2B197C64005A300C /* SearchBarDropDownView.swift in Sources */,
 				9F7260602B35418700A49628 /* CustomButton.swift in Sources */,
 				9F7260622B365D6400A49628 /* NavigationStageManager.swift in Sources */,
 				9F7260AA2B4207E500A49628 /* BottomSheetOption.swift in Sources */,
@@ -533,8 +529,8 @@
 				9F72609A2B3BF31900A49628 /* FolderModel.swift in Sources */,
 				9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */,
 				9F7260682B36827E00A49628 /* LinkItemViewModel.swift in Sources */,
-				9F72606C2B369D0700A49628 /* HomeView.swift in Sources */,
 				9F7260B72B47957900A49628 /* TutorialView.swift in Sources */,
+				9F7260BB2B48B67300A49628 /* HomeView.swift in Sources */,
 				9F72607A2B3A325100A49628 /* CreateLinkViewModel.swift in Sources */,
 				9FD083102B147C6A004021FC /* SearchBarView.swift in Sources */,
 				9FD082FB2B14440D004021FC /* LoginView.swift in Sources */,

@@ -37,7 +37,7 @@ struct SignupView: View {
                 Spacer()
             }.padding([.top, .horizontal])
             
-            TextField("Name", text: $viewModel.name)
+            TextField("Preferred Name", text: $viewModel.name)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
                 .padding(.horizontal)
@@ -73,23 +73,30 @@ struct SignupView: View {
                 Text("Password")
                 Spacer()
             }.padding([.top, .horizontal])
-            SecureField("Password", text: $viewModel.password)
-                .padding(.horizontal)
-                .padding(.vertical, 12) // Increase vertical padding
-                .focused($isPasswordInputActive)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(isPasswordInputActive ? Color("ThemeColor") : Color.gray, lineWidth: 1)
-                )
-                .padding(.horizontal)
-                .animation(.easeInOut, value: isPasswordInputActive)
+            SecureField("Password", text: $viewModel.password).onChange(of: viewModel.password, { oldValue, newValue in
+                print(newValue)
+                viewModel.checkPassswordMatch()
+            })
+            .padding(.horizontal)
+            .padding(.vertical, 12) // Increase vertical padding
+            .focused($isPasswordInputActive)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(isPasswordInputActive ? Color("ThemeColor") : Color.gray, lineWidth: 1)
+            )
+            .padding(.horizontal)
+            .animation(.easeInOut, value: isPasswordInputActive)
             
             // Password field
             HStack{
                 Text("Confirm Your Password")
                 Spacer()
             }.padding([.top, .horizontal])
-            SecureField("Password", text: $viewModel.repassword)
+            SecureField("Confirm Password", text: $viewModel.repassword)
+                .onChange(of: viewModel.repassword, { oldValue, newValue in
+                    print(newValue)
+                    viewModel.checkPassswordMatch()
+                })
                 .padding(.horizontal)
                 .padding(.vertical, 12) // Increase vertical padding
                 .focused($isRePasswordInputActice)
@@ -102,16 +109,16 @@ struct SignupView: View {
             
             if viewModel.error {
                 Text(viewModel.errorMessage)
-                        .foregroundColor(Color("Warning")) // Optional: Set the text color to red for visibility
-                }
+                    .foregroundColor(Color("Warning")) // Optional: Set the text color to red for visibility
+            }
             
             
             // Remember me checkbox
             HStack(spacing: 8) {
                 
                 Toggle(isOn: $viewModel.rememberMe){}.labelsHidden()
-                .toggleStyle(SwitchToggleStyle(tint: Color("ThemeColor")))
-                .padding(.trailing, 3)// Customize the toggle color
+                    .toggleStyle(SwitchToggleStyle(tint: Color("ThemeColor")))
+                    .padding(.trailing, 3)// Customize the toggle color
                 Text("Remember Me")
                 Spacer()
             }
@@ -120,6 +127,11 @@ struct SignupView: View {
             // Sign in button
             Button(action: {
                 print("Signup ")
+                if let newUser = viewModel.handleSignUp() {
+                    print("check passed")
+                    appViewModel.setUser(user: newUser)
+                    appViewModel.isAuthenticated = true
+                }
             }) {
                 Text("Sign Up")
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)

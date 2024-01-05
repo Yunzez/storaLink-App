@@ -32,6 +32,8 @@ class AppViewModel {
     
     func setUser(user: User) {
         self.user = user
+        self.userName = user.name
+        self.userEmail = user.email
     }
     
     func logoutUser() {

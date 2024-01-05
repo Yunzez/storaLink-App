@@ -77,6 +77,8 @@ struct TutorialView: View {
                 withAnimation {
                     if let nextStage = currentStage.next() {
                         currentStage = nextStage
+                    } else {
+                        appViewModel.isFirstLaunch = false
                     }
                 }
             }, label: {

@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct SearchBarView: View {
     @State var viewModel: SearchBarViewModel
     @FocusState private var inputFocus: Bool
     @State private var showResults = false
     @State private var searchBarFrame: CGRect = .zero
+    
+   
+    @Query var searchFolders: [Folder]
+    @Query var searchLinks: [Link]
+    
     var body: some View {
             VStack {
                 HStack {
@@ -26,7 +32,7 @@ struct SearchBarView: View {
                         .focused($inputFocus)
                         .onChange(of: viewModel.searchText) { newValue, _ in
                             print("Search term changed to: \(newValue)")
-                            viewModel.search()
+                            viewModel.search(folders: searchFolders, links: searchLinks)
                             withAnimation(.spring(response: 0.55, dampingFraction: 0.45)) {
                                 viewModel.isSearching = viewModel.searchText.isEmpty ? false : true
                             }
@@ -46,19 +52,50 @@ struct SearchBarView: View {
                     VStack{
                         ScrollView {
                             VStack {
-                                ForEach(viewModel.results, id: \.self) { result in
-                                    Button(action: {
-                                        print("Result selected: \(result)")
-                                        // Any state changes you want to animate go here
-                                        //                                        viewModel.selectResult(result)
-                                    }) {
-                                        BottomSheetOption(onClick: {
-                                            print("Click")
-                                        }, text: result, assetImageString: "Folder")
+                                
+                                ForEach(viewModel.results, id: \.id) { result in
+                                        switch result {
+                                        case .folder(let folder):
+                                            // Create a view for the folder
+                                            Button(action: {
+                                                // Any state changes you want to animate go here
+                                                //                                        viewModel.selectResult(result)
+                                            }) {
+                                                HStack {
+                                                    Image("Folder")
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .frame(width: 25, height: 25) // Example folder icon
+                                                    Text(folder.title) // Display folder title
+                                                }
+                                            }
+                                            .foregroundColor(.primary)
+                                            .frame(width: UIScreen.main.bounds.width * 0.9, height: Spacing.customSearchBarHeight/3, alignment: .leading )
+                                            .padding()
+                                            .cornerRadius(8)
+
+                                        case .link(let link):
+                                            // Create a view for the link
+                                            Button(action: {
+                                                // Any state changes you want to animate go here
+                                                //                                        viewModel.selectResult(result)
+                                            }) {
+                                                HStack {
+                                                    Image("Link")
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .frame(width: 25, height: 25)
+                                                    Text(link.title) // Display folder title
+                                                }
+                                            }
+                                            .foregroundColor(.primary)
+                                            .frame(width: UIScreen.main.bounds.width * 0.9, height: Spacing.customSearchBarHeight/2, alignment: .leading )
+                                            .padding()
+                                            .cornerRadius(8)
+                                        }
                                     }
-                                    .foregroundColor(.primary)
-                                    .frame(width: UIScreen.main.bounds.width * 0.9)
-                                }
+                                
+//
                             }
                         }
                         .scrollIndicators(.visible)
@@ -86,5 +123,5 @@ extension UIApplication {
 }
 
 #Preview {
-    SearchBarView(viewModel: SearchBarViewModel())
+    SearchBarView(viewModel: SearchBarViewModel()).modelContainer(PreviewContainer)
 }
