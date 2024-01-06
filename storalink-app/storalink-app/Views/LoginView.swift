@@ -95,7 +95,7 @@ struct LoginView: View {
                     
                     // Sign in button
                     Button(action: {
-                        
+                        print("Sign in")
                         loginViewModel.handleLogin()
                     }) {
                         Text("Sign In")

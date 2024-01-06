@@ -18,6 +18,7 @@ final class Folder {
     var linksNumber: Int
     var pinned: Bool
     var creationDate: Date
+    var user: User? 
     @Relationship(deleteRule: .cascade, inverse: \Link.parentFolder) var links: [Link] = [Link]()
     
     init( title: String, imgUrl: String, desc: String? = nil, pinned: Bool? = nil, links: [Link] ) {

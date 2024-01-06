@@ -14,7 +14,8 @@ final class User {
         let id = UUID()
     var name: String
     var email: String
-    var folders: [Folder]?
+    
+    @Relationship(deleteRule: .cascade, inverse: \Folder.user) var folders: [Folder]?
     // Other user properties
     
     init( name: String, email: String) {

@@ -17,15 +17,15 @@ import SwiftUI
     var context: ModelContext?
     var appData: AppViewModel?
     
-     var email: String = ""
-     var password: String = ""
-     var rememberMe: Bool = false
-     var error: Bool = false
-     var errorMessage: String = ""
-     var isLoading: Bool = false // For showing loading indicator
-     var loadingProgress: Int = 0
+    var email: String = ""
+    var password: String = ""
+    var rememberMe: Bool = false
+    var error: Bool = false
+    var errorMessage: String = ""
+    var isLoading: Bool = false // For showing loading indicator
+    var loadingProgress: Int = 0
     
-//    var userViewModel: UserViewModel // Assuming this is needed for authentication
+    //    var userViewModel: UserViewModel // Assuming this is needed for authentication
     
     init() {
         context = nil
@@ -38,7 +38,6 @@ import SwiftUI
     }
     
     func handleLogin() {
-        
         if email.count < 8 || password.count < 8 {
             print("email or password need to be longer than 8 characters", email.count, password.count)
             errorMessage = "email or password need to be longer than 8 characters"
@@ -47,97 +46,102 @@ import SwiftUI
         } else {
             error = false
             errorMessage = ""
-            authenticate()
+            isLoading = false
+            print("access")
+            Task {
+                await authenticate()
+                
+                if !self.error {
+                    self.handleLoading(loadingProgress: self.loadingProgress)
+                }
+            }
+            
         }
     }
-    
-    func authenticate() {
-        //Mark: -
-        
-        Task {
-            if let hash = hashPassword("12345678") {
-                do {
-                    try await keychainStorage.saveData(data: Data(hash.utf8), with: "yz8751@nyu.edu")
-                } catch {
-                    print("Error saving password hash: \(error)")
-                }
-            }
+
+    func authenticate() async {
+        guard let context = context else {
+            print("Model context is nil")
+            return
         }
         
-        if let context = context {
+        // this insert testing data
+        
+        if let hash = hashPassword("12345678") {
             do {
-                print("login")
-                let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
-                let users = try context.fetch(descriptor)
-                
-                for user in users {
-                    print(user.name)
-                    if(user.email == email ) {
-                        Task{
-                            do {
-                                let savedPasswordData = try await self.keychainStorage.getData(for: user.email)
-                                
-                                if savedPasswordData != nil {
-                                    if let savedPassword = String(data: savedPasswordData!, encoding: .utf8) {
-                                        // Now you have the saved password as a String and can compare it with the user's input.
-                                        print("Retrieved saved password: \(savedPassword)")
-                                        // Compare with user's input password here
-                                        if savedPassword == hashPassword(password) {  // Assuming you have the user's entered password as `userEnteredPassword`
-                                            print("Passwords match")
-                                            appData?.userName = user.name
-                                            appData?.setUser(user: user)
-                                            // this step we let user pass
-                                        } else {
-                                            print("Passwords do not match")
-                                            error = true
-                                            errorMessage = "Your password is incorrect"
-                                        }
-                                    } else {
-                                        print("Failed to convert saved password data to String")
-                                    }
-                                }
-                                
-                                
-                            }
-                        }
-                    }
-                }
-                
-                if !error {
-                    handleLoading(loadingProgress: loadingProgress)
-                }
+                try await keychainStorage.saveData(data: Data(hash.utf8), with: "yz8751@nyu.edu")
+                try await keychainStorage.saveData(data: Data(hash.utf8), with: "harry@uw.edu")
             } catch {
-                print("Fetch failed: \(error)")
+                print("Error saving password hash: \(error)")
             }
-        } else {
-            print("Model context is nil")
+        }
+
+        do {
+            print("login test")
+            let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
+            let users = try context.fetch(descriptor)
+            
+            for user in users {
+                print(user.name, user.email, email)
+                if user.email == email {
+                        let savedPasswordData = try await keychainStorage.getData(for: user.email)
+                        
+                        if let savedPasswordData = savedPasswordData,
+                           let savedPassword = String(data: savedPasswordData, encoding: .utf8),
+                           let hashedPassword = hashPassword(password) {
+                            
+                            print("Retrieved saved password: \(savedPassword)")
+                            if savedPassword == hashedPassword {
+                                print("Passwords match")
+                                    self.appData?.userName = user.name
+                                    self.appData?.setUser(user: user)
+                                    return
+                            } else {
+                                print("Passwords do not match")
+                                    self.error = true
+                                    self.errorMessage = "Your password is incorrect"
+                            }
+                        } else {
+                            print("Failed to retrieve or convert saved password data to String")
+                        }
+                }
+            }
+            if (self.appData?.userName ?? "").isEmpty {
+                self.error = true
+                self.errorMessage = "We can't find you in the database, check your email again"
+            }
+           
+        } catch {
+            print("Fetch failed: \(error)")
         }
     }
     
     func handleLoading(loadingProgress: Int){
-        print("handling loading")
-        isLoading = true
-        let duration = 3 // Total duration of loading in seconds
-        let interval = 0.1 // Time interval for each increment
-        var timeElapsed = 0.0
-        
-        Timer.scheduledTimer(withTimeInterval: interval, repeats: true) {
-            timer in DispatchQueue.main.async {
-                self.loadingProgress = Int((timeElapsed / Double(duration)) * 100)
-                if timeElapsed >= Double(duration) {
-                    timer.invalidate()
-                    self.isLoading = false
-                    print("loading finished")
-                    if let appData = self.appData {
-                        appData.isAuthenticated = true
-                    } else {
-                        print("appData is nil")
+        DispatchQueue.main.async {
+            print("handling loading, a test", self.appData?.userName ?? "No user" )
+            self.isLoading = true
+            let duration = 3 // Total duration of loading in seconds
+            let interval = 0.1 // Time interval for each increment
+            var timeElapsed = 0.0
+            
+            Timer.scheduledTimer(withTimeInterval: interval, repeats: true) {
+                timer in DispatchQueue.main.async {
+                    self.loadingProgress = Int((timeElapsed / Double(duration)) * 100)
+                    if timeElapsed >= Double(duration) {
+                        timer.invalidate()
+                        self.isLoading = false
+                        print("loading finished")
+                        if let appData = self.appData {
+                            appData.isAuthenticated = true
+                        } else {
+                            print("appData is nil")
+                        }
+                        self.loadingProgress = 100
+                        
                     }
-                    self.loadingProgress = 100
-
                 }
+                timeElapsed += interval
             }
-            timeElapsed += interval
         }
     }
 }
