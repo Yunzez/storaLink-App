@@ -23,7 +23,6 @@ struct BlurView: UIViewRepresentable {
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppViewModel.self) private var appViewModel
-    
     var body: some View {
         // switch back after testing
         if appViewModel.isAuthenticated {

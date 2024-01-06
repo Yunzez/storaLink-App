@@ -134,6 +134,14 @@ struct LoginView: View {
                                 .fontWeight(.semibold)
                         }
                     }
+                    
+                    Button(action: {
+                        withAnimation{
+                            appViewModel.resetFirstLaunch()
+                        }
+                    }, label: {
+                        Text("Show tutorial")
+                    })
                     .padding()
                     
                     Spacer()

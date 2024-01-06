@@ -21,6 +21,7 @@ class AppViewModel {
        self.userEmail = ""
        self.user = nil
        self.isAuthenticated = false
+       checkFirstLaunch()
    }
     
     init(userName: String, userEmail: String) {
@@ -28,6 +29,34 @@ class AppViewModel {
         self.userEmail = userEmail
         self.user = nil
         self.isAuthenticated = false
+        checkFirstLaunch()
+    }
+    
+    public func checkFirstLaunch() {
+        let defaults = UserDefaults.standard
+
+        if defaults.bool(forKey: "HasLaunchedOnce") {
+            // App has already launched before, so you might not want to show the tutorial.
+            print("Not the first launch.")
+            self.isFirstLaunch = false
+        } else {
+            // This is the first launch, show the tutorial and set the flag.
+            print("First launch, setting UserDefaults.")
+            defaults.set(true, forKey: "HasLaunchedOnce")
+            defaults.synchronize()
+            self.isFirstLaunch = true
+            // Show tutorial or introductory content here.
+        }
+    }
+    
+    public func resetFirstLaunch() {
+        let defaults = UserDefaults.standard
+        
+        if defaults.bool(forKey: "HasLaunchedOnce") {
+            // App has already launched before, so you might not want to show the tutorial.
+            print("Not the first launch.")
+            self.isFirstLaunch = true
+        }
     }
     
     func setUser(user: User) {
