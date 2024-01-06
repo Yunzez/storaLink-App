@@ -23,13 +23,13 @@ struct UserInfoSettingView: View {
                     }).presentationDetents([.height(500)])
                 })
                 UserSettingOptionBar(text: "Display name: \(appViewModel.userName ?? "Error")"){
-                    print("test")
+                    print("test1")
                 }
                 UserSettingOptionBar(text: "Email"){
-                    print("test")
+                    print("test2")
                 }
                 UserSettingOptionBar(text: "Test"){
-                    print("test")
+                    print("test3")
                 }
                 
                 NavigationLink {
