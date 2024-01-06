@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
+@MainActor
 struct ShareView: View {
+    @Query var folders: [Folder]
     @State var sharedURL: String?
     @State var linkText: String = ""
     @State var titleText: String = ""
@@ -174,7 +177,15 @@ struct ShareView: View {
 //                        RoundedRectangle(cornerRadius: 10) // Match this radius with the cornerRadius value above
 //                            .stroke(Color(UIColor.separator), lineWidth: 1)
 //                    ).padding(.horizontal)
-                
+                if folders.isEmpty {
+                    Text("No folder")
+                } else {
+                    Text("Has folder")
+                }
+                ForEach(folders) { folder in
+                    Text(folder.title)
+                    
+                }
                 Spacer()
             }
         }.onTapGesture {

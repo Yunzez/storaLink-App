@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
-
+import SwiftData
 struct SignupView: View {
-    @Environment(\.modelContext) var modelContext
+    @Environment(\.modelContext) var modelContext: ModelContext
     @Environment(AppViewModel.self) private var appViewModel : AppViewModel
     @State var viewModel = SignupViewModel()
     
@@ -131,6 +131,7 @@ struct SignupView: View {
                     print("check passed")
                     appViewModel.setUser(user: newUser)
                     appViewModel.isAuthenticated = true
+                    modelContext.insert(newUser)
                 }
             }) {
                 Text("Sign Up")

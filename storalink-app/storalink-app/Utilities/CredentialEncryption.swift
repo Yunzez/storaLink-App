@@ -23,7 +23,7 @@ final class KeychainStorage {
     // https://github.com/kishikawakatsumi/KeychainAccess#requirements
     // documentation above
     
-    private static let keychain = Keychain(service: "com.storalink.storalink-app").accessibility(.afterFirstUnlock)
+    private static let keychain = Keychain(service: "com.storalink.storalinkApp").accessibility(.afterFirstUnlock)
     
     func saveData(data: Data, with key: String) async throws {
         do {
