@@ -57,7 +57,7 @@ struct HomeView: View {
                 return false
             }
        })
-        
+    // User -> [Folders] -> [Links]
 //        _links = Query(filter: #Predicate { link in
 //            if let filterId = filterUserID {
 //                if let currentFolder = link.parentFolder {

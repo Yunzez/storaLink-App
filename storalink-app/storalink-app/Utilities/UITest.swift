@@ -32,13 +32,13 @@ struct UITest: View {
     
     var body: some View {
         ScrollView{
-            
+            Text("Folder Section").bold()
                 ForEach(folders, id: \.self) { folder in
                     Text(folder.title) // Display the folder title
                     // Add more details as needed
                 }.padding()
             
-            
+            Text("Links Section").bold()
             ForEach(links, id: \.self) { link in
                 HStack {
                     Text(link.title) // Display the link title
@@ -52,6 +52,8 @@ struct UITest: View {
                 }
             }.padding()
             
+            
+            Text("User Section").bold()
             ForEach(users) { user in
                 HStack{
                     Text(user.name)

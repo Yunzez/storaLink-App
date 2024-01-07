@@ -28,8 +28,12 @@ struct LinkItemView: View {
                 VStack(alignment: .leading) {
                     Text(currentLink.title )
                         .font(.headline)
-                    Text("@author")
-                        .font(.subheadline)
+                    HStack{
+                        Image("Ins").resizable().aspectRatio(contentMode: .fit).frame(width: 22, height: 22)
+                        Text("Some author")
+                            .font(.subheadline)
+                            
+                    }
                 }
                 Spacer()
                 Button(action: {

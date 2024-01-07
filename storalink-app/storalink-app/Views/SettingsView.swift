@@ -6,9 +6,22 @@
 //
 
 import SwiftUI
-
+import PhotosUI
+import SwiftData
 struct SettingsView: View {
     @Environment(AppViewModel.self) private var appViewModel
+    @State var photoPickerItem: PhotosPickerItem?
+    @State var uiImage: UIImage?
+    func updateImage() {
+            if let user = appViewModel.user,
+               let data = user.avatorData,
+               let image = UIImage(data: data) {
+                uiImage = image
+            } else {
+                uiImage = UIImage(resource: .defaultAvator) // Replace with your actual placeholder
+            }
+        }
+    
 //    @Bindable var appView = appleViewModel
     var body: some View {
         NavigationView {
@@ -17,20 +30,39 @@ struct SettingsView: View {
                 
                 
                 List {
-                    NavigationLink(destination: UserInfoSettingView()) {
-                        VStack{
-                            HStack{
-                                Spacer()
-                                Image("FolderPlaceholder")
+                   
+                    VStack{
+                        HStack{
+                            Spacer()
+                            PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                                Image(uiImage: uiImage ?? UIImage(resource: .defaultAvator))
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: 150, height: 150)
-                                    .cornerRadius(55.0)
+                                    .frame(width: 120, height: 120)
+                                    .cornerRadius(60.0)
                                     .clipped()
                                     .padding()
-                                Spacer()
+                                    
                             }
-                            Text(appViewModel.userName ?? "Nil").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                            
+                            Spacer()
+                        }
+                        Text(appViewModel.userName ?? "Nil").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        
+                    }.onAppear {
+                        updateImage()
+                    }.onChange(of: photoPickerItem) { _, _ in
+                        print("select picture")
+                        Task {
+                            if let photoPickerItem,
+                               let data = try await photoPickerItem.loadTransferable(type: Data.self) {
+                                if let image = UIImage(data: data) {
+                                    appViewModel.user?.avatorData = data
+                                    print(image)
+                                    
+                                    uiImage = image
+                                }
+                            }
                         }
                     }
                    

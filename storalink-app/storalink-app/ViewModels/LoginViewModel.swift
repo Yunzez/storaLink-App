@@ -55,7 +55,6 @@ import SwiftUI
                     self.handleLoading(loadingProgress: self.loadingProgress)
                 }
             }
-            
         }
     }
 
@@ -93,9 +92,12 @@ import SwiftUI
                             print("Retrieved saved password: \(savedPassword)")
                             if savedPassword == hashedPassword {
                                 print("Passwords match")
-                                    self.appData?.userName = user.name
-                                    self.appData?.setUser(user: user)
-                                    return
+                                self.appData?.userName = user.name
+                                self.appData?.setUser(user: user)
+                                
+                                // record login activity
+                                self.appData?.recordLogin(userEmail: email)
+                                return
                             } else {
                                 print("Passwords do not match")
                                     self.error = true

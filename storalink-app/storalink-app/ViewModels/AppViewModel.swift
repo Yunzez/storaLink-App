@@ -52,6 +52,23 @@ class AppViewModel {
         }
     }
     
+    public func recordLogin(userEmail: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(userEmail, forKey: "lastLoggedinUser")
+        defaults.synchronize()
+    }
+    
+    public func checkLastLogin() -> String{
+        let defaults = UserDefaults.standard
+        if let userEmail = defaults.string(forKey: "lastLoggedinUser") {
+            print("user logged in before")
+            return userEmail
+        } else {
+            print("user has not logged in before")
+        }
+        return ""
+    }
+    
     public func resetFirstLaunch() {
         let defaults = UserDefaults.standard
         
