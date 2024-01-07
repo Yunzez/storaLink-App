@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 struct CreateFolderView: View {
+    @Environment(AppViewModel.self) var appViewModel: AppViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.modelContext) var modelContext
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
@@ -99,7 +100,7 @@ struct CreateFolderView: View {
                     Button(action: {
                         // Action for folder creation
                         navigationStateManager.lastNavigationSource = .createdFolder
-                        viewModel.createFolder()
+                        viewModel.createFolder(userId: appViewModel.userId ?? UUID() )
                     }) {
                         Text("Create Folder")
                             .frame(minWidth: 0, maxWidth: .infinity)
