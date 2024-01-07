@@ -42,7 +42,7 @@ struct MainNavStack: View {
                     case 0:
                         HomeViewEntry()
                     case 1:
-                        FilesView()
+                        FilesViewEntry()
                     case 2:
                         CreateView()
                     case 3:
