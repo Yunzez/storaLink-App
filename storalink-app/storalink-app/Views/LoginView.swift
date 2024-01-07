@@ -116,7 +116,7 @@ struct LoginView: View {
                             Image(systemName: "globe")
                             Text("Sign in with Google")
                         }
-                        .foregroundColor(.black)
+                        .foregroundColor(Color("ThemeBlack"))
                         .frame(maxWidth: .infinity)
                         .padding()
                         .overlay(

@@ -21,7 +21,7 @@ struct CreateLinkView: View {
                     self.presentationMode.wrappedValue.dismiss()
                 }, label: {
                     Image(systemName: "arrow.uturn.backward")
-                        .foregroundColor(.black)
+                        .foregroundColor(Color("ThemeBlack"))
                         .imageScale(.large)
                         .padding(Spacing.medium)
                 })
@@ -76,7 +76,7 @@ struct CreateLinkView: View {
                                                 HStack {
                                                     Image("Folder").resizable().aspectRatio(contentMode: .fit).frame(width: 25, height: 25)
                                                     Text(folder.title)
-                                                        .foregroundColor(.black) // Set the text color
+                                                        .foregroundColor(Color("ThemeBlack")) // Set the text color
                                                 }
                                                 .padding(.vertical, 8) // Add some vertical padding for tap comfort
                                             }

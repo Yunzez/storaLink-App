@@ -5,9 +5,9 @@
         "color-space" : "display-p3",
         "components" : {
           "alpha" : "1.000",
-          "blue" : "0x76",
-          "green" : "0x76",
-          "red" : "0x76"
+          "blue" : "0x10",
+          "green" : "0x14",
+          "red" : "0x15"
         }
       },
       "idiom" : "universal"

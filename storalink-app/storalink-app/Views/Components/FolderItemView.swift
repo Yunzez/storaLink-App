@@ -49,6 +49,7 @@ struct FolderItemView: View {
                 Text(currentFolder.title)
                     .font(.headline)
                     .lineLimit(1)
+                    .foregroundColor(Color("ThemeBlack"))
                 Spacer()
                 Button {
                     print("test")
@@ -136,7 +137,7 @@ struct FolderItemView: View {
             Spacer()
         }
         .frame(width: 160, height: 200) // Adjust size as needed
-        .background(Color.white) // Use actual card background color
+        .background(Color("SubtleTheme")) // Use actual card background color
         .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
         .shadow(radius: 5)
         .onTapGesture(perform: {

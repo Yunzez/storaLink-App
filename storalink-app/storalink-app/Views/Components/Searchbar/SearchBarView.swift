@@ -61,7 +61,7 @@ struct SearchBarView: View {
                                             .cornerRadius(8)
                                             .padding(Spacing.small)
                                         
-                                        Text("No Matching Results").foregroundColor(.black).fontWeight(.semibold)
+                                        Text("No Matching Results").foregroundColor(Color("ThemeBlack")).fontWeight(.semibold)
                                     }
                                 }
                                 ForEach(viewModel.results, id: \.id) { result in

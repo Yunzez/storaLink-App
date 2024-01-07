@@ -53,7 +53,7 @@ struct TutorialView: View {
                     }
                 }) {
                     Text("Skip")
-                }.foregroundColor(.black).fontWeight(.bold)
+                }.foregroundColor(Color("ThemeBlack")).fontWeight(.bold)
             }.padding(.horizontal)
             
             Spacer()

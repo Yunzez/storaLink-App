@@ -56,7 +56,7 @@ struct FolderView: View {
                                 
                             }, label: {
                                 Image(systemName: "arrow.uturn.backward")
-                                    .foregroundColor(.black)
+                                    .foregroundColor(Color("ThemeBlack"))
                                     .imageScale(.large)
                                     .padding(Spacing.medium)
                             })
@@ -72,7 +72,7 @@ struct FolderView: View {
                             Text(currentFolder.title)
                                 .font(.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .foregroundColor(.black)
+                                .foregroundColor(Color("ThemeBlack"))
                             
                             Spacer()
                             
@@ -181,7 +181,7 @@ struct FolderView: View {
                                 Button {
                                     folderViewModel.searchButtonClick()
                                 } label: {
-                                    Text("Cancel").foregroundColor(.black)
+                                    Text("Cancel").foregroundColor(Color("ThemeBlack"))
                                 }
                                 Spacer()
                             }.padding(.horizontal)

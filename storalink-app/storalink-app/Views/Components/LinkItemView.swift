@@ -36,7 +36,7 @@ struct LinkItemView: View {
                     print("clicked item")
                     linkItemViewModel.toggleMore()
                 }, label: {
-                    Image(systemName: "ellipsis").foregroundColor(.black)
+                    Image(systemName: "ellipsis").foregroundColor(Color("ThemeBlack"))
                 }).padding(.horizontal, Spacing.small)
                     .sheet(isPresented: $linkItemViewModel.moreOpen) {
                         VStack{
@@ -62,7 +62,7 @@ struct LinkItemView: View {
             .frame(maxWidth: .infinity)
             .background(Color.gray.opacity(0.1)) // Placeholder for card background
             .cornerRadius(10)
-            .foregroundColor(.black)
+            .foregroundColor(Color("ThemeBlack"))
             .onAppear{
                 
 //                print(currentLink.parentFolder?.title ?? "fail to find folder")

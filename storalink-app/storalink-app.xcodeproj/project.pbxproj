@@ -283,9 +283,9 @@
 			children = (
 				9FD082E42B143C58004021FC /* Constants.swift */,
 				9FEB2E782B19739E005A300C /* FrameGetter.swift */,
+				9F7260AD2B47619B00A49628 /* CredentialEncryption.swift */,
 				9F72607B2B3A453E00A49628 /* LinkMetaDataFetcher.swift */,
 				9F7260922B3B8BF700A49628 /* UITest.swift */,
-				9F7260AD2B47619B00A49628 /* CredentialEncryption.swift */,
 				9F7260B82B47972600A49628 /* Launch Screen.storyboard */,
 			);
 			path = Utilities;

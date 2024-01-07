@@ -23,7 +23,7 @@ struct CreateFolderView: View {
                         self.presentationMode.wrappedValue.dismiss()
                     }, label: {
                         Image(systemName: "arrow.uturn.backward")
-                            .foregroundColor(.black)
+                            .foregroundColor(Color("ThemeBlack"))
                             .imageScale(.large)
                             .padding(Spacing.medium)
                     })

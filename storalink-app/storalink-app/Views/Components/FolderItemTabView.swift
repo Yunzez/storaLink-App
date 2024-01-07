@@ -23,6 +23,7 @@ struct FolderItemTabView: View {
             Text(folder.title)
                 .font(.system(size: 12, weight: .semibold)) // Adjust font size and weight as needed
                 .lineLimit(2)
+                .foregroundColor(Color("ThemeBlack"))
             
             Spacer()
             
@@ -38,7 +39,7 @@ struct FolderItemTabView: View {
         .padding(.horizontal, 5)
         .padding(.vertical, 5)
         .frame(height: 40) // The height of the tab
-        .background(Color.white) // Use the actual background color
+        .background(Color("SubtleTheme")) // Use the actual background color
         .cornerRadius(10)
         .shadow(radius: 2) // Optional: if you want to add shadow
         .frame(width: 150, height: 40)

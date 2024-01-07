@@ -20,7 +20,7 @@ struct UserSettingTab: View {
                     Image(systemName: iconName)
                         .foregroundColor(.gray) // Adjust color as needed
                     Text(title)
-                        .foregroundColor(.black) // Adjust color as needed
+                        .foregroundColor(Color("ThemeBlack")) // Adjust color as needed
                     Spacer()
                     Image(systemName: "chevron.right")
                         .foregroundColor(.gray) // Adjust color as needed
