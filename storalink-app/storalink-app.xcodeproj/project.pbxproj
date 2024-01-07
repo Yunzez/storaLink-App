@@ -35,12 +35,12 @@
 		9F7260B32B4773DD00A49628 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260B22B4773DD00A49628 /* SignupViewModel.swift */; };
 		9F7260B52B47806C00A49628 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260B42B47806C00A49628 /* DeleteAccountView.swift */; };
 		9F7260B72B47957900A49628 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260B62B47957900A49628 /* TutorialView.swift */; };
-		9F7260B92B47972600A49628 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F7260B82B47972600A49628 /* Launch Screen.storyboard */; };
+		9F7260B92B47972600A49628 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F7260B82B47972600A49628 /* LaunchScreen.storyboard */; };
 		9F7260BB2B48B67300A49628 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260BA2B48B67300A49628 /* HomeView.swift */; };
 		9F7260BC2B48DE3900A49628 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082FC2B14490B004021FC /* UserModel.swift */; };
 		9F7260BE2B48DEA200A49628 /* FolderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260992B3BF31900A49628 /* FolderModel.swift */; };
 		9F7260BF2B48DEA500A49628 /* LinkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260972B3BF30E00A49628 /* LinkModel.swift */; };
-		9F7260C02B48DEDD00A49628 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F7260B82B47972600A49628 /* Launch Screen.storyboard */; };
+		9F7260C02B48DEDD00A49628 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F7260B82B47972600A49628 /* LaunchScreen.storyboard */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -124,11 +124,11 @@
 		9F7260B22B4773DD00A49628 /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
 		9F7260B42B47806C00A49628 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		9F7260B62B47957900A49628 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
-		9F7260B82B47972600A49628 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		9F7260B82B47972600A49628 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9F7260BA2B48B67300A49628 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		9F7260C12B48E1A100A49628 /* StoralinkSaveLink.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StoralinkSaveLink.entitlements; sourceTree = "<group>"; };
 		9F7260C22B48E20500A49628 /* storalink-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "storalink-app.entitlements"; sourceTree = "<group>"; };
-		9FD082D02B1437A4004021FC /* storalink-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storalink-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FD082D02B1437A4004021FC /* Storalink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storalink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9FD082D72B1437A4004021FC /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -246,7 +246,7 @@
 		9FD082D12B1437A4004021FC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9FD082D02B1437A4004021FC /* storalink-app.app */,
+				9FD082D02B1437A4004021FC /* Storalink.app */,
 				9F7260812B3A831F00A49628 /* StoralinkSaveLink.appex */,
 			);
 			name = Products;
@@ -286,7 +286,7 @@
 				9F7260AD2B47619B00A49628 /* CredentialEncryption.swift */,
 				9F72607B2B3A453E00A49628 /* LinkMetaDataFetcher.swift */,
 				9F7260922B3B8BF700A49628 /* UITest.swift */,
-				9F7260B82B47972600A49628 /* Launch Screen.storyboard */,
+				9F7260B82B47972600A49628 /* LaunchScreen.storyboard */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -421,7 +421,7 @@
 				9F7260B02B4764C000A49628 /* KeychainAccess */,
 			);
 			productName = "storalink-app";
-			productReference = 9FD082D02B1437A4004021FC /* storalink-app.app */;
+			productReference = 9FD082D02B1437A4004021FC /* Storalink.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -469,7 +469,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F7260C02B48DEDD00A49628 /* Launch Screen.storyboard in Resources */,
+				9F7260C02B48DEDD00A49628 /* LaunchScreen.storyboard in Resources */,
 				9F7260962B3B909300A49628 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,7 +478,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F7260B92B47972600A49628 /* Launch Screen.storyboard in Resources */,
+				9F7260B92B47972600A49628 /* LaunchScreen.storyboard in Resources */,
 				9FD082DD2B1437A5004021FC /* Preview Assets.xcassets in Resources */,
 				9FD082DA2B1437A5004021FC /* Assets.xcassets in Resources */,
 			);
@@ -755,7 +755,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -764,7 +764,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.storalink.storalinkApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Storalink;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -787,7 +787,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -796,7 +796,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.storalink.storalinkApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Storalink;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
