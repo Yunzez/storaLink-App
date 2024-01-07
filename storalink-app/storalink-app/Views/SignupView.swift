@@ -127,11 +127,13 @@ struct SignupView: View {
             // Sign in button
             Button(action: {
                 print("Signup ")
-                if let newUser = viewModel.handleSignUp() {
-                    print("check passed")
-                    appViewModel.setUser(user: newUser)
-                    appViewModel.isAuthenticated = true
-                    modelContext.insert(newUser)
+                Task {
+                    if let newUser = await viewModel.handleSignUp() {
+                        print("check passed")
+                        appViewModel.setUser(user: newUser)
+                        appViewModel.isAuthenticated = true
+                        modelContext.insert(newUser)
+                    }
                 }
             }) {
                 Text("Sign Up")

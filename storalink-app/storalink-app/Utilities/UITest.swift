@@ -31,28 +31,37 @@ struct UITest: View {
     
     
     var body: some View {
-        List {
-            ForEach(folders, id: \.self) { folder in
-                Text(folder.title) // Display the folder title
-                // Add more details as needed
-            }
-            .onDelete(perform: deleteFolders)
-        }
-        
-        List(links, id: \.self) { link in
-            HStack {
-                Text(link.title) // Display the link title
-                Spacer()
-                // Display the parent folder title if it exists
-                if let parentFolder = link.parentFolder {
-                    Text(parentFolder.title).foregroundColor(.gray)
-                } else {
-                    Text("No folder").foregroundColor(.red) // Indicate no parent folder
+        ScrollView{
+            
+                ForEach(folders, id: \.self) { folder in
+                    Text(folder.title) // Display the folder title
+                    // Add more details as needed
+                }.padding()
+            
+            
+            ForEach(links, id: \.self) { link in
+                HStack {
+                    Text(link.title) // Display the link title
+                    Spacer()
+                    // Display the parent folder title if it exists
+                    if let parentFolder = link.parentFolder {
+                        Text(parentFolder.title).foregroundColor(.gray)
+                    } else {
+                        Text("No folder").foregroundColor(.red) // Indicate no parent folder
+                    }
                 }
-            }
-        }
-        List(users) { user in
-            Text(user.name)
+            }.padding()
+            
+            ForEach(users) { user in
+                HStack{
+                    Text(user.name)
+                    Text("\(user.folders.count)")
+                }
+                ForEach(user.folders) { folder in
+                    Text(folder.title)
+                }
+                
+            }.padding()
         }
     }
 }

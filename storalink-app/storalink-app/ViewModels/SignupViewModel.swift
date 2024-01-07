@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 @Observable class SignupViewModel {
+    let keychainStorage = KeychainStorage()
     var repassword: String = ""
     var password: String = ""
     var name: String = ""
@@ -32,7 +33,7 @@ import SwiftData
         }
     }
     
-    func handleSignUp() -> User? {
+    func handleSignUp() async  -> User? {
         if name.isEmpty {
             errorMessage = "please fill out the name field"
             error = true
@@ -45,13 +46,24 @@ import SwiftData
         } else {
             error = false
             errorMessage = ""
-            return authenticate()
+            return await authenticate()
         }
         return nil
     }
     
-    func authenticate() -> User {
+    func authenticate() async -> User   {
         print("signing user up")
+        
+        // save to keychain
+        if let hash = hashPassword(password) {
+            do {
+                try await keychainStorage.saveData(data: Data(hash.utf8), with: email)
+                print("save user in keychain")
+            } catch {
+                print("Error saving password hash: \(error)")
+            }
+        }
+        
         let newUser = User(name: name, email: email)
         return newUser
     }

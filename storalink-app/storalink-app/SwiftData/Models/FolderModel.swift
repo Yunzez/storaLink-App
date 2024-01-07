@@ -13,12 +13,12 @@ final class Folder {
     @Attribute(.unique)
     let id = UUID()
     var title: String;
-    var  imgUrl: String
+    var imgUrl: String
     var desc: String?
     var linksNumber: Int
     var pinned: Bool
     var creationDate: Date
-    var user: User? 
+    var user: User? = nil
     @Relationship(deleteRule: .cascade, inverse: \Link.parentFolder) var links: [Link] = [Link]()
     
     init( title: String, imgUrl: String, desc: String? = nil, pinned: Bool? = nil, links: [Link] ) {

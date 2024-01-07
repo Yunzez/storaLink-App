@@ -19,6 +19,7 @@ enum NavigationItem: Hashable {
 struct MainNavStack: View {
     @State private var navigationPath = NavigationPath()
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
+    @Environment(AppViewModel.self) var appViewModel: AppViewModel
     @State private var selectedTab: Int = 0
     init() {
         let appearance = UITabBarAppearance()
@@ -39,7 +40,7 @@ struct MainNavStack: View {
                 Group {
                     switch selectedTab {
                     case 0:
-                        HomeView()
+                        HomeViewEntry()
                     case 1:
                         FilesView()
                     case 2:

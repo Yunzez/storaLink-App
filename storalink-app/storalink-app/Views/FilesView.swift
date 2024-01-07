@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 struct FilesView: View {
-    @Query var folders: [Folder]
+    @Query(filter: #Predicate<Folder> {$0.user?.name == "Fred Zhao"}) private var folders: [Folder]
     @State var viewModel = SearchBarViewModel()
     let items = Array(1...9)
     // Define the grid layout: 2 columns

@@ -12,15 +12,18 @@ import SwiftData
 class AppViewModel {
     var isFirstLaunch: Bool?
     var isAuthenticated: Bool
+    
+    var userId: UUID? = nil
     var userName: String?
     var userEmail: String?
     var user: User?
     
    init() {
-       self.userName = ""
+       self.userName = "Fred Zhao"
        self.userEmail = ""
        self.user = nil
        self.isAuthenticated = false
+    
        checkFirstLaunch()
    }
     
@@ -63,12 +66,18 @@ class AppViewModel {
         self.user = user
         self.userName = user.name
         self.userEmail = user.email
+        self.userId = user.id
     }
     
     func logoutUser() {
         isAuthenticated = false
         userEmail = ""
         userName = ""
+        userId = nil
         user = nil
+    }
+    
+    func fetchAllUserData() {
+        
     }
 }

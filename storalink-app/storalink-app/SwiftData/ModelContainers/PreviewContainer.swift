@@ -16,17 +16,29 @@ var PreviewContainer: ModelContainer {
         Task{
             let context = container.mainContext
             let folders = getExampleFolders() // Ensure this returns [Folder]
-            let user = User(name: "Eddie Eidde", email: "test")
-            for folder in folders {
-                context.insert(folder)
+            
+            // insert user
+            let users = [
+                User(name: "Eddie Eidde", email: "eddy@uw.edu"),
+                User(name: "Fred Zhao", email: "yz8751@nyu.edu"),
+                User(name: "Harry", email: "harry@uw.edu")
+            ]
+           
+            for user in users {
+                context.insert(user)
             }
             
-            context.insert(user)
-            context.insert(User(name: "Fred Zhao", email: "yz8751@nyu.edu"))
-            try context.save()
+            // prepare user with folder
+            // Assign the first 2 folders to the first user and the last 3 folders to the second user
+              for i in 0..<2 { // First 2 folders
+                  users[0].folders.append(folders[i])
+              }
+              for i in (folders.count - 3)..<folders.count { // Last 3 folders
+                  users[1].folders.append(folders[i])
+              }
             
-//            let newFolders = try context.fetch(FetchDescriptor<Folder>())
             
+            // prepare folder
             for folder in folders {
                 let links = getExampleLinks()
                 for link in links {
@@ -35,6 +47,9 @@ var PreviewContainer: ModelContainer {
                     )
                 }
             }
+            
+            try context.save()
+            
         }
         return container
     } catch {
@@ -49,10 +64,10 @@ func getExampleFolders() -> [Folder] {
     
     let sampleFolders = [
         ( title: "Travel", imgUrl: "folderAsset8", desc: "Places to visit", linksNumber: 15, pinned: true, links: []),
-        ( title: "Recipes", imgUrl: "folderAsset7", desc: "Favorite recipes", linksNumber: 20, pinned: false, links: [])
-//        ( title: "Work", imgUrl: "folderAsset6", desc: "Work-related links", linksNumber: 10, pinned: true, links: []),
-//        ( title: "Fram", imgUrl: "folderAsset2", desc: "Framing tips", linksNumber: 10, pinned: true, links: []),
-//        ( title: "Gym", imgUrl: "folderAsset1", desc: "Nice gyms around", linksNumber: 40, pinned: true, links: [])
+        ( title: "Recipes", imgUrl: "folderAsset7", desc: "Favorite recipes", linksNumber: 20, pinned: false, links: []),
+        ( title: "Work", imgUrl: "folderAsset6", desc: "Work-related links", linksNumber: 10, pinned: true, links: []),
+        ( title: "Fram", imgUrl: "folderAsset2", desc: "Framing tips", linksNumber: 10, pinned: true, links: []),
+        ( title: "Gym", imgUrl: "folderAsset1", desc: "Nice gyms around", linksNumber: 40, pinned: true, links: [])
     ]
     
     var folders: [Folder] = []
