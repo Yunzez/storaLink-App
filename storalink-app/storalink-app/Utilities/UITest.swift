@@ -7,11 +7,49 @@
 
 import SwiftUI
 import SwiftData
+import LinkPresentation
 struct UITest: View {
     @Environment(\.modelContext) var modelContext
     @Query private var folders: [Folder]
     @Query private var links: [Link]
     @Query private var users: [User]
+    
+    @State var fetchedImage: UIImage?
+    @State var fetchedIcon: UIImage?
+    @State var fetechedTitle: String = ""
+    let url = "https://www.washington.edu/"
+    private func fetchLink() {
+        guard let url = URL(string: url) else {return}
+        let linkPreview = LPLinkView()
+        let provider = LPMetadataProvider()
+        provider.startFetchingMetadata(for: url) { metaData, error in
+            guard let data = metaData, error == nil else {return }
+            DispatchQueue.main.async {
+                linkPreview.metadata = data
+                fetechedTitle = data.title ?? "No title"
+                print("title:", data.title ?? "No title")
+                if let iconProvider = data.imageProvider {
+                    iconProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+                        DispatchQueue.main.async {
+                            if let image = image as? UIImage {
+                                fetchedImage = image
+                            }
+                        }
+                    }
+                }
+                
+                if let iconProvider = data.iconProvider {
+                    iconProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+                        DispatchQueue.main.async {
+                            if let image = image as? UIImage {
+                                fetchedIcon = image
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     private func deleteFolders(at offsets: IndexSet) {
         for index in offsets {
@@ -32,11 +70,29 @@ struct UITest: View {
     
     var body: some View {
         ScrollView{
+            Text("Link preview test")
+           
+            HStack{
+                if let icon = fetchedIcon {
+                    Image(uiImage: icon)
+                }
+                Text(fetechedTitle )
+               
+            }
+            if let image = fetchedImage {
+                Image(uiImage: image)
+            }
+            Button(action: {
+                print("fetch")
+                fetchLink()
+            }, label: {
+                Text("Fetch a link")
+            })
             Text("Folder Section").bold()
-                ForEach(folders, id: \.self) { folder in
-                    Text(folder.title) // Display the folder title
-                    // Add more details as needed
-                }.padding()
+            ForEach(folders, id: \.self) { folder in
+                Text(folder.title) // Display the folder title
+                // Add more details as needed
+            }.padding()
             
             Text("Links Section").bold()
             ForEach(links, id: \.self) { link in
@@ -64,6 +120,7 @@ struct UITest: View {
                 }
                 
             }.padding()
+            
         }
     }
 }

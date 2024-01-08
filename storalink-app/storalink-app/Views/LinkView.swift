@@ -81,7 +81,7 @@ struct LinkView: View {
                             self.presentationMode.wrappedValue.dismiss()
                         }, label: {
                             Image(systemName: "arrow.uturn.backward")
-                                .foregroundColor(Color("ThemeBlack"))
+                                .foregroundColor(Color.themeBlack)
                                 .imageScale(.large)
                                 .padding(Spacing.medium)
                         })
@@ -100,7 +100,7 @@ struct LinkView: View {
                 
                     ZStack {
                         ForEach(Array(currentFolder.links.enumerated()), id: \.element.id) { index, link in
-                            LinkViewCard()
+                            LinkViewCard(link: link)
                                 .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
                                 .offset(x: cardOffSet(for: index))
                                 .scaleEffect(x: cardScale(for: index), y: cardScale(for: index))

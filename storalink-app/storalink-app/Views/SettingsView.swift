@@ -12,23 +12,27 @@ struct SettingsView: View {
     @Environment(AppViewModel.self) private var appViewModel
     @State var photoPickerItem: PhotosPickerItem?
     @State var uiImage: UIImage?
+    
+    let fileManager = LocalFileManager.manager
     func updateImage() {
             if let user = appViewModel.user,
-               let data = user.avatorData,
-               let image = UIImage(data: data) {
+               let path = user.avatorPath,
+               let image = fileManager.getImage(path: path) {
                 uiImage = image
             } else {
                 uiImage = UIImage(resource: .defaultAvator) // Replace with your actual placeholder
             }
         }
     
+    func saveSelectedImage(image: UIImage) {
+        let filePath = fileManager.saveImage(image: image)
+        appViewModel.user?.avatorPath = filePath
+    }
+    
 //    @Bindable var appView = appleViewModel
     var body: some View {
         NavigationView {
             VStack {
-                // Profile section here...
-                
-                
                 List {
                    
                     VStack{
@@ -57,10 +61,8 @@ struct SettingsView: View {
                             if let photoPickerItem,
                                let data = try await photoPickerItem.loadTransferable(type: Data.self) {
                                 if let image = UIImage(data: data) {
-                                    appViewModel.user?.avatorData = data
-                                    print(image)
-                                    
                                     uiImage = image
+                                    saveSelectedImage(image: image)
                                 }
                             }
                         }

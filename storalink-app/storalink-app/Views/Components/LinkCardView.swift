@@ -8,19 +8,27 @@
 import SwiftUI
 
 struct LinkViewCard: View {
+    var link: Link
+    let fileManager = LocalFileManager.manager
+    
     var body: some View {
             VStack{
                 HStack(){
-                    Image("Ins")
-                    Text("@Auther_1")
+                    Image(uiImage: fileManager.getImage(path: link.iconUrl ?? "") ?? UIImage(resource: .ins))
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                    Text(link.title)
                     Spacer()
                 }
-                
-                Image("LinkCardPlaceHolder")
+                Image(uiImage: fileManager.getImage(path: link.imgUrl ?? "") ?? UIImage(resource: .linkPlaceholder)) 
                     .resizable()
+                    .scaledToFit()
+                    .frame(width: 300, height: 200)
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(Spacing.small)
                 
+                   
                 
             }.padding(Spacing.small).background(Color("SubtleTheme"))
                 .overlay(
@@ -33,5 +41,5 @@ struct LinkViewCard: View {
 }
 
 #Preview {
-    LinkViewCard()
+    LinkViewCard(link : Link(title: "test", imgUrl: ""))
 }

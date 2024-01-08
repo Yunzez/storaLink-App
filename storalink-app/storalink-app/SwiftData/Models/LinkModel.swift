@@ -12,7 +12,8 @@ final class Link {
     @Attribute(.unique)
         let id = UUID()
     var title: String;
-    var imgUrl: String
+    var imgUrl: String?
+    var iconUrl: String?
     var desc: String?
     var creationDate: Date
 //      socialMediaType: SocialMediaSrc;
@@ -24,7 +25,7 @@ final class Link {
 
 
     
-    init(title: String, imgUrl: String, desc: String? = nil, linkUrl: String? = nil) {
+    init(title: String, imgUrl: String? = "", desc: String? = nil, linkUrl: String? = nil) {
         self.title = title
         self.imgUrl = imgUrl
         self.desc = desc

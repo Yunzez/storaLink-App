@@ -13,23 +13,30 @@ struct LinkItemView: View {
     @State private var navigateToLink = false
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @Environment(\.modelContext) var modelContext
-    
+    let fileManager = LocalFileManager.manager
     var body: some View {
         Button(action: {
             navigationStateManager.navigationPath.append(NavigationItem.linkView)
             navigationStateManager.focusLink = currentLink
         }, label: {
             HStack(spacing: Spacing.small) {
-                Image("LinkPlaceholder") // Replace with actual image
+                
+                Image(uiImage: fileManager.getImage(path: currentLink.imgUrl ?? "") ?? UIImage(resource: .linkPlaceholder)) // Replace with actual image
                     .resizable()
+                    .scaledToFit()
+                    .frame(width: 88, height: 65)
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(Spacing.roundMd)
-                    .frame(width: 80, height: 80)
+                    
                 VStack(alignment: .leading) {
                     Text(currentLink.title )
                         .font(.headline)
                     HStack{
-                        Image("Ins").resizable().aspectRatio(contentMode: .fit).frame(width: 22, height: 22)
+                        Image(uiImage: fileManager.getImage(path: currentLink.iconUrl ?? "") ?? UIImage(resource: .ins))
+                            .resizable()
+                            .scaledToFit()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 22, height: 22)
                         Text("Some author")
                             .font(.subheadline)
                             
@@ -62,7 +69,7 @@ struct LinkItemView: View {
                     }
             }
             .padding()
-            .frame(height: 80) // Adjust size as needed
+            .frame(height: 75) // Adjust size as needed
             .frame(maxWidth: .infinity)
             .background(Color.gray.opacity(0.1)) // Placeholder for card background
             .cornerRadius(10)

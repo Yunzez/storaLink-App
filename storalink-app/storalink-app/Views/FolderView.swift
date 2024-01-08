@@ -262,9 +262,9 @@ struct FolderView: View {
 }
 
 #Preview {
-    //    FolderView().environment(NavigationStateManager()).modelContainer(PreviewContainer).environment(AppViewModel())
-    MainNavStack()
-        .modelContainer(PreviewContainer)
-        .environment(NavigationStateManager())
-        .environment(AppViewModel())
+        FolderView().environment(NavigationStateManager()).modelContainer(PreviewContainer).environment(AppViewModel())
+//    MainNavStack()
+//        .modelContainer(PreviewContainer)
+//        .environment(NavigationStateManager())
+//        .environment(AppViewModel())
 }

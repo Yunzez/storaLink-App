@@ -15,7 +15,7 @@ final class User {
         let id = UUID()
     var name: String
     var email: String
-    var avatorData: Data? = nil
+    var avatorPath: String? = nil
     @Relationship(deleteRule: .cascade, inverse: \Folder.user) var folders: [Folder] = [Folder]()
     // Other user properties
     

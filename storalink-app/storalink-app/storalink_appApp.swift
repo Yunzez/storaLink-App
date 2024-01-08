@@ -13,7 +13,7 @@ struct storalink_appApp: App {
     @State var navigationStateManager = NavigationStateManager()
     @State private var appViewModel = AppViewModel()
     
-    var folderModelContainer: ModelContainer = {
+    let folderModelContainer: ModelContainer = {
         let schema = Schema([
             User.self,
             Folder.self,
@@ -53,10 +53,10 @@ struct storalink_appApp: App {
                     print("Unable to fetch previous user")
                 }
                 
-            }
+            }.modelContainer(folderModelContainer)
+                .environment(navigationStateManager)
+                .environment(appViewModel)
         }
-        .modelContainer(folderModelContainer)
-        .environment(navigationStateManager)
-        .environment(appViewModel)
+        
     }
 }
