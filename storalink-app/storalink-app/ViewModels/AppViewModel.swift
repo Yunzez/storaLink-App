@@ -53,9 +53,18 @@ class AppViewModel {
     }
     
     public func recordLogin(userEmail: String) {
+        // store in local defaults
         let defaults = UserDefaults.standard
         defaults.set(userEmail, forKey: "lastLoggedinUser")
         defaults.synchronize()
+        
+        // store in shared defaults
+        guard let sharedDefaults = UserDefaults(suiteName: "group.com.storalink.appgroup") else {
+                print("Unable to access shared UserDefaults")
+                return
+            }
+            
+        sharedDefaults.set(userEmail, forKey: "lastLoggedinUser")
     }
     
     public func checkLastLogin() -> String{

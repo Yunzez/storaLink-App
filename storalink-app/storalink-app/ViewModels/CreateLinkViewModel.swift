@@ -34,6 +34,7 @@ import LinkPresentation
     // getting managers
     let modelManager = ModelUtilManager.manager
     let fileManager = LocalFileManager.manager
+    let linkFetcher = LinkMetaDataFetcher.fetcher
 
     // Other properties for business logic
     private var cancellables = Set<AnyCancellable>()
@@ -102,53 +103,17 @@ import LinkPresentation
     func setup(modelConext: ModelContext) {
         self.modelContext = modelConext
     }
-    
-    func ensureHttpsPrefix(link: String) -> String {
-        // Check if the link already has "http://" or "https://" prefix
-        if link.lowercased().hasPrefix("http://") || link.lowercased().hasPrefix("https://") {
-            return link
-        } else {
-            // If not, prepend "https://" to the link
-            return "https://" + link
-        }
-    }
 
     func fetchLinkMetadata() {
-        linkName = ensureHttpsPrefix(link: linkName)
-        print("feteching", linkName)
-        guard let currentUrl = URL(string: linkName) else {return}
-        let provider = LPMetadataProvider()
-        provider.startFetchingMetadata(for: currentUrl) { metaData, error in
-            guard let data = metaData, error == nil else {
-                print("cannot find data", error ?? "no error")
-                return
-            }
-            self.title = data.title ?? self.linkName
-            self.linkDescription = data.title ?? "No description"
-            self.author = currentUrl.host ?? "Unclear"
+        linkFetcher.fetch(link: linkName, completion: { linkMetaData in
+            self.title = linkMetaData.linkTitle
+            self.linkDescription = linkMetaData.linkDesc
+            self.author = linkMetaData.linkAuthor
+            self.image = linkMetaData.linkImage
+            self.icon = linkMetaData.linkIcon
             
-            if let iconProvider = data.imageProvider {
-                iconProvider.loadObject(ofClass: UIImage.self) { (currentImage, error) in
-                    DispatchQueue.main.async {
-                        if let linkImage = currentImage as? UIImage {
-                            self.image = linkImage
-                           
-                        }
-                    }
-                }
-            }
+        })
             
-            if let iconProvider = data.iconProvider {
-                iconProvider.loadObject(ofClass: UIImage.self) { (currentImage, error) in
-                    DispatchQueue.main.async {
-                        if let linkIcon = currentImage as? UIImage {
-                            self.icon = linkIcon
-                        }
-                    }
-                }
-            }
-        }
-            
-        }
+    }
 
 }

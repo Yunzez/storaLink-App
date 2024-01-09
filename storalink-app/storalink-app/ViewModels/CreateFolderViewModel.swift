@@ -55,7 +55,6 @@ enum LoadingStage {
             
             do {
                 let newFolder = Folder(title: folderName, imgUrl: imgUrl, links: [])
-//                context.insert(newFolder)
                 
                 let users = try context.fetch(FetchDescriptor<User>(predicate: #Predicate<User>{ user in
                         user.id == userId
@@ -66,12 +65,6 @@ enum LoadingStage {
                 try context.save()
                 print("change saved to user", currentUser.name)
                 navigationStateManager?.focusFolder = newFolder
-                let folders = try context.fetch(FetchDescriptor<Folder>())
-                
-                print("now have folder:")
-                for folder in folders {
-                    print(folder.title)
-                }
                 
                 loadingStage = .done
                 

@@ -12,21 +12,23 @@ final class LocalFileManager {
     static let manager = LocalFileManager()
     
     func saveImage(image: UIImage) -> String {
-        guard let data = image.jpegData(compressionQuality: 1) else { print("Error getting image data"); return "" }
+        guard let data = image.jpegData(compressionQuality: 1) else {
+            print("Error getting image data")
+            return ""
+        }
         let checksum = generateChecksum(for: data)
-        let fileManager = FileManager.default
 
-        // Define the directory where you'll save and check for images
-        guard let directoryUrl = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            print("Could not find caches directory")
+        // Access the shared container directory
+        guard let sharedContainerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.storalink.appgroup") else {
+            print("Unable to access shared container")
             return ""
         }
 
         // Define the path for the new image based on its checksum
-        let newFileUrl = directoryUrl.appendingPathComponent(checksum)
+        let newFileUrl = sharedContainerURL.appendingPathComponent(checksum)
 
         // Check if a file with the same checksum already exists
-        if fileManager.fileExists(atPath: newFileUrl.path) {
+        if FileManager.default.fileExists(atPath: newFileUrl.path) {
             print("A file with the same checksum exists. No need to save the image again.")
             return newFileUrl.path // Return the existing file path
         } else {
@@ -41,10 +43,14 @@ final class LocalFileManager {
             }
         }
     }
+
     
     func getImage(path: String)-> UIImage? {
         if path.isEmpty {return nil}
+        
+    
         let fileURL = URL(fileURLWithPath: path)
+
         do {
             let imageData = try Data(contentsOf: fileURL)
             return UIImage(data: imageData)

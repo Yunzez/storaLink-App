@@ -10,6 +10,10 @@ import SwiftData
 
 @MainActor
 struct ShareView: View {
+    @Environment(\.modelContext) var modelContext: ModelContext
+    let fetcher = LinkMetaDataFetcher.fetcher
+    let fileManager = LocalFileManager.manager
+    let modelUtil  = ModelUtilManager.manager
     
     @Query var folders: [Folder]
     @State var sharedURL: String?
@@ -19,9 +23,14 @@ struct ShareView: View {
     @State var descriptionText: String = ""
     @State var selectedText: Int = -1
     
+    @State var image: UIImage? = nil
+    @State var icon: UIImage? = nil
+    
+    @State var userFolders: [Folder] = []
     @State var folderName: String = ""
     @State var folderId: UUID = UUID()
     @State var showSearchResult: Bool = false
+    @State var userEmail: String = "yz8751@nyu.edu"
     @FocusState private var isTitleInputFocused: Bool
     @FocusState private var isAuthorInputFocused: Bool
     @FocusState private var isDescriptionInputFocused: Bool
@@ -50,7 +59,57 @@ struct ShareView: View {
         _linkText = State(initialValue: self.sharedURL ?? "") // Provide an initial value for linkText
     }
     
-    func addLinkToFolder() {
+    func prepareLinkForFolder() {
+        for folder in userFolders {
+            if folder.id == folderId {
+                print("add link")
+                var imagePath = ""
+                var iconPath = ""
+                if let saveImage = image {
+                     imagePath = self.fileManager.saveImage(image: saveImage)
+                }
+                
+                if let saveIcon = icon {
+                     iconPath = self.fileManager.saveImage(image: saveIcon)
+                }
+                let newLink = Link(title: titleText, imgUrl: imagePath, desc: descriptionText, linkUrl: linkText)
+                newLink.iconUrl = iconPath
+                modelUtil.addLinkToFolder(link: newLink, folder: folder, modelContext: modelContext)
+            }
+        }
+    }
+    
+    func setUp(){
+        print("setup")
+        guard let sharedDefaults = UserDefaults(suiteName: "group.com.storalink.appgroup") else {
+                print("Unable to access shared UserDefaults")
+                return
+            }
+
+        if let foundEmail = sharedDefaults.string(forKey: "lastLoggedinUser") {
+            print("user logged in before")
+            userEmail = foundEmail
+        } else {
+            print("user has not logged in before")
+            return
+        }
+        
+        for folder in folders {
+            if folder.user?.email == userEmail {
+                userFolders.append(folder)
+            }
+        }
+        
+        if let url = sharedURL {
+            fetcher.fetch(link: url) { data in
+                image = data.linkImage
+                icon = data.linkIcon
+                titleText = data.linkTitle
+                authorText = data.linkAuthor
+                descriptionText = data.linkDesc
+            }
+        }
+        
         
     }
     
@@ -77,7 +136,7 @@ struct ShareView: View {
                     Image("Logo")
                     Spacer()
                     Button {
-                        addLinkToFolder()
+                        prepareLinkForFolder()
                     } label: {
                         Text("Add").foregroundColor(Color("ThemeGray")).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     }
@@ -214,7 +273,7 @@ struct ShareView: View {
                         if showSearchResult {
                             ScrollView(.vertical) {
                                 VStack(alignment: .leading) {
-                                    ForEach(filterFolder(folders: folders)) { folder in
+                                    ForEach(filterFolder(folders: userFolders)) { folder in
                                         Button {
                                             folderName = folder.title
                                             folderId = folder.id
@@ -253,6 +312,8 @@ struct ShareView: View {
             }
         }.onTapGesture {
             selectedText = -1
+        }.onAppear{
+            setUp()
         }
     }
     
