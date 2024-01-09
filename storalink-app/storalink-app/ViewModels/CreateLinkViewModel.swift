@@ -12,7 +12,7 @@ import SwiftData
 import LinkPresentation
 @Observable class CreateLinkViewModel {
     // Published properties that the view can subscribe to
-    
+   
     var showingSearchResults: Bool = false
     var modelContext: ModelContext?
     var linkName: String = ""
@@ -31,6 +31,8 @@ import LinkPresentation
     var imagePath:String = ""
     var iconPath:String = ""
     
+    // getting managers
+    let modelManager = ModelUtilManager.manager
     let fileManager = LocalFileManager.manager
 
     // Other properties for business logic
@@ -62,17 +64,11 @@ import LinkPresentation
         newLink.imgUrl = imagePath
         newLink.iconUrl = iconPath
         
-        if (selectedFolder?.getLinkNum() == 0) {
-            selectedFolder?.links = [newLink]
-        } else {
-            selectedFolder?.links.append(newLink)
+        if let folder = selectedFolder, let context = modelContext {
+            modelManager.addLinkToFolder(link: newLink, folder: folder, modelContext: context)
         }
+       
         
-        do {
-            try modelContext?.save()
-        } catch {
-            print("saving failed")
-        }
     }
     
     // More business logic functions as needed

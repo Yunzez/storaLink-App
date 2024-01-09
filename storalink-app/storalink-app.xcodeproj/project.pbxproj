@@ -47,7 +47,7 @@
 		9FD082DA2B1437A5004021FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FD082D92B1437A5004021FC /* Assets.xcassets */; };
 		9FD082DD2B1437A5004021FC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FD082DC2B1437A5004021FC /* Preview Assets.xcassets */; };
 		9FD082E52B143C58004021FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082E42B143C58004021FC /* Constants.swift */; };
-		9FD082EB2B143E34004021FC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082EA2B143E34004021FC /* DataManager.swift */; };
+		9FD082EB2B143E34004021FC /* ModelUtilManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082EA2B143E34004021FC /* ModelUtilManager.swift */; };
 		9FD082ED2B144263004021FC /* LinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082EC2B144263004021FC /* LinkViewModel.swift */; };
 		9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082EE2B14426D004021FC /* FolderViewModel.swift */; };
 		9FD082F12B14427A004021FC /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082F02B14427A004021FC /* UserViewModel.swift */; };
@@ -67,6 +67,7 @@
 		9FD083122B147CC6004021FC /* SearchBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD083112B147CC6004021FC /* SearchBarViewModel.swift */; };
 		9FD355842B4B8B3A000574DD /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD355832B4B8B3A000574DD /* LocalFileManager.swift */; };
 		9FD355852B4B8B3A000574DD /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD355832B4B8B3A000574DD /* LocalFileManager.swift */; };
+		9FD355882B4CC5BD000574DD /* ModelUtilManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082EA2B143E34004021FC /* ModelUtilManager.swift */; };
 		9FEB2E792B19739E005A300C /* FrameGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E782B19739E005A300C /* FrameGetter.swift */; };
 		9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */; };
 		9FEB2E822B328064005A300C /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E812B328064005A300C /* FolderView.swift */; };
@@ -137,7 +138,7 @@
 		9FD082D92B1437A5004021FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9FD082DC2B1437A5004021FC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9FD082E42B143C58004021FC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		9FD082EA2B143E34004021FC /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		9FD082EA2B143E34004021FC /* ModelUtilManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelUtilManager.swift; sourceTree = "<group>"; };
 		9FD082EC2B144263004021FC /* LinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkViewModel.swift; sourceTree = "<group>"; };
 		9FD082EE2B14426D004021FC /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
 		9FD082F02B14427A004021FC /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
@@ -347,7 +348,7 @@
 		9FD082E92B143E24004021FC /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				9FD082EA2B143E34004021FC /* DataManager.swift */,
+				9FD082EA2B143E34004021FC /* ModelUtilManager.swift */,
 				9F7260612B365D6400A49628 /* NavigationStageManager.swift */,
 			);
 			path = Managers;
@@ -497,6 +498,7 @@
 			files = (
 				9F7260BF2B48DEA500A49628 /* LinkModel.swift in Sources */,
 				9F7260912B3A84C900A49628 /* ShareView.swift in Sources */,
+				9FD355882B4CC5BD000574DD /* ModelUtilManager.swift in Sources */,
 				9F7260BE2B48DEA200A49628 /* FolderModel.swift in Sources */,
 				9F7260BC2B48DE3900A49628 /* UserModel.swift in Sources */,
 				9F7260842B3A831F00A49628 /* ShareViewController.swift in Sources */,
@@ -520,7 +522,7 @@
 				9FD082F12B14427A004021FC /* UserViewModel.swift in Sources */,
 				9FD083052B145856004021FC /* MainNavStack.swift in Sources */,
 				9FD083122B147CC6004021FC /* SearchBarViewModel.swift in Sources */,
-				9FD082EB2B143E34004021FC /* DataManager.swift in Sources */,
+				9FD082EB2B143E34004021FC /* ModelUtilManager.swift in Sources */,
 				9FD0830A2B147857004021FC /* LinkItemView.swift in Sources */,
 				9F7260B52B47806C00A49628 /* DeleteAccountView.swift in Sources */,
 				9FD082D82B1437A4004021FC /* Item.swift in Sources */,
