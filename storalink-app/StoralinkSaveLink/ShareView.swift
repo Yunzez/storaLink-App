@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SwiftData
-
+import PhotosUI
 @MainActor
 struct ShareView: View {
     @Environment(\.modelContext) var modelContext: ModelContext
@@ -25,6 +25,7 @@ struct ShareView: View {
     
     @State var image: UIImage? = nil
     @State var icon: UIImage? = nil
+    @State var photoPickerItem: PhotosPickerItem?
     
     @State var userFolders: [Folder] = []
     @State var folderName: String = ""
@@ -151,7 +152,25 @@ struct ShareView: View {
                         .cornerRadius(2) // Set the corner radius as needed
                         .padding(.vertical)
                     
-                    Image("LinkDefaultImg").resizable().aspectRatio(contentMode: .fit).frame(width: 120)
+                    if let image = image {
+                        PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                            Image(uiImage: image).resizable() // Allows the image to be resized
+                                .scaledToFit() // Maintain the aspect ratio of the image
+                                .frame(width: 120, height: 100)
+                        }
+                        
+                    } else {
+                        PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                            Image(uiImage: image ?? UIImage(resource: .linkDefaultImg))
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 120, height: 100)
+                                .cornerRadius(60.0)
+                                .clipped()
+                                .padding()
+                            
+                        }
+                    }
                 }.frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/).padding(.horizontal)
                 
                 
