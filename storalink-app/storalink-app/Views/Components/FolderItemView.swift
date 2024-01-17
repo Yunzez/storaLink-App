@@ -60,13 +60,16 @@ struct FolderItemView: View {
                     .sheet(isPresented: $folderItemViewModel.showDetailSheet, content: {
                         VStack{
                             Spacer()
-                            BottomSheetOption(onClick: {
-                                currentFolder.pinned = true
-                            }, text: "Pin", assetImageString: "Folder")
-                            Spacer()
-                            BottomSheetOption(onClick: {
-                                currentFolder.pinned = false
-                            }, text: "Unpin", assetImageString: "Folder")
+                            if currentFolder.pinned {
+                                BottomSheetOption(onClick: {
+                                    currentFolder.pinned = false
+                                }, text: "Unpin", assetImageString: "Folder")
+                            } else {
+                                BottomSheetOption(onClick: {
+                                    currentFolder.pinned = true
+                                }, text: "Pin", assetImageString: "Folder")
+                            }
+
                             Spacer()
                             BottomSheetOption(onClick: {
                                 print("Edit")

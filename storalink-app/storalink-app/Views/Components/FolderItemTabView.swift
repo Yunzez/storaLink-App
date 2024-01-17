@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FolderItemTabView: View {
+    @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @Bindable var folder: Folder
     var imageName: String = "LinkDefaultImg" // The image name for the folder thumbnail
     @State var showSheet: Bool = false
@@ -48,10 +49,16 @@ struct FolderItemTabView: View {
                 BottomSheetOption(onClick: {
                     folder.pinned = false
                 }, text: "Unpin", assetImageString: "Folder")
+                Spacer()
                 BottomSheetOption(onClick: {
                     folder.pinned = true
                 }, text: "Pin", assetImageString: "Folder")
             }).presentationDetents([.height(300)])
+        })
+        .onTapGesture(perform: {
+            print("Folder tapped")
+            navigationStateManager.navigationPath.append(NavigationItem.folderView)
+            navigationStateManager.focusFolder = folder
         })
     }
 }

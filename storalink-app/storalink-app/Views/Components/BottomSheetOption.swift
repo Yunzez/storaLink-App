@@ -47,6 +47,7 @@ struct CustomImageView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 25, height: 25)
+                    .foregroundColor(Color("ThemeGray"))  
             } else if let assetImage = assetImageString, !assetImage.isEmpty {
                 Image(assetImage)
                     .resizable()

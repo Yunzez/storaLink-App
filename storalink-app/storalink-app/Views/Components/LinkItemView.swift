@@ -32,12 +32,12 @@ struct LinkItemView: View {
                     Text(currentLink.title )
                         .font(.headline)
                     HStack{
-                        Image(uiImage: fileManager.getImage(path: currentLink.iconUrl ?? "") ?? UIImage(resource: .ins))
+                        Image(uiImage: fileManager.getImage(path: currentLink.iconUrl ?? "") ?? UIImage(resource: .defaultLinkIcon))
                             .resizable()
                             .scaledToFit()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 22, height: 22)
-                        Text("Some author")
+                        Text(" ")
                             .font(.subheadline)
                             
                     }
@@ -84,6 +84,10 @@ struct LinkItemView: View {
 }
 
 #Preview {
-    LinkItemView(currentLink: Link( title: "link", imgUrl: "", desc: "a testing link")).modelContainer(PreviewContainer).environment(AppViewModel()).environment(NavigationStateManager())
+    Group{
+        LinkItemView(currentLink: Link( title: "link", imgUrl: "", desc: "a testing link")).modelContainer(PreviewContainer).environment(AppViewModel()).environment(NavigationStateManager())
+        LinkItemView(currentLink: Link( title: "Matt", imgUrl: "", desc: "a testing link")).modelContainer(PreviewContainer).environment(AppViewModel()).environment(NavigationStateManager())
+    }
+    
 }
 

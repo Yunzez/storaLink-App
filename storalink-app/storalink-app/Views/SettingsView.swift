@@ -15,26 +15,26 @@ struct SettingsView: View {
     
     let fileManager = LocalFileManager.manager
     func updateImage() {
-            if let user = appViewModel.user,
-               let path = user.avatorPath,
-               let image = fileManager.getImage(path: path) {
-                uiImage = image
-            } else {
-                uiImage = UIImage(resource: .defaultAvator) // Replace with your actual placeholder
-            }
+        if let user = appViewModel.user,
+           let path = user.avatorPath,
+           let image = fileManager.getImage(path: path) {
+            uiImage = image
+        } else {
+            uiImage = UIImage(resource: .defaultAvator) // Replace with your actual placeholder
         }
+    }
     
     func saveSelectedImage(image: UIImage) {
         let filePath = fileManager.saveImage(image: image)
         appViewModel.user?.avatorPath = filePath
     }
     
-//    @Bindable var appView = appleViewModel
+    //    @Bindable var appView = appleViewModel
     var body: some View {
         NavigationView {
-            VStack {
-                List {
-                   
+            ScrollView{
+                VStack {
+                    
                     VStack{
                         HStack{
                             Spacer()
@@ -46,7 +46,7 @@ struct SettingsView: View {
                                     .cornerRadius(60.0)
                                     .clipped()
                                     .padding()
-                                    
+                                
                             }
                             
                             Spacer()
@@ -67,73 +67,83 @@ struct SettingsView: View {
                             }
                         }
                     }
-                   
                     
-                    Section(header: Text("Application").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).padding(.top, -20)) {
-                        NavigationLink(destination: UserInfoSettingView()) {
-                            UserSettingTab(iconName: "person", title: "Account") {
-                                // Navigate to Account page
+                    
+                    VStack{
+                        
+                        Section(
+                            header:
+                                HStack{
+                                    Text("Application")
+                                        .fontWeight(.semibold)
+                                        .padding(.top, 20)
+                                    Spacer()
+                                }
+                        ) {
+                            NavigationLink(destination: UserInfoSettingView()) {
+                                UserSettingTab(iconName: "person", title: "Account")
                             }
-                        }
-                        UserSettingTab(iconName: "paintbrush", title: "Appearance") {
-                            // Navigate to Appearance page
-                        }
-                        UserSettingTab(iconName: "bell", title: "Notification") {
-                            // Navigate to Appearance page
-                        }
-                        UserSettingTab(iconName: "cart", title: "ChangePlan") {
-                            // Navigate to Appearance page
-                        }
-                    }
-                    
-                    Section(header: Text("Important").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).padding(.top, -20)) {
-                        UserSettingTab(iconName: "lock", title: "Privacy") {
-                            // Navigate to Appearance page
-                        }
-                        UserSettingTab(iconName: "questionmark.circle", title: "Help & Support") {
-                            // Navigate to Appearance page
-                        }
-                        UserSettingTab(iconName: "ellipsis.message", title: "Give Feedback") {
-                            // Navigate to Appearance page
-                        }
-                        // ... important settings ...
-                    }
-                    
-                    Section(header: Text("Other").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).padding(.top, -20)) {
-                        UserSettingTab(iconName: "paintbrush", title: "Other") {
-                            // Navigate to Appearance page
-                        }
-                        UserSettingTab(iconName: "storefront", title: "Rate us") {
-                            // Navigate to Appearance page
-                        }
-                        // ... other settings ...
-                    }
-                    
-                    HStack{
-                        Spacer()
-                        Button("Log Out") {
-                            // Handle log out
-                            appViewModel.logoutUser()
+                            //                            UserSettingTab(iconName: "paintbrush", title: "Appearance")
+                            //                            UserSettingTab(iconName: "bell", title: "Notification")
+                            NavigationLink {
+                                Text("Matt ")
+                            } label: {
+                                UserSettingTab(iconName: "cart", title: "Change Plan")
+                            }
+
                             
                         }
-                        .padding()
-                        .padding(.horizontal)
-                        .background(Color.gray) // Adjust color as needed
-                        .cornerRadius(10)
-                        .foregroundColor(.white) // Adjust text color as needed
-                        .shadow(radius: 2)
                         
-                        Spacer()
-                    }
-                    
-                }.scrollContentBackground(.hidden)
-                    .listStyle(GroupedListStyle())
-                    .padding(.top, -30)
-                    .background(Color("ThemeWhite"))
+                        Section(
+                            header:
+                                HStack{
+                                    Text("Important")
+                                        .fontWeight(.semibold)
+                                        .padding(.top, 20)
+                                    Spacer()
+                                }
+                        ) {
+                            UserSettingTab(iconName: "lock", title: "Privacy")
+//                            UserSettingTab(iconName: "questionmark.circle", title: "Help & Support")
+                            UserSettingTab(iconName: "ellipsis.message", title: "Give Feedback")
+                            
+                        }
+                        
+                        
+                        //                        Section(header:
+                        //                                    HStack{
+                        //                                        Text("Other")
+                        //                                            .fontWeight(.semibold)
+                        //                                            .padding(.top, 20)
+                        //                                        Spacer()
+                        //                                    }
+                        //                        ) {
+                        //                            UserSettingTab(iconName: "paintbrush", title: "Other")
+                        //                            UserSettingTab(iconName: "storefront", title: "Rate us")
+                        //                        }
+                        
+                        HStack{
+                            Spacer()
+                            Button("Log Out") {
+                                // Handle log out
+                                appViewModel.logoutUser()
+                                
+                            }
+                            .padding()
+                            .padding(.horizontal)
+                            .background(Color.gray) // Adjust color as needed
+                            .cornerRadius(10)
+                            .foregroundColor(.white) // Adjust text color as needed
+                            .shadow(radius: 2)
+                            
+                            Spacer()
+                        }
+                    }.padding(.horizontal)
+                }
                 
                 // Tab bar here...
             }.background(Color("ThemeWhite"))
-        }.padding(.bottom, Spacing.customNavigationBarHeight )
+        }.padding(.bottom, Spacing.customNavigationBarHeight)
     }
 }
 

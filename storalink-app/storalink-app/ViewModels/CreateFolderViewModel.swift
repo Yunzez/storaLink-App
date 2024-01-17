@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 import SwiftData
-
+import UIKit
 enum LoadingStage {
     case none, loading, done
 }
@@ -19,13 +19,15 @@ enum LoadingStage {
      var folderName: String = ""
      var folderDescription: String = "This is a folder description"
      var searchUser: String = ""
-     var selectedCoverIndex: Int = -1
+     var selectedCoverIndex: Int = 0
      var error: Bool = false
      var errorMessage: String = ""
     var loadingStage: LoadingStage = .none
     var navigateToFolder: Folder?
     var readyToNavigate: Bool = false
     var navigationStateManager: NavigationStateManager?
+    
+    var image: UIImage? 
 
     // Other properties for business logic
     private var cancellables = Set<AnyCancellable>()

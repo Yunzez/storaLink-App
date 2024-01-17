@@ -7,19 +7,21 @@
 
 import SwiftUI
 import SwiftData
+import PhotosUI
 struct CreateFolderView: View {
     @Environment(AppViewModel.self) var appViewModel: AppViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.modelContext) var modelContext
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @State private var viewModel = CreateFolderViewModel()
+    @State var photoPickerItem: PhotosPickerItem?
+    @State var uiImage: UIImage?
     
     var body: some View {
         ZStack {
             VStack {
                 HStack {
                     Button(action: {
-                        print("Click return")
                         self.presentationMode.wrappedValue.dismiss()
                     }, label: {
                         Image(systemName: "arrow.uturn.backward")
@@ -52,6 +54,48 @@ struct CreateFolderView: View {
                         
                         ScrollView(.horizontal, showsIndicators: true) {
                             HStack {
+                                VStack {
+                                    if let image = viewModel.image {
+                                        PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                                            Image(uiImage: image)
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 80, height: 80)
+                                                .clipShape(Circle())
+                                                .overlay(Circle().stroke(Color("ThemeColor"), lineWidth: viewModel.selectedCoverIndex == -1 ? 3 : 0))
+                                        }
+                                        
+                                    } else {
+                                        PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                                            Image(uiImage: UIImage(systemName: "plus.circle")
+                                                  ?? UIImage(resource: .defaultAvator))
+                                                .resizable()
+                                                .padding()
+                                                .scaledToFit()
+                                                .frame(width: 80, height: 80)
+                                                .clipShape(Circle())
+                                                .overlay(Circle().stroke(Color("ThemeColor"), lineWidth: viewModel.selectedCoverIndex == -1 ? 3 : 0))
+                                        }
+                                    }
+                                }.onChange(of: photoPickerItem) { _, _ in
+                                    viewModel.selectedCoverIndex = -1
+                                    print("Test", viewModel.selectedCoverIndex)
+                                    Task {
+                                        if let photoPickerItem,
+                                           let data = try await photoPickerItem.loadTransferable(type: Data.self) {
+                                            if let image = UIImage(data: data) {
+                                                viewModel.image = image
+                                                viewModel.selectedCoverIndex = -1
+                                            }
+                                        }
+                                        
+                                        
+                                    }
+                                }.onTapGesture {
+                                    print("tap")
+                                }
+                                .padding(.leading, 4)
+                                   
                                 ForEach(0..<9, id: \.self) { index in
                                     Image("folderAsset\(index)") // Corrected line
                                         .resizable()

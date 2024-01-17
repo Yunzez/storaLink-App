@@ -69,6 +69,7 @@
 		9FD355852B4B8B3A000574DD /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD355832B4B8B3A000574DD /* LocalFileManager.swift */; };
 		9FD355882B4CC5BD000574DD /* ModelUtilManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082EA2B143E34004021FC /* ModelUtilManager.swift */; };
 		9FD355892B4DA789000574DD /* LinkMetaDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72607B2B3A453E00A49628 /* LinkMetaDataFetcher.swift */; };
+		9FD3558B2B5744EF000574DD /* ChangePlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD3558A2B5744EF000574DD /* ChangePlanView.swift */; };
 		9FEB2E792B19739E005A300C /* FrameGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E782B19739E005A300C /* FrameGetter.swift */; };
 		9FEB2E802B19942C005A300C /* UserSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */; };
 		9FEB2E822B328064005A300C /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E812B328064005A300C /* FolderView.swift */; };
@@ -158,6 +159,7 @@
 		9FD0830F2B147C6A004021FC /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		9FD083112B147CC6004021FC /* SearchBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarViewModel.swift; sourceTree = "<group>"; };
 		9FD355832B4B8B3A000574DD /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
+		9FD3558A2B5744EF000574DD /* ChangePlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePlanView.swift; sourceTree = "<group>"; };
 		9FEB2E782B19739E005A300C /* FrameGetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameGetter.swift; sourceTree = "<group>"; };
 		9FEB2E7F2B19942C005A300C /* UserSettingTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingTab.swift; sourceTree = "<group>"; };
 		9FEB2E812B328064005A300C /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
@@ -384,6 +386,7 @@
 			children = (
 				9FEB2E842B3282E7005A300C /* UserInfoSettingView.swift */,
 				9F7260B42B47806C00A49628 /* DeleteAccountView.swift */,
+				9FD3558A2B5744EF000574DD /* ChangePlanView.swift */,
 			);
 			path = SettingViews;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 				9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */,
 				9FD082ED2B144263004021FC /* LinkViewModel.swift in Sources */,
 				9FEB2E872B33AD9F005A300C /* LoginViewModel.swift in Sources */,
+				9FD3558B2B5744EF000574DD /* ChangePlanView.swift in Sources */,
 				9FD082F92B1443D3004021FC /* FilesView.swift in Sources */,
 				9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */,
 				9F72609A2B3BF31900A49628 /* FolderModel.swift in Sources */,
