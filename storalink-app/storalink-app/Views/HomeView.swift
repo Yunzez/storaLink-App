@@ -32,7 +32,7 @@ struct HomeView: View {
 //    @Query() private var links: [Link]
     
     
-    @State var viewModel = SearchBarViewModel()
+    @State var searchbarViewModel = SearchBarViewModel()
     @State  var searchBarFrame: CGRect = .zero
     
     
@@ -111,7 +111,7 @@ struct HomeView: View {
                 VStack {
                     GeometryReader { geometry in
                         VStack{
-                            SearchBarView(viewModel: viewModel)
+                            SearchBarView(viewModel: searchbarViewModel, searchFolders: folders, searchLinks: links)
                         }
                     }
                 }.zIndex(2.0)
@@ -167,6 +167,8 @@ struct HomeView: View {
                 }.padding(.top, Spacing.customSearchBarHeight )
             }
             
+        }.onTapGesture {
+            UIApplication.shared.endEditing()
         }
     }
     

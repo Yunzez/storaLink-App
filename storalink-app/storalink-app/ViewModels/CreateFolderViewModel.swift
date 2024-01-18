@@ -14,6 +14,7 @@ enum LoadingStage {
 }
 
 @Observable class CreateFolderViewModel: ObservableObject {
+    let localFileManager = LocalFileManager.manager
     var context: ModelContext?
     // Published properties that the view can subscribe to
      var folderName: String = ""
@@ -27,12 +28,22 @@ enum LoadingStage {
     var readyToNavigate: Bool = false
     var navigationStateManager: NavigationStateManager?
     
-    var image: UIImage? 
+    var image: UIImage?
+    
+    var isEditFolder: Bool = false
 
     // Other properties for business logic
     private var cancellables = Set<AnyCancellable>()
 
-    // Business logic functions
+    func updateInfoForEditFolder(folder: Folder){
+        isEditFolder = true
+        
+        folderName = folder.title
+        folderDescription = folder.desc ?? ""
+        
+    }
+    
+    
     func createFolder(userId: UUID) {
         
         loadingStage = .loading
@@ -49,7 +60,12 @@ enum LoadingStage {
             errorMessage = ""
         }
         // For example, save the folder information to a database or send it to a server
-        let imgUrl = "folderAsset\(selectedCoverIndex)"
+        var imgUrl = ""
+        if selectedCoverIndex == -1, let selectedUIImage = self.image {
+            imgUrl = localFileManager.saveImage(image: selectedUIImage)
+        } else {
+            imgUrl  = "folderAsset\(selectedCoverIndex)"
+        }
         
         if let context = context {
             print("imgurl: ", imgUrl)

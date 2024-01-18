@@ -16,7 +16,14 @@ struct CreateFolderView: View {
     @State private var viewModel = CreateFolderViewModel()
     @State var photoPickerItem: PhotosPickerItem?
     @State var uiImage: UIImage?
+    @State var initialFolder: Folder?
     
+    init(editFolder: Folder? = nil ) {
+        if let folder = editFolder {
+            self.initialFolder = folder
+            viewModel.updateInfoForEditFolder(folder: folder)
+        }
+    }
     var body: some View {
         ZStack {
             VStack {

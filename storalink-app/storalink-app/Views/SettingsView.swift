@@ -85,12 +85,12 @@ struct SettingsView: View {
                             }
                             //                            UserSettingTab(iconName: "paintbrush", title: "Appearance")
                             //                            UserSettingTab(iconName: "bell", title: "Notification")
-                            NavigationLink {
-                                Text("Matt ")
-                            } label: {
-                                UserSettingTab(iconName: "cart", title: "Change Plan")
-                            }
-
+//                            NavigationLink {
+//                                ChangePlanView()
+//                            } label: {
+//                                UserSettingTab(iconName: "cart", title: "Change Plan")
+//                            }
+                            
                             
                         }
                         
@@ -103,12 +103,13 @@ struct SettingsView: View {
                                     Spacer()
                                 }
                         ) {
-                            UserSettingTab(iconName: "lock", title: "Privacy")
-//                            UserSettingTab(iconName: "questionmark.circle", title: "Help & Support")
-                            UserSettingTab(iconName: "ellipsis.message", title: "Give Feedback")
+                            NavigationLink {
+                                PrivacyView()
+                            } label: {UserSettingTab(iconName: "lock", title: "Privacy")}
+                            //                            UserSettingTab(iconName: "questionmark.circle", title: "Help & Support")
+//                            UserSettingTab(iconName: "ellipsis.message", title: "Give Feedback")
                             
                         }
-                        
                         
                         //                        Section(header:
                         //                                    HStack{

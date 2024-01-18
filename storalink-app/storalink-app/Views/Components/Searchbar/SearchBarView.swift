@@ -9,14 +9,21 @@ import SwiftUI
 import SwiftData
 
 struct SearchBarView: View {
+    @Environment(NavigationStateManager.self) var navigationStateManager
     @State var viewModel: SearchBarViewModel
     @FocusState private var inputFocus: Bool
     @State private var showResults = false
     @State private var searchBarFrame: CGRect = .zero
     
    
-    @Query var searchFolders: [Folder]
-    @Query var searchLinks: [Link]
+    var searchFolders: [Folder]
+    var searchLinks: [Link]
+    
+    init(viewModel: SearchBarViewModel, searchFolders: [Folder], searchLinks: [Link]){
+        self.searchLinks = searchLinks
+        self.searchFolders = searchFolders
+        self.viewModel = viewModel
+    }
     
     var body: some View {
             VStack {
@@ -70,7 +77,9 @@ struct SearchBarView: View {
                                             // Create a view for the folder
                                             Button(action: {
                                                 // Any state changes you want to animate go here
-                                                //                                        viewModel.selectResult(result)
+                                                viewModel.searchText = ""
+                                                    navigationStateManager.navigationPath.append(NavigationItem.folderView)
+                                                    navigationStateManager.focusFolder = folder
                                             }) {
                                                 HStack {
                                                     Image("Folder")
@@ -88,8 +97,9 @@ struct SearchBarView: View {
                                         case .link(let link):
                                             // Create a view for the link
                                             Button(action: {
-                                                // Any state changes you want to animate go here
-                                                //                                        viewModel.selectResult(result)
+                                                viewModel.searchText = ""
+                                                navigationStateManager.navigationPath.append(NavigationItem.linkView)
+                                                navigationStateManager.focusLink = link
                                             }) {
                                                 HStack {
                                                     Image("Link")
@@ -126,13 +136,6 @@ struct SearchBarView: View {
     }
 }
 
-// Extend UIApplication to dismiss the keyboard
-extension UIApplication {
-    func endEditing() {
-        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
-
-#Preview {
-    SearchBarView(viewModel: SearchBarViewModel()).modelContainer(PreviewContainer)
-}
+//#Preview {
+//    SearchBarView(viewModel: SearchBarViewModel()).modelContainer(PreviewContainer)
+//}

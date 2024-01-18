@@ -17,25 +17,40 @@ struct CreateLinkView: View {
     @State var photoPickerItem: PhotosPickerItem?
     @State var uiImage: UIImage?
     
+    // this allow user to pass in a link to edit
+    init(editLink: Link? = nil) {
+        if let link = editLink {
+            viewModel.initialLink = link
+            viewModel.updateInfoForEditLink(link: link)
+        }
+    }
+    
     var body: some View {
         
         HStack {
-            Button(action: {
-                print("Click return")
-                self.presentationMode.wrappedValue.dismiss()
-            }, label: {
-                Image(systemName: "arrow.uturn.backward")
-                    .foregroundColor(Color("ThemeBlack"))
-                    .imageScale(.large)
-                    .padding(Spacing.medium)
-            })
-            .background(Color("SubtleTheme").opacity(0.8))
-            .cornerRadius(Spacing.medium)
-            .shadow(radius:7)
+            if !viewModel.isEditLink {
+                Button(action: {
+                    print("Click return")
+                    self.presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    Image(systemName: "arrow.uturn.backward")
+                        .foregroundColor(Color("ThemeBlack"))
+                        .imageScale(.large)
+                        .padding(Spacing.medium)
+                })
+                .background(Color("SubtleTheme").opacity(0.8))
+                .cornerRadius(Spacing.medium)
+                .shadow(radius:7)
+            }
             Spacer()
             
             Image("Link").resizable().frame(width: 25, height: 25 )
-            Text("New Link")
+            if viewModel.isEditLink {
+                Text("Edit Link")
+            } else {
+                Text("New Link")
+            }
+            
         }.padding(.horizontal)
             .onAppear{viewModel.setup(modelConext: modelContext)}
         
@@ -159,19 +174,38 @@ struct CreateLinkView: View {
                             .stroke(Color(UIColor.separator), lineWidth: 1)
                     )
                     .padding([.bottom, .horizontal])
-                
-                Button(action: {
-                    // Action for folder creation
-                    viewModel.createLink()
-                }) {
-                    Text("Create Link")
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                        .frame(height: 50)
-                        .foregroundColor(.white)
-                        .background(Color.orange)
-                        .cornerRadius(25)
-                        .padding([.leading, .bottom, .trailing])
+                if viewModel.isEditLink {
+                    Button(action: {
+                        // Action for folder creation
+                        viewModel.updateLink()
+                    }) {
+                        HStack{
+                            Image(systemName: "pencil")
+                            Text("Update Link")
+                        }.frame(minWidth: 0, maxWidth: .infinity)
+                            .frame(height: 50)
+                            .foregroundColor(.white)
+                            .background(Color.orange)
+                            .cornerRadius(25)
+                            .padding([.leading, .bottom, .trailing])
+                    }
+                } else {
+                    Button(action: {
+                        // Action for folder creation
+                        viewModel.createLink()
+                    }) {
+                        HStack{
+                            Image(systemName: "plus.circle")
+                            Text("Create Link")
+                        } .frame(minWidth: 0, maxWidth: .infinity)
+                            .frame(height: 50)
+                            .foregroundColor(.white)
+                            .background(Color.orange)
+                            .cornerRadius(25)
+                            .padding([.leading, .bottom, .trailing])
+                    }
                 }
+                
             }
         }.onTapGesture {
             // Show the results when the TextField is tapped

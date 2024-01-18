@@ -76,7 +76,7 @@ struct UserInfoSettingView: View {
                 } label: {
                     Text("Delete Account").foregroundColor(Color("Warning"))
                 }.padding().background(Color("LightWarning")).overlay(RoundedRectangle(cornerRadius: Spacing.small)
-                    .stroke(Color("Warning"), lineWidth: 2)).padding(.horizontal)
+                    .stroke(Color("Warning"), lineWidth: 2)).padding()
                 
             }.onAppear{
                 displayName = appViewModel.userName ?? "Error"

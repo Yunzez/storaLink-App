@@ -12,7 +12,7 @@ import SwiftData
 import LinkPresentation
 @Observable class CreateLinkViewModel {
     // Published properties that the view can subscribe to
-   
+    let localFileManager = LocalFileManager.manager
     var showingSearchResults: Bool = false
     var modelContext: ModelContext?
     var linkName: String = ""
@@ -31,15 +31,57 @@ import LinkPresentation
     var imagePath:String = ""
     var iconPath:String = ""
     
+    var isEditLink:Bool = false
     // getting managers
     let modelManager = ModelUtilManager.manager
     let fileManager = LocalFileManager.manager
     let linkFetcher = LinkMetaDataFetcher.fetcher
+    
+    var initialLink: Link? = nil
 
     // Other properties for business logic
     private var cancellables = Set<AnyCancellable>()
 
-    // Business logic functions
+    func updateInfoForEditLink(link: Link) {
+        linkName = link.linkUrl ?? ""
+        title = link.title
+        if let iconPath = link.iconUrl {
+            icon = localFileManager.getImage(path: iconPath)
+        }
+        
+        if let imgPath = link.imgUrl {
+            image = localFileManager.getImage(path: imgPath)
+        }
+        
+        linkDescription = link.desc ?? ""
+        selectedFolder = link.parentFolder
+        isEditLink = true
+        
+        if let parent = link.parentFolder {
+            searchFolder = parent.title
+        }
+        
+    }
+    
+    func updateLink() {
+        if let link = initialLink {
+            link.linkUrl = linkName
+            link.title = title
+//            link.author = author
+            link.desc = linkDescription
+            if let saveIcon = icon {
+                link.iconUrl = localFileManager.saveImage(image: saveIcon)
+            }
+            
+            if let saveImage = image {
+                link.imgUrl = localFileManager.saveImage(image: saveImage)
+            }
+            
+            link.parentFolder = selectedFolder
+        }
+    }
+    
+
     func createLink() {
         // Implement folder creation logic here
         
@@ -111,9 +153,10 @@ import LinkPresentation
             self.author = linkMetaData.linkAuthor
             self.image = linkMetaData.linkImage
             self.icon = linkMetaData.linkIcon
-            
+            print(self.image ?? "no image")
         })
-            
+        
+        
     }
 
 }

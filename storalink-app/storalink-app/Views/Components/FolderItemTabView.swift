@@ -12,9 +12,20 @@ struct FolderItemTabView: View {
     @Bindable var folder: Folder
     var imageName: String = "LinkDefaultImg" // The image name for the folder thumbnail
     @State var showSheet: Bool = false
+    let localFileManager = LocalFileManager.manager
+    
+    private func folderImage() -> Image {
+        if let uiImage = localFileManager.getImage(path: folder.imgUrl) {
+            return Image(uiImage: uiImage)
+        } else {
+            return Image(folder.imgUrl.isEmpty ? imageName : folder.imgUrl)
+        }
+    }
+    
     var body: some View {
         HStack(spacing: 8) {
-            Image(folder.imgUrl.isEmpty ? imageName : folder.imgUrl) // Replace with actual image
+            
+            folderImage()
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 30, height: 30)
@@ -34,7 +45,7 @@ struct FolderItemTabView: View {
                 Image(systemName: "ellipsis")
                     .foregroundColor(.gray)
             }
-
+            
             
         }
         .padding(.horizontal, 5)

@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>NSExtension</key>
 	<dict>
-		<key>NSExtensionAttributes</key>
+		<key>NSExtension</key>
 		<dict>
-			<key>NSExtensionActivationRule</key>
+			<key>NSExtensionAttributes</key>
 			<dict>
-				<key>NSExtensionActivationSupportsText</key>
-				<string>True</string>
-				<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
-				<string>1</string>
-				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-				<string>1</string>
+				<key>NSExtensionActivationRule</key>
+				<dict>
+					<key>NSExtensionActivationSupportsText</key>
+					<true />
+					<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
+					<integer>1</integer>
+					<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
+					<integer>2</integer>
+				</dict>
 			</dict>
-			<key>New item</key>
-			<string></string>
+			<key>NSExtensionPointIdentifier</key>
+			<string>com.apple.share-services</string>
+			<key>NSExtensionPrincipalClass</key>
+			<string>StoralinkSaveLink.ShareViewController</string>
 		</dict>
-		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.share-services</string>
-		<key>NSExtensionPrincipalClass</key>
-		<string>StoralinkSaveLink.ShareViewController</string>
 	</dict>
-</dict>
 </plist>

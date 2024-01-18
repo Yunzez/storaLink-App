@@ -32,13 +32,12 @@ struct FilesView: View {
             VStack {
                 GeometryReader { geometry in
                     VStack{
-                        SearchBarView(viewModel: viewModel)
+                        SearchBarView(viewModel: viewModel, searchFolders: folders, searchLinks: []) // we don't pass in links here
                     }
                 }
             }.zIndex(2.0)
           
             VStack{
-               
                 ScrollView(.vertical, showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(folders, id: \.self) { folder in

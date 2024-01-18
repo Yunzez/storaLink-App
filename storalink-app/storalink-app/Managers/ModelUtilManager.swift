@@ -30,8 +30,25 @@ final class ModelUtilManager {
         
     }
     
-    func deleteFolder() {
-        
+    func deleteFolder(modelContext: ModelContext, folder: Folder) {
+        modelContext.delete(folder)
+        do {
+            try modelContext.save()
+            
+            // MARK: - Temp deletetion until Cascade in Swiftdata works
+            try modelContext.delete(model: Link.self, where: #Predicate<Link> { link in
+                link.parentFolder == nil
+            })
+            // MARK: - Temp deletetion ends
+            
+            print("delet successfully, Links: ")
+            let allLinks = try modelContext.fetch(FetchDescriptor<Link>())
+            for link in allLinks {
+                print(link.toString())
+            }
+        } catch {
+            print("Saving deletion error: \(error)")
+        }
     }
     
     

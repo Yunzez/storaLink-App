@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct FolderItemView: View {
+    let localFileManager = LocalFileManager.manager
+    let modelUtils = ModelUtilManager.manager
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @Bindable var currentFolder: Folder
     @Environment(\.modelContext) var modelContext
@@ -20,20 +22,33 @@ struct FolderItemView: View {
         VStack(alignment: .leading, spacing: Spacing.small) {
             ZStack(alignment: .topTrailing) {
                 
-                
-                Image(currentFolder.imgUrl.isEmpty ? "FolderPlaceholder" : currentFolder.imgUrl)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .clipped()
-                    .padding(.bottom, Spacing.small)
-                    .cornerRadius(Spacing.small)
-                    .padding(.bottom, -Spacing.small)
-                    .frame(width:160 , height: 130)
+                // check if the image path can be loaded in as ui image
+                if let uiImage = localFileManager.getImage(path: currentFolder.imgUrl) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .clipped()
+                        .padding(.bottom, Spacing.small)
+                        .cornerRadius(Spacing.small)
+                        .padding(.bottom, -Spacing.small)
+                        .frame(width:160 , height: 130)
+                } else {
+                    Image(currentFolder.imgUrl.isEmpty ? "FolderPlaceholder" : currentFolder.imgUrl)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .clipped()
+                        .padding(.bottom, Spacing.small)
+                        .cornerRadius(Spacing.small)
+                        .padding(.bottom, -Spacing.small)
+                        .frame(width:160 , height: 130)
+                }
                 // this give the only top corner radius
                 
                 
                 Button(action: {
-                    currentFolder.pinned.toggle()
+                    withAnimation{
+                        currentFolder.pinned.toggle()
+                    }
                 }) {
                     Image(systemName: currentFolder.pinned ? "heart.fill" : "heart")
                         .foregroundColor(Color("ThemeColor"))
@@ -93,25 +108,8 @@ struct FolderItemView: View {
                                     message: Text("This will permanently delete the folder and its contents."),
                                     primaryButton: .destructive(Text("Delete")) {
                                         // Perform the deletion
-                                        modelContext.delete(currentFolder)
+                                        modelUtils.deleteFolder(modelContext: modelContext, folder: currentFolder)
                                         folderItemViewModel.showDetailSheet = false
-                                        do {
-                                            try modelContext.save()
-                                            
-                                            // MARK: - Temp deletetion until Cascade in Swiftdata works
-                                            try modelContext.delete(model: Link.self, where: #Predicate<Link> { link in
-                                                link.parentFolder == nil
-                                            })
-                                            // MARK: - Temp deletetion ends
-                                            
-                                            print("delet successfully, Links: ")
-                                            let allLinks = try modelContext.fetch(FetchDescriptor<Link>())
-                                            for link in allLinks {
-                                                print(link.toString())
-                                            }
-                                        } catch {
-                                            print("Saving deletion error: \(error)")
-                                        }
                                     },
                                     secondaryButton: .cancel()
                                 )
@@ -120,7 +118,7 @@ struct FolderItemView: View {
                             Spacer()
                         }.presentationDetents([.height(300)])
                     }).sheet(isPresented: $folderItemViewModel.showEditSheet, content: {
-                        Text("Test")
+                        CreateFolderView(editFolder: currentFolder)
                     })
             }
             .padding([.leading, .trailing], 10)

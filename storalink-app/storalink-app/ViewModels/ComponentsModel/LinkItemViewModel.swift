@@ -6,15 +6,17 @@
 //
 
 import Foundation
-class LinkItemViewModel: ObservableObject {
+@Observable
+class LinkItemViewModel {
     // Properties and methods for managing links
-    @Published var moreOpen: Bool
-    
-    init() {
-        self.moreOpen = false
-    }
+    var moreOpen: Bool = false
+    var openMove: Bool = false
     
     func toggleMore() {
-        moreOpen = !moreOpen
+        moreOpen.toggle()
+    }
+    
+    func toggleMove() {
+        openMove.toggle()
     }
 }

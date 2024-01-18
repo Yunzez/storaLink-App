@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LinkItemView: View {
     @Bindable var currentLink: Link
-    @StateObject var linkItemViewModel = LinkItemViewModel()
+    @State var linkItemViewModel = LinkItemViewModel()
     @State private var navigateToLink = false
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @Environment(\.modelContext) var modelContext
@@ -27,7 +27,7 @@ struct LinkItemView: View {
                     .frame(width: 88, height: 65)
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(Spacing.roundMd)
-                    
+                
                 VStack(alignment: .leading) {
                     Text(currentLink.title )
                         .font(.headline)
@@ -39,7 +39,7 @@ struct LinkItemView: View {
                             .frame(width: 22, height: 22)
                         Text(" ")
                             .font(.subheadline)
-                            
+                        
                     }
                 }
                 Spacer()
@@ -48,25 +48,28 @@ struct LinkItemView: View {
                     linkItemViewModel.toggleMore()
                 }, label: {
                     Image(systemName: "ellipsis").foregroundColor(Color("ThemeBlack"))
-                }).padding(.horizontal, Spacing.small)
-                    .sheet(isPresented: $linkItemViewModel.moreOpen) {
-                        VStack{
-                            Spacer()
-                            BottomSheetOption(onClick: {
-                                modelContext.delete(currentLink)
-                            }, text: "Delete", assetImageString: "Trash")
-                            Spacer()
-                            BottomSheetOption(onClick: {
-                                print("test")
-                            }, text: "Move", assetImageString: "FolderMove")
-                            Spacer()
-                            BottomSheetOption(onClick: {
-                                print("test")
-                            }, text: "Edit", assetImageString: "Pencil")
-                            Spacer()
-                            
-                        }.presentationDetents([.height(300)])
-                    }
+                })
+                .padding(.horizontal, Spacing.small)
+                .sheet(isPresented: $linkItemViewModel.moreOpen) {
+                    VStack{
+                        Spacer()
+                        BottomSheetOption(onClick: {
+                            modelContext.delete(currentLink)
+                        }, text: "Delete", assetImageString: "Trash")
+                        Spacer()
+                        BottomSheetOption(onClick: {
+                            linkItemViewModel.toggleMore()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                linkItemViewModel.toggleMove()
+                            }
+                        }, text: "Edit", assetImageString: "Pencil")
+                        Spacer()
+                        
+                    }.presentationDetents([.height(300)])
+                }
+                .sheet(isPresented: $linkItemViewModel.openMove, content: {
+                    CreateLinkView(editLink: currentLink)
+                })
             }
             .padding()
             .frame(height: 75) // Adjust size as needed
@@ -75,9 +78,8 @@ struct LinkItemView: View {
             .cornerRadius(10)
             .foregroundColor(Color("ThemeBlack"))
             .onAppear{
-                
-//                print(currentLink.parentFolder?.title ?? "fail to find folder")
-//                print(currentLink.id)
+                //                print(currentLink.parentFolder?.title ?? "fail to find folder")
+                //                print(currentLink.id)
             }
         })
     }

@@ -13,7 +13,7 @@ struct FolderView: View {
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @Bindable var folderViewModel: FolderViewModel
     @State var currentFolder: Folder = Folder(title: "Initial", imgUrl: "", desc: "Initial Folder", links: [])
-    
+    let localFileManager = LocalFileManager.manager
     
     
     let buttonHeight: CGFloat = 25
@@ -28,19 +28,36 @@ struct FolderView: View {
             VStack(spacing: 0) {
                 // Custom Navigation Bar with Background Image
                 ZStack {
-                    Image(currentFolder.imgUrl)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 200)  // Fixed height for the image
-                        .clipped()  // Ensure the image doesn't overlap other content
-                        .edgesIgnoringSafeArea(.top)
-                        .overlay(
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color("ThemeWhite").opacity(0.0), Color("ThemeWhite").opacity(0.7)]),
-                                startPoint: .top,
-                                endPoint: .bottomLeading
+                    if let uiImage = localFileManager.getImage(path: currentFolder.imgUrl) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 200)  // Fixed height for the image
+                            .clipped()  // Ensure the image doesn't overlap other content
+                            .edgesIgnoringSafeArea(.top)
+                            .overlay(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color("ThemeWhite").opacity(0.0), Color("ThemeWhite").opacity(0.7)]),
+                                    startPoint: .top,
+                                    endPoint: .bottomLeading
+                                )
                             )
-                        )
+                    }
+                    else {
+                        Image(currentFolder.imgUrl)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 200)  // Fixed height for the image
+                            .clipped()  // Ensure the image doesn't overlap other content
+                            .edgesIgnoringSafeArea(.top)
+                            .overlay(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color("ThemeWhite").opacity(0.0), Color("ThemeWhite").opacity(0.7)]),
+                                    startPoint: .top,
+                                    endPoint: .bottomLeading
+                                )
+                            )
+                    }
                     
                     VStack {
                         Spacer()

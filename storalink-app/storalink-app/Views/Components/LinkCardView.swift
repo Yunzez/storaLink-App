@@ -14,7 +14,7 @@ struct LinkViewCard: View {
     var body: some View {
             VStack{
                 HStack(){
-                    Image(uiImage: fileManager.getImage(path: link.iconUrl ?? "") ?? UIImage(resource: .ins))
+                    Image(uiImage: fileManager.getImage(path: link.iconUrl ?? "") ?? UIImage(resource: .defaultLinkIcon))
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)

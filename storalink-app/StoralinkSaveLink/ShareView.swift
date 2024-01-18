@@ -63,7 +63,6 @@ struct ShareView: View {
     func prepareLinkForFolder() {
         for folder in userFolders {
             if folder.id == folderId {
-                print("add link")
                 var imagePath = ""
                 var iconPath = ""
                 if let saveImage = image {
@@ -78,10 +77,10 @@ struct ShareView: View {
                 modelUtil.addLinkToFolder(link: newLink, folder: folder, modelContext: modelContext)
             }
         }
+        onCancel()
     }
     
     func setUp(){
-        print("setup")
         guard let sharedDefaults = UserDefaults(suiteName: "group.com.storalink.appgroup") else {
                 print("Unable to access shared UserDefaults")
                 return
