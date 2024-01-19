@@ -37,48 +37,52 @@ final class LinkMetaDataFetcher  {
         }
     }
     
-    func fetch(link: String, completion: @escaping (LinkMetaData) -> Void){
+    func fetch(link: String, completion: @escaping (LinkMetaData?, Error?) -> Void) {
         let ret = LinkMetaData()
-        
-      
         ret.linkName = ensureHttpsPrefix(link: link)
-        print("feteching", ret.linkName)
-        guard let currentUrl = URL(string: ret.linkName) else {
-            return
-        }
+        guard let currentUrl = URL(string: ret.linkName) else { return }
+        
         let provider = LPMetadataProvider()
+        let group = DispatchGroup()
+        
         provider.startFetchingMetadata(for: currentUrl) { metaData, error in
             guard let data = metaData, error == nil else {
                 print("cannot find data", error ?? "no error")
+                completion(nil, NSError(domain: "Invalid URL", code: 0, userInfo: nil))
                 return
             }
             ret.linkTitle = data.title ?? ret.linkTitle
             ret.linkDesc = data.title ?? "No description"
             ret.linkAuthor = currentUrl.host ?? "Unclear"
-        
+            
             if let iconProvider = data.imageProvider {
+                group.enter()
                 iconProvider.loadObject(ofClass: UIImage.self) { (currentImage, error) in
                     DispatchQueue.main.async {
                         if let image = currentImage as? UIImage {
                             ret.linkImage = image
-                           
                         }
+                        group.leave()
                     }
                 }
             }
             
             if let iconProvider = data.iconProvider {
+                group.enter()
                 iconProvider.loadObject(ofClass: UIImage.self) { (currentImage, error) in
                     DispatchQueue.main.async {
                         if let icon = currentImage as? UIImage {
                             ret.linkIcon = icon
                         }
+                        group.leave()
                     }
                 }
             }
             
-            completion(ret)
+            group.notify(queue: .main) {
+                completion(ret, nil)
+            }
         }
-        
     }
+
 }

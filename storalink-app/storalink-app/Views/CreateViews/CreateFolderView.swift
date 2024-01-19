@@ -150,7 +150,7 @@ struct CreateFolderView: View {
                     
                     Button(action: {
                         // Action for folder creation
-                        navigationStateManager.lastNavigationSource = .createdFolder
+                        navigationStateManager.lastNavigationSource = .toMainStack
                         viewModel.createFolder(userId: appViewModel.userId ?? UUID() )
                     }) {
                         Text("Create Folder")

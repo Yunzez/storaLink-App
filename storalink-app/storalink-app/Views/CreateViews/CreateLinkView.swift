@@ -115,11 +115,26 @@ struct CreateLinkView: View {
                         }
                     }
                 }
-                
-                CustomButton(action: {
-                    print("fetching data")
-                    viewModel.fetchLinkMetadata()
-                }, label: "Auto-fill using URL", style: .fill)
+                HStack{
+                    CustomButton(action: {
+                        print("fetching data")
+                        viewModel.fetchLinkMetadata()
+                    }, label: "Auto-fill using URL", style: .fill)
+                    Spacer()
+                    if viewModel.fetchStatus != 0 {
+                        if viewModel.fetchStatus == 1 {
+                            ProgressView()
+                        } else {
+                            if viewModel.fetchError.isEmpty {
+                                Image(systemName: "checkmark").foregroundColor(.green)
+                                Text("Auto-fill successful").foregroundColor(.green)
+                            } else {
+                                Image(systemName: "wrongwaysign").foregroundColor(.red)
+                                Text("Unable to fetch url").foregroundColor(.red)
+                            }
+                        }
+                    }
+                }.padding(.horizontal)
                 
                 Text("Title")
                 StandardTextField(placeholder: "https://", text: $viewModel.title).padding([.horizontal, .bottom])

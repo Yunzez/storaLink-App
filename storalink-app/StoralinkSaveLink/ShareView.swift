@@ -101,12 +101,14 @@ struct ShareView: View {
         }
         
         if let url = sharedURL {
-            fetcher.fetch(link: url) { data in
-                image = data.linkImage
-                icon = data.linkIcon
-                titleText = data.linkTitle
-                authorText = data.linkAuthor
-                descriptionText = data.linkDesc
+            fetcher.fetch(link: url) { data, _  in
+                if let data = data {
+                    image = data.linkImage
+                    icon = data.linkIcon
+                    titleText = data.linkTitle
+                    authorText = data.linkAuthor
+                    descriptionText = data.linkDesc
+                }
             }
         }
         

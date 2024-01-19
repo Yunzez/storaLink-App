@@ -27,6 +27,8 @@ import LinkPresentation
     var errorMessage: String = ""
     var searchFolder: String = ""
     
+    var fetchStatus: Int = 0
+    var fetchError: String = ""
     // path of the saved images to save to link
     var imagePath:String = ""
     var iconPath:String = ""
@@ -147,13 +149,24 @@ import LinkPresentation
     }
 
     func fetchLinkMetadata() {
-        linkFetcher.fetch(link: linkName, completion: { linkMetaData in
-            self.title = linkMetaData.linkTitle
-            self.linkDescription = linkMetaData.linkDesc
-            self.author = linkMetaData.linkAuthor
-            self.image = linkMetaData.linkImage
-            self.icon = linkMetaData.linkIcon
-            print(self.image ?? "no image")
+        fetchStatus = 1
+        linkFetcher.fetch(link: linkName, completion: { linkMetaData, error in
+            if error != nil {
+                print("got error")
+                self.fetchStatus = 2
+                self.fetchError = "Error"
+            }
+            
+            if linkMetaData != nil, let metaData = linkMetaData {
+                self.fetchError = ""
+                self.title = metaData.linkTitle
+                self.linkDescription = metaData.linkDesc
+                self.author = metaData.linkAuthor
+                self.image = metaData.linkImage
+                self.icon = metaData.linkIcon
+                print(self.image ?? "no image")
+                self.fetchStatus = 2
+            }
         })
         
         

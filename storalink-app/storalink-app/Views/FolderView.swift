@@ -31,7 +31,7 @@ struct FolderView: View {
                     if let uiImage = localFileManager.getImage(path: currentFolder.imgUrl) {
                         Image(uiImage: uiImage)
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
+                            .scaledToFill()
                             .frame(height: 200)  // Fixed height for the image
                             .clipped()  // Ensure the image doesn't overlap other content
                             .edgesIgnoringSafeArea(.top)
@@ -46,7 +46,7 @@ struct FolderView: View {
                     else {
                         Image(currentFolder.imgUrl)
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
+                            .scaledToFill()
                             .frame(height: 200)  // Fixed height for the image
                             .clipped()  // Ensure the image doesn't overlap other content
                             .edgesIgnoringSafeArea(.top)

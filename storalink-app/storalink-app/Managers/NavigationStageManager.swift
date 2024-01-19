@@ -16,7 +16,8 @@ import Observation
     var focusLink: Link? 
     enum NavigationSource {
             case normal
-            case createdFolder
+            case toMainStack
+            case tutorial
             // Add more cases as needed for different navigation contexts
         }
     
@@ -35,9 +36,10 @@ import Observation
 //       }
 //    
     func navigateBack() {
-        if(lastNavigationSource == .createdFolder) {
+        if(lastNavigationSource == .toMainStack) {
             navigationPath = NavigationPath()
         }
+        
         else if !navigationPath.isEmpty {
             navigationPath.removeLast()
         }

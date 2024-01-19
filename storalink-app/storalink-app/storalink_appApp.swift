@@ -45,7 +45,9 @@ struct storalink_appApp: App {
                             
                             // record login activity
                             appViewModel.recordLogin(userEmail: user.email)
-                            appViewModel.isAuthenticated = true
+                            withAnimation{
+                                appViewModel.isAuthenticated = true
+                            }
                             return
                         }
                     }

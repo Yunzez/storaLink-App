@@ -131,8 +131,11 @@ struct SignupView: View {
                     if let newUser = await viewModel.handleSignUp() {
                         print("check passed")
                         appViewModel.setUser(user: newUser)
-                        appViewModel.isAuthenticated = true
+                        if !(appViewModel.isFirstLaunch ?? false) {
+                            appViewModel.isAuthenticated = true
+                        }
                         modelContext.insert(newUser)
+                        self.appViewModel.recordLogin(userEmail: newUser.email)
                     }
                 }
             }) {

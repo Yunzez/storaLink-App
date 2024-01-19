@@ -18,35 +18,28 @@ struct FolderItemView: View {
     @State private var showingDeletionAlert = false
     
     var body: some View {
-        //        NavigationLink(destination: FolderView()) {
-        VStack(alignment: .leading, spacing: Spacing.small) {
+        VStack(alignment: .leading) {
             ZStack(alignment: .topTrailing) {
-                
-                // check if the image path can be loaded in as ui image
+                // Image view
                 if let uiImage = localFileManager.getImage(path: currentFolder.imgUrl) {
                     Image(uiImage: uiImage)
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .clipped()
-                        .padding(.bottom, Spacing.small)
+                        .scaledToFill()
+                        .frame(width: 160, height: 155)
                         .cornerRadius(Spacing.small)
                         .padding(.bottom, -Spacing.small)
-                        .frame(width:160 , height: 130)
                 } else {
-                    Image(currentFolder.imgUrl.isEmpty ? "FolderPlaceholder" : currentFolder.imgUrl)
+                    Image(currentFolder.imgUrl.isEmpty ? "Xiaochuan" : currentFolder.imgUrl)
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .clipped()
-                        .padding(.bottom, Spacing.small)
+                        .scaledToFill()
+                        .frame(width: 160, height: 155)
                         .cornerRadius(Spacing.small)
                         .padding(.bottom, -Spacing.small)
-                        .frame(width:160 , height: 130)
                 }
-                // this give the only top corner radius
                 
-                
+                // Heart icon button
                 Button(action: {
-                    withAnimation{
+                    withAnimation {
                         currentFolder.pinned.toggle()
                     }
                 }) {
@@ -56,14 +49,17 @@ struct FolderItemView: View {
                         .background(Color.white)
                         .clipShape(Circle())
                 }
-                .padding([.top], Spacing.small)
-            }.frame(width:160 , height: 130)
+                .padding([.top], Spacing.small + 3)
+            }
+            .frame(width: 160, height: 135)
+            .clipped() // Apply clipping here, outside the ZStack
+            
             
             //                Spacer()
             HStack {
-                Text(currentFolder.title)
+                Text(currentFolder.title + "\n")
+                    .lineLimit(2)
                     .font(.headline)
-                    .lineLimit(1)
                     .foregroundColor(Color("ThemeBlack"))
                 Spacer()
                 Button {
@@ -84,7 +80,7 @@ struct FolderItemView: View {
                                     currentFolder.pinned = true
                                 }, text: "Pin", assetImageString: "Folder")
                             }
-
+                            
                             Spacer()
                             BottomSheetOption(onClick: {
                                 print("Edit")
@@ -121,8 +117,8 @@ struct FolderItemView: View {
                         CreateFolderView(editFolder: currentFolder)
                     })
             }
-            .padding([.leading, .trailing], 10)
-            .frame(height: 25)
+            .padding([.leading, .trailing], Spacing.small)
+            .frame(height: 20)
             
             
             HStack(spacing: 0) {
@@ -138,6 +134,7 @@ struct FolderItemView: View {
             Spacer()
         }
         .frame(width: 160, height: 200) // Adjust size as needed
+//        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
         .background(Color("SubtleTheme")) // Use actual card background color
         .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
         .shadow(radius: 5)
@@ -150,5 +147,5 @@ struct FolderItemView: View {
 }
 
 #Preview {
-    FolderItemView(currentFolder: Folder(title: "A test", imgUrl: "", links: [])).environment(NavigationStateManager())
+    FolderItemView(currentFolder: Folder(title: "Sun xiao chuan 258", imgUrl: "", links: [])).environment(NavigationStateManager())
 }

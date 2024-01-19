@@ -28,11 +28,11 @@ struct ContentView: View {
         if appViewModel.isAuthenticated {
             MainNavStack()
         } else {
-            if appViewModel.isFirstLaunch ?? true {
-                TutorialView()
-            } else {
-                LoginView()
-            }
+                if appViewModel.isFirstLaunch ?? true {
+                    TutorialView()
+                } else {
+                    LoginView()
+                }
         }
     }
     
