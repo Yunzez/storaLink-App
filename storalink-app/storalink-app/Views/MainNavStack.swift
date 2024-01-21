@@ -56,41 +56,13 @@ struct MainNavStack: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity) // Take up all available space
                 
                 // MARK: - Custom Tab Bar
-                VStack{
-                    if !navigationStateManager.isInSubMenu {
-                        HStack {
-                            Button(action: { self.selectedTab = 0 }) {
-                                Image(self.selectedTab == 0 ? "HomeSelected" : "Home")
-                            }.frame(width: 50)
-                            Spacer()
-                            Button(action: { self.selectedTab = 1 }) {
-                                Image(self.selectedTab == 1 ? "FileSelected" : "File")
-                            }.frame(width: 50)
-                            Spacer()
-                            Button(action: { self.selectedTab = 2 }) {
-                                Image(self.selectedTab == 2 ? "CreateSelected" : "Create")
-                            }.frame(width: 70)
-                            Spacer()
-                            Button(action: { self.selectedTab = 3 }) {
-                                Image(self.selectedTab == 3 ? "NoticeSelected" : "Notice").resizable().frame(width: 30, height: 30)
-                            }.frame(width: 50)
-                            Spacer()
-                            Button(action: { self.selectedTab = 4 }) {
-                                Image(self.selectedTab == 4 ? "SettingSelected" : "Setting")
-                            }.frame(width: 50)
-                            // Add other buttons for your tabs
-                        }
-                        .padding(.horizontal)
-                        .padding(.vertical, 5)
-                        .background(Color("ThemeWhite").opacity(1))
-                        .shadow(radius: 2)
-                        .transition(.move(edge: .bottom)) // Transition for sliding in and out from the
-                    }
-                    
+                // Custom Tab Bar
+                if !navigationStateManager.isInSubMenu {
+                    CustomTabView(selectedTab: $selectedTab)
+                        .transition(.move(edge: .bottom))
+                        .animation(Animation.easeInOut(duration: 0.3), value: navigationStateManager.isInSubMenu)
                 }
-                .frame(height: navigationStateManager.isInSubMenu ? 0 : Spacing.customNavigationBarHeight)
-                .animation(Animation.easeInOut(duration: 0.3), value: navigationStateManager.isInSubMenu)
-                .edgesIgnoringSafeArea(.bottom)
+                
                 
             }.navigationDestination(for: NavigationItem.self) { item in
                 switch item {
@@ -109,6 +81,97 @@ struct MainNavStack: View {
         }
     }
 }
+
+struct CustomTabView: View {
+    @Binding var selectedTab: Int
+    @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
+    var body: some View {
+        VStack {
+            Spacer()
+            
+            // Custom Tab Bar
+            HStack(alignment: .bottom) {
+                
+                HStack(alignment: .bottom){
+                    // Home Tab
+                    TabBarButton(iconName: "Home", selectedIcon: "HomeSelected", isSelected: selectedTab == 0) {
+                        selectedTab = 0
+                    }.padding(.leading, Spacing.small)
+                    
+                    Spacer() // Adds space between buttons
+                    
+                    // Files Tab
+                    TabBarButton(iconName: "File", selectedIcon: "FileSelected", isSelected: selectedTab == 1) {
+                        selectedTab = 1
+                    }
+                    
+                    Spacer() // Adds space between buttons
+                    
+                    // Create Tab (Larger)
+                    TabBarButton(iconName: "Create", selectedIcon: "CreateSelected", isSelected: selectedTab == 2, isLarge: true) {
+                        selectedTab = 2
+                    }.padding(.top, Spacing.small)
+                    
+                    Spacer() // Adds space between buttons
+                    
+                    // Info Tab
+                    TabBarButton(iconName: "Notice", selectedIcon: "NoticeSelected", isSelected: selectedTab == 3) {
+                        selectedTab = 3
+                    }
+                    
+                    Spacer() // Adds space between buttons
+                    
+                    // Settings Tab
+                    TabBarButton(iconName: "Setting", selectedIcon: "SettingSelected", isSelected: selectedTab == 4) {
+                        selectedTab = 4
+                    }.padding(.trailing, Spacing.small)
+                }
+//                .padding([.top], Spacing.small)
+                
+                .padding([.bottom], Spacing.large)
+                
+            }
+            .padding(.horizontal)
+            .transition(.move(edge: .bottom))
+            .background(Color("SubtleTheme").opacity(1))
+        }.animation(Animation.easeInOut(duration: 0.3), value: navigationStateManager.isInSubMenu)
+            .edgesIgnoringSafeArea(.bottom)
+            .frame(maxHeight: navigationStateManager.isInSubMenu ? 0 : Spacing.customNavigationBarHeight)
+            
+    }
+}
+
+struct TabBarButton: View {
+    let iconName: String
+    let selectedIcon: String
+    let isSelected: Bool
+    let isLarge: Bool
+    let action: () -> Void
+    
+    init(iconName: String, selectedIcon: String, isSelected: Bool, isLarge: Bool = false, action: @escaping () -> Void) {
+        self.iconName = iconName
+        self.isSelected = isSelected
+        self.isLarge = isLarge
+        self.action = action
+        self.selectedIcon = selectedIcon
+    }
+    
+    var body: some View {
+        Button(action: action) {
+            VStack {
+                Image(isSelected ? selectedIcon: iconName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: isLarge ? 60 : 30, height: isLarge ? 60 : 30)
+                if !isLarge {
+                    Text(iconName).font(.caption2)
+                }
+            }
+            .foregroundColor(.themeBlack)
+        }
+    }
+}
+
 
 #Preview {
     MainNavStack()

@@ -27,6 +27,8 @@ struct HomeView: View {
     
     @Query var users: [User] = [User]()
     @State var user: User?
+    
+    // change to state for now, we are fetching on view onappear
     @Query var folders: [Folder] = []
     @Query var links: [Link] = []
 //    @Query() private var links: [Link]
@@ -49,32 +51,53 @@ struct HomeView: View {
            })
         
         user = users.first
+            _folders = Query(filter: #Predicate { folder in
+                    if let filterId = filterUserID {
+                        return folder.user?.id == filterId
+                    } else {
+                        return false
+                    }
+                }
+            , sort: [SortDescriptor(\Folder.creationDate, order: .reverse)])
         
-        _folders = Query(filter: #Predicate { folder in
-            if let filterId = filterUserID {
-                return folder.user?.id == filterId
-            } else {
-                return false
-            }
-       })
-    // User -> [Folders] -> [Links]
-//        _links = Query(filter: #Predicate { link in
-//            if let filterId = filterUserID {
-//                if let currentFolder = link.parentFolder {
-//                    if let currentUser = currentFolder.user {
-//                       return currentUser.id == filterId
-//                    } else {
-//                        return false
-//                    }
+            // User -> [Folders] -> [Links]
+            //        _links = Query(filter: #Predicate { link in
+            //            if let filterId = filterUserID {
+            //                if let currentFolder = link.parentFolder {
+            //                    if let currentUser = currentFolder.user {
+            //                       return currentUser.id == filterId
+            //                    } else {
+            //                        return false
+            //                    }
+            //                } else {
+            //                    return false
+            //                }
+            //            } else {
+            //                return false
+            //            }
+            //       })
+        }
+    
+    
+    func setup(){
+//        var folderCount = 5
+        // add custom fetch to filter data by creation date
+//        var folderFetchDescriptor = FetchDescriptor<Folder>(
+//            predicate:  #Predicate { folder in
+//                if let filterId = filterUserID {
+//                    return folder.user?.id == filterId
 //                } else {
 //                    return false
 //                }
-//            } else {
-//                return false
-//            }
-//       })
+//            },
+//            sortBy: [SortDescriptor(\Folder.creationDate, order: .reverse)]
+//        )
+//        folderFetchDescriptor.fetchLimit = 5
+//        
+//        do { try  folders =  modelContext.fetch(folderFetchDescriptor) } catch {
+//             print("Error in fetching folders")
+//         }
     }
-    
     
     // ! we calculate the links here whenever we render links
     #warning("Temp method, once link can be queried, should delete")
@@ -84,8 +107,11 @@ struct HomeView: View {
             guard let folderId = link.parentFolder?.id else { return false }
             return folderIds.contains(folderId)
         }
-        
+        .sorted(by: { $0.creationDate > $1.creationDate })
+        .prefix(10) // Take the first 10 elements
+        .map { $0 } // Convert the prefix result back to an array
     }
+
     
     // Update filtered links whenever the view appears or the relevant data changes
     private func updateFilteredLinks() {
@@ -120,7 +146,7 @@ struct HomeView: View {
                     // Favorite Folders Section
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 10) {
-                            ForEach(folders) { folder in // Replace with your data source
+                            ForEach(Array(folders.prefix(5))) { folder in // Replace with your data source
                                 if folder.pinned {
                                     FolderItemTabView(folder: folder).foregroundColor(.primary)
                                         .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
@@ -164,6 +190,7 @@ struct HomeView: View {
                     
                     Spacer()
                 }.onAppear{
+                    setup()
                 }.padding(.top, Spacing.customSearchBarHeight )
             }
             
