@@ -9,7 +9,6 @@ import Foundation
 import SwiftData
 @Observable class FolderViewModel {
     var like: Bool
-    var likeIconPath: String
     var menu: Bool
     var linkNum: Int
     var searchFieldLength: CGFloat
@@ -22,24 +21,12 @@ import SwiftData
     init() {
         like = false
         linkNum = 10
-        likeIconPath = "heart"
         menu = false
         searchFieldLength = 130
         searchOpen = false
         searchText = ""
         sortOpen = false
         showCreateSheet = false
-    }
-    
-    func toggleLike() {
-        print("handle like ")
-        like = !like
-        if like {
-            likeIconPath = "heart.fill"
-        } else {
-            likeIconPath = "heart"
-        }
-        
     }
     
     func toggleMenu(){

@@ -158,6 +158,7 @@ import LinkPresentation
             }
             
             if linkMetaData != nil, let metaData = linkMetaData {
+                self.linkName = metaData.linkName
                 self.fetchError = ""
                 self.title = metaData.linkTitle
                 self.linkDescription = metaData.linkDesc

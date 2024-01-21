@@ -93,8 +93,11 @@ struct FolderView: View {
                             
                             Spacer()
                             
-                            Button(action: { folderViewModel.toggleLike() }) {
-                                Image(systemName: folderViewModel.likeIconPath)
+                            Button(action: {
+                                folderViewModel.like.toggle()
+                                    currentFolder.pinned = folderViewModel.like ? true : false
+                            }) {
+                                Image(systemName: currentFolder.pinned ? "heart.fill" : "heart")
                                     .foregroundColor(.red)
                                     .imageScale(.large)
                                     .frame(width: buttonHeight, height: buttonHeight) // Set the frame of the content
@@ -180,7 +183,7 @@ struct FolderView: View {
                             Spacer()
                         }
                         .padding([.horizontal])
-                        .transition(.opacity.combined(with: .scale))
+                        .transition(.slide.combined(with: .move(edge: .leading)))
                     }
                     
                     
@@ -202,11 +205,11 @@ struct FolderView: View {
                                 }
                                 Spacer()
                             }.padding(.horizontal)
-                        }.frame(height: 35)
-                            .transition(.opacity.combined(with: .scale))
+                        }
                         
                     }
-                }.animation(.easeInOut(duration: 0.3), value: folderViewModel.searchOpen)
+                }.frame(height: 35)
+                    .animation(.easeInOut(duration: 0.3), value: folderViewModel.searchOpen)
                 
                 // Scrollable content
                 HStack{
@@ -255,12 +258,13 @@ struct FolderView: View {
             }
         }.onAppear {
             // This is called when the view appears
-            currentFolder = navigationStateManager.focusFolder ?? Folder(title: "Oops, Error X:C",imgUrl: "folderAsset8", desc: "Try to restart the app", links: [] )
+            currentFolder = navigationStateManager.focusFolder ?? Folder(title: "Oops, Error X:C",imgUrl: "folderAsset8", desc: "Try to restart the app", pinned: true, links: [] )
             print("Folder ", currentFolder.toString())
                 for link in currentFolder.links {
                     print(link.toString()) // Assuming you have a toString() method in your Link class
                 }
             navigationStateManager.enterSubMenu()
+            folderViewModel.like = currentFolder.pinned
         }
         .onDisappear {
             navigationStateManager.exitSubMenu()

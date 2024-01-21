@@ -83,7 +83,6 @@ struct CreateLinkView: View {
                                 VStack(alignment: .leading) {
                                     ForEach(viewModel.filterFolder(folders: folders)) { folder in
                                         Button {
-                                            
                                             viewModel.searchFolder = folder.title
                                             viewModel.selectedFolder = folder
                                             withAnimation {
@@ -91,16 +90,22 @@ struct CreateLinkView: View {
                                             }
                                         } label: {
                                             HStack {
-                                                Image("Folder").resizable().aspectRatio(contentMode: .fit).frame(width: 25, height: 25)
+                                                Image("Folder")
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(width: 25, height: 25)
                                                 Text(folder.title)
-                                                    .foregroundColor(Color("ThemeBlack")) // Set the text color
+                                                    .foregroundColor(Color("ThemeBlack"))
+                                                Spacer() // Pushes the content to the left
                                             }
-                                            .padding(.vertical, 8) // Add some vertical padding for tap comfort
+                                            .padding(.vertical, 8)
+                                            .frame(maxWidth: .infinity, alignment: .leading) // Make HStack fill the width
                                         }
-                                        .padding(.horizontal) // Add horizontal padding for better alignment
-                                        Divider() // Add a divider between items
+                                        .padding(.horizontal) // Padding for the Button
+                                        .frame(maxWidth: .infinity, alignment: .leading) // Make Button fill the width
+                                        Divider() // Divider between items
                                     }
-                                }
+                                }.frame(width: .infinity)
                             }
                             .background(Color.white)
                             .cornerRadius(Spacing.small)

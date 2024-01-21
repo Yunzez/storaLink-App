@@ -153,6 +153,7 @@ struct LinkView: View {
                     Image(systemName: "ellipsis")
                     CustomButton(action: {
                         if let url = URL(string: currentLink?.linkUrl ?? "") {
+                            print("open link", url)
                             UIApplication.shared.open(url)
                         } else {
                             print("Invalid URL")

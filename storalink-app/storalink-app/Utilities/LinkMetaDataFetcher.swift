@@ -32,8 +32,7 @@ final class LinkMetaDataFetcher  {
         if link.lowercased().hasPrefix("http://") || link.lowercased().hasPrefix("https://") {
             return link
         } else {
-            // If not, prepend "https://" to the link
-            return "https://" + link
+            return "https://" + link.lowercased()
         }
     }
     
@@ -51,6 +50,7 @@ final class LinkMetaDataFetcher  {
                 completion(nil, NSError(domain: "Invalid URL", code: 0, userInfo: nil))
                 return
             }
+            
             ret.linkTitle = data.title ?? ret.linkTitle
             ret.linkDesc = data.title ?? "No description"
             ret.linkAuthor = currentUrl.host ?? "Unclear"
