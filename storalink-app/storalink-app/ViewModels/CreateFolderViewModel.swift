@@ -82,14 +82,16 @@ enum LoadingStage {
                 currentUser.folders.append(newFolder)
                 try context.save()
                 print("change saved to user", currentUser.name)
-                navigationStateManager?.focusFolder = newFolder
-                
-                loadingStage = .done
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                if let navigateManager = navigationStateManager {
+                    navigateManager.focusFolder = newFolder
+                    navigateManager.lastNavigationSource = .toMainStack
+                    loadingStage = .done
                     
-                    self.readyToNavigate = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.readyToNavigate = true
+                    }
                 }
+               
             } catch {
                 
             }

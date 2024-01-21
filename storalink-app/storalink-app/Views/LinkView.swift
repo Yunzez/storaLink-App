@@ -85,8 +85,7 @@ struct LinkView: View {
                 ZStack {
                     HStack {
                         Button(action: {
-                            print("Click return")
-                            self.presentationMode.wrappedValue.dismiss()
+                            navigationStateManager.navigateBack()
                         }, label: {
                             Image(systemName: "arrow.uturn.backward")
                                 .foregroundColor(Color.themeBlack)

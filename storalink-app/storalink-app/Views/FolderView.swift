@@ -63,14 +63,7 @@ struct FolderView: View {
                         Spacer()
                         HStack {
                             Button(action: {
-                                print("Click return")
-                                
-                                if(navigationStateManager.lastNavigationSource != .normal) {
-                                    navigationStateManager.navigateBack()
-                                } else {
-                                    self.presentationMode.wrappedValue.dismiss()
-                                }
-                                
+                                navigationStateManager.navigateBack()
                             }, label: {
                                 Image(systemName: "arrow.uturn.backward")
                                     .foregroundColor(Color("ThemeBlack"))
@@ -95,7 +88,7 @@ struct FolderView: View {
                             
                             Button(action: {
                                 folderViewModel.like.toggle()
-                                    currentFolder.pinned = folderViewModel.like ? true : false
+                                currentFolder.pinned = folderViewModel.like ? true : false
                             }) {
                                 Image(systemName: currentFolder.pinned ? "heart.fill" : "heart")
                                     .foregroundColor(.red)
@@ -129,7 +122,7 @@ struct FolderView: View {
                     }
                     Spacer()
                 }.edgesIgnoringSafeArea(.top)
-                .frame(maxWidth: .infinity, maxHeight: 150)
+                    .frame(maxWidth: .infinity, maxHeight: 150)
                 
                 
                 // Description Text
@@ -260,32 +253,32 @@ struct FolderView: View {
             // This is called when the view appears
             currentFolder = navigationStateManager.focusFolder ?? Folder(title: "Oops, Error X:C",imgUrl: "folderAsset8", desc: "Try to restart the app", pinned: true, links: [] )
             print("Folder ", currentFolder.toString())
-                for link in currentFolder.links {
-                    print(link.toString()) // Assuming you have a toString() method in your Link class
-                }
+            for link in currentFolder.links {
+                print(link.toString()) // Assuming you have a toString() method in your Link class
+            }
             navigationStateManager.enterSubMenu()
             folderViewModel.like = currentFolder.pinned
         }
         .onDisappear {
             navigationStateManager.exitSubMenu()
         }.navigationBarBackButtonHidden(true)
-//            .navigationBarItems(leading: backButton)
+        //            .navigationBarItems(leading: backButton)
         
     }
     
     private var backButton: some View {
-            HStack {
-            }
-            .padding(.horizontal)
+        HStack {
         }
+        .padding(.horizontal)
+    }
     
- 
+    
 }
 
 #Preview {
-        FolderView().environment(NavigationStateManager()).modelContainer(PreviewContainer).environment(AppViewModel())
-//    MainNavStack()
-//        .modelContainer(PreviewContainer)
-//        .environment(NavigationStateManager())
-//        .environment(AppViewModel())
+    FolderView().environment(NavigationStateManager()).modelContainer(PreviewContainer).environment(AppViewModel())
+    //    MainNavStack()
+    //        .modelContainer(PreviewContainer)
+    //        .environment(NavigationStateManager())
+    //        .environment(AppViewModel())
 }

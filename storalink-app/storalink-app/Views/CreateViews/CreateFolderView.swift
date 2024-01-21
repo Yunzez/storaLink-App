@@ -205,7 +205,7 @@ struct CreateFolderView: View {
                     FolderView()
                 }
             }
-        }
+        }.navigationBarBackButtonHidden(true)
         
     }
 }

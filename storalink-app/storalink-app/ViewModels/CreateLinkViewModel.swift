@@ -34,6 +34,10 @@ import LinkPresentation
     var iconPath:String = ""
     
     var isEditLink:Bool = false
+    
+    var navigationStateManager: NavigationStateManager?
+    var loadingStage: LoadingStage = .none
+    var readyToNavigate: Bool = false
     // getting managers
     let modelManager = ModelUtilManager.manager
     let fileManager = LocalFileManager.manager
@@ -66,6 +70,7 @@ import LinkPresentation
     }
     
     func updateLink() {
+        
         if let link = initialLink {
             link.linkUrl = linkName
             link.title = title
@@ -85,6 +90,7 @@ import LinkPresentation
     
 
     func createLink() {
+        loadingStage = .loading
         // Implement folder creation logic here
         
         print("Creating folder with name: \(linkName) and description: \(linkDescription)")
@@ -111,6 +117,17 @@ import LinkPresentation
         
         if let folder = selectedFolder, let context = modelContext {
             modelManager.addLinkToFolder(link: newLink, folder: folder, modelContext: context)
+            
+            loadingStage = .done
+            if let navigateManager = navigationStateManager {
+                navigateManager.focusLink = newLink
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    print("navigate")
+                    navigateManager.lastNavigationSource = .toMainStack
+                    navigateManager.navigationPath.append(NavigationItem.linkView)
+                }
+            }
+           
         }
        
         
