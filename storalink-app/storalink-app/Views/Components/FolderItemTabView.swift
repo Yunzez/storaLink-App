@@ -57,6 +57,7 @@ struct FolderItemTabView: View {
         .frame(width: 150, height: 40)
         .sheet(isPresented:  $showSheet, content: {
             VStack(content: {
+                Spacer()
                 BottomSheetOption(onClick: {
                     folder.pinned = false
                 }, text: "Unpin", assetImageString: "Folder")
@@ -64,7 +65,8 @@ struct FolderItemTabView: View {
                 BottomSheetOption(onClick: {
                     folder.pinned = true
                 }, text: "Pin", assetImageString: "Folder")
-            }).presentationDetents([.height(300)])
+                Spacer()
+            }).presentationDetents([.height(200)])
         })
         .onTapGesture(perform: {
             print("Folder tapped")

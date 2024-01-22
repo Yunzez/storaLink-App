@@ -149,7 +149,12 @@ struct SignupView: View {
             }
             .padding(.horizontal)
             Spacer()
-        }.padding(.bottom)
+        }
+        .padding(.bottom)
+        .onTapGesture {
+            UIApplication.shared.endEditing()
+        }
+        
     }
 }
 

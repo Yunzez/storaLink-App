@@ -216,13 +216,22 @@ struct TutorialView: View {
     
     private var firstFolderView: some View {
         VStack{
-            Text("Let’s create your first folder").font(.title).fontWeight(.bold)
-        }.padding()
+            Spacer()
+            Text("Let’s create your first folder").font(.largeTitle).fontWeight(.bold)
+            Spacer()
+        }
+        .frame(maxHeight: .infinity)
+        .padding()
     }
     
     
-    private var ExtendedPrivacyView: some View {
+     var ExtendedPrivacyView: some View {
         VStack{
+            HStack{
+                Spacer()
+                Text("Privacy Agreement").fontWeight(.semibold)
+                Spacer()
+            }
             PrivacyView()
             HStack{
                 Button {
@@ -259,6 +268,7 @@ private struct TutorialLoadingView: View {
     
     var body: some View {
         VStack {
+            Spacer()
             ProgressView(value: progress, total: 100)
                 .progressViewStyle(LinearProgressViewStyle())
                 .scaleEffect(x: 1, y: 2, anchor: .center)
@@ -267,7 +277,9 @@ private struct TutorialLoadingView: View {
             Text(loadingText)
                 .font(.headline)
                 .padding()
+            Spacer()
         }
+        .frame(maxHeight: .infinity)
         .onAppear {
             startLoadingProcess()
         }
@@ -301,7 +313,7 @@ private struct TutorialLoadingView: View {
 
 extension TutorialStep: CaseIterable {}
 
-#Preview {
-    //    TutorialView().environment(AppViewModel())
-    TutorialLoadingView(completion: {() ->() in print("done")})
-}
+//#Preview {
+////        TutorialView().environment(AppViewModel())
+////    ExtendedPrivacyView()
+//}

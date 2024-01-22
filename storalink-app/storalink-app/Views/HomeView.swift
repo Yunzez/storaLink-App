@@ -80,6 +80,7 @@ struct HomeView: View {
     
     
     func setup(){
+        filteredLinks = filterLink()
 //        var folderCount = 5
         // add custom fetch to filter data by creation date
 //        var folderFetchDescriptor = FetchDescriptor<Folder>(
@@ -174,13 +175,13 @@ struct HomeView: View {
                     
                     // Recent Links Section
                     VStack(alignment: .leading) {
-                        Text("Recent Links: \(filteredLinks.count)")
+                        Text("Recent Links")
                             .font(.headline)
                             .padding(.leading)
                         
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 6) {
-                                ForEach(filterLink()) { link in // Replace with your data source
+                                ForEach(filteredLinks) { link in // Replace with your data source
                                         LinkItemView(currentLink: link)
                                 }
                             }
@@ -196,6 +197,8 @@ struct HomeView: View {
             
         }.onTapGesture {
             UIApplication.shared.endEditing()
+        }.onChange(of: links) { _, _ in
+            setup()
         }
     }
     

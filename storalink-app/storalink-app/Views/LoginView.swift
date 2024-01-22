@@ -50,34 +50,22 @@ struct LoginView: View {
                     Text("Sign In")
                         .font(.title2)
                         .fontWeight(.semibold)
-                    
-                    // Email field
-                    TextField("Email", text:  $loginViewModel.email)
-                        .autocapitalization(.none)
-                        .keyboardType(.emailAddress)
-                        .padding(.horizontal)
-                        .padding(.vertical, 12) // Increase vertical padding
-                        .focused($isEmailInputActive)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(isEmailInputActive ? Color("ThemeColor") : Color.gray, lineWidth: 1)
-                        )
-                        .padding(.horizontal)
-                        .padding(.vertical)
-                        .animation(.easeInOut, value: isEmailInputActive)
-                    
-                    // Password field
-                    SecureField("Password", text: $loginViewModel.password)
-                        .padding(.horizontal)
-                        .padding(.vertical, 12) // Increase vertical padding
-                        .focused($isPasswordInputActive)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(isPasswordInputActive ? Color("ThemeColor") : Color.gray, lineWidth: 1)
-                        )
-                        .padding(.horizontal)
-                        .animation(.easeInOut, value: isPasswordInputActive)
-                    
+                    VStack{
+                        TextField("Email", text: $loginViewModel.email)
+                                        .autocapitalization(.none)
+                                        .keyboardType(.emailAddress)
+                                        .padding(Spacing.medium)
+                                        .background(RoundedRectangle(cornerRadius: 10)
+                                                        .stroke(isEmailInputActive ? Color("ThemeColor") : Color.gray, lineWidth: 1))
+                                        .focused($isEmailInputActive)
+
+                                    // Password field
+                                    SecureField("Password", text: $loginViewModel.password)
+                                        .padding(Spacing.medium)
+                                        .background(RoundedRectangle(cornerRadius: 10)
+                                                        .stroke(isPasswordInputActive ? Color("ThemeColor") : Color.gray, lineWidth: 1))
+                                        .focused($isPasswordInputActive)
+                    }.padding(.horizontal)
                     if loginViewModel.error {
                         Text(loginViewModel.errorMessage)
                                 .foregroundColor(Color("Warning")) // Optional: Set the text color to red for visibility
@@ -150,7 +138,9 @@ struct LoginView: View {
             }
         }.onAppear {
             loginViewModel.setup(modelContext: modelContext, appViewModel: appViewModel)
-          }
+        }.onTapGesture {
+            UIApplication.shared.endEditing()
+        }
     }
     
     

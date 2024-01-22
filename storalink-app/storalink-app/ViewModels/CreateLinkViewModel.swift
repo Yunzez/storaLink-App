@@ -96,11 +96,11 @@ import LinkPresentation
         print("Creating folder with name: \(linkName) and description: \(linkDescription)")
         if !validateLinkName() {
             error = true
-            errorMessage = "Please input a link name"
+            loadingStage = .none
         } else {
             error = false
-            errorMessage = ""
         }
+        
         title = title.isEmpty ? linkName : title
         
         let newLink = Link(title: title, imgUrl: "", desc: linkDescription, linkUrl: linkName)
@@ -136,7 +136,16 @@ import LinkPresentation
     // More business logic functions as needed
     func validateLinkName() -> Bool {
         // Validation logic for folder name
-        return !linkName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        print(selectedFolder ?? "no folder")
+        if (selectedFolder !== Folder.self) {
+            errorMessage = "Please select a folder"
+           return false
+        }
+        if (linkName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+            errorMessage = "Please input a link name"
+            return false
+        }
+        return true
     }
     
    

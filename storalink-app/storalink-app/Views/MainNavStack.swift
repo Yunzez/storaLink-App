@@ -59,8 +59,7 @@ struct MainNavStack: View {
                 // Custom Tab Bar
                 if !navigationStateManager.isInSubMenu {
                     CustomTabView(selectedTab: $selectedTab)
-                        .transition(.move(edge: .bottom))
-                        .animation(Animation.easeInOut(duration: 0.3), value: navigationStateManager.isInSubMenu)
+                    
                 }
                 
                 
@@ -95,49 +94,58 @@ struct CustomTabView: View {
                 HStack(alignment: .bottom){
                     // Home Tab
                     TabBarButton(iconName: "Home", selectedIcon: "HomeSelected", isSelected: selectedTab == 0) {
-                        selectedTab = 0
+                        withAnimation {
+                            selectedTab = 0
+                        }
                     }.padding(.leading, Spacing.small)
                     
                     Spacer() // Adds space between buttons
                     
                     // Files Tab
                     TabBarButton(iconName: "File", selectedIcon: "FileSelected", isSelected: selectedTab == 1) {
-                        selectedTab = 1
+                        withAnimation {
+                            selectedTab = 1
+                        }
                     }
                     
                     Spacer() // Adds space between buttons
                     
                     // Create Tab (Larger)
                     TabBarButton(iconName: "Create", selectedIcon: "CreateSelected", isSelected: selectedTab == 2, isLarge: true) {
-                        selectedTab = 2
+                        withAnimation {
+                            selectedTab = 2
+                        }
                     }.padding(.top, Spacing.small)
                     
                     Spacer() // Adds space between buttons
                     
                     // Info Tab
                     TabBarButton(iconName: "Notice", selectedIcon: "NoticeSelected", isSelected: selectedTab == 3) {
-                        selectedTab = 3
+                        withAnimation {
+                            selectedTab = 3
+                        }
                     }
                     
                     Spacer() // Adds space between buttons
                     
                     // Settings Tab
                     TabBarButton(iconName: "Setting", selectedIcon: "SettingSelected", isSelected: selectedTab == 4) {
-                        selectedTab = 4
+                        withAnimation {
+                            selectedTab = 4
+                        }
                     }.padding(.trailing, Spacing.small)
                 }
-//                .padding([.top], Spacing.small)
+                //                .padding([.top], Spacing.small)
                 
                 .padding([.bottom], Spacing.large)
                 
             }
             .padding(.horizontal)
-            .transition(.move(edge: .bottom))
             .background(Color("SubtleTheme").opacity(1))
-        }.animation(Animation.easeInOut(duration: 0.3), value: navigationStateManager.isInSubMenu)
-            .edgesIgnoringSafeArea(.bottom)
+        }  .edgesIgnoringSafeArea(.bottom)
+            .transition(.move(edge: .bottom))
             .frame(maxHeight: navigationStateManager.isInSubMenu ? 0 : Spacing.customNavigationBarHeight)
-            
+        
     }
 }
 

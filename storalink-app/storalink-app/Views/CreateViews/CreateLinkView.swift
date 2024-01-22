@@ -59,14 +59,6 @@ struct CreateLinkView: View {
                 
                 ScrollView(.vertical, showsIndicators: false){
                     VStack{
-                        if viewModel.error {
-                            Text(viewModel.errorMessage).foregroundColor(Color("Warning"))
-                                .padding()
-                                .background(Color("LightWarning"))
-                                .overlay(RoundedRectangle(cornerRadius: Spacing.small) // Match this radius with the cornerRadius value above
-                                    .stroke(Color("Warning"), lineWidth: 2)).padding(.horizontal)
-                            
-                        }
                         
                         Text("Link URL")
                         StandardTextField(placeholder: "https://", text: $viewModel.linkName).padding([.horizontal, .bottom])
@@ -196,6 +188,17 @@ struct CreateLinkView: View {
                                     .stroke(Color(UIColor.separator), lineWidth: 1)
                             )
                             .padding([.bottom, .horizontal])
+                        
+                        if viewModel.error {
+                            Text(viewModel.errorMessage)
+                                .frame(maxWidth: .infinity) // Ensures the Text takes up all available width
+                                       .foregroundColor(Color("Warning"))
+                                       .padding()
+                                       .background(Color("LightWarning"))
+                                       .overlay(RoundedRectangle(cornerRadius: Spacing.small)
+                                           .stroke(Color("Warning"), lineWidth: 2))
+                                       .padding(.horizontal)
+                        }
                         if viewModel.isEditLink {
                             Button(action: {
                                 // Action for folder creation
