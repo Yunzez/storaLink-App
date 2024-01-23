@@ -1,7 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IFolder extends Document {
-  _id: string;
   folderDescription: string;
   creatorId: string;
   folderName: string;
@@ -13,13 +12,12 @@ export interface IFolder extends Document {
 }
 
 const FolderSchema: Schema = new Schema({
-  _id: { type: String, required: true },
   folderDescription: { type: String, required: true },
   creatorId: { type: String, required: true, ref: "Storalinker" },
   folderName: { type: String, required: true },
   imageUrl: { type: String, required: false },
-  linkIds: { type: [String], required: true },
-  parentFolderId: { type: String, required: true },
+  linkIds: { type: [String], required: false },
+  parentFolderId: { type: String, required: false },
   subFolderIds: { type: [String], required: false },
   modifierId: { type: String, required: false },
 });

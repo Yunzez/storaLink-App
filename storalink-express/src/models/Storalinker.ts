@@ -7,7 +7,10 @@ export interface IStoralinker extends Document {
   dob: Date;
   createdAt: Date;
   enabled: boolean;
-  // If you need to include authorities and _class, add them here
+
+  // * refresh token info:
+  refreshToken?: string;
+  refreshTokenExpiry?: Date;
 }
 
 const StoralinkerSchema: Schema = new Schema({
@@ -17,7 +20,10 @@ const StoralinkerSchema: Schema = new Schema({
   dob: { type: Date, required: true },
   createdAt: { type: Date, default: Date.now },
   enabled: { type: Boolean, default: true },
-  // Include other fields if necessary
+
+  // * refresh token info:
+  refreshToken: { type: String, required: false },
+  refreshTokenExpiry: { type: Date, required: false },
 });
 
 export default mongoose.model<IStoralinker>(

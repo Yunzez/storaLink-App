@@ -3,8 +3,11 @@ import http from "http";
 import mongoose, { connect } from "mongoose";
 import { config } from "./config/config";
 import StoralinkerRoutes from "./routes/StoralinkerRoutes";
+import AuthRoutes from "./routes/AuthRoutes";
+import { ValidateJWTToken } from "./middleware/ValidateJWTToken";
+import FolderRoutes from "./routes/FolderRoutes";
 const router = express();
-
+const publicRouter = express.Router();
 /** * connect to mongo */
 mongoose
   .connect(config.mongo.url, { retryWrites: true, w: "majority" })
@@ -62,14 +65,22 @@ const StartServer = () => {
     next();
   });
 
-  // * Routes */
-  // info: storalinker routes: storalinker/...actual routes
-  router.use("/storalinker", StoralinkerRoutes);
-
   // * test call
   router.get("/ping", (req, res, next) => {
     res.status(200).json({ message: "connected" });
   });
+
+  // * Public Routes */
+  router.use("/auth", AuthRoutes);
+
+  // info: Add validateJWT middeleware, below are protected routes */
+  router.use(ValidateJWTToken);
+
+  // * Protected Routes */
+  // info: storalinker routes: storalinker/...actual routes
+  router.use("/storalinker", StoralinkerRoutes);
+
+  router.use("/folder", FolderRoutes);
 
   // * Error
   router.use((req, res, next) => {
