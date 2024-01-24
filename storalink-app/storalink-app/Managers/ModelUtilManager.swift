@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 final class ModelUtilManager {
     static let manager = ModelUtilManager()
-
+    
     private init() {} // Private initializer for Singleton
     
     func addLinkToFolder(link: Link, folder: Folder, modelContext: ModelContext) {
@@ -50,6 +50,16 @@ final class ModelUtilManager {
             print("Saving deletion error: \(error)")
         }
     }
+    
+    func addUserToLocalDB(modelContext: ModelContext, user: User) {
+        do {
+            modelContext.insert(user)
+            try modelContext.save()
+        } catch {
+            print("error")
+        }
+    }
+    
     
     
 }

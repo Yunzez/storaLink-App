@@ -8,7 +8,9 @@
 import Foundation
 import SwiftData
 @Observable class SignupViewModel {
+    let authManager = AuthenticationManager.manager
     let keychainStorage = KeychainStorage()
+    let modelManager = ModelUtilManager.manager
     var repassword: String = ""
     var password: String = ""
     var name: String = ""
@@ -51,20 +53,45 @@ import SwiftData
         return nil
     }
     
-    func authenticate() async -> User   {
+    func authenticate() async -> User? {
         print("signing user up")
         
-        // save to keychain
-        if let hash = hashPassword(password) {
-            do {
-                try await keychainStorage.saveData(data: Data(hash.utf8), with: email)
-                print("save user in keychain")
-            } catch {
-                print("Error saving password hash: \(error)")
+        var newUser: User? = nil
+        do {
+            await authManager.signup(username: name, email: email, password: password) { success, error, user in
+                if !success {
+                    print("failed signup", error!)
+                    self.error = true
+                    if let error = error {
+                        self.errorMessage = error
+                    } else {
+                        self.errorMessage = "Something went wrong"
+                    }
+                } else {
+                    
+                    guard let user = user else {
+                        self.errorMessage = "Auth correct yet unable to get user, pls retry "
+                        return
+                    }
+                    newUser = user
+                }
             }
+            
+            if let ret = newUser {
+                return ret
+            }
+            
+            return nil
         }
-        
-        let newUser = User(name: name, email: email)
-        return newUser
+//        // save to keychain
+//        if let hash = hashPassword(password) {
+//            do {
+//                try await keychainStorage.saveData(data: Data(hash.utf8), with: email)
+//                print("save user in keychain")
+//            } catch {
+//                print("Error saving password hash: \(error)")
+//            }
+//        }
+//
     }
 }

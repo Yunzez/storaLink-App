@@ -13,7 +13,8 @@ import SwiftUI
 @Observable class LoginViewModel {
     
     let keychainStorage = KeychainStorage()
-    
+    let authManager = AuthenticationManager.manager
+    let modelManager = ModelUtilManager.manager
     var context: ModelContext?
     var appData: AppViewModel?
     
@@ -57,65 +58,85 @@ import SwiftUI
             }
         }
     }
-
+    
     func authenticate() async {
         guard let context = context else {
             print("Model context is nil")
             return
         }
         
-        // this insert testing data
+        //        // this insert testing data
+        //
+        //        if let hash = hashPassword("12345678") {
+        //            do {
+        //                try await keychainStorage.saveData(data: Data(hash.utf8), with: "yz8751@nyu.edu")
+        //                try await keychainStorage.saveData(data: Data(hash.utf8), with: "harry@uw.edu")
+        //            } catch {
+        //                print("Error saving password hash: \(error)")
+        //            }
+        //        }
         
-        if let hash = hashPassword("12345678") {
-            do {
-                try await keychainStorage.saveData(data: Data(hash.utf8), with: "yz8751@nyu.edu")
-                try await keychainStorage.saveData(data: Data(hash.utf8), with: "harry@uw.edu")
-            } catch {
-                print("Error saving password hash: \(error)")
-            }
-        }
-
         do {
-            print("login test")
-            let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
-            let users = try context.fetch(descriptor)
-            
-            for user in users {
-                print(user.name, user.email, email)
-                if user.email == email {
-                        let savedPasswordData = try await keychainStorage.getData(for: user.email)
-                        
-                        if let savedPasswordData = savedPasswordData,
-                           let savedPassword = String(data: savedPasswordData, encoding: .utf8),
-                           let hashedPassword = hashPassword(password) {
-                            
-                            print("Retrieved saved password: \(savedPassword)")
-                            if savedPassword == hashedPassword {
-                                print("Passwords match")
-                                self.appData?.userName = user.name
-                                self.appData?.setUser(user: user)
-                                
-                                // record login activity
-                                self.appData?.recordLogin(userEmail: email)
-                                return
-                            } else {
-                                print("Passwords do not match")
-                                    self.error = true
-                                    self.errorMessage = "Your password is incorrect"
-                            }
-                        } else {
-                            print("Failed to retrieve or convert saved password data to String")
+            await authManager.login(email: email, password: password) { success, error, user in
+                if success {
+                    print("auth correct")
+                    // Handle successful login
+                    // Check if the user exists in the local database
+                    if let localUser =  self.fetchLocalUserByEmail(email: self.email) {
+                        print("local user")
+                        // User exists in local database
+                        self.appData?.userName = localUser.name
+                        self.appData?.setUser(user: localUser)
+                    } else {
+                        if let remoteUser = user {
+                            print("remote user")
+                            // User not found in local database, add them
+                            self.modelManager.addUserToLocalDB(modelContext: context, user: remoteUser)
+                            self.appData?.userName = remoteUser.name
+                            self.appData?.setUser(user: remoteUser)
                         }
+                    }
+                    
+                    // Record login activity
+                    self.appData?.recordLogin(userEmail: self.email)
+                    
+                } else {
+                    // Handle login error
+                    print("login failed", error!)
+                    self.error = true
+                    if let error = error {
+                        self.errorMessage = error
+                    } else {
+                        self.errorMessage = "Something went wrong"
+                    }
                 }
             }
             if (self.appData?.userName ?? "").isEmpty {
                 self.error = true
                 self.errorMessage = "We can't find you in the database, check your email again"
             }
-           
-        } catch {
-            print("Fetch failed: \(error)")
+        } 
+    }
+    
+    func fetchLocalUserByEmail(email: String) -> User?{
+        guard let context = context else {
+            print("Model context is nil")
+            return nil
         }
+        do {
+            let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
+            let users = try context.fetch(descriptor)
+            
+            for user in users {
+                if user.email == email {
+                    return user
+                }
+            }
+        } catch {
+            print("error")
+        }
+        
+        return nil
     }
     
     func handleLoading(loadingProgress: Int){

@@ -7,7 +7,7 @@ import { Schemas } from "../middleware/ValidateSchema";
 const router = express.Router();
 
 /**
- * POST /register
+ * POST /signup
  * Creates a new Storalinker instance and saves it to the database.
  *
  * Request body:
@@ -27,7 +27,7 @@ const router = express.Router();
  * }
  */
 router.post(
-  "/register",
+  "/signup",
   ValidateSchema(Schemas.storalinker.create),
   StoralinkerController.createStoralinker
 );
@@ -39,7 +39,7 @@ router.post(
  * Request body:
  * {
  *   email: string,       // Email of the Storalinker
- *   username: string,    // Username for the Storalinker
+ *   password: string,    // Username for the Storalinker
  * }
  *
  * Success response:
@@ -52,7 +52,7 @@ router.post(
  *   message: "Storalinker not found"
  * }
  */
-router.get("/login", StoralinkerController.loginStoralinker);
+router.post("/login", StoralinkerController.loginStoralinker);
 
 /**
  * GET /refresh

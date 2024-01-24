@@ -15,6 +15,11 @@ const createStoralinker = async (
   try {
     let { email, username, password, dob } = req.body;
 
+    const existingUser = await Storalinker.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already in use" });
+    }
+
     if (!dob) {
       dob = new Date();
     }
@@ -37,7 +42,7 @@ const createStoralinker = async (
     const savedStoralinker = await storalinker.save();
 
     // info: Generate JWT token
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       { userId: savedStoralinker.id },
       config.auth.jwtSecret,
       { expiresIn: "1h" }
@@ -46,12 +51,13 @@ const createStoralinker = async (
     // Return the new user and token, excluding the hashed password
     res.status(201).json({
       storalinker: {
-        id: savedStoralinker.id,
+        _id: savedStoralinker._id,
         email: savedStoralinker.email,
         username: savedStoralinker.username,
         dob: savedStoralinker.dob,
+        refreshToken: savedStoralinker.refreshToken,
       },
-      token,
+      accessToken,
     });
   } catch (err) {
     res.status(500).json({ error: err });
@@ -61,7 +67,7 @@ const createStoralinker = async (
 // * part of auth route
 const loginStoralinker = (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
-
+  console.log("email", email);
   Storalinker.findOne({ email })
     .exec()
     .then(async (storalinker) => {
@@ -74,7 +80,7 @@ const loginStoralinker = (req: Request, res: Response, next: NextFunction) => {
       if (!match) {
         return res.status(401).json({ message: "Authentication failed" });
       }
-
+      console.log("pass check");
       // Generate new refresh token
       const { refreshToken, expiryDate } = generateRefreshToken(30);
       // Update user with new refresh token and its expiry date
@@ -83,13 +89,13 @@ const loginStoralinker = (req: Request, res: Response, next: NextFunction) => {
       await storalinker.save();
 
       // Generate JWT token
-      const token = jwt.sign(
+      const accessToken = jwt.sign(
         { userId: storalinker.id },
         config.auth.jwtSecret,
         { expiresIn: "1h" }
       );
 
-      res.status(200).json({ token, refreshToken, storalinker });
+      res.status(200).json({ accessToken, storalinker });
     })
     .catch((err) => res.status(404).json({ message: "Storalinker not found" }));
 };

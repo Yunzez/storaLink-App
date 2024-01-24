@@ -19,9 +19,9 @@ var PreviewContainer: ModelContainer {
             
             // insert user
             let users = [
-                User(name: "Eddie Eidde", email: "eddy@uw.edu"),
-                User(name: "Fred Zhao", email: "yz8751@nyu.edu"),
-                User(name: "Harry", email: "harry@uw.edu")
+                User(name: "Eddie Eidde", email: "eddy@uw.edu", mongoId: ""),
+                User(name: "Fred Zhao", email: "yz8751@nyu.edu", mongoId: ""),
+                User(name: "Harry", email: "harry@uw.edu", mongoId: "")
             ]
            
             for user in users {
