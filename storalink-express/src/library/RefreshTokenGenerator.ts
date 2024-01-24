@@ -10,10 +10,11 @@ type RefreshTokenGenerateOutput = {
  * @returns {object} An object containing the refresh token and its expiry date.
  */
 const generateRefreshToken = (
-  daysValid: number
+  minutesValid: number
 ): RefreshTokenGenerateOutput => {
   const refreshToken = crypto.randomBytes(64).toString("hex");
   const expiryDate = new Date();
+  expiryDate.setMinutes(expiryDate.getMinutes() + minutesValid);
 
   return {
     refreshToken,

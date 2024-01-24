@@ -72,6 +72,6 @@ router.post("/login", StoralinkerController.loginStoralinker);
  * Status: 403 Unauthenticaed
  * Status: 404 Not Found
  */
-router.get("/refresh", RefreshTokenController.validateRefreshToken);
+router.post("/refresh", RefreshTokenController.validateRefreshToken);
 
 export default router;
