@@ -5,6 +5,8 @@
 
 ## npm install
 ## npx expo start
+or
+## npm run ios
 
 
 if encouter error regarding typescript: 
