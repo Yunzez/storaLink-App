@@ -12,6 +12,7 @@ struct SettingsView: View {
     @Environment(AppViewModel.self) private var appViewModel
     @State var photoPickerItem: PhotosPickerItem?
     @State var uiImage: UIImage?
+    @State var sheet: Bool = false
     
     let fileManager = LocalFileManager.manager
     func updateImage() {
@@ -82,6 +83,11 @@ struct SettingsView: View {
                         ) {
                             NavigationLink(destination: UserInfoSettingView()) {
                                 UserSettingTab(iconName: "person", title: "Account")
+                            }
+                            NavigationLink(destination: {
+                                SyncDataView()
+                            }) {
+                                UserSettingTab(iconName: "cloud", title: "Sync Data")
                             }
                             //                            UserSettingTab(iconName: "paintbrush", title: "Appearance")
                             //                            UserSettingTab(iconName: "bell", title: "Notification")

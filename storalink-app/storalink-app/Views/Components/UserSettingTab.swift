@@ -12,11 +12,27 @@ struct UserSettingTab: View {
 
         var iconName: String
         var title: String
-
+        private var currentImage: UIImage?
+        
+    init(iconName: String, title: String) {
+        self.iconName = iconName
+        self.title = title
+        if let image = UIImage(named: iconName) {
+            currentImage = image
+        } else {
+        currentImage = UIImage(systemName: iconName)
+        }
+        
+    }
+       
         var body: some View {
                 HStack {
-                    Image(systemName: iconName)
-                        .foregroundColor(.gray) // Adjust color as needed
+                    if let image = currentImage {
+                        Image(uiImage: image)
+                            .scaledToFit()
+                            .foregroundColor(Color(.themeGray))
+                            
+                    }
                     Text(title)
                         .foregroundColor(Color("ThemeBlack")) // Adjust color as needed
                     Spacer()
@@ -31,8 +47,7 @@ struct UserSettingTab: View {
 #Preview {
     var item = "test"
     return Group{
-        UserSettingTab(iconName:
-                        "test", title: "Test") 
+        UserSettingTab(iconName: "CloudSync", title: "Test")
     }
     
 }

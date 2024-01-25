@@ -81,6 +81,7 @@
 		9FEB2E872B33AD9F005A300C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB2E862B33AD9F005A300C /* LoginViewModel.swift */; };
 		9FF0FAB72B6053F500C78B4F /* AuthentificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF0FAB62B6053F500C78B4F /* AuthentificationManager.swift */; };
 		9FF0FAB92B605B9900C78B4F /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF0FAB82B605B9900C78B4F /* Configuration.swift */; };
+		9FF0FABB2B62DDDA00C78B4F /* SyncDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF0FABA2B62DDDA00C78B4F /* SyncDataView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -176,6 +177,7 @@
 		9FEB2E862B33AD9F005A300C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		9FF0FAB62B6053F500C78B4F /* AuthentificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationManager.swift; sourceTree = "<group>"; };
 		9FF0FAB82B605B9900C78B4F /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		9FF0FABA2B62DDDA00C78B4F /* SyncDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDataView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,6 +413,7 @@
 				9F7260B42B47806C00A49628 /* DeleteAccountView.swift */,
 				9FD3558A2B5744EF000574DD /* ChangePlanView.swift */,
 				9FD3558E2B58B962000574DD /* PrivacyView.swift */,
+				9FF0FABA2B62DDDA00C78B4F /* SyncDataView.swift */,
 			);
 			path = SettingViews;
 			sourceTree = "<group>";
@@ -566,6 +569,7 @@
 				9F7260602B35418700A49628 /* CustomButton.swift in Sources */,
 				9F7260622B365D6400A49628 /* NavigationStageManager.swift in Sources */,
 				9F7260AA2B4207E500A49628 /* BottomSheetOption.swift in Sources */,
+				9FF0FABB2B62DDDA00C78B4F /* SyncDataView.swift in Sources */,
 				9FD0830C2B147883004021FC /* FolderItemView.swift in Sources */,
 				9F7260982B3BF30E00A49628 /* LinkModel.swift in Sources */,
 				9FF0FAB72B6053F500C78B4F /* AuthentificationManager.swift in Sources */,

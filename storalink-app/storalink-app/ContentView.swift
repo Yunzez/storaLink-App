@@ -47,6 +47,7 @@ struct ContentView: View {
             .modelContainer(PreviewContainer)
             .environment(NavigationStateManager())
             .environment(AppViewModel())
+            .background(Color("SubtleTheme"))
     }
   
 }

@@ -47,6 +47,25 @@ const createFolder = (req: UserRequest, res: Response, next: NextFunction) => {
     .catch((err) => res.status(500).json({ error: err }));
 };
 
+const getFolder = (req: Request, res: Response, next: NextFunction) => {
+  const { folderId, mongoId } = req.params;
+  Folder.findById(folderId)
+    .exec()
+    .then((folder) => {
+      if (!folder) {
+        return res.status(404).json({ message: "Folder not found" });
+      }
+
+      if (folder.creatorId !== mongoId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      res.status(200).json(folder);
+    })
+    .catch((err) => res.status(500).json({ error: err }));
+};
+
 export default {
   createFolder,
+  getFolder,
 };

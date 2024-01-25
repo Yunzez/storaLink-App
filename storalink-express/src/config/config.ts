@@ -13,7 +13,7 @@ export const config = {
       NODE_ENV === "dev" ? "mongodb://localhost:27017/storalink_db" : MONGO_URL,
   },
   server: {
-    port: process.env.SERVER_PORT || 3333,
+    port: process.env.PORT || 3001,
   },
   auth: {
     jwtSecret: JWT_SECRET,

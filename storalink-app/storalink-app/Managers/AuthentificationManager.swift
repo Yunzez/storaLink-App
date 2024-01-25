@@ -29,13 +29,13 @@ class AuthenticationManager {
     func login(email: String, password: String, completion: @escaping (Bool, String?, User?) -> Void) async {
         // Hash the password
         
-                guard let hashedPassword = hashPassword(password) else {
-                    completion(false, "Failed to hash password", nil)
-                    return
-                }
+        guard let hashedPassword = hashPassword(password) else {
+            completion(false, "Failed to hash password", nil)
+            return
+        }
         
         
-//        let hashedPassword = password
+        //        let hashedPassword = password
         // Prepare login request
         let loginRequest = LoginRequest(email: email, password: hashedPassword)
         
@@ -107,9 +107,9 @@ class AuthenticationManager {
     func signup (username: String, email: String, password: String, completion: @escaping (Bool, String?, User?) -> Void) async {
         print("auth manager sign up")
         guard let hashedPassword = hashPassword(password) else {
-                   completion(false, "Failed to hash password", nil)
-                   return
-               }
+            completion(false, "Failed to hash password", nil)
+            return
+        }
         let signupRequest = SignupRequest(username: username, email: email, password: hashedPassword)
         
         do {
@@ -169,42 +169,42 @@ class AuthenticationManager {
     // MARK: - refresh token section
     
     func checkToken(email: String, completion: @escaping (Bool, String?) -> Void) async {
-            guard let refreshToken = try? await keychainStorage.getData(for: "refreshToken"),
-                  let refreshTokenString = String(data: refreshToken, encoding: .utf8) else {
-                completion(false, "No refresh token available")
-                return
-            }
-
-            do {
-                let refreshedTokens = try await refreshAccessToken(refreshToken: refreshTokenString, email: email)
-                // Save the new tokens
-                try await keychainStorage.saveData(data: Data(refreshedTokens.accessToken.utf8), with: "accessToken")
-                try await keychainStorage.saveData(data: Data(refreshedTokens.refreshToken.utf8), with: "refreshToken")
-                completion(true, nil)
-            } catch {
-                completion(false, error.localizedDescription)
-            }
+        guard let refreshToken = try? await keychainStorage.getData(for: "refreshToken"),
+              let refreshTokenString = String(data: refreshToken, encoding: .utf8) else {
+            completion(false, "No refresh token available")
+            return
         }
+        
+        do {
+            let refreshedTokens = try await refreshAccessToken(refreshToken: refreshTokenString, email: email)
+            // Save the new tokens
+            try await keychainStorage.saveData(data: Data(refreshedTokens.accessToken.utf8), with: "accessToken")
+            try await keychainStorage.saveData(data: Data(refreshedTokens.refreshToken.utf8), with: "refreshToken")
+            completion(true, nil)
+        } catch {
+            completion(false, error.localizedDescription)
+        }
+    }
     
     private func refreshAccessToken(refreshToken: String, email: String) async throws -> (accessToken: String, refreshToken: String) {
-            guard let url = URL(string: "\(Configuration.baseURL)/auth/refresh") else {
-                throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
-            }
-
-            var urlRequest = URLRequest(url: url)
-            urlRequest.httpMethod = "POST"
-            urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        let requestBody = ["refreshToken": refreshToken, "email": email]
-            urlRequest.httpBody = try JSONEncoder().encode(requestBody)
-
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                throw NSError(domain: "Invalid response", code: 0, userInfo: nil)
-            }
-
-            let tokensResponse = try JSONDecoder().decode(TokenResponse.self, from: data)
-            return (tokensResponse.accessToken, tokensResponse.refreshToken)
+        guard let url = URL(string: "\(Configuration.baseURL)/auth/refresh") else {
+            throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
         }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let requestBody = ["refreshToken": refreshToken, "email": email]
+        urlRequest.httpBody = try JSONEncoder().encode(requestBody)
+        
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            throw NSError(domain: "Invalid response", code: 0, userInfo: nil)
+        }
+        
+        let tokensResponse = try JSONDecoder().decode(TokenResponse.self, from: data)
+        return (tokensResponse.accessToken, tokensResponse.refreshToken)
+    }
     
     
 }

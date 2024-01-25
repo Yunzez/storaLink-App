@@ -15,7 +15,7 @@ struct Configuration {
         var baseURL: String {
             switch self {
             case .testing:
-                return "http://localhost:3333"
+                return "http://localhost:3001"
             case .production:
                 return "https://your-production-api.com"
             }
