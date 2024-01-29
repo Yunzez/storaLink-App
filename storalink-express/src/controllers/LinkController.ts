@@ -89,7 +89,27 @@ const deleteLink = (req: UserRequest, res: Response, next: NextFunction) => {
     .catch((err) => res.status(500).json({ error: err }));
 };
 
+const updateLink = (req: UserRequest, res: Response, next: NextFunction) => {
+  const { linkId } = req.params;
+  const { linkDescription, linkName, linkUrl, imageUrl } = req.body;
+  Link.findById(linkId)
+    .exec()
+    .then((link) => {
+      if (!link) {
+        return res.status(404).json({ message: "Link not found" });
+      }
+
+      link.description = linkDescription;
+      link.linkName = linkName;
+      link.linkUrl = linkUrl;
+      link.imageUrl = imageUrl;
+
+      link.save().then((link) => res.status(200).json(link));
+    });
+};
+
 export default {
   createLink,
   deleteLink,
+  updateLink,
 };

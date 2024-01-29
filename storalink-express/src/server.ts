@@ -6,6 +6,7 @@ import StoralinkerRoutes from "./routes/StoralinkerRoutes";
 import AuthRoutes from "./routes/AuthRoutes";
 import { ValidateJWTToken } from "./middleware/ValidateJWTToken";
 import FolderRoutes from "./routes/FolderRoutes";
+import LinkRoutes from "./routes/LinkRoutes";
 const router = express();
 const publicRouter = express.Router();
 /** * connect to mongo */
@@ -85,6 +86,8 @@ const StartServer = () => {
   router.use("/storalinker", StoralinkerRoutes);
 
   router.use("/folder", FolderRoutes);
+
+  router.use("/link", LinkRoutes);
 
   // * Error
   router.use((req, res, next) => {
