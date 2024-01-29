@@ -48,7 +48,7 @@ const createFolder = (req: UserRequest, res: Response, next: NextFunction) => {
 };
 
 const getFolder = (req: Request, res: Response, next: NextFunction) => {
-  const { folderId, mongoId } = req.params;
+  const { folderId } = req.params;
   Folder.findById(folderId)
     .exec()
     .then((folder) => {
@@ -56,16 +56,49 @@ const getFolder = (req: Request, res: Response, next: NextFunction) => {
         return res.status(404).json({ message: "Folder not found" });
       }
 
-      if (folder.creatorId !== mongoId) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
-
       res.status(200).json(folder);
     })
+    .catch((err) => res.status(500).json({ error: err }));
+};
+
+const updateFolder = (req: Request, res: Response, next: NextFunction) => {
+  const { folderId } = req.params;
+  const { folderDescription, folderName, imageUrl } = req.body;
+  Folder.findById(folderId)
+    .exec()
+    .then((folder) => {
+      if (!folder) {
+        return res.status(404).json({ message: "Folder not found" });
+      }
+
+      folder.folderDescription = folderDescription;
+      folder.folderName = folderName;
+      folder.imageUrl = imageUrl;
+
+      folder.save().then((folder) => res.status(200).json(folder));
+    })
+    .catch((err) => res.status(500).json({ error: err }));
+};
+
+const deleteFolder = (req: Request, res: Response, next: NextFunction) => {
+  const { folderId } = req.params;
+
+  Folder.findById(folderId)
+    .exec()
+    .then((folder) => {
+      if (!folder) {
+        return res.status(404).json({ message: "Folder not found" });
+      }
+
+      Folder.findByIdAndDelete(folderId);
+    })
+    .then(() => res.status(204).json({ message: "Folder deleted" }))
     .catch((err) => res.status(500).json({ error: err }));
 };
 
 export default {
   createFolder,
   getFolder,
+  updateFolder,
+  deleteFolder,
 };
