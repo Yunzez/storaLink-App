@@ -11,6 +11,7 @@ import SwiftData
 final class Link {
     @Attribute(.unique)
         let id = UUID()
+    var mongoId: String?;
     var title: String;
     var imgUrl: String?
     var iconUrl: String?

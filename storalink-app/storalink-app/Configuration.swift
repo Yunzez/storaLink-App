@@ -17,7 +17,7 @@ struct Configuration {
             case .testing:
                 return "http://localhost:3001"
             case .production:
-                return "https://your-production-api.com"
+                return "https://api.storalink.com"
             }
         }
     }

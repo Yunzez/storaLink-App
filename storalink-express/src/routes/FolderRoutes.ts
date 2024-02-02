@@ -15,7 +15,6 @@ const router = express.Router();
  * {
  *   "folderDescription": string,
  *   "folderName": string,
- *   "creatorId" : string
  * }
  *
  * Success response:

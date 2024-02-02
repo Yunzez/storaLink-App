@@ -12,6 +12,7 @@ import SwiftUI
 final class Folder {
     @Attribute(.unique)
     let id = UUID()
+    var mongoId : String?;
     var title: String;
     var imgUrl: String
     var desc: String?
