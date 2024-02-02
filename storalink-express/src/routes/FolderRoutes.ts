@@ -39,7 +39,6 @@ router.post(
  *
  * Request body (any of the following fields):
  * {
- *   creatorId: string, // ! The unique identifier of the user who created the folder
  *   folderDescription?: string,
  *   folderName?: string,
  *   imageUrl?: string

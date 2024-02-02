@@ -41,7 +41,7 @@ export const Schemas = {
       //     .regex(/^[0-9a-fA-F]{24}$/)
       //     .required(),
       folderName: Joi.string().required(),
-      folderDescription: Joi.string().required(),
+      folderDescription: Joi.string(),
     }),
 
     update: Joi.object<IFolder>({

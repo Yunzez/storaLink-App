@@ -15,6 +15,7 @@ enum LoadingStage {
 
 @Observable class CreateFolderViewModel: ObservableObject {
     let localFileManager = LocalFileManager.manager
+    let folderManager = FolderManager.manager
     var context: ModelContext?
     // Published properties that the view can subscribe to
      var folderName: String = ""
@@ -69,19 +70,38 @@ enum LoadingStage {
         
         if let context = context {
             print("imgurl: ", imgUrl)
-            var currentUser: User
             
             do {
                 let newFolder = Folder(title: folderName, imgUrl: imgUrl, links: [])
                 
-                let users = try context.fetch(FetchDescriptor<User>(predicate: #Predicate<User>{ user in
-                        user.id == userId
-                    }))
-
-                currentUser = users.first!
-                currentUser.folders.append(newFolder)
-                try context.save()
-                print("change saved to user", currentUser.name)
+                
+                folderManager.createFolder(modelContext: context, folder: newFolder) { result in
+                       switch result {
+                          case .success(let updatedFolder):
+                              do {
+                                  let users = try context.fetch(FetchDescriptor<User>(predicate: #Predicate<User>{ user in
+                                      user.id == userId
+                                  }))
+                                  
+                                  if let currentUser = users.first {
+                                      currentUser.folders.append(updatedFolder)
+                                      do {
+                                          try context.save()
+                                          print("change saved to user", currentUser.name)
+                                      } catch {
+                                          print("Failed to save context: \(error)")
+                                      }
+                                  }
+                              } catch {
+                                  print("Failed to fetch users: \(error)")
+                              }
+                              
+                          case .failure(let error):
+                              print("Failed to create folder: \(error)")
+                          }
+                    }
+                
+               
                 if let navigateManager = navigationStateManager {
                     navigateManager.focusFolder = newFolder
                     navigateManager.lastNavigationSource = .toMainStack

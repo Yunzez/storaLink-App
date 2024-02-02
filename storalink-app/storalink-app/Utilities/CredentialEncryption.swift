@@ -49,4 +49,16 @@ final class KeychainStorage {
         }
     }
     
+    /// Appends the Authorization header with the JWT token to the given URLRequest.
+    /// - Parameter request: The URLRequest to which the Authorization header should be added.
+    /// - Throws: An error if the token cannot be retrieved.
+    /// - Returns: A URLRequest with the Authorization header appended.
+    func appendURLAuthHeader(to request: inout URLRequest) async throws -> URLRequest {
+        guard let tokenData = try await getData(for: "accessToken"), let token = String(data: tokenData, encoding: .utf8) else {
+            throw NSError(domain: "KeychainStorageError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No access token available"])
+        }
+        
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
 }

@@ -7,51 +7,49 @@
 
 import Foundation
 import SwiftData
+import KeychainAccess
 class FolderManager {
-    
+    private let keychainStorage = KeychainStorage()
     static let manager = FolderManager()
     
-    private func createFolder(modelConext: ModelContext, folder: Folder) throws{
-        let createRequest = CreateRequest(folderName: folder.title, folderDescription: folder.desc ?? "")
-        Task{
+    func createFolder(modelContext: ModelContext, folder: Folder, completion: @escaping (Result<Folder, Error>) -> Void) {
+        let createRequest = CreateRequest(folderName: folder.title, folderDescription: folder.desc ?? " ")
+        Task {
             do {
                 guard let url = URL(string: "\(Configuration.baseURL)/folder/create") else {
-                    throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
+                    completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+                    return
                 }
                 
                 var urlRequest = URLRequest(url: url)
                 urlRequest.httpMethod = "POST"
                 urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                urlRequest.httpBody = try JSONEncoder().encode(createRequest)
                 
-                let requestBody = try JSONEncoder().encode(createRequest)
-                
-                //        print(String(data: requestBody, encoding: .utf8) ?? "Invalid request body")
-                
-                urlRequest.httpBody = requestBody
-                
+                urlRequest = try await keychainStorage.appendURLAuthHeader(to: &urlRequest)
+                        
                 let (data, response) = try await URLSession.shared.data(for: urlRequest)
                 
-                print("data and response: ", data, response)
-                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode > 200 , httpResponse.statusCode < 300 else {
-                    print("failed checking 200+ status")
-                    throw NSError(domain: "Invalid response", code: 0, userInfo: [NSLocalizedDescriptionKey: "Incorrect email or password"])
+                if let httpResponse = response as? HTTPURLResponse {
+                    // Now that httpResponse is of type HTTPURLResponse, you can access statusCode
+                    guard (200...299).contains(httpResponse.statusCode) else {
+                        // If statusCode is not in the 200-299 range, report failure
+                        completion(.failure(NSError(domain: "HTTPError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed request with status code: \(httpResponse.statusCode)"])))
+                        return
+                    }
                 }
                 
                 let createResponse = try JSONDecoder().decode(CreateResponse.self, from: data)
-                return createResponse
+                folder.mongoId = createResponse._id
+                completion(.success(folder))
+            } catch {
+                completion(.failure(error))
             }
         }
-        
-        modelConext.insert(folder)
-        do  {
-            try modelConext.save()
-        }
-        catch {
-            print("failure saving model context")
-        }
     }
+
     
-    private func deleteFolder(modelContext: ModelContext, folder: Folder) throws {
+    func deleteFolder(modelContext: ModelContext, folder: Folder) throws {
         Task {
             if let mongoId = folder.mongoId {
                 print("found mongo id, sync action with cloud")
@@ -84,13 +82,13 @@ class FolderManager {
         
     }
     
-    private func updateFolder(modelContext: ModelContext, folder: Folder) {
+    func updateFolder(modelContext: ModelContext, folder: Folder) {
         if let mongoId = folder.mongoId {
             print("found mongo id, sync action with cloud")
         }
     }
     
-    private func readFolder(modelContext: ModelContext, folder: Folder) {
+     func readFolder(modelContext: ModelContext, folder: Folder) {
         Task {
             if let mongoId = folder.mongoId {
                 print("found mongo id, sync action with cloud")
@@ -110,10 +108,9 @@ class FolderManager {
                 }
             }
         }
-        
-        
     }
     
+  
 }
 
 struct CreateRequest: Encodable {
@@ -122,7 +119,11 @@ struct CreateRequest: Encodable {
 }
 
 struct CreateResponse: Decodable {
+    let _id: String
     let folderName: String
+    let imageUrl: String
+    let linkIds: [String]
+    
 }
 
 

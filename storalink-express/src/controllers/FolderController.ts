@@ -10,12 +10,10 @@ const createFolder = (req: UserRequest, res: Response, next: NextFunction) => {
   }
 
   const {
-    folderDescription,
+    folderDescription = "",
     folderName,
     imageUrl = "", // Default value if not provided
     linkIds = [], // Default value if not provided
-    parentFolderId = "", // Default value if not provided
-    subFolderIds = [], // Default value if not provided
     modifierId = "", // Default value if not provided
   } = req.body;
 
@@ -23,19 +21,20 @@ const createFolder = (req: UserRequest, res: Response, next: NextFunction) => {
   const folder = new Folder({
     _id: new mongoose.Types.ObjectId(),
     folderDescription,
-    currentUserId, // Use the ID from the JWT token
+    creatorId: currentUserId, // Use the ID from the JWT token
     folderName,
     imageUrl,
     linkIds,
-    parentFolderId,
-    subFolderIds,
     modifierId,
   });
-
+  console.log("folder: ", folder);
   return folder
     .save()
     .then((folder) => res.status(201).json(folder))
-    .catch((err) => res.status(500).json({ error: err }));
+    .catch((err) => {
+      console.log("error: ", err);
+      return res.status(500).json({ error: err });
+    });
 };
 
 const getFolder = (req: Request, res: Response, next: NextFunction) => {
