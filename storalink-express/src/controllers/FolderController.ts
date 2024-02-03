@@ -52,7 +52,7 @@ const getFolder = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const updateFolder = (req: Request, res: Response, next: NextFunction) => {
-  const { folderId } = req.params;
+  const folderId = req.params.id;
   const { folderDescription, folderName, imageUrl } = req.body;
   Folder.findById(folderId)
     .exec()

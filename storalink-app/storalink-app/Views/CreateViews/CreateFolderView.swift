@@ -16,11 +16,11 @@ struct CreateFolderView: View {
     @State private var viewModel = CreateFolderViewModel()
     @State var photoPickerItem: PhotosPickerItem?
     @State var uiImage: UIImage?
-    @State var initialFolder: Folder?
+    
     
     init(editFolder: Folder? = nil ) {
         if let folder = editFolder {
-            self.initialFolder = folder
+            print("editing folder, init")
             viewModel.updateInfoForEditFolder(folder: folder)
         }
     }
@@ -42,7 +42,11 @@ struct CreateFolderView: View {
                     Spacer()
                     
                     Image("Folder").resizable().frame(width: 25, height: 25 )
-                    Text("New Folder")
+                    if viewModel.isEditFolder {
+                        Text("Edit Folder")
+                    } else {
+                        Text("New Folder")
+                    }
                 }
                 .padding(.horizontal)
                 ScrollView {
@@ -76,12 +80,12 @@ struct CreateFolderView: View {
                                         PhotosPicker(selection: $photoPickerItem, matching: .images) {
                                             Image(uiImage: UIImage(systemName: "plus.circle")
                                                   ?? UIImage(resource: .defaultAvator))
-                                                .resizable()
-                                                .padding()
-                                                .scaledToFit()
-                                                .frame(width: 80, height: 80)
-                                                .clipShape(Circle())
-                                                .overlay(Circle().stroke(Color("ThemeColor"), lineWidth: viewModel.selectedCoverIndex == -1 ? 3 : 0))
+                                            .resizable()
+                                            .padding()
+                                            .scaledToFit()
+                                            .frame(width: 80, height: 80)
+                                            .clipShape(Circle())
+                                            .overlay(Circle().stroke(Color("ThemeColor"), lineWidth: viewModel.selectedCoverIndex == -1 ? 3 : 0))
                                         }
                                     }
                                 }.onChange(of: photoPickerItem) { _, _ in
@@ -102,7 +106,7 @@ struct CreateFolderView: View {
                                     print("tap")
                                 }
                                 .padding(.leading, 4)
-                                   
+                                
                                 ForEach(0..<9, id: \.self) { index in
                                     Image("folderAsset\(index)") // Corrected line
                                         .resizable()
@@ -151,9 +155,25 @@ struct CreateFolderView: View {
                     Button(action: {
                         // Action for folder creation
                         navigationStateManager.lastNavigationSource = .toMainStack
-                        viewModel.createFolder(userId: appViewModel.userId ?? UUID() )
+                        
+                        if let userId = appViewModel.userId {
+                            if  viewModel.isEditFolder {
+                                print("update folder")
+                                if let editFolder = viewModel.initialFolder {
+                                    print("calling viewModel")
+                                   viewModel.updateFolder(userId: userId, folder: editFolder)
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                                        self.presentationMode.wrappedValue.dismiss()
+                                    }
+                                    
+                                }
+                            } else {
+                                viewModel.createFolder(userId: userId )
+                            }
+                        }
+                        
                     }) {
-                        Text("Create Folder")
+                        Text(viewModel.isEditFolder ? "Update folder" : "Create Folder")
                             .frame(minWidth: 0, maxWidth: .infinity)
                             .frame(height: 50)
                             .foregroundColor(.white)
@@ -171,7 +191,7 @@ struct CreateFolderView: View {
             
             
             if viewModel.loadingStage != .none {
-               
+                
                 VStack {
                     if viewModel.loadingStage == .loading {
                         ProgressView()

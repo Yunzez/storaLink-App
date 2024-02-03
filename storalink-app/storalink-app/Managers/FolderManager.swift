@@ -82,9 +82,46 @@ class FolderManager {
         
     }
     
-    func updateFolder(modelContext: ModelContext, folder: Folder) {
+    func updateFolder(modelContext: ModelContext, folder: Folder, completion: @escaping (Result<Folder, Error>) -> Void) {
+        
         if let mongoId = folder.mongoId {
             print("found mongo id, sync action with cloud")
+            let createRequest = CreateRequest(folderName: folder.title, folderDescription: folder.desc ?? " ")
+            Task {
+                do {
+                    guard let url = URL(string: "\(Configuration.baseURL)/folder/update/\(mongoId)") else {
+                        completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+                        return
+                    }
+                    
+                    var urlRequest = URLRequest(url: url)
+                    urlRequest.httpMethod = "PATCH"
+                    urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    
+                    
+                    urlRequest = try await keychainStorage.appendURLAuthHeader(to: &urlRequest)
+                    urlRequest.httpBody = try JSONEncoder().encode(createRequest)
+                    
+                    let (data, response) = try await URLSession.shared.data(for: urlRequest)
+                    
+                    if let httpResponse = response as? HTTPURLResponse {
+                        // Now that httpResponse is of type HTTPURLResponse, you can access statusCode
+                        guard (200...299).contains(httpResponse.statusCode) else {
+                            // If statusCode is not in the 200-299 range, report failure
+                            completion(.failure(NSError(domain: "HTTPError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed request with status code: \(httpResponse.statusCode)"])))
+                            return
+                        }
+                    }
+                    
+                    let createResponse = try JSONDecoder().decode(CreateResponse.self, from: data)
+                    print("done")
+                    completion(.success(folder))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+        } else {
+            print("folder has no mango id")
         }
     }
     
@@ -121,9 +158,10 @@ struct CreateRequest: Encodable {
 struct CreateResponse: Decodable {
     let _id: String
     let folderName: String
-    let imageUrl: String
-    let linkIds: [String]
-    
+    let imageUrl: String?
+    let linkIds: [String]?
 }
+
+
 
 

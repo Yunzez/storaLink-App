@@ -18,12 +18,12 @@ enum LoadingStage {
     let folderManager = FolderManager.manager
     var context: ModelContext?
     // Published properties that the view can subscribe to
-     var folderName: String = ""
-     var folderDescription: String = "This is a folder description"
-     var searchUser: String = ""
-     var selectedCoverIndex: Int = 0
-     var error: Bool = false
-     var errorMessage: String = ""
+    var folderName: String = ""
+    var folderDescription: String = "This is a folder description"
+    var searchUser: String = ""
+    var selectedCoverIndex: Int = 0
+    var error: Bool = false
+    var errorMessage: String = ""
     var loadingStage: LoadingStage = .none
     var navigateToFolder: Folder?
     var readyToNavigate: Bool = false
@@ -32,15 +32,53 @@ enum LoadingStage {
     var image: UIImage?
     
     var isEditFolder: Bool = false
-
+    var initialFolder: Folder?
     // Other properties for business logic
     private var cancellables = Set<AnyCancellable>()
-
-    func updateInfoForEditFolder(folder: Folder){
+    
+    func updateInfoForEditFolder(folder: Folder) {
         isEditFolder = true
-        
+        initialFolder = folder
         folderName = folder.title
         folderDescription = folder.desc ?? ""
+        //        if let UIimage = localFileManager.getImage(path: folder.imgUrl) {
+        //            image = UIimage
+        //        }
+    }
+    
+    func updateFolder(userId: UUID, folder: Folder) {
+        loadingStage = .loading
+        folder.title = folderName
+        folder.desc = folderDescription
+        //        var imgUrl = ""
+        //
+        //        if selectedCoverIndex == -1, let selectedUIImage = self.image {
+        //            imgUrl = localFileManager.saveImage(image: selectedUIImage)
+        //        } else {
+        //            imgUrl  = "folderAsset\(selectedCoverIndex)"
+        //        }
+        //        folder.imgUrl = imgUrl
+        if let modelContext = context {
+            print("calling folder manager")
+                
+                
+            folderManager.updateFolder(modelContext: modelContext, folder: folder){ result in
+                DispatchQueue.main.async { // Ensure UI updates are performed on the main thread
+                        switch result {
+                        case .success(let updatedFolder):
+                            folder.title = updatedFolder.title
+                            folder.desc = updatedFolder.desc
+                            print("get results: done")
+                            // If you need to dismiss a view or update the UI, make sure it's here within the DispatchQueue.main.async block.
+                            
+                        case .failure(let error):
+                            print("Failed to update folder: \(error)")
+                        }
+                    }
+            }
+        }
+        self.loadingStage = .done
+        
         
     }
     
@@ -76,43 +114,41 @@ enum LoadingStage {
                 
                 
                 folderManager.createFolder(modelContext: context, folder: newFolder) { result in
-                       switch result {
-                          case .success(let updatedFolder):
-                              do {
-                                  let users = try context.fetch(FetchDescriptor<User>(predicate: #Predicate<User>{ user in
-                                      user.id == userId
-                                  }))
-                                  
-                                  if let currentUser = users.first {
-                                      currentUser.folders.append(updatedFolder)
-                                      do {
-                                          try context.save()
-                                          print("change saved to user", currentUser.name)
-                                      } catch {
-                                          print("Failed to save context: \(error)")
-                                      }
-                                  }
-                              } catch {
-                                  print("Failed to fetch users: \(error)")
-                              }
-                              
-                          case .failure(let error):
-                              print("Failed to create folder: \(error)")
-                          }
+                    switch result {
+                    case .success(let updatedFolder):
+                        do {
+                            let users = try context.fetch(FetchDescriptor<User>(predicate: #Predicate<User>{ user in
+                                user.id == userId
+                            }))
+                            
+                            if let currentUser = users.first {
+                                currentUser.folders.append(updatedFolder)
+                                do {
+                                    try context.save()
+                                    print("change saved to user", currentUser.name)
+                                } catch {
+                                    print("Failed to save context: \(error)")
+                                }
+                            }
+                        } catch {
+                            print("Failed to fetch users: \(error)")
+                        }
+                        
+                    case .failure(let error):
+                        print("Failed to create folder: \(error)")
                     }
+                }
                 
-               
+                
                 if let navigateManager = navigationStateManager {
                     navigateManager.focusFolder = newFolder
                     navigateManager.lastNavigationSource = .toMainStack
                     loadingStage = .done
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.readyToNavigate = true
+                        self.readyToNavigate = true
                     }
                 }
-               
-            } catch {
                 
             }
             

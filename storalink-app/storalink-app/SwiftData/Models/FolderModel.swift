@@ -35,7 +35,7 @@ final class Folder {
 //        for link in links {
 //            self.links.append(link)
 //        }
-        print("folder init, link num: ", links.count )
+//        print("folder init, link num: ", links.count )
     }
     
     func addLink(link: Link) -> Void {
