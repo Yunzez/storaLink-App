@@ -67,4 +67,10 @@ mongorestore --db database/path  ./dump/path
 ```
 mongod --dbpath=./Code/storalink_db
 ```
+
+
+
+### Current Stage/News
+1. beta testing (version 4)
+2. we will be employing https://tutorial.docusaurus.io/docs/intro for documentation soon
 ----- 
