@@ -28,7 +28,10 @@ const ValidateSchema = (schema) => {
         }
         catch (error) {
             console.log(error);
-            res.status(422).json({ error });
+            res.status(422).json({
+                error: error.details[0].message,
+                message: "Fail schema validation",
+            });
         }
     });
 };
@@ -44,9 +47,13 @@ exports.Schemas = {
     folder: {
         create: joi_1.default.object({
             // info: regex(/^[0-9a-fA-F]{24}$/) is used to validate the mongoDB ObjectId
-            creatorId: joi_1.default.string()
-                .regex(/^[0-9a-fA-F]{24}$/)
-                .required(),
+            //   creatorId: Joi.string()
+            //     .regex(/^[0-9a-fA-F]{24}$/)
+            //     .required(),
+            folderName: joi_1.default.string().required(),
+            folderDescription: joi_1.default.string(),
+        }),
+        update: joi_1.default.object({
             folderName: joi_1.default.string().required(),
             folderDescription: joi_1.default.string().required(),
         }),

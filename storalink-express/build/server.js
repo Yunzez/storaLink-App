@@ -11,6 +11,7 @@ const StoralinkerRoutes_1 = __importDefault(require("./routes/StoralinkerRoutes"
 const AuthRoutes_1 = __importDefault(require("./routes/AuthRoutes"));
 const ValidateJWTToken_1 = require("./middleware/ValidateJWTToken");
 const FolderRoutes_1 = __importDefault(require("./routes/FolderRoutes"));
+const LinkRoutes_1 = __importDefault(require("./routes/LinkRoutes"));
 const router = (0, express_1.default)();
 const publicRouter = express_1.default.Router();
 /** * connect to mongo */
@@ -71,6 +72,7 @@ const StartServer = () => {
     // info: storalinker routes: storalinker/...actual routes
     router.use("/storalinker", StoralinkerRoutes_1.default);
     router.use("/folder", FolderRoutes_1.default);
+    router.use("/link", LinkRoutes_1.default);
     // * Error
     router.use((req, res, next) => {
         const error = new Error("Not Found");

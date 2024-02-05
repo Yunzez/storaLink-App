@@ -119,4 +119,21 @@ router.get(
   FolderController.getFolder
 );
 
+/**
+ * GET /getAll
+ * Retrieves all Folder instances from the database.
+ *
+ * Success response:
+ * Status: 200 OK
+ * { Folder[] }
+ *
+ * Error response:
+ * Status: 500 Internal Server Error
+ * {
+ *   error: string        // Description of the error
+ * }
+ */
+console.log("checking get all route");
+router.get("/getAll", FolderController.getAllFolders);
+
 export default router;

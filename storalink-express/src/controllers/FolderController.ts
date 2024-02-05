@@ -53,6 +53,7 @@ const getFolder = (req: Request, res: Response, next: NextFunction) => {
 
 const updateFolder = (req: Request, res: Response, next: NextFunction) => {
   const folderId = req.params.id;
+
   const { folderDescription, folderName, imageUrl } = req.body;
   Folder.findById(folderId)
     .exec()
@@ -70,23 +71,46 @@ const updateFolder = (req: Request, res: Response, next: NextFunction) => {
     .catch((err) => res.status(500).json({ error: err }));
 };
 
-const deleteFolder = (req: UserRequest, res: Response, next: NextFunction) => {
-  const { folderId } = req.params;
+const getAllFolders = (req: UserRequest, res: Response, next: NextFunction) => {
+  // Assuming req.userId is a string that contains the user's ID
+  const userId = req.userId; // Corrected from const { useId } = req.userId;
 
+  console.log("get all folders for user, userId: ", userId);
+  Folder.find({ creatorId: userId })
+    .exec()
+    .then((folders) => {
+      // Check if there are no folders found
+      if (!folders || folders.length === 0) {
+        console.log("no folders found for user");
+        return res.status(200).json({});
+      }
+
+      res.status(200).json(folders);
+    })
+    .catch((err) => res.status(500).json({ error: err }));
+};
+
+const deleteFolder = (req: Request, res: Response, next: NextFunction) => {
+  const folderId = req.params.id;
+  console.log("delete: folderId, ", folderId);
   Folder.findById(folderId)
     .exec()
     .then((folder) => {
       if (!folder) {
-        return res.status(404).json({ message: "Folder not found" });
+        res.status(404).json({ message: "Folder not found" });
+        return; // Ensure we return undefined here
       }
-      if (folder.creatorId !== req.userId) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
-
-      Folder.findByIdAndDelete(folderId);
+      // Ensure deletion is awaited before proceeding
+      return Folder.findByIdAndDelete(folderId).then(() => {
+        res.status(204).json({ message: "Folder deleted" });
+        console.log("deleted");
+        // No need to return anything here, as we're ending the response
+      });
     })
-    .then(() => res.status(204).json({ message: "Folder deleted" }))
-    .catch((err) => res.status(500).json({ error: err }));
+    .catch((err) => {
+      res.status(500).json({ error: err });
+      // No need to return anything here, as we're ending the response
+    });
 };
 
 export default {
@@ -94,4 +118,5 @@ export default {
   getFolder,
   updateFolder,
   deleteFolder,
+  getAllFolders,
 };

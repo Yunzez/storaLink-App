@@ -15,6 +15,8 @@ import SwiftUI
     let keychainStorage = KeychainStorage()
     let authManager = AuthenticationManager.manager
     let modelManager = ModelUtilManager.manager
+    let folderManager = FolderManager.manager
+    let syncManager = SynchronizationManager.manager
     var context: ModelContext?
     var appData: AppViewModel?
     
@@ -96,6 +98,27 @@ import SwiftUI
                             self.appData?.setUser(user: remoteUser)
                         }
                     }
+                    
+                    // get all folders
+                    if let user = self.appData?.user {
+                        self.folderManager.getAllFolders(user: user){
+                            result in
+                            //                            DispatchQueue.main.async {
+                            switch result {
+                            case .success(let folders):
+                                // Update your UI with the fetched folders
+                                print("Fetched folders: \(folders)")
+                                print("Synchronizing")
+                                self.syncManager.syncFolders(modelContext: context, folders: folders, userId: self.appData?.userId ?? UUID())
+                                
+                            case .failure(let error):
+                                // Handle any errors (e.g., show an error message)
+                                print("Error fetching folders: \(error)")
+                            }
+                            //                            }
+                        }
+                    }
+                    
                     
                     // Record login activity
                     self.appData?.recordLogin(userEmail: self.email)

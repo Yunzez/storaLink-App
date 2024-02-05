@@ -27,7 +27,7 @@ class FolderManager {
                 urlRequest.httpBody = try JSONEncoder().encode(createRequest)
                 
                 urlRequest = try await keychainStorage.appendURLAuthHeader(to: &urlRequest)
-                        
+                
                 let (data, response) = try await URLSession.shared.data(for: urlRequest)
                 
                 if let httpResponse = response as? HTTPURLResponse {
@@ -47,26 +47,38 @@ class FolderManager {
             }
         }
     }
-
     
-    func deleteFolder(modelContext: ModelContext, folder: Folder) throws {
-        Task {
-            if let mongoId = folder.mongoId {
-                print("found mongo id, sync action with cloud")
-                guard let url = URL(string: "\(Configuration.baseURL)/folder/delete/\(mongoId)") else {
-                    throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
+    
+    func deleteFolder(modelContext: ModelContext, folder: Folder, completion: @escaping (Result<String, Error>) -> Void ) {
+        if let mongoId = folder.mongoId {
+            print("found mongo id, sync action with cloud")
+            Task {
+                do {
+                    guard let url = URL(string: "\(Configuration.baseURL)/folder/delete/\(mongoId)") else {
+                        completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+                        return
+                    }
+                    var urlRequest = URLRequest(url: url)
+                    urlRequest.httpMethod = "POST"
+                    urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    urlRequest = try await keychainStorage.appendURLAuthHeader(to: &urlRequest)
+                    
+                    let (_, response) = try await URLSession.shared.data(for: urlRequest)
+                    
+                    if let httpResponse = response as? HTTPURLResponse {
+                        // Now that httpResponse is of type HTTPURLResponse, you can access statusCode
+                        guard (200...299).contains(httpResponse.statusCode) else {
+                            // If statusCode is not in the 200-299 range, report failure
+                            completion(.failure(NSError(domain: "HTTPError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed request with status code: \(httpResponse.statusCode)"])))
+                            return
+                        }
+                    }
+                    
+                    
+                    completion(.success("Success"))
+                }catch {
+                    completion(.failure(error))
                 }
-                var urlRequest = URLRequest(url: url)
-                urlRequest.httpMethod = "POST"
-                urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                
-                let (_, response) = try await URLSession.shared.data(for: urlRequest)
-                
-                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode > 200 , httpResponse.statusCode < 300 else {
-                    print("failed checking 200+ status")
-                    throw NSError(domain: "Invalid response", code: 0, userInfo: [NSLocalizedDescriptionKey: "Incorrect email or password"])
-                }
-                
             }
         }
         
@@ -113,7 +125,7 @@ class FolderManager {
                         }
                     }
                     
-                    let createResponse = try JSONDecoder().decode(CreateResponse.self, from: data)
+                    _ = try JSONDecoder().decode(CreateResponse.self, from: data)
                     print("done")
                     completion(.success(folder))
                 } catch {
@@ -125,29 +137,86 @@ class FolderManager {
         }
     }
     
-     func readFolder(modelContext: ModelContext, folder: Folder) {
-        Task {
-            if let mongoId = folder.mongoId {
-                print("found mongo id, sync action with cloud")
-                guard let url = URL(string: "\(Configuration.baseURL)/folder/delete/\(mongoId)") else {
-                    throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
-                }
-                var urlRequest = URLRequest(url: url)
-                urlRequest.httpMethod = "GET"
-                urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                
-                let (data, response) = try await URLSession.shared.data(for: urlRequest)
-                
-                print("get folder:", data)
-                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode > 200 , httpResponse.statusCode < 300 else {
-                    print("failed checking 200+ status")
-                    throw NSError(domain: "Invalid response", code: 0, userInfo: [NSLocalizedDescriptionKey: "Incorrect email or password"])
+    
+    func readOneFolder(modelContext: ModelContext, folder: Folder, completion: @escaping (Result<Folder, Error>) -> Void) {
+        if let mongoId = folder.mongoId {
+            print("found mongo id, sync action with cloud")
+            Task {
+                do {
+                    guard let url = URL(string: "\(Configuration.baseURL)/folder/update/\(mongoId)") else {
+                        completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+                        return
+                    }
+                    
+                    var urlRequest = URLRequest(url: url)
+                    urlRequest.httpMethod = "GET"
+                    urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    urlRequest = try await keychainStorage.appendURLAuthHeader(to: &urlRequest)
+                    let (data, response) = try await URLSession.shared.data(for: urlRequest)
+                    
+                    print("get folder:", data)
+                    if let httpResponse = response as? HTTPURLResponse {
+                        // Now that httpResponse is of type HTTPURLResponse, you can access statusCode
+                        guard (200...299).contains(httpResponse.statusCode) else {
+                            // If statusCode is not in the 200-299 range, report failure
+                            completion(.failure(NSError(domain: "HTTPError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed request with status code: \(httpResponse.statusCode)"])))
+                            return
+                        }
+                    }
+                    completion(.success(folder))
+                } catch {
+                    completion(.failure(error))
                 }
             }
         }
     }
     
-  
+    func getAllFolders(user: User, completion: @escaping (Result<[Folder], Error>) -> Void) {
+        Task {
+            do {
+                guard let url = URL(string: "\(Configuration.baseURL)/folder/getAll/") else {
+                    completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+                    return
+                }
+                
+                var urlRequest = URLRequest(url: url)
+                urlRequest.httpMethod = "GET"
+                urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                urlRequest = try await keychainStorage.appendURLAuthHeader(to: &urlRequest)
+                
+                let (data, response) = try await URLSession.shared.data(for: urlRequest)
+                
+                if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
+                    // Decode the data into an array of Folders
+                    let foldersResponses = try JSONDecoder().decode([CreateResponse].self, from: data)
+                    var ret: [Folder] = []
+                    
+                    // return an empty array if there is no folder
+                    if foldersResponses.isEmpty {
+                        completion(.success([]))
+                    }
+                    
+                    for foldersResponse in foldersResponses {
+                        ret.append(translateResponseToFolder(response: foldersResponse, attachedTo: user))
+                    }
+                    completion(.success(ret))
+                } else {
+                    // Handle unsuccessful HTTP responses
+                    let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+                    completion(.failure(NSError(domain: "HTTPError", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed request with status code: \(statusCode)"])))
+                }
+            } catch {
+                // Handle any errors that occurred during the request or decoding process
+                completion(.failure(error))
+            }
+        }
+    }
+
+    
+    private func translateResponseToFolder(response: CreateResponse, attachedTo: User) -> Folder {
+        return Folder(mongoId: response._id, title: response.folderName, imgUrl: response.imageUrl ?? "", user: attachedTo, links: [])
+    }
+    
 }
 
 struct CreateRequest: Encodable {

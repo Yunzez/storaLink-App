@@ -38,6 +38,18 @@ final class Folder {
 //        print("folder init, link num: ", links.count )
     }
     
+    init( mongoId: String, title: String, imgUrl: String, user: User, desc: String? = nil, pinned: Bool? = nil, links: [Link] ) {
+        self.mongoId = mongoId
+        self.title = title
+        self.imgUrl = imgUrl
+        self.desc = desc
+        self.linksNumber = links.count
+        self.pinned = pinned ?? false
+        self.creationDate = Date()
+        self.links = []
+        self.user = user
+    }
+    
     func addLink(link: Link) -> Void {
         self.links.append(link)
     }
