@@ -110,7 +110,7 @@ enum LoadingStage {
             print("imgurl: ", imgUrl)
             
             do {
-                let newFolder = Folder(title: folderName, imgUrl: imgUrl, links: [])
+                let newFolder = Folder(title: folderName, imgUrl: imgUrl, desc: folderDescription,  links: [])
                 
                 
                 folderManager.createFolder(modelContext: context, folder: newFolder) { result in

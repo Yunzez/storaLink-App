@@ -101,15 +101,17 @@ import SwiftUI
                     
                     // get all folders
                     if let user = self.appData?.user {
-                        self.folderManager.getAllFolders(user: user){
+                        self.folderManager.getAllFolders(modelContext: context, user: user){
                             result in
                             //                            DispatchQueue.main.async {
                             switch result {
-                            case .success(let folders):
+                            case .success(let responses):
                                 // Update your UI with the fetched folders
-                                print("Fetched folders: \(folders)")
+                                print("Fetched folders: \(responses)")
                                 print("Synchronizing")
-                                self.syncManager.syncFolders(modelContext: context, folders: folders, userId: self.appData?.userId ?? UUID())
+                                if let user = self.appData?.user {
+                                    self.folderManager.saveResponseToFolder(modelContext: context, responses: responses, attachedTo: user)
+                                }
                                 
                             case .failure(let error):
                                 // Handle any errors (e.g., show an error message)
@@ -167,7 +169,7 @@ import SwiftUI
             print("handling loading, a test", self.appData?.userName ?? "No user" )
             self.isLoading = true
             let duration = 3 // Total duration of loading in seconds
-            let interval = 0.1 // Time interval for each increment
+            let interval = 0.2 // Time interval for each increment
             var timeElapsed = 0.0
             
             Timer.scheduledTimer(withTimeInterval: interval, repeats: true) {

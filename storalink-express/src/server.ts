@@ -7,6 +7,7 @@ import AuthRoutes from "./routes/AuthRoutes";
 import { ValidateJWTToken } from "./middleware/ValidateJWTToken";
 import FolderRoutes from "./routes/FolderRoutes";
 import LinkRoutes from "./routes/LinkRoutes";
+import S3Rountes from "./routes/S3Routes";
 const router = express();
 const publicRouter = express.Router();
 /** * connect to mongo */
@@ -88,6 +89,8 @@ const StartServer = () => {
   router.use("/folder", FolderRoutes);
 
   router.use("/link", LinkRoutes);
+
+  router.use("/s3", S3Rountes);
 
   // * Error
   router.use((req, res, next) => {

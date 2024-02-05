@@ -32,17 +32,29 @@ class SynchronizationManager {
             // Determine folders to delete (present in currentFolders but not in newFolders)
             let foldersToDelete = currentFolders.filter { !newFolderIds.contains($0.mongoId) }
 
+            print("add number:", foldersToAdd.count)
+            print("delete number:", foldersToDelete.count)
             // Optionally, find folders to update if other attributes are considered
 
             // Perform add, delete, and update operations
-            for folderToAdd in foldersToAdd {
-                modelContext.insert(folderToAdd)
+            if !foldersToAdd.isEmpty {
+                for folderToAdd in foldersToAdd {
+                    modelContext.insert(folderToAdd)
+                }
             }
 
-            for folderToDelete in foldersToDelete {
-                // Delete folder from modelContext
-                modelContext.delete(folderToDelete)
+            if !foldersToDelete.isEmpty {
+                for folderToDelete in foldersToDelete {
+                    // Delete folder from modelContext
+                    modelContext.delete(folderToDelete)
+                }
             }
+            
+            if !foldersToAdd.isEmpty || !foldersToDelete.isEmpty {
+                try modelContext.save()
+            }
+            
+           
 
             // Save changes to modelContext if necessary
 

@@ -15,6 +15,7 @@ final class Folder {
     var mongoId : String?;
     var title: String;
     var imgUrl: String
+    var remoteImgUrl: String?
     var desc: String?
     var linksNumber: Int
     var pinned: Bool

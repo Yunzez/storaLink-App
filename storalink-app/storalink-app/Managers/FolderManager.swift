@@ -10,10 +10,11 @@ import SwiftData
 import KeychainAccess
 class FolderManager {
     private let keychainStorage = KeychainStorage()
+    
     static let manager = FolderManager()
     
     func createFolder(modelContext: ModelContext, folder: Folder, completion: @escaping (Result<Folder, Error>) -> Void) {
-        let createRequest = CreateRequest(folderName: folder.title, folderDescription: folder.desc ?? " ")
+        let createRequest = CreateRequest(folderName: folder.title, folderDescription: folder.desc ?? " ", imageUrl: folder.imgUrl)
         Task {
             do {
                 guard let url = URL(string: "\(Configuration.baseURL)/folder/create") else {
@@ -98,7 +99,7 @@ class FolderManager {
         
         if let mongoId = folder.mongoId {
             print("found mongo id, sync action with cloud")
-            let createRequest = CreateRequest(folderName: folder.title, folderDescription: folder.desc ?? " ")
+            let createRequest = CreateRequest(folderName: folder.title, folderDescription: folder.desc ?? " ", imageUrl: folder.imgUrl)
             Task {
                 do {
                     guard let url = URL(string: "\(Configuration.baseURL)/folder/update/\(mongoId)") else {
@@ -171,8 +172,8 @@ class FolderManager {
         }
     }
     
-    func getAllFolders(user: User, completion: @escaping (Result<[Folder], Error>) -> Void) {
-        Task {
+    func getAllFolders(modelContext: ModelContext,user: User, completion: @escaping (Result<[CreateResponse], Error>) -> Void) {
+        Task{
             do {
                 guard let url = URL(string: "\(Configuration.baseURL)/folder/getAll/") else {
                     completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
@@ -189,17 +190,15 @@ class FolderManager {
                 if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
                     // Decode the data into an array of Folders
                     let foldersResponses = try JSONDecoder().decode([CreateResponse].self, from: data)
-                    var ret: [Folder] = []
+                    
                     
                     // return an empty array if there is no folder
                     if foldersResponses.isEmpty {
                         completion(.success([]))
                     }
                     
-                    for foldersResponse in foldersResponses {
-                        ret.append(translateResponseToFolder(response: foldersResponse, attachedTo: user))
-                    }
-                    completion(.success(ret))
+                    return completion(.success(foldersResponses))
+//                        var ret = saveResponseToFolder(modelContext: modelContext, responses: foldersResponses, attachedTo: user)
                 } else {
                     // Handle unsuccessful HTTP responses
                     let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
@@ -213,15 +212,81 @@ class FolderManager {
     }
 
     
-    private func translateResponseToFolder(response: CreateResponse, attachedTo: User) -> Folder {
-        return Folder(mongoId: response._id, title: response.folderName, imgUrl: response.imageUrl ?? "", user: attachedTo, links: [])
+    func saveResponseToFolder(modelContext: ModelContext, responses: [CreateResponse], attachedTo: User) {
+        var selectedResponses = syncFolders(modelContext: modelContext, responses: responses, userId: attachedTo.id)
+        for oneResponse in selectedResponses {
+            modelContext.insert(Folder(mongoId: oneResponse._id, title: oneResponse.folderName, imgUrl: oneResponse.imageUrl ?? "", user: attachedTo, links: []))
+        }
+        do {
+            try modelContext.save()
+            print("save folders: ", selectedResponses.count)
+        } catch {
+            print("failed saving folders")
+        }
+        
+//        return Folder(mongoId: response._id, title: response.folderName, imgUrl: response.imageUrl ?? "", user: attachedTo, links: [])
     }
+    
+    func syncFolders(modelContext: ModelContext, responses: [CreateResponse], userId: UUID) -> [CreateResponse] {
+        do {
+            // Fetch current folders for the user
+            let currentFolders = try modelContext.fetch(FetchDescriptor<Folder>(
+                predicate: #Predicate { folder in
+                    return folder.user?.id == userId
+                }
+            ))
+
+            // Assuming mongoId is non-optional, or you've handled optionality elsewhere
+            let currentFolderIds: Set<String> = Set(currentFolders.compactMap { $0.mongoId })
+            let newFolderIds: Set<String> = Set(responses.map { $0._id })
+
+            // Determine folders to add (present in newFolderIds but not in currentFolderIds)
+            let idsToAdd = newFolderIds.subtracting(currentFolderIds)
+
+            // Determine folders to delete (present in currentFolderIds but not in newFolderIds)
+            let idsToDelete = currentFolderIds.subtracting(newFolderIds)
+
+            print("add number:", idsToAdd.count)
+            print("delete number:", idsToDelete.count)
+
+            // Perform delete operations
+            if !idsToDelete.isEmpty {
+                for idToDelete in idsToDelete {
+                    if let folderToDelete = currentFolders.first(where: { $0.mongoId == idToDelete }) {
+                        modelContext.delete(folderToDelete)
+                    }
+                }
+            }
+
+            // Save changes if there are any additions or deletions
+            if !idsToDelete.isEmpty {
+                try modelContext.save()
+            }
+
+            // Filter responses to add based on idsToAdd
+            let responsesToAdd = responses.filter { idsToAdd.contains($0._id) }
+
+            if !responsesToAdd.isEmpty {
+                // Return the filtered responses for folders to be added
+                return responsesToAdd
+            } else {
+                print("No new folders to add")
+            }
+
+        } catch {
+            print("Synchronization Error: \(error)")
+        }
+        return []
+    }
+
+
     
 }
 
 struct CreateRequest: Encodable {
     let folderName: String
     let folderDescription: String
+    let imageUrl: String
 }
 
 struct CreateResponse: Decodable {

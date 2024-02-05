@@ -11,9 +11,16 @@ import multer from "multer";
 import { Upload } from "@aws-sdk/lib-storage";
 import fs from "fs";
 import path from "path";
+import { config } from "../config/config";
 
 // Initialize S3 client
-const s3Client = new S3Client({ region: "us-west-1" });
+const s3Client = new S3Client({
+  region: "us-east-2",
+  credentials: {
+    accessKeyId: config.aws.accessKeyId,
+    secretAccessKey: config.aws.secretAccessKey,
+  },
+});
 
 // Configure multer for local storage
 const upload = multer({ dest: "uploads/" });
@@ -34,7 +41,7 @@ const handleImageUpload = async (req: Request, res: Response) => {
       Bucket: "storalink-image",
       Key: `images/${Date.now().toString()}-${file.originalname}`,
       Body: fileStream,
-      ACL: "public-read" as ObjectCannedACL,
+      // ACL: "public-read" as ObjectCannedACL,
     };
 
     // Using high-level upload utility
@@ -42,7 +49,7 @@ const handleImageUpload = async (req: Request, res: Response) => {
       client: s3Client,
       params: uploadParams,
     });
-
+    console.log("uploading image");
     await parallelUploads3.done();
 
     res.json({

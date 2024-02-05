@@ -14,14 +14,14 @@ struct HomeViewEntry: View{
     @Environment(AppViewModel.self) private var appViewModel : AppViewModel
     @Environment(\.modelContext) private var modelContext: ModelContext
     
-    #warning("Temp, inject userId using Entry struct")
+#warning("Temp, inject userId using Entry struct")
     var body: some View {
         HomeView(filterUserID: appViewModel.userId)
     }
 }
 
 struct HomeView: View {
-    var filterUserID: UUID? 
+    var filterUserID: UUID?
     @Environment(AppViewModel.self) private var appViewModel : AppViewModel
     @Environment(\.modelContext) private var modelContext: ModelContext
     
@@ -31,7 +31,7 @@ struct HomeView: View {
     // change to state for now, we are fetching on view onappear
     @Query var folders: [Folder] = []
     @Query var links: [Link] = []
-//    @Query() private var links: [Link]
+    //    @Query() private var links: [Link]
     
     
     @State var searchbarViewModel = SearchBarViewModel()
@@ -39,69 +39,70 @@ struct HomeView: View {
     
     
     @State private var filteredLinks: [Link] = []
-//    
+    //
     init(filterUserID: UUID? = UUID() ) {
         self.filterUserID = filterUserID
         _users = Query(filter: #Predicate { user in
-                if let filterId = filterUserID {
-                    return user.id == filterId
-                } else {
-                    return false
-                }
-           })
+            if let filterId = filterUserID {
+                return user.id == filterId
+            } else {
+                return false
+            }
+        })
         
         user = users.first
-            _folders = Query(filter: #Predicate { folder in
-                    if let filterId = filterUserID {
-                        return folder.user?.id == filterId
-                    } else {
-                        return false
-                    }
-                }
-            , sort: [SortDescriptor(\Folder.creationDate, order: .reverse)])
         
-            // User -> [Folders] -> [Links]
-            //        _links = Query(filter: #Predicate { link in
-            //            if let filterId = filterUserID {
-            //                if let currentFolder = link.parentFolder {
-            //                    if let currentUser = currentFolder.user {
-            //                       return currentUser.id == filterId
-            //                    } else {
-            //                        return false
-            //                    }
-            //                } else {
-            //                    return false
-            //                }
-            //            } else {
-            //                return false
-            //            }
-            //       })
-        }
+        _folders = Query(filter: #Predicate { folder in
+            if let filterId = filterUserID {
+                return folder.user?.id == filterId
+            } else {
+                return false
+            }
+        }, sort: [SortDescriptor(\Folder.creationDate, order: .reverse)])
+        
+        // User -> [Folders] -> [Links]
+        //        _links = Query(filter: #Predicate { link in
+        //            if let filterId = filterUserID {
+        //                if let currentFolder = link.parentFolder {
+        //                    if let currentUser = currentFolder.user {
+        //                       return currentUser.id == filterId
+        //                    } else {
+        //                        return false
+        //                    }
+        //                } else {
+        //                    return false
+        //                }
+        //            } else {
+        //                return false
+        //            }
+        //       })
+    }
     
     
     func setup(){
+        print("folder number:", folders.count)
         filteredLinks = filterLink()
-//        var folderCount = 5
+        //        var folderCount = 5
         // add custom fetch to filter data by creation date
-//        var folderFetchDescriptor = FetchDescriptor<Folder>(
-//            predicate:  #Predicate { folder in
-//                if let filterId = filterUserID {
-//                    return folder.user?.id == filterId
-//                } else {
-//                    return false
-//                }
-//            },
-//            sortBy: [SortDescriptor(\Folder.creationDate, order: .reverse)]
-//        )
-//        folderFetchDescriptor.fetchLimit = 5
-//        
-//        do { try  folders =  modelContext.fetch(folderFetchDescriptor) } catch {
-//             print("Error in fetching folders")
-//         }
+        //        var folderFetchDescriptor = FetchDescriptor<Folder>(
+        //            predicate:  #Predicate { folder in
+        //                if let filterId = filterUserID {
+        //                    return folder.user?.id == filterId
+        //                } else {
+        //                    return false
+        //                }
+        //            },
+        //            sortBy: [SortDescriptor(\Folder.creationDate, order: .reverse)]
+        //        )
+        //        folderFetchDescriptor.fetchLimit = 5
+        //
+        //        do { try  folders =  modelContext.fetch(folderFetchDescriptor) } catch {
+        //             print("Error in fetching folders")
+        //         }
     }
     
     // ! we calculate the links here whenever we render links
-    #warning("Temp method, once link can be queried, should delete")
+#warning("Temp method, once link can be queried, should delete")
     func filterLink() -> [Link] {
         let folderIds = Set(folders.compactMap { $0.id })
         return links.filter { link in
@@ -112,7 +113,7 @@ struct HomeView: View {
         .prefix(10) // Take the first 10 elements
         .map { $0 } // Convert the prefix result back to an array
     }
-
+    
     
     // Update filtered links whenever the view appears or the relevant data changes
     private func updateFilteredLinks() {
@@ -126,7 +127,7 @@ struct HomeView: View {
             link.parentFolder?.user?.name == user?.name
         }
     }
-  
+    
     
     
     
@@ -182,7 +183,7 @@ struct HomeView: View {
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 6) {
                                 ForEach(filteredLinks) { link in // Replace with your data source
-                                        LinkItemView(currentLink: link)
+                                    LinkItemView(currentLink: link)
                                 }
                             }
                             .padding()

@@ -36,6 +36,15 @@ struct FolderItemView: View {
                         .frame(width: 160, height: 155)
                         .cornerRadius(Spacing.small)
                         .padding(.bottom, -Spacing.small)
+//                    AsyncImage(url: URL(string: "https://storalink-image.s3.amazonaws.com/images/1707168053737-xiaochuan.jpeg")) { image in
+//                                image.resizable()
+//                            } placeholder: {
+//                                ProgressView()
+//                            }
+//                            .scaledToFill()
+//                            .frame(width: 160, height: 155)
+//                            .cornerRadius(8) // Assuming Spacing.small is equivalent to 8
+//                            .padding(.bottom, -8)
                 }
                 
                 // Heart icon button

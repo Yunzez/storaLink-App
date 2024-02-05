@@ -42,11 +42,13 @@ export const Schemas = {
       //     .required(),
       folderName: Joi.string().required(),
       folderDescription: Joi.string(),
+      imageUrl: Joi.string(),
     }),
 
     update: Joi.object<IFolder>({
       folderName: Joi.string().required(),
       folderDescription: Joi.string().required(),
+      imageUrl: Joi.string(),
     }),
   },
 };

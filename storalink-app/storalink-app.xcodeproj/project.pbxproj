@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F417BC62B71974E005E022B /* S3ImageUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F417BC52B71974E005E022B /* S3ImageUpload.swift */; };
 		9F7260602B35418700A49628 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72605F2B35418700A49628 /* CustomButton.swift */; };
 		9F7260622B365D6400A49628 /* NavigationStageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260612B365D6400A49628 /* NavigationStageManager.swift */; };
 		9F7260682B36827E00A49628 /* LinkItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260672B36827E00A49628 /* LinkItemViewModel.swift */; };
@@ -112,6 +113,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9F417BC52B71974E005E022B /* S3ImageUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = S3ImageUpload.swift; sourceTree = "<group>"; };
 		9F72605F2B35418700A49628 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		9F7260612B365D6400A49628 /* NavigationStageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStageManager.swift; sourceTree = "<group>"; };
 		9F7260672B36827E00A49628 /* LinkItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkItemViewModel.swift; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				9FF0FABC2B6C714200C78B4F /* SynchronizationManager.swift */,
 				9FF0FABE2B6C740C00C78B4F /* FolderManager.swift */,
 				9FF0FAC02B6C755100C78B4F /* LinkManager.swift */,
+				9F417BC52B71974E005E022B /* S3ImageUpload.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -595,6 +598,7 @@
 				9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */,
 				9FD082ED2B144263004021FC /* LinkViewModel.swift in Sources */,
 				9FEB2E872B33AD9F005A300C /* LoginViewModel.swift in Sources */,
+				9F417BC62B71974E005E022B /* S3ImageUpload.swift in Sources */,
 				9FD3558B2B5744EF000574DD /* ChangePlanView.swift in Sources */,
 				9FD082F92B1443D3004021FC /* FilesView.swift in Sources */,
 				9FD082EF2B14426D004021FC /* FolderViewModel.swift in Sources */,
@@ -813,7 +817,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "storalink-app/storalink-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"storalink-app/Preview Content\"";
 				DEVELOPMENT_TEAM = 2JF8FU3N7N;
 				ENABLE_PREVIEWS = YES;
@@ -846,7 +850,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "storalink-app/storalink-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"storalink-app/Preview Content\"";
 				DEVELOPMENT_TEAM = 2JF8FU3N7N;
 				ENABLE_PREVIEWS = YES;
