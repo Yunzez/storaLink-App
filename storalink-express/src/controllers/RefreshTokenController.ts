@@ -30,7 +30,7 @@ const validateRefreshToken = async (
     if (user.refreshTokenExpiry < new Date()) {
       return res.status(403).json({ message: "Refresh token expired" });
     }
-    const { refreshToken, expiryDate } = generateRefreshToken(1);
+    const { refreshToken, expiryDate } = generateRefreshToken(300);
     console.log(new Date(), expiryDate);
     // If valid, issue a new access token
     const newAccessToken = jwt.sign(

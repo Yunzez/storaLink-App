@@ -13,6 +13,8 @@ struct LinkItemView: View {
     @State private var navigateToLink = false
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @Environment(\.modelContext) var modelContext
+    
+    let linkManager = LinkManager.manager
     let fileManager = LocalFileManager.manager
     var body: some View {
         Button(action: {
@@ -54,7 +56,18 @@ struct LinkItemView: View {
                     VStack{
                         Spacer()
                         BottomSheetOption(onClick: {
-                            modelContext.delete(currentLink)
+                            Task{
+                                await linkManager.deleteLink(link: currentLink) { result in
+                                    switch result {
+                                    case .success:
+                                        modelContext.delete(currentLink)
+                                        do { try modelContext.save() } catch { print("error saving") }
+                                    case .failure(let err):
+                                        print("fail to delete", err.localizedDescription)
+                                    }
+                                    
+                                }
+                            }
                         }, text: "Delete", assetImageString: "Trash")
                         Spacer()
                         BottomSheetOption(onClick: {

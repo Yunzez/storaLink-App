@@ -58,4 +58,20 @@ router.post(
 
 router.post("/delete/:id", LinkController.deleteLink);
 
+/**
+ * GET /getAll
+ * Retrieves all Link instances from the database.
+ *
+ * Success response:
+ * Status: 200 OK
+ * { Link[] }
+ *
+ * Error response:
+ * Status: 404 Not Found
+ * {
+ *   message: "Link not found"
+ * }
+ */
+router.get("/getAll", LinkController.getAllLinks);
+
 export default router;

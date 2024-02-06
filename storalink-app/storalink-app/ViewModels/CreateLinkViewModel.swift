@@ -118,13 +118,14 @@ import LinkPresentation
             newLink.iconUrl = iconPath
             modelManager.addLinkToFolder(link: newLink, folder: folder, modelContext: context)
             
-          
-            linkManager.createLink(modelContext: context, link: newLink) { result in
-                switch result {
-                case .success(let link):
-                    print("created link online: \(link)") // Assuming 'link' is the object you want to print or use
-                case .failure(let error):
-                    print("some error has occurred: \(error.localizedDescription)")
+            Task{
+                await linkManager.createLink(link: newLink) { result in
+                    switch result {
+                    case .success(let link):
+                        print("created link online: \(link)") // Assuming 'link' is the object you want to print or use
+                    case .failure(let error):
+                        print("some error has occurred: \(error.localizedDescription)")
+                    }
                 }
             }
             

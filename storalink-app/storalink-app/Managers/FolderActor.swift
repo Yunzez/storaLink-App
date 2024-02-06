@@ -8,12 +8,21 @@
 import Foundation
 import SwiftData
 import KeychainAccess
-class FolderManager {
+public actor FolderManager: ModelActor {
     private let keychainStorage = KeychainStorage()
     
     static let manager = FolderManager()
+    public let modelContainer: ModelContainer
+    public let modelExecutor: any ModelExecutor
+    private var context: ModelContext { modelExecutor.modelContext }
     
-    func createFolder(modelContext: ModelContext, folder: Folder, completion: @escaping (Result<Folder, Error>) -> Void) {
+    public init() {
+            self.modelContainer = ProdModelContainer
+            let context = ModelContext(modelContainer)
+            modelExecutor = DefaultSerialModelExecutor(modelContext: context)
+        }
+    
+    func createFolder( folder: Folder, completion: @escaping (Result<Folder, Error>) -> Void) {
         let createRequest = CreateRequest(folderName: folder.title, folderDescription: folder.desc ?? " ", imageUrl: folder.imgUrl)
         Task {
             do {
@@ -50,7 +59,7 @@ class FolderManager {
     }
     
     
-    func deleteFolder(modelContext: ModelContext, folder: Folder, completion: @escaping (Result<String, Error>) -> Void ) {
+    func deleteFolder(folder: Folder, completion: @escaping (Result<String, Error>) -> Void ) {
         if let mongoId = folder.mongoId {
             print("found mongo id, sync action with cloud")
             Task {
@@ -95,7 +104,7 @@ class FolderManager {
         
     }
     
-    func updateFolder(modelContext: ModelContext, folder: Folder, completion: @escaping (Result<Folder, Error>) -> Void) {
+    func updateFolder(folder: Folder, completion: @escaping (Result<Folder, Error>) -> Void) {
         
         if let mongoId = folder.mongoId {
             print("found mongo id, sync action with cloud")
@@ -172,7 +181,7 @@ class FolderManager {
         }
     }
     
-    func getAllFolders(modelContext: ModelContext,user: User, completion: @escaping (Result<[CreateResponse], Error>) -> Void) {
+    func getAllFolders(user: User, completion: @escaping (Result<[CreateResponse], Error>) -> Void) {
         Task{
             do {
                 guard let url = URL(string: "\(Configuration.baseURL)/folder/getAll/") else {
@@ -196,6 +205,7 @@ class FolderManager {
                     if foldersResponses.isEmpty {
                         completion(.success([]))
                     }
+                    saveResponseToFolder(modelContext: context, responses: foldersResponses, attachedTo: user)
                     
                     return completion(.success(foldersResponses))
 //                        var ret = saveResponseToFolder(modelContext: modelContext, responses: foldersResponses, attachedTo: user)
@@ -209,11 +219,12 @@ class FolderManager {
                 completion(.failure(error))
             }
         }
+        
     }
 
     
     func saveResponseToFolder(modelContext: ModelContext, responses: [CreateResponse], attachedTo: User) {
-        var selectedResponses = syncFolders(modelContext: modelContext, responses: responses, userId: attachedTo.id)
+        let selectedResponses = syncFolders(modelContext: modelContext, responses: responses, userId: attachedTo.id)
         for oneResponse in selectedResponses {
             modelContext.insert(Folder(mongoId: oneResponse._id, title: oneResponse.folderName, imgUrl: oneResponse.imageUrl ?? "", user: attachedTo, links: []))
         }

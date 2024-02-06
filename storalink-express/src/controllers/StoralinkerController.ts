@@ -76,6 +76,7 @@ const loginStoralinker = (req: Request, res: Response, next: NextFunction) => {
       }
 
       // Verify the password
+      console.log("storalinker pw", storalinker.password, password);
       const match = await bcrypt.compare(password, storalinker.password);
       if (!match) {
         return res.status(401).json({ message: "Authentication failed" });

@@ -13,19 +13,8 @@ struct storalink_appApp: App {
     @State var navigationStateManager = NavigationStateManager()
     @State private var appViewModel = AppViewModel()
     let authManager = AuthenticationManager.manager
-    let folderModelContainer: ModelContainer = {
-        let schema = Schema([
-            User.self,
-            Folder.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+    public let folderModelContainer: ModelContainer = ProdModelContainer
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
 
     var body: some Scene {
         WindowGroup {

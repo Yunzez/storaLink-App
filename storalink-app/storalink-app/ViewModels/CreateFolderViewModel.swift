@@ -61,9 +61,9 @@ enum LoadingStage {
         if let modelContext = context {
             print("calling folder manager")
                 
-                
-            folderManager.updateFolder(modelContext: modelContext, folder: folder){ result in
-                DispatchQueue.main.async { // Ensure UI updates are performed on the main thread
+            Task{
+                await folderManager.updateFolder(folder: folder){ result in
+                    DispatchQueue.main.async { // Ensure UI updates are performed on the main thread
                         switch result {
                         case .success(let updatedFolder):
                             folder.title = updatedFolder.title
@@ -75,6 +75,7 @@ enum LoadingStage {
                             print("Failed to update folder: \(error)")
                         }
                     }
+                }
             }
         }
         self.loadingStage = .done
@@ -112,30 +113,31 @@ enum LoadingStage {
             do {
                 let newFolder = Folder(title: folderName, imgUrl: imgUrl, desc: folderDescription,  links: [])
                 
-                
-                folderManager.createFolder(modelContext: context, folder: newFolder) { result in
-                    switch result {
-                    case .success(let updatedFolder):
-                        do {
-                            let users = try context.fetch(FetchDescriptor<User>(predicate: #Predicate<User>{ user in
-                                user.id == userId
-                            }))
-                            
-                            if let currentUser = users.first {
-                                currentUser.folders.append(updatedFolder)
-                                do {
-                                    try context.save()
-                                    print("change saved to user", currentUser.name)
-                                } catch {
-                                    print("Failed to save context: \(error)")
+                Task{
+                    await folderManager.createFolder(folder: newFolder) { result in
+                        switch result {
+                        case .success(let updatedFolder):
+                            do {
+                                let users = try context.fetch(FetchDescriptor<User>(predicate: #Predicate<User>{ user in
+                                    user.id == userId
+                                }))
+                                
+                                if let currentUser = users.first {
+                                    currentUser.folders.append(updatedFolder)
+                                    do {
+                                        try context.save()
+                                        print("change saved to user", currentUser.name)
+                                    } catch {
+                                        print("Failed to save context: \(error)")
+                                    }
                                 }
+                            } catch {
+                                print("Failed to fetch users: \(error)")
                             }
-                        } catch {
-                            print("Failed to fetch users: \(error)")
+                            
+                        case .failure(let error):
+                            print("Failed to create folder: \(error)")
                         }
-                        
-                    case .failure(let error):
-                        print("Failed to create folder: \(error)")
                     }
                 }
                 

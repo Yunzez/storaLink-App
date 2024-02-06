@@ -16,7 +16,8 @@ import SwiftUI
     let authManager = AuthenticationManager.manager
     let modelManager = ModelUtilManager.manager
     let folderManager = FolderManager.manager
-    let syncManager = SynchronizationManager.manager
+    let linkManager = LinkManager.manager
+//    let syncManager = SynchronizationManager.manager
     var context: ModelContext?
     var appData: AppViewModel?
     
@@ -100,25 +101,8 @@ import SwiftUI
                     }
                     
                     // get all folders
-                    if let user = self.appData?.user {
-                        self.folderManager.getAllFolders(modelContext: context, user: user){
-                            result in
-                            //                            DispatchQueue.main.async {
-                            switch result {
-                            case .success(let responses):
-                                // Update your UI with the fetched folders
-                                print("Fetched folders: \(responses)")
-                                print("Synchronizing")
-                                if let user = self.appData?.user {
-                                    self.folderManager.saveResponseToFolder(modelContext: context, responses: responses, attachedTo: user)
-                                }
-                                
-                            case .failure(let error):
-                                // Handle any errors (e.g., show an error message)
-                                print("Error fetching folders: \(error)")
-                            }
-                            //                            }
-                        }
+                    if let user = self.appData?.user{
+                        self.fetchRemoteUserData(user: user)
                     }
                     
                     
@@ -141,6 +125,37 @@ import SwiftUI
                 self.errorMessage = "We can't find you in the database, check your email again"
             }
         } 
+    }
+    
+    func fetchRemoteUserData(user: User) {
+        
+        Task {
+            await self.folderManager.getAllFolders(user: user){
+                result in
+                switch result {
+                case .success(let responses):
+                    // Update your UI with the fetched folders
+                    print("Fetched folders: \(responses)")
+                    
+                case .failure(let error):
+                    // Handle any errors (e.g., show an error message)
+                    print("Error fetching folders: \(error)")
+                }
+            }
+            
+            await self.linkManager.getAllLink( user: user) { result in
+                switch result {
+                case .success(let responses):
+                    print(responses.count)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+                
+            }
+        }
+        
+        
+        
     }
     
     func fetchLocalUserByEmail(email: String) -> User?{

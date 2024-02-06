@@ -114,13 +114,15 @@ struct FolderItemView: View {
                                     message: Text("This will permanently delete the folder and its contents."),
                                     primaryButton: .destructive(Text("Delete")) {
                                         // Perform the deletion
-                                        folderManager.deleteFolder(modelContext: modelContext, folder: currentFolder) { result in
-                                            switch result {
-                                            case .success:
-                                                print("success")
-                                                modelUtils.deleteFolder(modelContext: modelContext, folder: currentFolder)
-                                            case .failure(let error):
-                                                print("some error occured", error)
+                                        Task{
+                                            await folderManager.deleteFolder(folder: currentFolder) { result in
+                                                switch result {
+                                                case .success:
+                                                    print("success")
+                                                    modelUtils.deleteFolder(modelContext: modelContext, folder: currentFolder)
+                                                case .failure(let error):
+                                                    print("some error occured", error)
+                                                }
                                             }
                                         }
                                        

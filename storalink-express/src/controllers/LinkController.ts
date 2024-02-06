@@ -111,8 +111,24 @@ const updateLink = (req: UserRequest, res: Response, next: NextFunction) => {
     });
 };
 
+const getAllLinks = (req: UserRequest, res: Response, next: NextFunction) => {
+  const userId = req.userId;
+  Link.find({ creatorId: userId })
+    .exec()
+    .then((links) => {
+      // Check if there are no folders found
+      if (!links || links.length === 0) {
+        console.log("no folders found for user");
+        return res.status(200).json({});
+      }
+
+      res.status(200).json(links);
+    })
+    .catch((err) => res.status(500).json({ error: err }));
+};
 export default {
   createLink,
   deleteLink,
   updateLink,
+  getAllLinks,
 };

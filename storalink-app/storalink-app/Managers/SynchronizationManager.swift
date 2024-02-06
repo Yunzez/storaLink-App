@@ -8,8 +8,20 @@
 import Foundation
 import UIKit
 import SwiftData
-class SynchronizationManager {
-    static let manager = SynchronizationManager()
+@available(iOS 17, *)
+public actor SynchronizationManager: ModelActor {
+    public static let shared = SynchronizationManager(container: getProdModelContainer())
+
+    public let modelContainer: ModelContainer
+    public let modelExecutor: any ModelExecutor
+    private var context: ModelContext { modelExecutor.modelContext }
+    
+    public init(container: ModelContainer) {
+            self.modelContainer = container
+            let context = ModelContext(modelContainer)
+            modelExecutor = DefaultSerialModelExecutor(modelContext: context)
+        }
+//    static let manager = SynchronizationManager()
     
     
     func syncFolders(modelContext: ModelContext, folders: [Folder], userId: UUID) {
