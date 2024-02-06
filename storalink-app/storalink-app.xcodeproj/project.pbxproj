@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F0B78BC2B71A2F3008D2862 /* AWSCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9F0B78BB2B71A2F3008D2862 /* AWSCore */; };
+		9F0B78BE2B71A2F3008D2862 /* AWSLambda in Frameworks */ = {isa = PBXBuildFile; productRef = 9F0B78BD2B71A2F3008D2862 /* AWSLambda */; };
+		9F0B78C02B71A2F3008D2862 /* AWSS3 in Frameworks */ = {isa = PBXBuildFile; productRef = 9F0B78BF2B71A2F3008D2862 /* AWSS3 */; };
 		9F417BC62B71974E005E022B /* S3ImageUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F417BC52B71974E005E022B /* S3ImageUpload.swift */; };
 		9F7260602B35418700A49628 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72605F2B35418700A49628 /* CustomButton.swift */; };
 		9F7260622B365D6400A49628 /* NavigationStageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260612B365D6400A49628 /* NavigationStageManager.swift */; };
@@ -200,7 +203,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F0B78BE2B71A2F3008D2862 /* AWSLambda in Frameworks */,
 				9F7260B12B4764C000A49628 /* KeychainAccess in Frameworks */,
+				9F0B78C02B71A2F3008D2862 /* AWSS3 in Frameworks */,
+				9F0B78BC2B71A2F3008D2862 /* AWSCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,6 +473,9 @@
 			name = "storalink-app";
 			packageProductDependencies = (
 				9F7260B02B4764C000A49628 /* KeychainAccess */,
+				9F0B78BB2B71A2F3008D2862 /* AWSCore */,
+				9F0B78BD2B71A2F3008D2862 /* AWSLambda */,
+				9F0B78BF2B71A2F3008D2862 /* AWSS3 */,
 			);
 			productName = "storalink-app";
 			productReference = 9FD082D02B1437A4004021FC /* Storalink.app */;
@@ -501,6 +510,7 @@
 			mainGroup = 9FD082C72B1437A4004021FC;
 			packageReferences = (
 				9F7260AF2B4764C000A49628 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				9F0B78BA2B71A2F3008D2862 /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */,
 			);
 			productRefGroup = 9FD082D12B1437A4004021FC /* Products */;
 			projectDirPath = "";
@@ -908,6 +918,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		9F0B78BA2B71A2F3008D2862 /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aws-amplify/aws-sdk-ios-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.33.8;
+			};
+		};
 		9F7260AF2B4764C000A49628 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -919,6 +937,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9F0B78BB2B71A2F3008D2862 /* AWSCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F0B78BA2B71A2F3008D2862 /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */;
+			productName = AWSCore;
+		};
+		9F0B78BD2B71A2F3008D2862 /* AWSLambda */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F0B78BA2B71A2F3008D2862 /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */;
+			productName = AWSLambda;
+		};
+		9F0B78BF2B71A2F3008D2862 /* AWSS3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F0B78BA2B71A2F3008D2862 /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */;
+			productName = AWSS3;
+		};
 		9F7260B02B4764C000A49628 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9F7260AF2B4764C000A49628 /* XCRemoteSwiftPackageReference "KeychainAccess" */;

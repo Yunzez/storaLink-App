@@ -8,6 +8,7 @@ export interface ILink extends Document {
   description: string;
   linkUrl: string;
   imageUrl: string;
+  iconUrl: string;
   sourceType: string;
   parentFolderId: string;
   collaboratorIds: string[];
@@ -22,6 +23,7 @@ const LinkSchema: Schema = new Schema({
   description: { type: String, default: "" },
   linkUrl: { type: String, required: true },
   imageUrl: { type: String, required: true },
+  iconUrl: { type: String, required: true },
   sourceType: { type: String, default: "Unknown" },
   collaboratorIds: { type: [String], required: false },
 });

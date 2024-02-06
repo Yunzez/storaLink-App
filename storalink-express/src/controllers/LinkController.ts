@@ -4,7 +4,11 @@ import Link from "../models/Link";
 import { UserRequest } from "../middleware/ValidateJWTToken";
 import Folder from "../models/Folder";
 
-const createLink = (req: UserRequest, res: Response, next: NextFunction) => {
+const createLink = async (
+  req: UserRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const currentUserId = req.userId;
   if (!currentUserId) {
     return res.status(404).json({ message: "Unable to fetch user" });
@@ -13,80 +17,79 @@ const createLink = (req: UserRequest, res: Response, next: NextFunction) => {
   const {
     linkDescription,
     linkName,
-    creatorId,
     linkUrl,
     imageUrl = "", // Default value if not provided
-    parentFolderId, // Default value if not provided
+    iconUrl = "", // Default value if not provided
+    parentFolderId, // Assume this is provided and valid
     modifierId = "", // Default value if not provided
   } = req.body;
 
-  if (creatorId !== currentUserId) {
-    console.log(
-      "creatorId: ",
-      creatorId,
-      "currentUser.id: ",
-      currentUserId.toString()
-    );
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
   console.log("create new link to folder: ", parentFolderId);
-  // Since creatorId must match the current user's ID, we use currentUser.id directly
-  const link = new Link({
-    _id: new mongoose.Types.ObjectId(),
-    linkDescription,
-    creatorId, // Use the ID from the JWT token
-    linkName,
-    linkUrl,
-    imageUrl,
-    parentFolderId,
-    modifierId,
-  });
 
-  Folder.findById(parentFolderId)
-    .exec()
-    .then((folder) => {
-      if (!folder) {
-        return res.status(404).json({ message: "ParentFolder not found" });
-      }
-      folder.linkIds.push(link._id);
+  try {
+    const folder = await Folder.findById(parentFolderId).exec();
+    if (!folder) {
+      return res.status(404).json({ message: "ParentFolder not found" });
+    }
+
+    const link = new Link({
+      _id: new mongoose.Types.ObjectId(),
+      linkDescription,
+      creatorId: currentUserId, // Use the ID from the JWT token
+      linkName,
+      linkUrl,
+      imageUrl,
+      iconUrl,
+      parentFolderId,
+      modifierId,
     });
 
-  return link
-    .save()
-    .then((link) => res.status(201).json(link))
-    .catch((err) => res.status(500).json({ error: err }));
+    // Push the new link ID to the folder's linkIds array and save the folder
+    folder.linkIds.push(link._id);
+    await folder.save(); // Wait for the folder to be updated
+
+    // Now save the link
+    const savedLink = await link.save();
+    res.status(201).json(savedLink);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
 };
 
-const deleteLink = (req: UserRequest, res: Response, next: NextFunction) => {
-  const { linkId } = req.params;
-  Link.findById(linkId)
-    .exec()
-    .then((link) => {
-      const parentFolderId = link?.parentFolderId;
-      Folder.findById(parentFolderId)
-        .exec()
-        .then((folder) => {
-          if (!folder) {
-            return res.status(404).json({ message: "ParentFolder not found" });
-          }
-          folder.linkIds = folder.linkIds.filter((id) => id !== linkId);
-          folder.save();
-        });
+const deleteLink = async (
+  req: UserRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const linkId = req.params.id;
 
-      console.log("deleted link from folder: ", parentFolderId);
-    });
+  try {
+    const link = await Link.findById(linkId).exec();
+    if (!link) {
+      return res.status(404).json({ message: "Link not found" });
+    }
 
-  Link.findByIdAndDelete(linkId)
-    .exec()
-    .then((link) => {
-      if (!link) {
-        return res.status(404).json({ message: "Link not found" });
+    const parentFolderId = link.parentFolderId;
+    if (parentFolderId) {
+      const folder = await Folder.findById(parentFolderId).exec();
+      if (folder) {
+        // Remove the linkId from the folder's linkIds array
+        folder.linkIds = folder.linkIds.filter(
+          (id) => id.toString() !== linkId
+        );
+        await folder.save(); // Wait for the folder update to complete
+        console.log("deleted link from folder: ", parentFolderId);
+      } else {
+        console.log("ParentFolder not found or already deleted.");
       }
+    }
 
-      res.status(200).json({ message: "Link deleted" });
-    })
-    .catch((err) => res.status(500).json({ error: err }));
+    // Proceed to delete the link after updating the folder
+    await Link.findByIdAndDelete(linkId).exec();
+    res.status(200).json({ message: "Link deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
 };
 
 const updateLink = (req: UserRequest, res: Response, next: NextFunction) => {

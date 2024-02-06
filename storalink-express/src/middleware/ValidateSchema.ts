@@ -2,6 +2,7 @@ import Joi, { ObjectSchema } from "joi";
 import { Request, Response, NextFunction } from "express";
 import { IStoralinker } from "../models/Storalinker";
 import { IFolder } from "../models/Folder";
+import { ILink } from "../models/Link";
 
 /**
  *
@@ -49,6 +50,17 @@ export const Schemas = {
       folderName: Joi.string().required(),
       folderDescription: Joi.string().required(),
       imageUrl: Joi.string(),
+    }),
+  },
+
+  link: {
+    create: Joi.object<ILink>({
+      linkName: Joi.string().required(),
+      linkUrl: Joi.string().required(),
+      imageUrl: Joi.string(),
+      parentFolderId: Joi.string().required(),
+      description: Joi.string(),
+      iconUrl: Joi.string(),
     }),
   },
 };
