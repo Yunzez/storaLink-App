@@ -23,7 +23,7 @@ const LinkSchema: Schema = new Schema({
   description: { type: String, default: "" },
   linkUrl: { type: String, required: true },
   imageUrl: { type: String, required: true },
-  iconUrl: { type: String, required: true },
+  iconUrl: { type: String },
   sourceType: { type: String, default: "Unknown" },
   collaboratorIds: { type: [String], required: false },
 });

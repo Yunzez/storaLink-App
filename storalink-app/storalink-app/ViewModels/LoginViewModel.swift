@@ -16,7 +16,7 @@ import SwiftUI
     let authManager = AuthenticationManager.manager
     let modelManager = ModelUtilManager.manager
     let folderManager = FolderManager.manager
-    let linkManager = LinkManager.manager
+    let linkActor = LinkActor.actor
 //    let syncManager = SynchronizationManager.manager
     var context: ModelContext?
     var appData: AppViewModel?
@@ -142,8 +142,8 @@ import SwiftUI
                     print("Error fetching folders: \(error)")
                 }
             }
-            
-            await self.linkManager.getAllLink( user: user) { result in
+        
+            await self.linkActor.getAllLink( user: user) { result in
                 switch result {
                 case .success(let responses):
                     print(responses.count)

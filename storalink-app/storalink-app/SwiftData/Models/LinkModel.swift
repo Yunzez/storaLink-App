@@ -32,7 +32,16 @@ final class Link {
         self.desc = desc
         self.linkUrl = linkUrl
         self.creationDate = Date()
-        
+    }
+    
+    init(title: String, imgUrl: String, iconUrl: String, desc: String, mongoId: String, linkUrl: String) {
+        self.title = title
+        self.imgUrl = imgUrl
+        self.desc = desc
+        self.linkUrl = linkUrl
+        self.iconUrl = iconUrl
+        self.creationDate = Date()
+        self.mongoId = mongoId
     }
     
     func toString() -> String {

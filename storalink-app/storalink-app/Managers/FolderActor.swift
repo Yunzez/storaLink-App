@@ -181,7 +181,7 @@ public actor FolderManager: ModelActor {
         }
     }
     
-    func getAllFolders(user: User, completion: @escaping (Result<[CreateResponse], Error>) -> Void) {
+    func getAllFolders(user: User, completion: @escaping (Result<[Folder], Error>) -> Void) {
         Task{
             do {
                 guard let url = URL(string: "\(Configuration.baseURL)/folder/getAll/") else {
@@ -205,9 +205,9 @@ public actor FolderManager: ModelActor {
                     if foldersResponses.isEmpty {
                         completion(.success([]))
                     }
-                    saveResponseToFolder(modelContext: context, responses: foldersResponses, attachedTo: user)
+                    let ret = saveResponseToFolder(modelContext: context, responses: foldersResponses, attachedTo: user)
                     
-                    return completion(.success(foldersResponses))
+                    return completion(.success(ret))
 //                        var ret = saveResponseToFolder(modelContext: modelContext, responses: foldersResponses, attachedTo: user)
                 } else {
                     // Handle unsuccessful HTTP responses
@@ -223,18 +223,23 @@ public actor FolderManager: ModelActor {
     }
 
     
-    func saveResponseToFolder(modelContext: ModelContext, responses: [CreateResponse], attachedTo: User) {
+    func saveResponseToFolder(modelContext: ModelContext, responses: [CreateResponse], attachedTo: User) -> [Folder]{
         let selectedResponses = syncFolders(modelContext: modelContext, responses: responses, userId: attachedTo.id)
+        var retFolders:[Folder] = []
         for oneResponse in selectedResponses {
-            modelContext.insert(Folder(mongoId: oneResponse._id, title: oneResponse.folderName, imgUrl: oneResponse.imageUrl ?? "", user: attachedTo, links: []))
+            let newFolder = Folder(mongoId: oneResponse._id, title: oneResponse.folderName, imgUrl: oneResponse.imageUrl ?? "", user: attachedTo, links: [])
+            retFolders.append(newFolder)
+            modelContext.insert(newFolder)
         }
         do {
             try modelContext.save()
             print("save folders: ", selectedResponses.count)
+            let currentFolders = try modelContext.fetch(FetchDescriptor<Folder>())
+            print("folder check after save", currentFolders)
         } catch {
             print("failed saving folders")
         }
-        
+        return retFolders
 //        return Folder(mongoId: response._id, title: response.folderName, imgUrl: response.imageUrl ?? "", user: attachedTo, links: [])
     }
     
@@ -257,8 +262,8 @@ public actor FolderManager: ModelActor {
             // Determine folders to delete (present in currentFolderIds but not in newFolderIds)
             let idsToDelete = currentFolderIds.subtracting(newFolderIds)
 
-            print("add number:", idsToAdd.count)
-            print("delete number:", idsToDelete.count)
+            print("add folder number:", idsToAdd.count)
+            print("delete folder number:", idsToDelete.count)
 
             // Perform delete operations
             if !idsToDelete.isEmpty {

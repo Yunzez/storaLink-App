@@ -8,27 +8,27 @@
 import Foundation
 import SwiftData
 
-public actor LinkManager: ModelActor {
+public actor LinkActor: ModelActor {
     
     private let keychainStorage = KeychainStorage()
     
-    static let manager = LinkManager()
+    static let actor = LinkActor()
     public let modelContainer: ModelContainer
     public let modelExecutor: any ModelExecutor
-    private var context: ModelContext { modelExecutor.modelContext }
+    private var modelContext: ModelContext { modelExecutor.modelContext }
     
     public init() {
-            self.modelContainer = ProdModelContainer
-            let context = ModelContext(modelContainer)
-            modelExecutor = DefaultSerialModelExecutor(modelContext: context)
-        }
+        self.modelContainer = ProdModelContainer
+        let context = ModelContext(modelContainer)
+        modelExecutor = DefaultSerialModelExecutor(modelContext: context)
+    }
     func createLink(link: Link, completion: @escaping (Result<Link, Error>) -> Void) {
         guard let parentFolderMongoId = link.parentFolder?.mongoId else {
             completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No Mongo Id of parent folder"])))
             return
         }
         
-        let createRequest = CreateLinkRequest(linkName: link.title, linkUrl: link.linkUrl ?? " ", description: link.desc ?? " ", imageUrl: link.imgUrl ?? " ", iconUrl: link.iconUrl ?? " ", parentFolderId: parentFolderMongoId)
+        let createRequest = CreateLinkRequest(linkName: link.title, linkUrl: link.linkUrl ?? " ", description: link.desc ?? " ", imageUrl: link.imgUrl ?? "none", iconUrl: link.iconUrl ?? "none", parentFolderId: parentFolderMongoId)
         
         Task {
             do {
@@ -96,7 +96,7 @@ public actor LinkManager: ModelActor {
                 var urlRequest = URLRequest(url: url)
                 urlRequest.httpMethod = "POST"
                 urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            
+                
                 
                 urlRequest = try await keychainStorage.appendURLAuthHeader(to: &urlRequest)
                 
@@ -138,9 +138,8 @@ public actor LinkManager: ModelActor {
                 }
                 
                 var urlRequest = URLRequest(url: url)
-                urlRequest.httpMethod = "POST"
+                urlRequest.httpMethod = "GET"
                 urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            
                 
                 urlRequest = try await keychainStorage.appendURLAuthHeader(to: &urlRequest)
                 
@@ -154,14 +153,125 @@ public actor LinkManager: ModelActor {
                         return
                     }
                 }
-                let createResponse = try JSONDecoder().decode([LinkResponse].self, from: data)
-                completion(.success(createResponse))
+                let createResponses = try JSONDecoder().decode([LinkResponse].self, from: data)
+                
+                saveResponseToLink(modelContext: modelContext, responses: createResponses, attachedTo: user)
+                
+                completion(.success(createResponses))
             } catch {
                 completion(.failure(error))
             }
         }
         
     }
+    
+    func saveResponseToLink(modelContext: ModelContext, responses: [LinkResponse], attachedTo: User) {
+        let selectedResponses = syncLinks(modelContext: modelContext, responses: responses, userId: attachedTo.id)
+        let userId = attachedTo.id
+        do {
+            // Fetch current folders to ensure we have the latest state
+            let currentFolders = try modelContext.fetch(FetchDescriptor<Folder>(
+                predicate: #Predicate { folder in
+                    return folder.user?.id == userId
+                }
+            ))
+            
+            // Map folders by their mongoId for quick access
+            let foldersById = Dictionary(uniqueKeysWithValues: currentFolders.map { ($0.mongoId, $0) })
+            
+            for oneResponse in selectedResponses {
+                // Find the parent folder for each link
+                if let parentFolder = foldersById[oneResponse.parentFolderId] {
+                    // Create the link and append it to the parent folder's links
+                    let newLink = Link(
+                        title: oneResponse.linkName,
+                        imgUrl: oneResponse.imageUrl,
+                        iconUrl: oneResponse.iconUrl,
+                        desc: oneResponse.description,
+                        mongoId: oneResponse._id,
+                        linkUrl: oneResponse.linkUrl
+                    )
+                    parentFolder.links.append(newLink)
+                } else {
+                    print("Warning: Parent folder not found for link \(oneResponse._id)")
+                }
+            }
+            
+            // Save changes after all new links have been added
+            try modelContext.save()
+            print("Saved links: ", selectedResponses.count)
+        } catch {
+            print("Failed saving links: \(error)")
+        }
+    }
+
+    
+    func syncLinks(modelContext: ModelContext, responses: [LinkResponse], userId: UUID) -> [LinkResponse]{
+        
+            do {
+                // Fetch current folders for the user
+                
+                let currentFolders = try modelContext.fetch(FetchDescriptor<Folder>(
+                    predicate: #Predicate { folder in
+                        return folder.user?.id == userId
+                    }
+                ))
+                
+                print("in synclink, current folders", currentFolders)
+                let foldersById = currentFolders.reduce(into: [String: Folder]()) { result, folder in
+                    result[folder.mongoId] = folder
+                }
+                
+                var currentLinks: [Link] = []
+                
+                for folder in currentFolders {
+                    currentLinks.append(contentsOf: folder.links)
+                }
+
+                let currentLinkIds: Set<String> = Set(currentLinks.compactMap { $0.mongoId })
+                
+                let newLinkIds: Set<String> = Set(responses.map { $0._id })
+                
+                // Determine folders to add (present in newFolderIds but not in currentFolderIds)
+                let idsToAdd = newLinkIds.subtracting(currentLinkIds)
+                
+                // Determine folders to delete (present in currentFolderIds but not in newFolderIds)
+                let idsToDelete = currentLinkIds.subtracting(newLinkIds)
+                
+                print("current link id:", currentLinkIds)
+                print("newLinkIds:", newLinkIds)
+                // Perform delete operations
+                if !idsToDelete.isEmpty {
+                    for idToDelete in idsToDelete {
+                        if let linkToDelete = currentLinks.first(where: { $0.mongoId == idToDelete }) {
+                            modelContext.delete(linkToDelete)
+                        }
+                    }
+                }
+                
+                // Save changes if there are any additions or deletions
+                if !idsToDelete.isEmpty {
+                    try modelContext.save()
+                }
+                
+                // Filter responses to add based on idsToAdd
+                let responsesToAdd = responses.filter { idsToAdd.contains($0._id) }
+                
+                if !responsesToAdd.isEmpty {
+                    // Return the filtered responses for folders to be added
+                    print(foldersById)
+                    return responsesToAdd
+                    //                try modelContext.save()
+                } else {
+                    print("No new folders to add")
+                }
+                return []
+            } catch {
+                print("Synchronization Error: \(error)")
+            }
+            return []
+        }
+    
 }
 
 struct CreateLinkRequest: Encodable {

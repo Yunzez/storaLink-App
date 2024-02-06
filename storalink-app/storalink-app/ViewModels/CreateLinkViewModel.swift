@@ -13,7 +13,7 @@ import LinkPresentation
 @Observable class CreateLinkViewModel {
     // Published properties that the view can subscribe to
     let localFileManager = LocalFileManager.manager
-    let linkManager = LinkManager.manager
+    let linkManager = LinkActor()
     var showingSearchResults: Bool = false
     var modelContext: ModelContext?
     var linkName: String = ""

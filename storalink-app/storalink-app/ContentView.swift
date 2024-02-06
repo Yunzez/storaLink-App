@@ -46,7 +46,7 @@ struct ContentView: View {
     
     Group{
         ContentView()
-            .modelContainer(PreviewContainer)
+            .modelContainer(ProdModelContainer)
             .environment(NavigationStateManager())
             .environment(AppViewModel())
             .background(Color("SubtleTheme"))

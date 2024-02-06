@@ -82,5 +82,37 @@
             landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EEF3A541-735C-4664-AE99-905948B0C2EB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../../../var/folders/9w/qz54k17x6zg0n9c2zm3kccz40000gn/T/swift-generated-sources/@__swiftmacro_9Storalink11LinkManagerC16syncAndSaveLinks12modelContext9responses6userIdy9SwiftData05ModelI0C_SayAA0B8ResponseVG10Foundation4UUIDVtF9PredicatefMf0_.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1"
+            endingLineNumber = "1"
+            landmarkName = "syncLinks(modelContext:responses:userId:)"
+            landmarkType = "37">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6AF63ECB-C829-40AB-81E0-7858B1856D52"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "storalink-app/Managers/LinkActor.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
+            landmarkName = "syncLinks(modelContext:responses:userId:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
