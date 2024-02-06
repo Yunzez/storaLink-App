@@ -13,10 +13,17 @@ class LinkManager {
     
     static let manager = LinkManager()
     
-    func createFolder(modelContext: ModelContext, link: Link, completion: @escaping (Result<Link, Error>) -> Void) {
-        let createRequest = CreateLinkRequest(linkName: link.title, linkUrl: link.linkUrl ?? " ", description: link.desc ?? " ", imageUrl: link.imgUrl ?? " ", iconUrl: link.iconUrl ?? " ")
+    func createLink(modelContext: ModelContext, link: Link, completion: @escaping (Result<Link, Error>) -> Void) {
+        guard let parentFolderMongoId = link.parentFolder?.mongoId else {
+            completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No Mongo Id of parent folder"])))
+            return
+        }
+        
+        let createRequest = CreateLinkRequest(linkName: link.title, linkUrl: link.linkUrl ?? " ", description: link.desc ?? " ", imageUrl: link.imgUrl ?? " ", iconUrl: link.iconUrl ?? " ", parentFolderId: parentFolderMongoId)
+        
         Task {
             do {
+                
                 guard let url = URL(string: "\(Configuration.baseURL)/link/create") else {
                     completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
                     return
@@ -74,6 +81,7 @@ struct CreateLinkRequest: Encodable {
     let description: String
     let imageUrl: String
     let iconUrl: String
+    let parentFolderId: String
 }
 
 struct LinkResponse: Decodable {

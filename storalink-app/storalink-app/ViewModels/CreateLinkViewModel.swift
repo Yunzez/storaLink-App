@@ -13,6 +13,7 @@ import LinkPresentation
 @Observable class CreateLinkViewModel {
     // Published properties that the view can subscribe to
     let localFileManager = LocalFileManager.manager
+    let linkManager = LinkManager.manager
     var showingSearchResults: Bool = false
     var modelContext: ModelContext?
     var linkName: String = ""
@@ -91,34 +92,42 @@ import LinkPresentation
 
     func createLink() {
         loadingStage = .loading
-        // Implement folder creation logic here
-        
-        print("Creating folder with name: \(linkName) and description: \(linkDescription)")
-        if !validateLinkName() {
-            error = true
-            loadingStage = .none
-        } else {
-            error = false
-        }
-        
-        title = title.isEmpty ? linkName : title
-        
-        let newLink = Link(title: title, imgUrl: "", desc: linkDescription, linkUrl: linkName)
-        if let saveImage = image {
-            imagePath = self.fileManager.saveImage(image: saveImage)
-        }
-        
-        if let saveIcon = icon {
-            iconPath = self.fileManager.saveImage(image: saveIcon)
-        }
-        
-        newLink.imgUrl = imagePath
-        newLink.iconUrl = iconPath
-        
         if let folder = selectedFolder, let context = modelContext {
+           
+            // Implement folder creation logic here
+            print("Creating folder with name: \(linkName) and description: \(linkDescription)")
+            if !validateLinkName() {
+                error = true
+                loadingStage = .none
+            } else {
+                error = false
+            }
+            
+            title = title.isEmpty ? linkName : title
+            
+            let newLink = Link(title: title, imgUrl: "", desc: linkDescription, linkUrl: linkName)
+            if let saveImage = image {
+                imagePath = self.fileManager.saveImage(image: saveImage)
+            }
+            
+            if let saveIcon = icon {
+                iconPath = self.fileManager.saveImage(image: saveIcon)
+            }
+            
+            newLink.imgUrl = imagePath
+            newLink.iconUrl = iconPath
             modelManager.addLinkToFolder(link: newLink, folder: folder, modelContext: context)
             
-            loadingStage = .done
+          
+            linkManager.createLink(modelContext: context, link: newLink) { result in
+                switch result {
+                case .success(let link):
+                    print("created link online: \(link)") // Assuming 'link' is the object you want to print or use
+                case .failure(let error):
+                    print("some error has occurred: \(error.localizedDescription)")
+                }
+            }
+            
             if let navigateManager = navigationStateManager {
                 navigateManager.focusLink = newLink
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -129,6 +138,7 @@ import LinkPresentation
             }
            
         }
+        loadingStage = .done
        
         
     }

@@ -18,7 +18,6 @@ final class ModelUtilManager {
         } else {
             folder.links.append(link)
         }
-        
         do {
             try modelContext.save()
         } catch {
