@@ -31,6 +31,12 @@ public actor LinkActor: ModelActor {
         
         let createRequest = CreateLinkRequest(linkName: link.title, linkUrl: link.linkUrl ?? " ", description: link.desc ?? " ", imageUrl: link.imgUrl ?? "none", iconUrl: link.iconUrl ?? "none", parentFolderId: parentFolderMongoId)
         
+        if let iconUrl = link.iconUrl {
+            if (iconUrl.isEmpty) {
+                link.iconUrl = "unknown"
+            }
+        }
+        
         Task {
             do {
                 
@@ -71,15 +77,49 @@ public actor LinkActor: ModelActor {
             completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No Mongo Id of link"])))
             return
         }
-        
-        print(linkMongoId)
-    }
-    
-    func deleteLink(link: Link, completion: @escaping (Result<String, Error>) -> Void) {
         guard let parentFolderMongoId = link.parentFolder?.mongoId else {
             completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No Mongo Id of parent folder"])))
             return
         }
+        
+        let patchRequest = CreateLinkRequest(linkName: link.title, linkUrl: link.linkUrl ?? " ", description: link.desc ?? " ", imageUrl: link.imgUrl ?? "none", iconUrl: link.iconUrl ?? "none", parentFolderId: parentFolderMongoId)
+        
+        Task {
+            do {
+                print("start update task")
+                guard let url = URL(string: "\(Configuration.baseURL)/link/update/\(linkMongoId)") else {
+                    completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+                    return
+                }
+                
+                var urlRequest = URLRequest(url: url)
+                urlRequest.httpMethod = "PATCH"
+                urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                urlRequest.httpBody = try JSONEncoder().encode(patchRequest)
+                
+                urlRequest = try await keychainStorage.appendURLAuthHeader(to: &urlRequest)
+                
+                let (_, response) = try await URLSession.shared.data(for: urlRequest)
+                
+                if let httpResponse = response as? HTTPURLResponse {
+                    // Now that httpResponse is of type HTTPURLResponse, you can access statusCode
+                    guard (200...299).contains(httpResponse.statusCode) else {
+                        // If statusCode is not in the 200-299 range, report failure
+                        completion(.failure(NSError(domain: "HTTPError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed request with status code: \(httpResponse.statusCode)"])))
+                        return
+                    }
+                }
+                
+                completion(.success(link))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        print(linkMongoId)
+    }
+    
+    func deleteLink(link: Link, completion: @escaping (Result<String, Error>) -> Void) {
+
         
         guard let linkMongoId = link.mongoId else {
             completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No Mongo Id of link"])))

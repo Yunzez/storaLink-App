@@ -67,7 +67,7 @@ struct FolderItemView: View {
             
             //                Spacer()
             HStack {
-                Text(currentFolder.title + "\n")
+                Text(currentFolder.title)
                     .lineLimit(2)
                     .font(.headline)
                     .foregroundColor(Color("ThemeBlack"))
@@ -141,7 +141,7 @@ struct FolderItemView: View {
             .padding([.leading, .trailing], Spacing.small)
             .frame(height: 20)
             
-            
+            Spacer()
             HStack(spacing: 0) {
                 Image(systemName: "link").foregroundColor(.gray)
                 Text("\(currentFolder.getLinkNum())")
@@ -152,7 +152,6 @@ struct FolderItemView: View {
             .padding([.leading, .trailing], Spacing.small)
             .frame(height: 25)
             
-            Spacer()
         }
         .frame(width: 160, height: 200) // Adjust size as needed
 //        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
@@ -168,5 +167,5 @@ struct FolderItemView: View {
 }
 
 #Preview {
-    FolderItemView(currentFolder: Folder(title: "Sun xiao chuan 258", imgUrl: "", links: [])).environment(NavigationStateManager())
+    FolderItemView(currentFolder: Folder(title: "Sun xiaochuan 258", imgUrl: "", links: [])).environment(NavigationStateManager())
 }

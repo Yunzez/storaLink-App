@@ -92,9 +92,8 @@ enum LoadingStage {
         if !validateFolderName() {
             error = true
             errorMessage = "Please input a folder name"
-        } else if selectedCoverIndex == -1{
-            error = true
-            errorMessage = "Please choose a folder cover"
+            loadingStage = .none
+            return
         } else {
             error = false
             errorMessage = ""

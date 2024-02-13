@@ -60,7 +60,7 @@ export const Schemas = {
       imageUrl: Joi.string(),
       parentFolderId: Joi.string().required(),
       description: Joi.string(),
-      iconUrl: Joi.string(),
+      iconUrl: Joi.string().allow(""),
     }),
   },
 };

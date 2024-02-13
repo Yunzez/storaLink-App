@@ -93,7 +93,7 @@ const deleteLink = async (
 };
 
 const updateLink = (req: UserRequest, res: Response, next: NextFunction) => {
-  const { linkId } = req.params;
+  const linkId = req.params.id;
   const { linkDescription, linkName, linkUrl, imageUrl } = req.body;
   Link.findById(linkId)
     .exec()

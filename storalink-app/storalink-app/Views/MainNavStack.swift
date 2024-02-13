@@ -94,45 +94,35 @@ struct CustomTabView: View {
                 HStack(alignment: .bottom){
                     // Home Tab
                     TabBarButton(iconName: "Home", selectedIcon: "HomeSelected", isSelected: selectedTab == 0) {
-                        withAnimation {
                             selectedTab = 0
-                        }
                     }.padding(.leading, Spacing.small)
                     
                     Spacer() // Adds space between buttons
                     
                     // Files Tab
                     TabBarButton(iconName: "File", selectedIcon: "FileSelected", isSelected: selectedTab == 1) {
-                        withAnimation {
                             selectedTab = 1
-                        }
                     }
                     
                     Spacer() // Adds space between buttons
                     
                     // Create Tab (Larger)
                     TabBarButton(iconName: "Create", selectedIcon: "CreateSelected", isSelected: selectedTab == 2, isLarge: true) {
-                        withAnimation {
                             selectedTab = 2
-                        }
                     }.padding(.top, Spacing.small)
                     
                     Spacer() // Adds space between buttons
                     
                     // Info Tab
                     TabBarButton(iconName: "Notice", selectedIcon: "NoticeSelected", isSelected: selectedTab == 3) {
-                        withAnimation {
                             selectedTab = 3
-                        }
                     }
                     
                     Spacer() // Adds space between buttons
                     
                     // Settings Tab
                     TabBarButton(iconName: "Setting", selectedIcon: "SettingSelected", isSelected: selectedTab == 4) {
-                        withAnimation {
                             selectedTab = 4
-                        }
                     }.padding(.trailing, Spacing.small)
                 }
                 //                .padding([.top], Spacing.small)

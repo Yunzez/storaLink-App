@@ -59,6 +59,14 @@ router.post(
 router.post("/delete/:id", LinkController.deleteLink);
 
 /**
+ * PATCH /update/:id
+ * Updates a specific Link instance in the database.
+ *  Request body : (any part of the Link object):
+ *
+ */
+router.patch("/update/:id", LinkController.updateLink);
+
+/**
  * GET /getAll
  * Retrieves all Link instances from the database.
  *

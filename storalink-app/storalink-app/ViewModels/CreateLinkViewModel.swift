@@ -73,6 +73,15 @@ import LinkPresentation
     func updateLink() {
         
         if let link = initialLink {
+            
+            if !validateLinkName() {
+                error = true
+                loadingStage = .none
+                return
+            } else {
+                error = false
+            }
+            
             link.linkUrl = linkName
             link.title = title
 //            link.author = author
@@ -86,22 +95,40 @@ import LinkPresentation
             }
             
             link.parentFolder = selectedFolder
+            
+            print("start online updating")
+            Task{
+                await linkManager.updateLink(link: link) { result in
+                    switch result {
+                    case .success(let link):
+                        print("updated link online: \(link)") // Assuming 'link' is the object you want to print or use
+                    case .failure(let encounteredError):
+                        self.error = true
+                        self.loadingStage = .none
+                        self.errorMessage = "some server error occured :C, try again later"
+                        print("some error has occurred: \(encounteredError.localizedDescription)")
+                    }
+                }
+            }
         }
     }
     
 
     func createLink() {
         loadingStage = .loading
+        
+        if !validateLinkName() {
+            error = true
+            loadingStage = .none
+            return
+        } else {
+            error = false
+        }
+        
         if let folder = selectedFolder, let context = modelContext {
            
             // Implement folder creation logic here
-            print("Creating folder with name: \(linkName) and description: \(linkDescription)")
-            if !validateLinkName() {
-                error = true
-                loadingStage = .none
-            } else {
-                error = false
-            }
+            print("Creating link with name: \(linkName) and description: \(linkDescription)")
             
             title = title.isEmpty ? linkName : title
             
@@ -122,9 +149,12 @@ import LinkPresentation
                 await linkManager.createLink(link: newLink) { result in
                     switch result {
                     case .success(let link):
-                        print("created link online: \(link)") // Assuming 'link' is the object you want to print or use
-                    case .failure(let error):
-                        print("some error has occurred: \(error.localizedDescription)")
+                        print("created link online: \(link.mongoId ?? "no mongoid")") // Assuming 'link' is the object you want to print or use
+                    case .failure(let encounteredError):
+                        self.error = true
+                        self.loadingStage = .none
+                        self.errorMessage = "some server error occured :C, try again later"
+                        print("some error has occurred: \(encounteredError.localizedDescription)")
                     }
                 }
             }
@@ -147,8 +177,10 @@ import LinkPresentation
     // More business logic functions as needed
     func validateLinkName() -> Bool {
         // Validation logic for folder name
+        print("validating")
         print(selectedFolder ?? "no folder")
-        if (selectedFolder !== Folder.self) {
+        if (selectedFolder == nil) {
+            print("folder type does not match")
             errorMessage = "Please select a folder"
            return false
         }

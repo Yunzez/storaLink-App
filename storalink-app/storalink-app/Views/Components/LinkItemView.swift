@@ -63,7 +63,8 @@ struct LinkItemView: View {
                                         modelContext.delete(currentLink)
                                         do { try modelContext.save() } catch { print("error saving") }
                                     case .failure(let err):
-                                        print("fail to delete", err.localizedDescription)
+                                        print("fail to delete, delete locally", err.localizedDescription)
+                                        modelContext.delete(currentLink)
                                     }
                                     
                                 }

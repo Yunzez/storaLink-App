@@ -203,6 +203,7 @@ struct CreateLinkView: View {
                             Button(action: {
                                 // Action for folder creation
                                 viewModel.updateLink()
+                                self.presentationMode.wrappedValue.dismiss()
                             }) {
                                 HStack{
                                     Image(systemName: "pencil")
