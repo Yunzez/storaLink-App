@@ -14,6 +14,8 @@ struct SettingsView: View {
     @State var uiImage: UIImage?
     @State var sheet: Bool = false
     
+    private let userActor = UserActor.actor
+    
     let fileManager = LocalFileManager.manager
     func updateImage() {
         if let user = appViewModel.user,
@@ -26,7 +28,7 @@ struct SettingsView: View {
     }
     
     func saveSelectedImage(image: UIImage) {
-       
+        
         uploadImageToS3(image: image) { result in
             switch(result){
             case .success(let remotePath):
@@ -44,6 +46,18 @@ struct SettingsView: View {
                 let filePath = fileManager.saveImage(image: image)
                 appViewModel.user?.avatorPath = filePath
                 print("failed to upload to s3, save to local")
+            }
+        }
+        Task{
+            if let user = appViewModel.user {
+                await userActor.updateUser(user: user) { result in
+                    switch(result) {
+                    case .success(_):
+                        print("update user")
+                    case .failure:
+                        print("fail to update user")
+                    }
+                }
             }
         }
     }

@@ -50,7 +50,9 @@ class AuthenticationManager {
             let newUser = User(
                 name : loginResponse.storalinker.username,
                 email : loginResponse.storalinker.email,
-                mongoId: loginResponse.storalinker._id
+                mongoId: loginResponse.storalinker._id,
+                avatorPath: loginResponse.storalinker.avatorPath ?? "",
+                avatorPathRemote: loginResponse.storalinker.avatorPathRemote ?? ""
             )
             completion(true, nil, newUser)
         } catch {
@@ -122,7 +124,9 @@ class AuthenticationManager {
             let newUser = User(
                 name : signupResponse.storalinker.username,
                 email : signupResponse.storalinker.email,
-                mongoId: signupResponse.storalinker._id
+                mongoId: signupResponse.storalinker._id,
+                avatorPath: "",
+                avatorPathRemote: ""
             )
             completion(true, nil, newUser)
         } catch {
@@ -237,4 +241,6 @@ struct UserResponse: Decodable {
     //    let dob: Date
     //    let createdAt: Date
     let refreshToken: String
+    let avatorPath: String?
+    let avatorPathRemote: String? 
 }

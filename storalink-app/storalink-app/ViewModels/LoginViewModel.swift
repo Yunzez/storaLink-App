@@ -90,6 +90,7 @@ import SwiftUI
                         // User exists in local database
                         self.appData?.userName = localUser.name
                         self.appData?.setUser(user: localUser)
+                        print("user profile pic:", localUser.avatorPath ?? "none")
                     } else {
                         if let remoteUser = user {
                             print("remote user")
@@ -97,6 +98,7 @@ import SwiftUI
                             self.modelManager.addUserToLocalDB(modelContext: context, user: remoteUser)
                             self.appData?.userName = remoteUser.name
                             self.appData?.setUser(user: remoteUser)
+                            print("user profile pic:", remoteUser.avatorPath ?? "none")
                         }
                     }
                     

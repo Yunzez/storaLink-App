@@ -21,10 +21,21 @@ final class User {
     @Relationship(deleteRule: .cascade, inverse: \Folder.user) var folders: [Folder] = [Folder]()
     // Other user properties
     
+    init( name: String, email: String, mongoId: String, avatorPath: String, avatorPathRemote: String) {
+        self.name = name
+        self.email = email
+        self.folders = []
+        self.mongoId = mongoId
+        self.avatorPath = avatorPath
+        self.avatorPathRemote = avatorPathRemote
+    }
+    
     init( name: String, email: String, mongoId: String) {
         self.name = name
         self.email = email
         self.folders = []
         self.mongoId = mongoId
+        self.avatorPath = avatorPath ?? ""
+        self.avatorPathRemote = avatorPathRemote ?? ""
     }
 }

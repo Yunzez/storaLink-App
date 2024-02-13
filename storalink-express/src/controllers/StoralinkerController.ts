@@ -95,7 +95,7 @@ const loginStoralinker = (req: Request, res: Response, next: NextFunction) => {
         config.auth.jwtSecret,
         { expiresIn: "1h" }
       );
-
+      console.log("storalinker", storalinker);
       res.status(200).json({ accessToken, storalinker });
     })
     .catch((err) => res.status(404).json({ message: "Storalinker not found" }));
