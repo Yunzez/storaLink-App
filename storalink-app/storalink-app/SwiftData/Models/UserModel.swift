@@ -16,6 +16,7 @@ final class User {
     var name: String
     var email: String
     var avatorPath: String? = nil
+    var avatorPathRemote: String? = nil
     var mongoId: String
     @Relationship(deleteRule: .cascade, inverse: \Folder.user) var folders: [Folder] = [Folder]()
     // Other user properties

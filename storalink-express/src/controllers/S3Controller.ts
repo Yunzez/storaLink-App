@@ -22,46 +22,29 @@ const s3Client = new S3Client({
   },
 });
 
-// Configure multer for local storage
-const upload = multer({ dest: "uploads/" });
+const uploadImage = async (req: Request, res: Response) => {
+  console.log("Uploading image...");
+  const { checksum } = req.query;
 
-// Upload image to S3
-const uploadImage = upload.single("image"); // Middleware for local file upload
-
-const handleImageUpload = async (req: Request, res: Response) => {
-  const file = req.file;
-  if (!file) {
-    return res.status(400).send("File upload failed");
-  }
-
-  const fileStream = fs.createReadStream(file.path);
+  // Use the checksum in the key to ensure uniqueness based on content
+  // const key = `images/${checksum}-${Date.now().toString()}`;
+  const key = `images/${checksum}`;
+  const command = new PutObjectCommand({
+    Bucket: "storalink-image",
+    Key: key,
+    ContentType: "image/jpeg", // Assuming JPEG images
+  });
 
   try {
-    const uploadParams = {
-      Bucket: "storalink-image",
-      Key: `images/${Date.now().toString()}-${file.originalname}`,
-      Body: fileStream,
-      // ACL: "public-read" as ObjectCannedACL,
-    };
-
-    // Using high-level upload utility
-    const parallelUploads3 = new Upload({
-      client: s3Client,
-      params: uploadParams,
-    });
-    console.log("uploading image");
-    await parallelUploads3.done();
-
+    const url = await getSignedUrl(s3Client, command, { expiresIn: 360 }); // URL expires in 1 hour
     res.json({
-      message: "Upload successful",
-      fileUrl: `https://${uploadParams.Bucket}.s3.amazonaws.com/${uploadParams.Key}`,
+      message: "Pre-signed URL generated successfully",
+      url: url,
+      filePath: `${key}`,
     });
   } catch (error) {
-    console.error("Error uploading file: ", error);
-    res.status(500).send("Error uploading file");
-  } finally {
-    // Clean up the uploaded file from the server
-    fs.unlinkSync(file.path);
+    console.error("Error generating pre-signed URL: ", error);
+    res.status(500).send("Error generating pre-signed URL");
   }
 };
 
@@ -106,7 +89,7 @@ const getImage = async (req: Request, res: Response) => {
 };
 
 export default {
-  uploadImage: [uploadImage, handleImageUpload],
+  uploadImage: [uploadImage],
   deleteImage,
   getImage,
 };

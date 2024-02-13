@@ -57,7 +57,7 @@ final class KeychainStorage {
         guard let tokenData = try await getData(for: "accessToken"), let token = String(data: tokenData, encoding: .utf8) else {
             throw NSError(domain: "KeychainStorageError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No access token available"])
         }
-        
+
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

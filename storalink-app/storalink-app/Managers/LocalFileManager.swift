@@ -65,4 +65,7 @@ final class LocalFileManager {
         return String(hash)
     }
 
+    func fileExists(atPath path: String) -> Bool {
+            return FileManager.default.fileExists(atPath: path)
+    }
 }

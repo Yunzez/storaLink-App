@@ -26,8 +26,26 @@ struct SettingsView: View {
     }
     
     func saveSelectedImage(image: UIImage) {
-        let filePath = fileManager.saveImage(image: image)
-        appViewModel.user?.avatorPath = filePath
+       
+        uploadImageToS3(image: image) { result in
+            switch(result){
+            case .success(let remotePath):
+                appViewModel.user?.avatorPathRemote = remotePath
+                print("uploaded to s3")
+                if let remotePath = appViewModel.user?.avatorPathRemote {
+                    downloadImage(from: remotePath) { downloadedImage in
+                        if let image = downloadedImage {
+                            let filePath = fileManager.saveImage(image: image)
+                            appViewModel.user?.avatorPath = filePath
+                        }
+                    }
+                }
+            case .failure:
+                let filePath = fileManager.saveImage(image: image)
+                appViewModel.user?.avatorPath = filePath
+                print("failed to upload to s3, save to local")
+            }
+        }
     }
     
     //    @Bindable var appView = appleViewModel

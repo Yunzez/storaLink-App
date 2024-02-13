@@ -10,6 +10,7 @@ import SwiftData
 
 @Observable
 class AppViewModel {
+    let fileManager = LocalFileManager.manager
     var isFirstLaunch: Bool?
     var isAuthenticated: Bool
     
@@ -93,6 +94,21 @@ class AppViewModel {
         self.userName = user.name
         self.userEmail = user.email
         self.userId = user.id
+        
+        if let remotePath = user.avatorPathRemote {
+            if let localPath = user.avatorPath  {
+                if !fileManager.fileExists(atPath: localPath){
+                    print("fetch image using remote path")
+                    downloadImage(from: remotePath) { downloadedImage in
+                        if let image = downloadedImage {
+                            let filePath = self.fileManager.saveImage(image: image)
+                            user.avatorPath = filePath
+                        }
+                    }
+                }
+            }
+        }
+    
     }
     
     func logoutUser() {

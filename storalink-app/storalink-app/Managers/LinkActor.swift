@@ -22,6 +22,7 @@ public actor LinkActor: ModelActor {
         let context = ModelContext(modelContainer)
         modelExecutor = DefaultSerialModelExecutor(modelContext: context)
     }
+    
     func createLink(link: Link, completion: @escaping (Result<Link, Error>) -> Void) {
         guard let parentFolderMongoId = link.parentFolder?.mongoId else {
             completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No Mongo Id of parent folder"])))

@@ -8,6 +8,10 @@ export interface IStoralinker extends Document {
   createdAt: Date;
   enabled: boolean;
 
+  // * avator info:
+  avatorPath: string;
+  avatorPathRemote: string;
+
   // * refresh token info:
   refreshToken?: string;
   refreshTokenExpiry?: Date;

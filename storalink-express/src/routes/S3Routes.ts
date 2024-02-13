@@ -3,7 +3,7 @@ import S3Controller from "../controllers/S3Controller";
 const router = express.Router();
 
 // Route for uploading an image
-router.post("/upload", S3Controller.uploadImage);
+router.get("/generate-presigned-url", S3Controller.uploadImage);
 
 // Route for deleting an image
 // Expects a URL like /delete/images/myImage.jpg

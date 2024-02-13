@@ -20,8 +20,10 @@ struct Configuration {
                 return "https://api.storalink.com"
             }
         }
+        
+
     }
-    
+    static let imageBaseUrl : String = "https://storalink-image.s3.us-east-2.amazonaws.com/images/"
     
     static let baseURL = Configuration.currentEnvironment.baseURL
 
