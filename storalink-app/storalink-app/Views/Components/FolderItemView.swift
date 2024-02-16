@@ -26,16 +26,16 @@ struct FolderItemView: View {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 160, height: 155)
+                        .frame(width: 160, height: 135)
                         .cornerRadius(Spacing.small)
-                        .padding(.bottom, -Spacing.small)
+//                        .padding(.bottom, -Spacing.small)
                 } else {
                     Image(currentFolder.imgUrl.isEmpty ? "Xiaochuan" : currentFolder.imgUrl)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 160, height: 155)
-                        .cornerRadius(Spacing.small)
-                        .padding(.bottom, -Spacing.small)
+                        .frame(width: 160, height: 135)
+//                        .cornerRadius(Spacing.small)
+//                        .padding(.bottom, -Spacing.small)
 //                    AsyncImage(url: URL(string: "https://storalink-image.s3.amazonaws.com/images/1707168053737-xiaochuan.jpeg")) { image in
 //                                image.resizable()
 //                            } placeholder: {
@@ -59,7 +59,7 @@ struct FolderItemView: View {
                         .background(Color.white)
                         .clipShape(Circle())
                 }
-                .padding([.top], Spacing.small + 3)
+//                .padding([.top], Spacing.small)
             }
             .frame(width: 160, height: 135)
             .clipped() // Apply clipping here, outside the ZStack
@@ -71,6 +71,7 @@ struct FolderItemView: View {
                     .lineLimit(2)
                     .font(.headline)
                     .foregroundColor(Color("ThemeBlack"))
+                    .fixedSize(horizontal: false, vertical: true)
                 Spacer()
                 Button {
                     print("test")
@@ -139,9 +140,8 @@ struct FolderItemView: View {
                     })
             }
             .padding([.leading, .trailing], Spacing.small)
-            .frame(height: 20)
+            .frame(height: 25)
             
-            Spacer()
             HStack(spacing: 0) {
                 Image(systemName: "link").foregroundColor(.gray)
                 Text("\(currentFolder.getLinkNum())")
@@ -150,11 +150,10 @@ struct FolderItemView: View {
                     .padding([.leading], 2)
             }
             .padding([.leading, .trailing], Spacing.small)
-            .frame(height: 25)
+            .frame(height: 20)
             
         }
         .frame(width: 160, height: 200) // Adjust size as needed
-//        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
         .background(Color("SubtleTheme")) // Use actual card background color
         .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
         .shadow(radius: 5)
@@ -167,5 +166,5 @@ struct FolderItemView: View {
 }
 
 #Preview {
-    FolderItemView(currentFolder: Folder(title: "Sun xiaochuan 258", imgUrl: "", links: [])).environment(NavigationStateManager())
+    FolderItemView(currentFolder: Folder(title: "Sun xiaochuan 28", imgUrl: "", links: [])).environment(NavigationStateManager())
 }

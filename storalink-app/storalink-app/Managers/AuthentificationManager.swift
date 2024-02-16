@@ -211,6 +211,9 @@ class AuthenticationManager {
     }
     
     
+    
+    
+    
 }
 
 struct TokenResponse: Decodable {
@@ -242,5 +245,5 @@ struct UserResponse: Decodable {
     //    let createdAt: Date
     let refreshToken: String
     let avatorPath: String?
-    let avatorPathRemote: String? 
+    let avatorPathRemote: String?
 }

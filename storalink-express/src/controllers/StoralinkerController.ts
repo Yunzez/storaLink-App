@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import Storalinker from "../models/Storalinker";
+import Folder from "../models/Folder";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
 import bcrypt from "bcrypt";
 import generateRefreshToken from "../library/RefreshTokenGenerator";
+import Link from "../models/Link";
 
 // * part of auth route
 const createStoralinker = async (
@@ -120,13 +122,44 @@ const updateStoralinker = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // * part of storalinker route
-const deleteStoralinker = (req: Request, res: Response, next: NextFunction) => {
+const deleteStoralinker = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { id } = req.params;
-
-  return Storalinker.findByIdAndDelete(id)
+  const { password } = req.body;
+  // Verify the password
+  Storalinker.findOne({ creatorId: id })
     .exec()
-    .then(() => res.status(204).json({ message: "Storalinker deleted" }))
-    .catch((err) => res.status(500).json({ error: err }));
+    .then(async (storalinker) => {
+      if (!storalinker) {
+        return res.status(401).json({ message: "Authentication failed" });
+      }
+
+      console.log("storalinker pw", storalinker.password, password);
+      const match = await bcrypt.compare(password, storalinker.password);
+      if (!match) {
+        return res.status(401).json({ message: "Authentication failed" });
+      }
+      // Delete all Folders and Links associated with the Storalinker
+
+      await Folder.deleteMany({ creatorId: id }).exec();
+      try {
+        // Delete all Folders and Links associated with the Storalinker
+        await Folder.deleteMany({ creatorId: id }).exec();
+        await Link.deleteMany({ creatorId: id }).exec();
+
+        // After successfully deleting Folders and Links, delete the Storalinker
+        await Storalinker.findByIdAndDelete(id).exec();
+
+        // If everything goes well, send a success response
+        res.status(204).json({ message: "Storalinker deleted" });
+      } catch (err) {
+        // If there's an error in any of the deletion processes, send an error response
+        res.status(500).json({ error: err });
+      }
+    });
 };
 
 // * part of storalinker route

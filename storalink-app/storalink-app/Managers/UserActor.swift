@@ -62,12 +62,57 @@ public actor UserActor: ModelActor {
             }
         }
     }
-}
-
-
-struct UserRequest: Encodable {
-    let username: String
-    let email: String
-    let avatorPath: String
-    let avatorPathRemote: String
+    
+    // MARK: -delete user section
+    
+    func deleteUser(user: User, password: String,  completion: @escaping (Result<String, Error>) -> Void) async {
+        guard let hashedPassword = hashPassword(password) else {
+            completion(.failure(AppError.passwordHashingFailed))
+            return
+        }
+        Task {
+            do {
+                
+                guard let url = URL(string: "\(Configuration.baseURL)/storalinker/delete") else {
+                    completion(.failure(NSError(domain: "URLCreationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+                    return
+                }
+                
+                var urlRequest = URLRequest(url: url)
+                urlRequest.httpMethod = "POST"
+                urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                urlRequest = try await keychainStorage.appendURLAuthHeader(to: &urlRequest)
+                
+                let deleteRequest = DeleteRequest(password: hashedPassword)
+                
+                urlRequest.httpBody = try JSONEncoder().encode(deleteRequest)
+                let (_, response) = try await URLSession.shared.data(for: urlRequest)
+                
+                if let httpResponse = response as? HTTPURLResponse {
+                    // Now that httpResponse is of type HTTPURLResponse, you can access statusCode
+                    guard (200...299).contains(httpResponse.statusCode) else {
+                        // If statusCode is not in the 200-299 range, report failure
+                        completion(.failure(NSError(domain: "HTTPError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed request with status code: \(httpResponse.statusCode)"])))
+                        return
+                        
+                    }
+                    
+                    
+                }
+            }
+            
+        }
+    }
+    
+    struct DeleteRequest: Encodable {
+        let password: String
+    }
+    
+    
+    struct UserRequest: Encodable {
+        let username: String
+        let email: String
+        let avatorPath: String
+        let avatorPathRemote: String
+    }
 }

@@ -37,7 +37,7 @@ router.patch("/update/:id", StoralinkerController.updateStoralinker);
  * Deletes a specific Storalinker instance from the database.
  *
  * URL parameters:
- * id: string            // The unique identifier of the Storalinker to delete
+ * password: string            // The password of the Storalinker to delete
  *
  * Success response:
  * Status: 204

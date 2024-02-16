@@ -31,12 +31,6 @@ public actor LinkActor: ModelActor {
         
         let createRequest = CreateLinkRequest(linkName: link.title, linkUrl: link.linkUrl ?? " ", description: link.desc ?? " ", imageUrl: link.imgUrl ?? "none", iconUrl: link.iconUrl ?? "none", parentFolderId: parentFolderMongoId)
         
-        if let iconUrl = link.iconUrl {
-            if (iconUrl.isEmpty) {
-                link.iconUrl = "unknown"
-            }
-        }
-        
         Task {
             do {
                 
