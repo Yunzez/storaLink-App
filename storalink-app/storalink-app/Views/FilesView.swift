@@ -11,7 +11,7 @@ import SwiftData
 struct FilesViewEntry: View {
     @Environment(AppViewModel.self) private var appViewModel : AppViewModel
     var body: some View {
-        FilesView(filterUserID: appViewModel.userId ?? UUID())
+        FilesView()
     }
 }
 
@@ -23,10 +23,7 @@ struct FilesView: View {
     // Define the grid layout: 2 columns
     private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
-    init(filterUserID: UUID){
-        _folders = Query(filter: #Predicate<Folder> {$0.user?.id == filterUserID})
-    }
-    
+
     var body: some View {
         ZStack(alignment: .top){
             VStack {

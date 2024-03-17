@@ -9,7 +9,6 @@ import Foundation
 import SwiftData
 
 let schema = Schema([
-    User.self,
     Folder.self,
     Link.self
 ])

@@ -46,7 +46,8 @@ enum LoadingStage {
         //        }
     }
     
-    func updateFolder(userId: UUID, folder: Folder) {
+    func updateFolder(folder: Folder) {
+        
         loadingStage = .loading
         folder.title = folderName
         folder.desc = folderDescription
@@ -84,7 +85,7 @@ enum LoadingStage {
     }
     
     
-    func createFolder(userId: UUID) {
+    func createFolder() {
         
         loadingStage = .loading
         // Implement folder creation logic here
@@ -111,35 +112,39 @@ enum LoadingStage {
             
             do {
                 let newFolder = Folder(title: folderName, imgUrl: imgUrl, desc: folderDescription,  links: [])
+                let folders =  try context.fetch(FetchDescriptor<Folder>())
+                context.insert(newFolder)
+                try context.save()
                 
-                Task{
-                    await folderManager.createFolder(folder: newFolder) { result in
-                        switch result {
-                        case .success(let updatedFolder):
-                            do {
-                                let users = try context.fetch(FetchDescriptor<User>(predicate: #Predicate<User>{ user in
-                                    user.id == userId
-                                }))
-                                
-                                if let currentUser = users.first {
-                                    currentUser.folders.append(updatedFolder)
-                                    do {
-                                        try context.save()
-                                        print("change saved to user", currentUser.name)
-                                    } catch {
-                                        print("Failed to save context: \(error)")
-                                    }
-                                }
-                            } catch {
-                                print("Failed to fetch users: \(error)")
-                            }
-                            
-                        case .failure(let error):
-                            print("Failed to create folder: \(error)")
-                        }
-                    }
-                }
                 
+//                Task{
+//                    await folderManager.createFolder(folder: newFolder) { result in
+//                        switch result {
+//                        case .success(let updatedFolder):
+//                            do {
+//                                let users = try context.fetch(FetchDescriptor<User>(predicate: #Predicate<User>{ user in
+//                                    user.id == userId
+//                                }))
+//                                
+//                                if let currentUser = users.first {
+//                                    currentUser.folders.append(updatedFolder)
+//                                    do {
+//                                        try context.save()
+//                                        print("change saved to user", currentUser.name)
+//                                    } catch {
+//                                        print("Failed to save context: \(error)")
+//                                    }
+//                                }
+//                            } catch {
+//                                print("Failed to fetch users: \(error)")
+//                            }
+//                            
+//                        case .failure(let error):
+//                            print("Failed to create folder: \(error)")
+//                        }
+//                    }
+//                }
+//                
                 
                 if let navigateManager = navigationStateManager {
                     navigateManager.focusFolder = newFolder
@@ -151,8 +156,10 @@ enum LoadingStage {
                     }
                 }
                 
+            } catch {
+                print("something went wrong")
             }
-            
+             
         }
     }
     

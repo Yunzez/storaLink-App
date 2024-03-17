@@ -156,21 +156,19 @@ struct CreateFolderView: View {
                         // Action for folder creation
                         navigationStateManager.lastNavigationSource = .toMainStack
                         
-                        if let userId = appViewModel.userId {
                             if  viewModel.isEditFolder {
                                 print("update folder")
                                 if let editFolder = viewModel.initialFolder {
                                     print("calling viewModel")
-                                   viewModel.updateFolder(userId: userId, folder: editFolder)
+                                   viewModel.updateFolder(folder: editFolder)
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
                                         self.presentationMode.wrappedValue.dismiss()
                                     }
                                     
                                 }
                             } else {
-                                viewModel.createFolder(userId: userId )
+                                viewModel.createFolder()
                             }
-                        }
                         
                     }) {
                         Text(viewModel.isEditFolder ? "Update folder" : "Create Folder")

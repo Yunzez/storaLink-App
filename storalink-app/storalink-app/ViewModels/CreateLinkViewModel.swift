@@ -144,20 +144,20 @@ import LinkPresentation
             newLink.imgUrl = imagePath
             newLink.iconUrl = iconPath
             modelManager.addLinkToFolder(link: newLink, folder: folder, modelContext: context)
-            
-            Task{
-                await linkManager.createLink(link: newLink) { result in
-                    switch result {
-                    case .success(let link):
-                        print("created link online: \(link.mongoId ?? "no mongoid")") // Assuming 'link' is the object you want to print or use
-                    case .failure(let encounteredError):
-                        self.error = true
-                        self.loadingStage = .none
-                        self.errorMessage = "some server error occured :C, try again later"
-                        print("some error has occurred: \(encounteredError.localizedDescription)")
-                    }
-                }
-            }
+//            
+//            Task{
+//                await linkManager.createLink(link: newLink) { result in
+//                    switch result {
+//                    case .success(let link):
+//                        print("created link online: \(link.mongoId ?? "no mongoid")") // Assuming 'link' is the object you want to print or use
+//                    case .failure(let encounteredError):
+//                        self.error = true
+//                        self.loadingStage = .none
+//                        self.errorMessage = "some server error occured :C, try again later"
+//                        print("some error has occurred: \(encounteredError.localizedDescription)")
+//                    }
+//                }
+//            }
             
             if let navigateManager = navigationStateManager {
                 navigateManager.focusLink = newLink

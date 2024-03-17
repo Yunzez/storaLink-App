@@ -25,9 +25,6 @@ struct HomeView: View {
     @Environment(AppViewModel.self) private var appViewModel : AppViewModel
     @Environment(\.modelContext) private var modelContext: ModelContext
     
-    @Query var users: [User] = [User]()
-    @State var user: User?
-    
     // change to state for now, we are fetching on view onappear
     @Query var folders: [Folder] = []
     @Query var links: [Link] = []
@@ -39,46 +36,7 @@ struct HomeView: View {
     
     
     @State private var filteredLinks: [Link] = []
-    //
-    init(filterUserID: UUID? = UUID() ) {
-        self.filterUserID = filterUserID
-        _users = Query(filter: #Predicate { user in
-            if let filterId = filterUserID {
-                return user.id == filterId
-            } else {
-                return false
-            }
-        })
-        
-        user = users.first
-        
-        _folders = Query(filter: #Predicate { folder in
-            if let filterId = filterUserID {
-                return folder.user?.id == filterId
-            } else {
-                return false
-            }
-        }, sort: [SortDescriptor(\Folder.creationDate, order: .reverse)])
-        
-        // User -> [Folders] -> [Links]
-        //        _links = Query(filter: #Predicate { link in
-        //            if let filterId = filterUserID {
-        //                if let currentFolder = link.parentFolder {
-        //                    if let currentUser = currentFolder.user {
-        //                       return currentUser.id == filterId
-        //                    } else {
-        //                        return false
-        //                    }
-        //                } else {
-        //                    return false
-        //                }
-        //            } else {
-        //                return false
-        //            }
-        //       })
-    }
-    
-    
+
     func setup(){
         print("folder number:", folders.count)
         filteredLinks = filterLink()
@@ -113,21 +71,6 @@ struct HomeView: View {
         .prefix(10) // Take the first 10 elements
         .map { $0 } // Convert the prefix result back to an array
     }
-    
-    
-    // Update filtered links whenever the view appears or the relevant data changes
-    private func updateFilteredLinks() {
-        guard (user?.name) != nil else {
-            print("no user name")
-            filteredLinks = []
-            return
-        }
-        
-        filteredLinks = links.filter { link in
-            link.parentFolder?.user?.name == user?.name
-        }
-    }
-    
     
     
     
@@ -182,7 +125,7 @@ struct HomeView: View {
                         
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 6) {
-                                ForEach(filteredLinks) { link in // Replace with your data source
+                                ForEach(links) { link in // Replace with your data source
                                     LinkItemView(currentLink: link)
                                 }
                             }

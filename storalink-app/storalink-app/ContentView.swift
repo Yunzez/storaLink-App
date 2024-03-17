@@ -27,15 +27,20 @@ struct ContentView: View {
 //    let actor = SynchronizationManager(container: folderModelContainer)
     var body: some View {
         // switch back after testing
-        if appViewModel.isAuthenticated {
-            MainNavStack()
+        if appViewModel.isFirstLaunch ?? true {
+            TutorialView()
         } else {
-                if appViewModel.isFirstLaunch ?? true {
-                    TutorialView()
-                } else {
-                    LoginView()
-                }
+            MainNavStack()
         }
+//        if appViewModel.isAuthenticated {
+//            MainNavStack()
+//        } else {
+//                if appViewModel.isFirstLaunch ?? true {
+//                    TutorialView()
+//                } else {
+//                    LoginView()
+//                }
+//        }
     }
     
 }

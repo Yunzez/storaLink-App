@@ -22,59 +22,38 @@ struct storalink_appApp: App {
                 print("On Appear, in contentView")
                 let lastLoggedInUserEmail = appViewModel.checkLastLogin()
                 print("Last loggin email", lastLoggedInUserEmail)
-                Task {
-                    do {
-                        // check if refresh token expired
-                        await authManager.checkToken(email: lastLoggedInUserEmail) { valid, error in
-                            if !valid {
-                                print("expired, required log in")
-                                return
-                            }
-                            do {
-                                let context = folderModelContainer.mainContext
-                                let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
-                                let users = try context.fetch(descriptor)
-                                
-                                for user in users {
-                                    if user.email == lastLoggedInUserEmail {
-                                        appViewModel.userName = user.name
-                                        appViewModel.setUser(user: user)
-                                        
-                                        // record login activity
-                                        appViewModel.recordLogin(userEmail: user.email)
-                                        withAnimation{
-                                            appViewModel.isAuthenticated = true
-                                        }
-                                        return
-                                    }
-                                }
-                            } catch {
-                                
-                            }
-                        }
-                    }
-                }
-//                    let context = folderModelContainer.mainContext
-//                    let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
-//                    let users = try context.fetch(descriptor)
-//                    
-//                    for user in users {
-//                        if user.email == lastLoggedInUserEmail {
-//                            appViewModel.userName = user.name
-//                            appViewModel.setUser(user: user)
-//                            
-//                            // record login activity
-//                            appViewModel.recordLogin(userEmail: user.email)
-//                            withAnimation{
-//                                appViewModel.isAuthenticated = true
+//                Task {
+//                    do {
+//                        // check if refresh token expired
+//                        await authManager.checkToken(email: lastLoggedInUserEmail) { valid, error in
+//                            if !valid {
+//                                print("expired, required log in")
+//                                return
 //                            }
-//                            return
+//                            do {
+//                                let context = folderModelContainer.mainContext
+//                                let descriptor = FetchDescriptor<User>(sortBy: [SortDescriptor(\.name)])
+//                                let users = try context.fetch(descriptor)
+//                                
+//                                for user in users {
+//                                    if user.email == lastLoggedInUserEmail {
+//                                        appViewModel.userName = user.name
+//                                        appViewModel.setUser(user: user)
+//                                        
+//                                        // record login activity
+//                                        appViewModel.recordLogin(userEmail: user.email)
+//                                        withAnimation{
+//                                            appViewModel.isAuthenticated = true
+//                                        }
+//                                        return
+//                                    }
+//                                }
+//                            } catch {
+//                                
+//                            }
 //                        }
 //                    }
-//                } catch {
-//                    print("Unable to fetch previous user")
 //                }
-                
             }.modelContainer(folderModelContainer)
                 .environment(navigationStateManager)
                 .environment(appViewModel)
