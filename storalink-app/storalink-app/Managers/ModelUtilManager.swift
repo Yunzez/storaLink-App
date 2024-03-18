@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftData
+
+@Observable
 final class ModelUtilManager {
     static let manager = ModelUtilManager()
     
@@ -16,6 +18,7 @@ final class ModelUtilManager {
         if (folder.getLinkNum() == 0) {
             folder.links = [link]
         } else {
+            folder.linksNumber = folder.links.count + 1
             folder.links.append(link)
         }
         do {

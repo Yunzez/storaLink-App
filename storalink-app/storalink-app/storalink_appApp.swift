@@ -22,6 +22,8 @@ struct storalink_appApp: App {
                 print("On Appear, in contentView")
                 let lastLoggedInUserEmail = appViewModel.checkLastLogin()
                 print("Last loggin email", lastLoggedInUserEmail)
+                
+                
 //                Task {
 //                    do {
 //                        // check if refresh token expired

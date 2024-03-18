@@ -9,28 +9,38 @@ import SwiftUI
 import SwiftData
 
 
-
 struct HomeViewEntry: View{
     @Environment(AppViewModel.self) private var appViewModel : AppViewModel
     @Environment(\.modelContext) private var modelContext: ModelContext
+    //    @Query var folders: [Folder] = []
+    //    @Query var links: [Link] = []
     
-#warning("Temp, inject userId using Entry struct")
     var body: some View {
-        HomeView(filterUserID: appViewModel.userId)
+        //        HomeView(folders: folders/*, links: links*/)
+        HomeView()
     }
 }
 
+
+// a list of folders, test to see if it updates
+
+
 struct HomeView: View {
-    var filterUserID: UUID?
+    
+    //    var filterUserID: UUID?
     @Environment(AppViewModel.self) private var appViewModel : AppViewModel
     @Environment(\.modelContext) private var modelContext: ModelContext
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     // change to state for now, we are fetching on view onappear
-    @Query var folders: [Folder] = []
+    
     @Query var links: [Link] = []
+    @State var folders: [Folder] = []
+//    @Query var folders: [Folder] = []
     //    @Query() private var links: [Link]
-    
-    
+    //    init(folders: [Folder]/*, links: [Link]*/) {
+    //        self.folders = /*FoldersModelWrapper(folders: folders).folders*/folders
+    //    }
+    //
     @State var searchbarViewModel = SearchBarViewModel()
     @State  var searchBarFrame: CGRect = .zero
     
@@ -38,25 +48,48 @@ struct HomeView: View {
     @State private var filteredLinks: [Link] = []
     
     func setup(){
-        print("folder number:", folders.count)
+        
+        let folderFetchDescriptor = FetchDescriptor<Folder>(
+            predicate:  #Predicate { folder in
+                return true
+            },
+            sortBy: [SortDescriptor(\Folder.creationDate, order: .reverse)]
+        )
+        
+        do {
+            folders = try modelContext.fetch(folderFetchDescriptor)
+        }catch {
+            print("Error in fetching folders")
+        }
+        
+//        if sharedDefaults?.bool(forKey: "DataUpdatedFlag") == true {
+//            print("Data was updated in the share extension.")
+//            
+//            // Reset the flag
+//            sharedDefaults?.set(false, forKey: "DataUpdatedFlag")
+//            
+//            links.forEach { link in
+//                if let folder = link.parentFolder {
+//                    print(folder.title)
+//                } else {
+//                    print("link has no parent")
+//                }
+//            }
+//            
+//            folders.forEach { folder in
+//                print("setup, folder link num: \(folder.links.count)")
+//            }
+//        } else {
+//            
+//        }
+        
         filteredLinks = filterLink()
+        
+        
         //        var folderCount = 5
         // add custom fetch to filter data by creation date
-        //        var folderFetchDescriptor = FetchDescriptor<Folder>(
-        //            predicate:  #Predicate { folder in
-        //                if let filterId = filterUserID {
-        //                    return folder.user?.id == filterId
-        //                } else {
-        //                    return false
-        //                }
-        //            },
-        //            sortBy: [SortDescriptor(\Folder.creationDate, order: .reverse)]
-        //        )
+        
         //        folderFetchDescriptor.fetchLimit = 5
-        //
-        //        do { try  folders =  modelContext.fetch(folderFetchDescriptor) } catch {
-        //             print("Error in fetching folders")
-        //         }
     }
     
     // ! we calculate the links here whenever we render links
@@ -123,7 +156,8 @@ struct HomeView: View {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 10) {
                                     ForEach(folders) { folder in // Replace with your data source
-                                        FolderItemView(currentFolder: folder).foregroundColor(.primary) // Reuse the same custom view
+                                        let preparedFolder = FolderModelWrapper(folder: folder).folder
+                                        FolderItemView(folder: preparedFolder).foregroundColor(.primary) // Reuse the same custom view
                                     }
                                 }
                                 .padding()
@@ -158,7 +192,7 @@ struct HomeView: View {
                         }
                         
                         Spacer()
-                    }.onAppear{
+                    }.onChange(of: links.count) { _, _ in
                         setup()
                     }.padding(.top, Spacing.customSearchBarHeight )
                 }
@@ -166,7 +200,10 @@ struct HomeView: View {
             
         }.onTapGesture {
             UIApplication.shared.endEditing()
-        }.onChange(of: links) { _, _ in
+        }.onAppear{
+            setup()
+        }
+        .onChange(of: links.count) { _, _ in
             setup()
         }
     }

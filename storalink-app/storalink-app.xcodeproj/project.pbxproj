@@ -50,6 +50,8 @@
 		9FBA0D5F2B7C51D2005C6F07 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBA0D5E2B7C51D2005C6F07 /* Errors.swift */; };
 		9FBA0D612BA77F4A005C6F07 /* SelectFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBA0D602BA77F4A005C6F07 /* SelectFolderView.swift */; };
 		9FBA0D652BA78230005C6F07 /* ShareEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBA0D642BA78230005C6F07 /* ShareEntry.swift */; };
+		9FBA0D672BA85C86005C6F07 /* FoldersModelWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBA0D662BA85C86005C6F07 /* FoldersModelWrapper.swift */; };
+		9FBA0D692BA86201005C6F07 /* FolderModelWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBA0D682BA86201005C6F07 /* FolderModelWrapper.swift */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -158,6 +160,8 @@
 		9FBA0D5E2B7C51D2005C6F07 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		9FBA0D602BA77F4A005C6F07 /* SelectFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFolderView.swift; sourceTree = "<group>"; };
 		9FBA0D642BA78230005C6F07 /* ShareEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEntry.swift; sourceTree = "<group>"; };
+		9FBA0D662BA85C86005C6F07 /* FoldersModelWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersModelWrapper.swift; sourceTree = "<group>"; };
+		9FBA0D682BA86201005C6F07 /* FolderModelWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderModelWrapper.swift; sourceTree = "<group>"; };
 		9FD082D02B1437A4004021FC /* Storalink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storalink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -369,6 +373,8 @@
 				9FD082FC2B14490B004021FC /* UserModel.swift */,
 				9F7260992B3BF31900A49628 /* FolderModel.swift */,
 				9F7260972B3BF30E00A49628 /* LinkModel.swift */,
+				9FBA0D662BA85C86005C6F07 /* FoldersModelWrapper.swift */,
+				9FBA0D682BA86201005C6F07 /* FolderModelWrapper.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -623,6 +629,7 @@
 				9FD355842B4B8B3A000574DD /* LocalFileManager.swift in Sources */,
 				9F7260A62B3D21DB00A49628 /* PreviewContainer.swift in Sources */,
 				9FD082FD2B14490B004021FC /* UserModel.swift in Sources */,
+				9FBA0D692BA86201005C6F07 /* FolderModelWrapper.swift in Sources */,
 				9FEB2E822B328064005A300C /* FolderView.swift in Sources */,
 				9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */,
 				9FD082ED2B144263004021FC /* LinkViewModel.swift in Sources */,
@@ -638,6 +645,7 @@
 				9F7260B72B47957900A49628 /* TutorialView.swift in Sources */,
 				9F7260BB2B48B67300A49628 /* HomeView.swift in Sources */,
 				9F72607A2B3A325100A49628 /* CreateLinkViewModel.swift in Sources */,
+				9FBA0D672BA85C86005C6F07 /* FoldersModelWrapper.swift in Sources */,
 				9FD083102B147C6A004021FC /* SearchBarView.swift in Sources */,
 				9FD082FB2B14440D004021FC /* LoginView.swift in Sources */,
 				9F7260AE2B47619B00A49628 /* CredentialEncryption.swift in Sources */,
@@ -847,7 +855,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "storalink-app/storalink-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4.1;
+				CURRENT_PROJECT_VERSION = 4.2;
 				DEVELOPMENT_ASSET_PATHS = "\"storalink-app/Preview Content\"";
 				DEVELOPMENT_TEAM = 2JF8FU3N7N;
 				ENABLE_PREVIEWS = YES;
@@ -880,7 +888,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "storalink-app/storalink-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4.1;
+				CURRENT_PROJECT_VERSION = 4.2;
 				DEVELOPMENT_ASSET_PATHS = "\"storalink-app/Preview Content\"";
 				DEVELOPMENT_TEAM = 2JF8FU3N7N;
 				ENABLE_PREVIEWS = YES;

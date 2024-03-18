@@ -8,16 +8,27 @@
 import SwiftUI
 import SwiftData
 
+
+
+
 struct FolderItemView: View {
     let localFileManager = LocalFileManager.manager
     let modelUtils = ModelUtilManager.manager
     let folderManager = FolderManager.manager
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
-    @Bindable var currentFolder: Folder
+    var currentFolderWrapper: FolderModelWrapper
+    @State var currentFolder: Folder
     @Environment(\.modelContext) var modelContext
     @State var folderItemViewModel = FolderItemViewModel()
     @State private var showingDeletionAlert = false
+    init(folder: Folder) {
+        self.currentFolderWrapper = FolderModelWrapper(folder: folder)
+        self.currentFolder = folder
+    }
     
+//    private func setUp() {
+//        self.currentFolder = currentFolderWrapper.getFolder()
+//    }
     var body: some View {
         VStack(alignment: .leading) {
             ZStack(alignment: .topTrailing) {
@@ -34,17 +45,6 @@ struct FolderItemView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(width: 160, height: 135)
-//                        .cornerRadius(Spacing.small)
-//                        .padding(.bottom, -Spacing.small)
-//                    AsyncImage(url: URL(string: "https://storalink-image.s3.amazonaws.com/images/1707168053737-xiaochuan.jpeg")) { image in
-//                                image.resizable()
-//                            } placeholder: {
-//                                ProgressView()
-//                            }
-//                            .scaledToFill()
-//                            .frame(width: 160, height: 155)
-//                            .cornerRadius(8) // Assuming Spacing.small is equivalent to 8
-//                            .padding(.bottom, -8)
                 }
                 
                 // Heart icon button
@@ -64,8 +64,6 @@ struct FolderItemView: View {
             .frame(width: 160, height: 135)
             .clipped() // Apply clipping here, outside the ZStack
             
-            
-            //                Spacer()
             HStack {
                 Text(currentFolder.title)
                     .lineLimit(2)
@@ -164,9 +162,12 @@ struct FolderItemView: View {
             navigationStateManager.navigationPath.append(NavigationItem.folderView)
             navigationStateManager.focusFolder = currentFolder
         })
+        .onAppear{
+            print("current folder links num: \(currentFolder.links.count)")
+        }
     }
 }
 
 #Preview {
-    FolderItemView(currentFolder: Folder(title: "Sun xiaochuan 28", imgUrl: "", links: [])).environment(NavigationStateManager())
+    FolderItemView(folder: Folder(title: "Sun xiaochuan 28", imgUrl: "", links: [])).environment(NavigationStateManager())
 }

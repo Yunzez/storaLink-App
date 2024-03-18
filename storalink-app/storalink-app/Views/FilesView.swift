@@ -52,7 +52,7 @@ struct FilesView: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVGrid(columns: columns, spacing: 20) {
                             ForEach(folders, id: \.self) { folder in
-                                FolderItemView(currentFolder: folder)
+                                FolderItemView(folder: folder)
                                     .frame(minWidth: 0, maxWidth: .infinity)
                             }
                         }.padding(.horizontal) // Add horizontal padding

@@ -8,12 +8,13 @@
 import SwiftUI
 import SwiftData
 import PhotosUI
-@MainActor
+//@MainActor
+
 struct ShareView: View {
     @Environment(\.modelContext) var modelContext: ModelContext
     let fetcher = LinkMetaDataFetcher.fetcher
     let fileManager = LocalFileManager.manager
-    let modelUtil  = ModelUtilManager.manager
+    @State var modelUtil  = ModelUtilManager.manager
     
     @Query var folders: [Folder]
     @State var sharedURL: String?
@@ -61,7 +62,7 @@ struct ShareView: View {
     }
     
     func prepareLinkForFolder() {
-        for folder in userFolders {
+        for folder in folders {
             if folder.id == folderId {
                 var imagePath = ""
                 var iconPath = ""
@@ -72,12 +73,27 @@ struct ShareView: View {
                 if let saveIcon = icon {
                     iconPath = self.fileManager.saveImage(image: saveIcon)
                 }
-                let newLink = Link(title: titleText, imgUrl: imagePath, desc: descriptionText, linkUrl: linkText)
-                newLink.iconUrl = iconPath
-                modelUtil.addLinkToFolder(link: newLink, folder: folder, modelContext: modelContext)
+                print("before: \(folder.links.count)")
+                let newLink = Link(title: titleText, imgUrl: imagePath, desc: descriptionText, linkUrl: linkText, parentFolder: folder, iconUrl: iconPath)
+                //                modelUtil.addLinkToFolder(link: newLink, folder: folder, modelContext: modelContext)
+                modelContext.insert(newLink)
+                do {
+                    try modelContext.save()
+                    print("after: \(folder.links.count)")
+                    if let sharedDefaults = UserDefaults(suiteName: "group.com.storalink.appgroup") {
+                        sharedDefaults.set(true, forKey: "DataUpdatedFlag")
+                        sharedDefaults.set(newLink.id.uuidString, forKey: "IncomingNewLinkId")
+                        sharedDefaults.synchronize()
+                    }
+                    
+                    onCancel()
+                    
+                } catch {
+                    
+                }
+                
             }
         }
-        onCancel()
     }
     
     func setUp(){
@@ -94,11 +110,6 @@ struct ShareView: View {
         //            return
         //        }
         
-        for folder in folders {
-            //            if folder.user?.email == userEmail {
-            userFolders.append(folder)
-            //            }
-        }
         
         if let url = sharedURL {
             fetcher.fetch(link: url) { data, _  in
