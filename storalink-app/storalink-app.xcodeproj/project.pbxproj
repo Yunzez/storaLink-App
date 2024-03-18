@@ -48,6 +48,8 @@
 		9F7260C02B48DEDD00A49628 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F7260B82B47972600A49628 /* LaunchScreen.storyboard */; };
 		9FBA0D5D2B7B0772005C6F07 /* UserActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBA0D5C2B7B0772005C6F07 /* UserActor.swift */; };
 		9FBA0D5F2B7C51D2005C6F07 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBA0D5E2B7C51D2005C6F07 /* Errors.swift */; };
+		9FBA0D612BA77F4A005C6F07 /* SelectFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBA0D602BA77F4A005C6F07 /* SelectFolderView.swift */; };
+		9FBA0D652BA78230005C6F07 /* ShareEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBA0D642BA78230005C6F07 /* ShareEntry.swift */; };
 		9FD082D42B1437A4004021FC /* storalink_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D32B1437A4004021FC /* storalink_appApp.swift */; };
 		9FD082D62B1437A4004021FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D52B1437A4004021FC /* ContentView.swift */; };
 		9FD082D82B1437A4004021FC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD082D72B1437A4004021FC /* Item.swift */; };
@@ -154,6 +156,8 @@
 		9F7260C22B48E20500A49628 /* storalink-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "storalink-app.entitlements"; sourceTree = "<group>"; };
 		9FBA0D5C2B7B0772005C6F07 /* UserActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActor.swift; sourceTree = "<group>"; };
 		9FBA0D5E2B7C51D2005C6F07 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		9FBA0D602BA77F4A005C6F07 /* SelectFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFolderView.swift; sourceTree = "<group>"; };
+		9FBA0D642BA78230005C6F07 /* ShareEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEntry.swift; sourceTree = "<group>"; };
 		9FD082D02B1437A4004021FC /* Storalink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storalink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD082D32B1437A4004021FC /* storalink_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storalink_appApp.swift; sourceTree = "<group>"; };
 		9FD082D52B1437A4004021FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -244,6 +248,8 @@
 				9F7260832B3A831F00A49628 /* ShareViewController.swift */,
 				9F7260902B3A84C900A49628 /* ShareView.swift */,
 				9F7260882B3A831F00A49628 /* Info.plist */,
+				9FBA0D602BA77F4A005C6F07 /* SelectFolderView.swift */,
+				9FBA0D642BA78230005C6F07 /* ShareEntry.swift */,
 			);
 			path = StoralinkSaveLink;
 			sourceTree = "<group>";
@@ -562,7 +568,9 @@
 			files = (
 				9F7260BF2B48DEA500A49628 /* LinkModel.swift in Sources */,
 				9F7260912B3A84C900A49628 /* ShareView.swift in Sources */,
+				9FBA0D652BA78230005C6F07 /* ShareEntry.swift in Sources */,
 				9FD355882B4CC5BD000574DD /* ModelUtilManager.swift in Sources */,
+				9FBA0D612BA77F4A005C6F07 /* SelectFolderView.swift in Sources */,
 				9F7260BE2B48DEA200A49628 /* FolderModel.swift in Sources */,
 				9FD355892B4DA789000574DD /* LinkMetaDataFetcher.swift in Sources */,
 				9F7260BC2B48DE3900A49628 /* UserModel.swift in Sources */,

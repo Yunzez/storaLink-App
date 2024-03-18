@@ -54,7 +54,8 @@ class ShareViewController: UIViewController {
                 
                 if let text = providedText as? String {
                     DispatchQueue.main.async {
-                        let swiftUIView = ShareView( sharedURL: text, onCancel: self.close).modelContainer(extensionModelContainer)
+                        let swiftUIView = ShareEntry( sharedURL: text, onCancel: self.close).modelContainer(extensionModelContainer)
+//                        ShareView( sharedURL: text, onCancel: self.close).modelContainer(extensionModelContainer)
                        
                         // Set up the hosting controller as before
                         let hostingController = UIHostingController(rootView: swiftUIView)

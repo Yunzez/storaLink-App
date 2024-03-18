@@ -178,22 +178,23 @@ struct SettingsView: View {
                                                    
                         //                            UserSettingTab(iconName: "storefront", title: "Rate us")
                         //                        }
-                        
-                        HStack{
-                            Spacer()
-                            Button("Log Out") {
-                                // Handle log out
-                                appViewModel.logoutUser()
+                        if appViewModel.userId != nil {
+                            HStack{
+                                Spacer()
+                                Button("Log Out") {
+                                    // Handle log out
+                                    appViewModel.logoutUser()
+                                    
+                                }
+                                .padding()
+                                .padding(.horizontal)
+                                .background(Color.gray) // Adjust color as needed
+                                .cornerRadius(10)
+                                .foregroundColor(.white) // Adjust text color as needed
+                                .shadow(radius: 2)
                                 
+                                Spacer()
                             }
-                            .padding()
-                            .padding(.horizontal)
-                            .background(Color.gray) // Adjust color as needed
-                            .cornerRadius(10)
-                            .foregroundColor(.white) // Adjust text color as needed
-                            .shadow(radius: 2)
-                            
-                            Spacer()
                         }
                     }.padding(.horizontal)
                 }

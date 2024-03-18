@@ -16,6 +16,7 @@ struct FilesViewEntry: View {
 }
 
 struct FilesView: View {
+    @Environment(NavigationStateManager.self) private var navigationStateManager : NavigationStateManager
     var filterUserID: UUID?
     @Query private var folders: [Folder]
     @State var viewModel = SearchBarViewModel()
@@ -34,17 +35,32 @@ struct FilesView: View {
                 }
             }.zIndex(2.0)
           
-            VStack{
-                ScrollView(.vertical, showsIndicators: false) {
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(folders, id: \.self) { folder in
-                            FolderItemView(currentFolder: folder)
-                                .frame(minWidth: 0, maxWidth: .infinity)
-                        }
-                    }.padding(.horizontal) // Add horizontal padding
-                }
-            }.padding(.top, Spacing.customSearchBarHeight )
-            .padding(.top, Spacing.small)
+            if folders.count == 0 {
+                VStack{
+                    Spacer()
+                    Image("Empty")
+                    Text("You have no files yet!").font(.title2).bold()
+                    Text("Hey there! Get started using Storalink by tapping on the button below to create your first folder!").font(.subheadline)
+                        .multilineTextAlignment(.center).padding(3)
+                    CustomButton(action: {
+                        navigationStateManager.navigationPath.append(NavigationItem.createFolderView)
+                    }, label: "Create Folder", style: .fill)
+                    Spacer()
+                }.padding()
+            } else {
+                VStack{
+                    ScrollView(.vertical, showsIndicators: false) {
+                        LazyVGrid(columns: columns, spacing: 20) {
+                            ForEach(folders, id: \.self) { folder in
+                                FolderItemView(currentFolder: folder)
+                                    .frame(minWidth: 0, maxWidth: .infinity)
+                            }
+                        }.padding(.horizontal) // Add horizontal padding
+                    }
+                }.padding(.top, Spacing.customSearchBarHeight )
+                    .padding(.top, Spacing.small)
+            }
+                
             
         }.padding(.bottom, Spacing.customNavigationBarHeight )
         

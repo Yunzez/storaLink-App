@@ -66,11 +66,11 @@ struct ShareView: View {
                 var imagePath = ""
                 var iconPath = ""
                 if let saveImage = image {
-                     imagePath = self.fileManager.saveImage(image: saveImage)
+                    imagePath = self.fileManager.saveImage(image: saveImage)
                 }
                 
                 if let saveIcon = icon {
-                     iconPath = self.fileManager.saveImage(image: saveIcon)
+                    iconPath = self.fileManager.saveImage(image: saveIcon)
                 }
                 let newLink = Link(title: titleText, imgUrl: imagePath, desc: descriptionText, linkUrl: linkText)
                 newLink.iconUrl = iconPath
@@ -81,23 +81,23 @@ struct ShareView: View {
     }
     
     func setUp(){
-        guard let sharedDefaults = UserDefaults(suiteName: "group.com.storalink.appgroup") else {
-                print("Unable to access shared UserDefaults")
-                return
-            }
-
-        if let foundEmail = sharedDefaults.string(forKey: "lastLoggedinUser") {
-            print("user logged in before")
-            userEmail = foundEmail
-        } else {
-            print("user has not logged in before")
-            return
-        }
+        //        guard let sharedDefaults = UserDefaults(suiteName: "group.com.storalink.appgroup") else {
+        //            print("Unable to access shared UserDefaults")
+        //            return
+        //        }
+        //
+        //        if let foundEmail = sharedDefaults.string(forKey: "lastLoggedinUser") {
+        //            print("user logged in before")
+        //            userEmail = foundEmail
+        //        } else {
+        //            print("user has not logged in before")
+        //            return
+        //        }
         
         for folder in folders {
-            if folder.user?.email == userEmail {
-                userFolders.append(folder)
-            }
+            //            if folder.user?.email == userEmail {
+            userFolders.append(folder)
+            //            }
         }
         
         if let url = sharedURL {
@@ -120,214 +120,168 @@ struct ShareView: View {
             return folders
         }
         let filteredFolders = folders.filter { folder in
-               folder.title.localizedCaseInsensitiveContains(folderName)
+            folder.title.localizedCaseInsensitiveContains(folderName)
         }
         return filteredFolders
     }
     
     var body: some View {
-        ScrollView{
-            VStack{
-                HStack{
-                    Button {
-                        onCancel()
-                    } label: {
-                        Text("Cancel").foregroundColor(Color("ThemeColor"))
-                    }
-                    Spacer()
-                    Image("Logo")
-                    Spacer()
-                    Button {
-                        prepareLinkForFolder()
-                    } label: {
-                        Text("Add").foregroundColor(Color("ThemeGray")).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                    }
-                    
-                }.padding()
-                
-                HStack{
-                    TextEditor(text: $linkText)
-                        .padding(2) // This padding is for inside the TextEditor, between the text and the border
-                        .frame(minHeight: 100)
-                        .background(Color.white) // Set the background color to white or any other color as needed
-                        .cornerRadius(2) // Set the corner radius as needed
-                        .padding(.vertical)
-                    
-                    if let image = image {
-                        PhotosPicker(selection: $photoPickerItem, matching: .images) {
-                            Image(uiImage: image).resizable() // Allows the image to be resized
-                                .scaledToFit() // Maintain the aspect ratio of the image
-                                .frame(width: 120, height: 100)
+        NavigationView{
+            ScrollView{
+                VStack{
+                    HStack{
+                        Button {
+                            onCancel()
+                        } label: {
+                            Text("Cancel").foregroundColor(Color("ThemeColor"))
+                        }
+                        Spacer()
+                        Image("Logo").resizable().frame(width: 20, height: 20, alignment: .center)
+                        Spacer()
+                        Button {
+                            prepareLinkForFolder()
+                        } label: {
+                            Text("Add").foregroundColor(Color("ThemeGray")).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                         }
                         
-                    } else {
-                        PhotosPicker(selection: $photoPickerItem, matching: .images) {
-                            Image(uiImage: image ?? UIImage(resource: .linkDefaultImg))
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 120, height: 100)
-                                .cornerRadius(60.0)
-                                .clipped()
-                                .padding()
-                            
-                        }
-                    }
-                }.frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/).padding(.horizontal)
-                
-                
-                VStack {
-                    Text("Title")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
+                    }.padding()
                     
-                    HStack {
-                        TextField("Enter title here", text: $titleText, onCommit: {
-                            // Reset selectedText when the user commits (e.g., presses return)
-                            print("commit title")
-                            selectedText = -1
-                        })
-                        .textFieldStyle(NoBorderTextFieldStyle()) // Apply the custom text field style
-                        .padding(.leading, 10)
-                        .focused($isTitleInputFocused) // Track the focus state
-                        .onChange(of: isTitleInputFocused, initial: true) { wasFocused, isFocused in
-                            // Update selectedText based on focus change
-                            print("focus title")
-                            if isFocused {
-                                selectedText = 0  // Assuming this is the index for this text field
+                    HStack{
+                        TextEditor(text: $linkText)
+                            .padding(2) // This padding is for inside the TextEditor, between the text and the border
+                            .frame(minHeight: 100)
+                            .background(Color.white) // Set the background color to white or any other color as needed
+                            .cornerRadius(2) // Set the corner radius as needed
+                            .padding(.vertical)
+                        
+                        if let image = image {
+                            PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                                Image(uiImage: image).resizable() // Allows the image to be resized
+                                    .scaledToFit() // Maintain the aspect ratio of the image
+                                    .frame(width: 120, height: 100)
                             }
                             
+                        } else {
+                            PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                                Image(uiImage: image ?? UIImage(resource: .linkDefaultImg))
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 120, height: 100)
+                                    .cornerRadius(60.0)
+                                    .clipped()
+                                    .padding()
+                                
+                            }
                         }
-                    }
-                }
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10) // Overlay a rounded rectangle
-                        .stroke(selectedText == 0 ? Color("ThemeColor") : Color("ThemeGray"), lineWidth: 2) // Set the border color based on selectedText
-                )
-                .padding(.horizontal) // Add padding around the overlay
-                
-                
-                
-                VStack {
-                    Text("Author")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
+                    }.frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/).padding(.horizontal)
                     
-                    HStack {
-                        TextField("Enter author here", text: $authorText, onCommit: {
-                            // Reset selectedText when the user commits (e.g., presses return)
-                            print("commit author")
-                            selectedText = -1
-                        }).textFieldStyle(NoBorderTextFieldStyle()) // Apply the custom text field style
+                    VStack {
+                        Text("Title")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(.themeGray)
                             .padding(.leading, 10)
-                            .focused($isAuthorInputFocused) // Track the focus state
-                            .onChange(of: isAuthorInputFocused, initial: true) { wasFocused, isFocused in
+                            .padding(.top, 3)
+                        
+                        HStack {
+                            TextField("Enter title here", text: $titleText, onCommit: {
+                                // Reset selectedText when the user commits (e.g., presses return)
+                                print("commit title")
+                                selectedText = -1
+                            })
+                            .textFieldStyle(NoBorderTextFieldStyle()) // Apply the custom text field style
+                            .focused($isTitleInputFocused) // Track the focus state
+                            .onChange(of: isTitleInputFocused, initial: true) { wasFocused, isFocused in
                                 // Update selectedText based on focus change
-                                print("focus author")
+                                print("focus title")
                                 if isFocused {
-                                    selectedText = 1  // Assuming this is the index for this text field
+                                    selectedText = 0  // Assuming this is the index for this text field
                                 }
                                 
                             }
+                        }
                     }
-                }
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10) // Overlay a rounded rectangle
-                        .stroke(selectedText == 1 ? Color("ThemeColor") : Color("ThemeGray"), lineWidth: 2) // Set the border color based on selectedText
-                )
-                .padding(.horizontal) // Add padding around the overlay
-                
-                
-                VStack {
-                    Text("Description")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                    
-                    
-                    TextEditor( text: $descriptionText).textFieldStyle(NoBorderTextFieldStyle()) // Apply the custom text field style
-                        .focused($isDescriptionInputFocused) // Track the focus state
-                        .onChange(of: isDescriptionInputFocused, initial: true) { wasFocused, isFocused in
-                            // Update selectedText based on focus change
-                            print("focus author")
-                            if isFocused {
-                                selectedText = 2  // Assuming this is the index for this text field
-                            }
-                            
-                        }.padding(.horizontal)
-                    
-                }
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10) // Overlay a rounded rectangle
-                        .stroke(selectedText == 2 ? Color("ThemeColor") : Color("ThemeGray"), lineWidth: 2) // Set the border color based on selectedText
-                ).frame(height: 190)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10) // Overlay a rounded rectangle
+                            .stroke(selectedText == 0 ? Color("ThemeColor") : Color.clear, lineWidth: 2) // Set the border color based on selectedText
+                    )
                     .padding(.horizontal) // Add padding around the overlay
-                
-                
-                ZStack{
-                    VStack{
-                        VStack {
-                            Text("Save to folder")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding()
-                            
-                            TextField("search folders...", text: $folderName, onCommit: {
+                    
+                    VStack {
+                        Text("Author")
+                            .foregroundColor(.themeGray)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 10)
+                            .padding(.top, 3)
+                        
+                        HStack {
+                            TextField("Enter author here", text: $authorText, onCommit: {
                                 // Reset selectedText when the user commits (e.g., presses return)
+                                print("commit author")
                                 selectedText = -1
                             }).textFieldStyle(NoBorderTextFieldStyle()) // Apply the custom text field style
-                                .padding(.leading, 10)
-                                .focused($isFolderInputFocused)
-                                .onChange(of: isFolderInputFocused, initial: true) { wasFocused, isFocused in
+                                .focused($isAuthorInputFocused) // Track the focus state
+                                .onChange(of: isAuthorInputFocused, initial: true) { wasFocused, isFocused in
                                     // Update selectedText based on focus change
                                     print("focus author")
                                     if isFocused {
-                                        selectedText = 3  // Assuming this is the index for this text field
-                                        showSearchResult = true
+                                        selectedText = 1  // Assuming this is the index for this text field
                                     }
                                     
-                                }.padding(.horizontal)
-                        }.overlay(
-                            RoundedRectangle(cornerRadius: 10) // Overlay a rounded rectangle
-                                .stroke(selectedText == 3 ? Color("ThemeColor") : Color("ThemeGray"), lineWidth: 2) // Set the border color based on selectedText
-                        ).padding(.horizontal) // Add padding around the overlay
-                        
-                        
-                        if showSearchResult {
-                            ScrollView(.vertical) {
-                                VStack(alignment: .leading) {
-                                    ForEach(filterFolder(folders: userFolders)) { folder in
-                                        Button {
-                                            folderName = folder.title
-                                            folderId = folder.id
-                                            withAnimation {
-                                                showSearchResult = false
-                                            }
-                                        } label: {
-                                            HStack {
-                                                Image("Folder").resizable().aspectRatio(contentMode: .fit).frame(width: 25, height: 25)
-                                                Text(folder.title)
-                                                    .foregroundColor(Color("ThemeBlack")) // Set the text color
-                                            }
-                                            .padding(.vertical, 8) // Add some vertical padding for tap comfort
-                                        }
-                                        .padding(.horizontal) // Add horizontal padding for better alignment
-                                        Divider() // Add a divider between items
-                                    }
                                 }
-                            }
-                            .background(Color.white)
-                            .cornerRadius(4)
-                            .shadow(radius: 1)
-                            .padding(.horizontal)
-                            .transition(.asymmetric(
-                                insertion: .identity.combined(with: .opacity),
-                                removal: AnyTransition.opacity.combined(with: .scale(scale: 0.5, anchor: .top))
-                            ))
-                            .animation(.easeInOut, value: showSearchResult)
-                            .frame(maxWidth: .infinity, maxHeight: 200)
                         }
                     }
-                }
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10) // Overlay a rounded rectangle
+                            .stroke(selectedText == 1 ? Color("ThemeColor") : Color.clear, lineWidth: 2) // Set the border color based on selectedText
+                    )
+                    .padding(.horizontal) // Add padding around the overlay
                     
-
+                    
+                    VStack {
+                        Text("Description")
+                            .foregroundColor(.themeGray)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 10)
+                            .padding(.top, 3)
+                        
+                        
+                        TextEditor( text: $descriptionText).textFieldStyle(NoBorderTextFieldStyle()) // Apply the custom text field style
+                            .padding(.leading, 2)
+                            .focused($isDescriptionInputFocused) // Track the focus state
+                            .onChange(of: isDescriptionInputFocused, initial: true) { wasFocused, isFocused in
+                                print("focus author")
+                                if isFocused {
+                                    selectedText = 2  // Assuming this is the index for this text field
+                                }
+                                
+                            }
+                        
+                    }
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10) // Overlay a rounded rectangle
+                            .stroke(selectedText == 2 ? Color("ThemeColor") : Color.clear, lineWidth: 2) // Set the border color based on selectedText
+                    ).frame(height: 130)
+                        .padding(.horizontal) // Add padding around the overlay
+                    
+                    
+                    Divider()
+                    VStack{
+                        NavigationLink{SelectFolderView { folder in
+                            folderName = folder.title
+                            folderId = folder.id
+                        }} label: {
+                            HStack{
+                                Text("Share to").foregroundColor(.themeBlack)
+                                Spacer()
+                                Text("\(folderName)")
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.themeBlack)
+                            }
+                        }
+                        
+                        
+                    }.padding()
+                }
                 Spacer()
             }
         }.onTapGesture {
