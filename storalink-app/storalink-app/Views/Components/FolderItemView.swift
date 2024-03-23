@@ -168,6 +168,36 @@ struct FolderItemView: View {
     }
 }
 
+
+
+// this is the add folder place holder
+struct FolderItemAddView: View {
+    @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
+    
+    var body: some View {
+        Button {
+            print("go to button")
+            navigationStateManager.navigationPath.append(NavigationItem.createFolderView)
+        } label: {
+            VStack{
+                Spacer()
+                Image(systemName: "plus.circle")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(.themeBlack)
+                    .padding()
+                
+                Text("Add Folder").foregroundColor(.themeBlack)
+                Spacer()
+            }.frame(width: 160, height: 200)
+                .background(Color("SubtleTheme")) // Use actual card background color
+                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
+                .shadow(radius: 5)
+        }
+    }
+}
+
 #Preview {
-    FolderItemView(folder: Folder(title: "Sun xiaochuan 28", imgUrl: "", links: [])).environment(NavigationStateManager())
+//    FolderItemView(folder: Folder(title: "Sun xiaochuan 28", imgUrl: "", links: [])).environment(NavigationStateManager())
+    FolderItemAddView().environment(NavigationStateManager())
 }

@@ -10,7 +10,8 @@ import SwiftData
 
 let schema = Schema([
     Folder.self,
-    Link.self
+    Link.self,
+    Notice.self
 ])
 let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

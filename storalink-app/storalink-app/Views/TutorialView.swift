@@ -10,7 +10,7 @@ import SwiftUI
 enum TutorialStep {
     
     // all stages are in order
-    case Welcome, External, Internal, Organize, Folder, Signup, Privacy, Loading, FirstFolder
+    case Welcome, External, Internal, Organize, Folder, Privacy, Loading, FirstFolder
     
     func next() -> TutorialStep? {
         let allCases = TutorialStep.allCases
@@ -38,7 +38,6 @@ struct TutorialView: View {
     
     private var shouldShowUtilButtons: Bool {
         return currentStage != .Privacy
-        && currentStage != .Signup
         && currentStage != .Loading
     }
     
@@ -82,8 +81,8 @@ struct TutorialView: View {
                 organizeView
             case .Folder:
                 folderView
-            case .Signup:
-                SignupView()
+//            case .Signup:
+//                SignupView()
             case .Privacy:
                 ExtendedPrivacyView
             case .Loading:
@@ -313,7 +312,7 @@ private struct TutorialLoadingView: View {
 
 extension TutorialStep: CaseIterable {}
 
-//#Preview {
-////        TutorialView().environment(AppViewModel())
-////    ExtendedPrivacyView()
-//}
+#Preview {
+        TutorialView().environment(AppViewModel())
+//    ExtendedPrivacyView()
+}

@@ -16,6 +16,7 @@ enum LoadingStage {
 @Observable class CreateFolderViewModel: ObservableObject {
     let localFileManager = LocalFileManager.manager
     let folderManager = FolderManager.manager
+    let modelUtil = ModelUtilManager.manager
     var context: ModelContext?
     // Published properties that the view can subscribe to
     var folderName: String = ""
@@ -112,9 +113,7 @@ enum LoadingStage {
             
             do {
                 let newFolder = Folder(title: folderName, imgUrl: imgUrl, desc: folderDescription,  links: [])
-                let folders =  try context.fetch(FetchDescriptor<Folder>())
-                context.insert(newFolder)
-                try context.save()
+                modelUtil.createFolder(modelContext: context, folder: newFolder)
                 
                 
 //                Task{

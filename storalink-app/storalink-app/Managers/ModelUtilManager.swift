@@ -15,6 +15,7 @@ final class ModelUtilManager {
     private init() {} // Private initializer for Singleton
     
     func addLinkToFolder(link: Link, folder: Folder, modelContext: ModelContext) {
+        modelContext.insert(Notice(type: NoticeActionType.linkCreate, name: folder.title))
         if (folder.getLinkNum() == 0) {
             folder.links = [link]
         } else {
@@ -33,6 +34,9 @@ final class ModelUtilManager {
 //    }
     
     func deleteFolder(modelContext: ModelContext, folder: Folder) {
+        print("deleting folder")
+
+        modelContext.insert(Notice(type: NoticeActionType.folderDelete, name: folder.title))
         modelContext.delete(folder)
         do {
             try modelContext.save()
@@ -41,17 +45,32 @@ final class ModelUtilManager {
             try modelContext.delete(model: Link.self, where: #Predicate<Link> { link in
                 link.parentFolder == nil
             })
-            // MARK: - Temp deletetion ends
             
-            print("delet successfully, Links: ")
-            let allLinks = try modelContext.fetch(FetchDescriptor<Link>())
-            for link in allLinks {
-                print(link.toString())
-            }
         } catch {
             print("Saving deletion error: \(error)")
         }
     }
+    
+    func createFolder(modelContext: ModelContext, folder: Folder) {
+        modelContext.insert(Notice(type: NoticeActionType.folderCreate, name: folder.title))
+        modelContext.insert(folder)
+        do {
+            try modelContext.save()
+        } catch {
+            print("errors on creating folder")
+        }
+    }
+    
+    func deleteNotice(modelContext: ModelContext, notice: Notice) {
+        modelContext.delete(notice)
+        do {
+            try modelContext.save()
+        } catch {
+            print("errors on deleting notice")
+        }
+    }
+    
+   
     
     func addUserToLocalDB(modelContext: ModelContext, user: User) {
         do {

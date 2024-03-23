@@ -34,8 +34,8 @@ struct HomeView: View {
     // change to state for now, we are fetching on view onappear
     
     @Query var links: [Link] = []
-    @State var folders: [Folder] = []
-//    @Query var folders: [Folder] = []
+    @Query var folders: [Folder] = []
+    //    @Query var folders: [Folder] = []
     //    @Query() private var links: [Link]
     //    init(folders: [Folder]/*, links: [Link]*/) {
     //        self.folders = /*FoldersModelWrapper(folders: folders).folders*/folders
@@ -49,45 +49,42 @@ struct HomeView: View {
     
     func setup(){
         
-        let folderFetchDescriptor = FetchDescriptor<Folder>(
-            predicate:  #Predicate { folder in
-                return true
-            },
-            sortBy: [SortDescriptor(\Folder.creationDate, order: .reverse)]
-        )
-        
-        do {
-            folders = try modelContext.fetch(folderFetchDescriptor)
-        }catch {
-            print("Error in fetching folders")
-        }
-        
-//        if sharedDefaults?.bool(forKey: "DataUpdatedFlag") == true {
-//            print("Data was updated in the share extension.")
-//            
-//            // Reset the flag
-//            sharedDefaults?.set(false, forKey: "DataUpdatedFlag")
-//            
-//            links.forEach { link in
-//                if let folder = link.parentFolder {
-//                    print(folder.title)
-//                } else {
-//                    print("link has no parent")
-//                }
-//            }
-//            
-//            folders.forEach { folder in
-//                print("setup, folder link num: \(folder.links.count)")
-//            }
-//        } else {
-//            
-//        }
+        //        let folderFetchDescriptor = FetchDescriptor<Folder>(
+        //            predicate:  #Predicate { folder in
+        //                return true
+        //            },
+        //            sortBy: [SortDescriptor(\Folder.creationDate, order: .reverse)]
+        //        )
+        //
+        //        do {
+        //            folders = try modelContext.fetch(folderFetchDescriptor)
+        //        }catch {
+        //            print("Error in fetching folders")
+        //        }
+        //
+        //        if sharedDefaults?.bool(forKey: "DataUpdatedFlag") == true {
+        //            print("Data was updated in the share extension.")
+        //
+        //            // Reset the flag
+        //            sharedDefaults?.set(false, forKey: "DataUpdatedFlag")
+        //
+        //            links.forEach { link in
+        //                if let folder = link.parentFolder {
+        //                    print(folder.title)
+        //                } else {
+        //                    print("link has no parent")
+        //                }
+        //            }
+        //
+        //            folders.forEach { folder in
+        //                print("setup, folder link num: \(folder.links.count)")
+        //            }
+        //        } else {
+        //
+        //        }
         
         filteredLinks = filterLink()
         
-        
-        //        var folderCount = 5
-        // add custom fetch to filter data by creation date
         
         //        folderFetchDescriptor.fetchLimit = 5
     }
@@ -155,9 +152,16 @@ struct HomeView: View {
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 10) {
+                                    
                                     ForEach(folders) { folder in // Replace with your data source
                                         let preparedFolder = FolderModelWrapper(folder: folder).folder
                                         FolderItemView(folder: preparedFolder).foregroundColor(.primary) // Reuse the same custom view
+                                    }
+                                    
+                                    if (folders.count < 3) {
+                                        ForEach(0..<(3 - folders.count), id: \.self) { _ in
+                                            FolderItemAddView()
+                                        }
                                     }
                                 }
                                 .padding()
@@ -165,11 +169,16 @@ struct HomeView: View {
                         }
                         
                         // Recent Links Section
+                        HStack() {
+                            Text("Recent Links")
+                                .font(.headline)
+                                .padding([.leading])
+                            Spacer()
+                        }
+                        
                         if links.count > 0 {
                             VStack(alignment: .leading) {
-                                Text("Recent Links")
-                                    .font(.headline)
-                                    .padding(.leading)
+                                
                                 
                                 ScrollView(.vertical, showsIndicators: true) {
                                     VStack(spacing: 6) {
