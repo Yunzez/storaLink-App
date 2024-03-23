@@ -61,9 +61,27 @@ struct InfoView: View {
             .padding(.horizontal)
             
             if (sectionSelected == 1) {
-                ActivityInfoView()
+                ActivityInfoView().padding(.bottom, Spacing.customNavigationBarHeight )
                 Spacer()
             } else {
+                VStack{
+                    HStack{
+                        Text("Beta 4.2 note").font(.title3).padding(.leading)
+                        Spacer()
+                    }
+                    HStack{
+                        Text("""
+                                               • Added notice & activities
+                                               • Bug fixes and improved UI
+                                               • Improve Share extensions
+                                               """).padding(.leading)
+                        Spacer()
+                    }
+                }.padding()
+                    .background(Color("SubtleTheme")) // Use actual card background color
+                    .clipShape(RoundedRectangle(cornerSize: CGSize(width: 6, height: 6)))
+                    .shadow(radius: 5)
+                    .padding(2)
                 Spacer()
             }
         }
@@ -95,9 +113,9 @@ struct ActivityInfoView: View {
     }
     
     private func deleteNotice(notice: Notice ) {
-      
-            // Assuming you have a method in your modelContext to delete a notice
-            modelUtil.deleteNotice(modelContext: modelContext, notice: notice)
+        
+        // Assuming you have a method in your modelContext to delete a notice
+        modelUtil.deleteNotice(modelContext: modelContext, notice: notice)
         
     }
 }
@@ -180,28 +198,28 @@ struct InfoCard: View {
             // Delete button, initially hidden and revealed by swipe
             if offset.width < -80 {
                 HStack {
-                       Spacer()
+                    Spacer()
                     
                     Button {
                         onDelete(currentNotice)
                     } label: {
                         Image(systemName: "trash.fill")
-                            // Correcting the scaling factor; adjust the divisor as needed for appropriate scaling
+                        // Correcting the scaling factor; adjust the divisor as needed for appropriate scaling
                             .scaleEffect(min(-offset.width / 80, 2.5), anchor: .center) // Ensuring the scale starts small and increases
                             .foregroundColor(.red)
                             .padding()
                             .background(Color.white)
                     }
-                       .offset(x: offset.width < -80 ? offset.width + 100 : 0) // Adjust this calculation as needed
-                   }
-                   .transition(.move(edge: .trailing))
-                   .animation(.easeOut, value: offset.width)
+                    .offset(x: offset.width < -80 ? offset.width + 100 : 0) // Adjust this calculation as needed
+                }
+                .transition(.move(edge: .trailing))
+                .animation(.easeOut, value: offset.width)
             }
         }
         
     }
     
-
+    
 }
 
 //#Preview {
