@@ -100,20 +100,20 @@ struct FolderView: View {
                             .cornerRadius(Spacing.small)
                             .frame(height: buttonHeight) // Set the frame of the button
                             
-                            Menu {
-                                Button("Menu Item 1", action: { print("Menu Item 1 tapped") })
-                                Button("Menu Item 2", action: { print("Menu Item 2 tapped") })
-                                Button("Menu Item 3", action: { print("Menu Item 3 tapped") })
-                            } label: {
-                                Image(systemName: "ellipsis")
-                                    .foregroundColor(.gray)
-                                    .imageScale(.large)
-                                    .frame(width: buttonHeight, height: buttonHeight)
-                                    .padding(Spacing.small)
-                                    .background(Color("SubtleTheme").opacity(0.8))
-                                    .cornerRadius(Spacing.small)
-                            }
-                            .frame(height: buttonHeight)
+//                            Menu {
+//                                Button("Menu Item 1", action: { print("Menu Item 1 tapped") })
+//                                Button("Menu Item 2", action: { print("Menu Item 2 tapped") })
+//                                Button("Menu Item 3", action: { print("Menu Item 3 tapped") })
+//                            } label: {
+//                                Image(systemName: "ellipsis")
+//                                    .foregroundColor(.gray)
+//                                    .imageScale(.large)
+//                                    .frame(width: buttonHeight, height: buttonHeight)
+//                                    .padding(Spacing.small)
+//                                    .background(Color("SubtleTheme").opacity(0.8))
+//                                    .cornerRadius(Spacing.small)
+//                            }
+//                            .frame(height: buttonHeight)
                             
                             
                         }.padding(Spacing.small)

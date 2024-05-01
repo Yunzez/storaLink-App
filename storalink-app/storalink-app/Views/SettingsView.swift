@@ -107,38 +107,30 @@ struct SettingsView: View {
                     
                     VStack{
                         
-                        Section(
-                            header:
-                                HStack{
-                                    Text("Application")
-                                        .fontWeight(.semibold)
-                                        .padding(.top, 20)
-                                    Spacer()
-                                }
-                        ) {
-                            NavigationLink(destination: UserInfoSettingView()) {
-                                UserSettingTab(iconName: "person", title: "Account")
-                            }
-                            NavigationLink(destination: {
-                                SyncDataView()
-                            }) {
-                                UserSettingTab(iconName: "cloud", title: "Sync Data")
-                            }
-                            //                            UserSettingTab(iconName: "paintbrush", title: "Appearance")
-                            //                            UserSettingTab(iconName: "bell", title: "Notification")
-//                            NavigationLink {
-//                                ChangePlanView()
-//                            } label: {
-//                                UserSettingTab(iconName: "cart", title: "Change Plan")
+//                        Section(
+//                            header:
+//                                HStack{
+//                                    Text("Application")
+//                                        .fontWeight(.semibold)
+//                                        .padding(.top, 20)
+//                                    Spacer()
+//                                }
+//                        ) {
+//                            NavigationLink(destination: UserInfoSettingView()) {
+//                                UserSettingTab(iconName: "person", title: "Account")
 //                            }
-                            
-                            
-                        }
+//                            NavigationLink(destination: {
+//                                SyncDataView()
+//                            }) {
+//                                UserSettingTab(iconName: "cloud", title: "Sync Data")
+//                            }
+//                            
+//                        }
                         
                         Section(
                             header:
                                 HStack{
-                                    Text("Important")
+                                    Text("Data & Privacy")
                                         .fontWeight(.semibold)
                                         .padding(.top, 20)
                                     Spacer()
