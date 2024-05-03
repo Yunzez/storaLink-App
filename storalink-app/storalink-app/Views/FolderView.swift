@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct FolderView: View {
-    
+    let modelUtils = ModelUtilManager.manager
+    @Environment(\.modelContext) var modelContext
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
-    @Bindable var folderViewModel: FolderViewModel
+    @ObservedObject var folderViewModel: FolderViewModel  = FolderViewModel()
+    @State var openFolderEditSheet: Bool = false
+    @State var showEditSheet :Bool = false
+    @State var showingDeletionAlert: Bool = false
     @State var currentFolder: Folder = Folder(title: "Initial", imgUrl: "", desc: "Initial Folder", links: [])
     let localFileManager = LocalFileManager.manager
     
     
     let buttonHeight: CGFloat = 25
-    
-    init() {
-        folderViewModel = FolderViewModel()
-    }
     
     var body: some View {
         NavigationView {
@@ -100,20 +100,19 @@ struct FolderView: View {
                             .cornerRadius(Spacing.small)
                             .frame(height: buttonHeight) // Set the frame of the button
                             
-//                            Menu {
-//                                Button("Menu Item 1", action: { print("Menu Item 1 tapped") })
-//                                Button("Menu Item 2", action: { print("Menu Item 2 tapped") })
-//                                Button("Menu Item 3", action: { print("Menu Item 3 tapped") })
-//                            } label: {
-//                                Image(systemName: "ellipsis")
-//                                    .foregroundColor(.gray)
-//                                    .imageScale(.large)
-//                                    .frame(width: buttonHeight, height: buttonHeight)
-//                                    .padding(Spacing.small)
-//                                    .background(Color("SubtleTheme").opacity(0.8))
-//                                    .cornerRadius(Spacing.small)
-//                            }
-//                            .frame(height: buttonHeight)
+                            Button {
+                                openFolderEditSheet = true
+                            } label: {
+                                Image(systemName: "ellipsis")
+                                    .foregroundColor(.gray)
+                                    .imageScale(.large)
+                                    .frame(width: buttonHeight, height: buttonHeight)
+                                    .padding(Spacing.small)
+                                    .background(Color("SubtleTheme").opacity(0.8))
+                                    .cornerRadius(Spacing.small)
+                            }.frame(height: buttonHeight)
+
+                            
                             
                             
                         }.padding(Spacing.small)
@@ -169,9 +168,6 @@ struct FolderView: View {
                                 print("Button tapped")
                                 folderViewModel.showCreateSheet = true
                             }, label: "Add", imageSystemName: "plus.circle", style: .fill)
-                            .sheet(isPresented: $folderViewModel.showCreateSheet) {
-                                CreateLinkView().padding([.top])
-                            }
                             
                             Spacer()
                         }
@@ -262,7 +258,62 @@ struct FolderView: View {
         .onDisappear {
             navigationStateManager.exitSubMenu()
         }.navigationBarBackButtonHidden(true)
-        //            .navigationBarItems(leading: backButton)
+            .sheet(isPresented: $folderViewModel.showCreateSheet, content: {
+                CreateLinkView().padding([.top])
+            })
+            .sheet(isPresented: $openFolderEditSheet, content: {
+                VStack{
+                    Spacer()
+                    if currentFolder.pinned {
+                        BottomSheetOption(onClick: {
+                            currentFolder.pinned = false
+                        }, text: "Unpin", assetImageString: "Folder")
+                    } else {
+                        BottomSheetOption(onClick: {
+                            currentFolder.pinned = true
+                        }, text: "Pin", assetImageString: "Folder")
+                    }
+                    
+                    Spacer()
+                    BottomSheetOption(onClick: {
+                        print("Edit")
+                        openFolderEditSheet = false
+                        // add a delay to wait for the sheet to be closed
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            showEditSheet = true
+                        }
+                    }, text: "Edit",  assetImageString: "Pencil")
+                    Spacer()
+                    BottomSheetOption(onClick: {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            showingDeletionAlert = true
+                        }
+                        
+                        print("show delete alert")
+                    }, text: "Delete", assetImageString: "Trash")
+                    .alert(isPresented: $showingDeletionAlert) {
+                        Alert(
+                            title: Text("Are you sure?"),
+                            message: Text("This will permanently delete the folder and its contents."),
+                            primaryButton: .destructive(Text("Delete")) {
+                                // Perform the deletion
+                                Task{
+                                    modelUtils.deleteFolder(modelContext: modelContext, folder: currentFolder)
+                                }
+                               
+                                openFolderEditSheet = false
+                            },
+                            secondaryButton: .cancel()
+                        )
+                    }
+                    
+                    Spacer()
+                }.presentationDetents([.height(300)])
+            })
+            .sheet(isPresented: $showEditSheet, content: {
+               
+                CreateFolderView(editFolder: currentFolder)
+            })
         
     }
     

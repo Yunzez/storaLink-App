@@ -14,7 +14,8 @@ struct SettingsView: View {
     @State var photoPickerItem: PhotosPickerItem?
     @State var uiImage: UIImage?
     @State var sheet: Bool = false
-    
+    @State var showDeleteAlert: Bool = false
+    @State var deletedDoneAlert:Bool = false
     @Query var folders: [Folder] = []
     @Query var links: [Link] = []
     private let userActor = UserActor.actor
@@ -143,29 +144,39 @@ struct SettingsView: View {
 //                            UserSettingTab(iconName: "ellipsis.message", title: "Give Feedback")
                             
                         }
-                        
-                        //                        Section(header:
-                        //                                    HStack{
-                        //                                        Text("Other")
-                        //                                            .fontWeight(.semibold)
-                        //                                            .padding(.top, 20)
-                        //                                        Spacer()
-                        //                                    }
-                        //                        ) {
                         Button(action: {
-                            // this will need to be its own page
-                            print("delete all data")
-                            links.forEach { link in
-                                modelContext.delete(link)
-                            }
-                            folders.forEach{ folder in
-                                modelContext.delete(folder)
-                            }
                             
-                            print("all done")
+                            // this will need to be its own page
+                            showDeleteAlert = true
+                            print("show delete alert")
                         }, label: {
                             UserSettingTab(iconName: "trash", title: "Clear my data")
                         })
+                        .alert(isPresented: $showDeleteAlert) {
+                            Alert(
+                                title: Text("Are you sure?"),
+                                message: Text("This will permanently delete all the folder and its contents."),
+                                primaryButton: .destructive(Text("Delete")) {
+                                    print("delete all data")
+                                    Task {
+                                        links.forEach { link in
+                                            modelContext.delete(link)
+                                        }
+                                        folders.forEach{ folder in
+                                            modelContext.delete(folder)
+                                        }
+                                        try? modelContext.save()
+                                        showDeleteAlert = false
+                                        deletedDoneAlert = true
+                                    }
+                                },
+                                secondaryButton: .cancel()
+                            )
+                            
+                        }
+                       .sheet(isPresented: $deletedDoneAlert) {
+                           DeletionConfirmationView(deletedDoneAlert: $deletedDoneAlert)
+                    }
 
                                                    
                         //                            UserSettingTab(iconName: "storefront", title: "Rate us")
@@ -194,6 +205,32 @@ struct SettingsView: View {
                 // Tab bar here...
             }.background(Color("ThemeWhite"))
         }.padding(.bottom, Spacing.customNavigationBarHeight)
+    }
+}
+
+
+struct DeletionConfirmationView: View {
+    @Binding var deletedDoneAlert: Bool  // Changed from @State to @Binding
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Data Deleted")
+                .font(.title)
+                .fontWeight(.bold)
+            Text("Your data has been permanently deleted.")
+                .font(.body)
+            Button("OK") {
+                deletedDoneAlert = false  // This will dismiss the sheet
+            }
+            .padding()
+            .background(Color.theme)  // Replace `.theme` with `.blue` or your custom color
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.white)
+        .edgesIgnoringSafeArea(.all)
     }
 }
 

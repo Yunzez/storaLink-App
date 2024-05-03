@@ -114,16 +114,6 @@ struct FolderItemView: View {
                                     primaryButton: .destructive(Text("Delete")) {
                                         // Perform the deletion
                                         Task{
-//                                            await folderManager.deleteFolder(folder: currentFolder) { result in
-//                                                switch result {
-//                                                case .success:
-//                                                    print("success")
-//                                                    modelUtils.deleteFolder(modelContext: modelContext, folder: currentFolder)
-//                                                case .failure(let error):
-//                                                    print("some error occured", error)
-//                                                }
-//                                            }
-                                            
                                             modelUtils.deleteFolder(modelContext: modelContext, folder: currentFolder)
                                         }
                                        

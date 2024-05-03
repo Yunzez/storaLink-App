@@ -7,15 +7,15 @@
 
 import Foundation
 import SwiftData
-@Observable class FolderViewModel {
-    var like: Bool
-    var menu: Bool
-    var linkNum: Int
-    var searchFieldLength: CGFloat
-    var searchOpen: Bool
-    var searchText: String
-    var showCreateSheet: Bool
-    var sortOpen: Bool
+class FolderViewModel: ObservableObject {
+    @Published var like: Bool
+    @Published var menu: Bool
+    @Published var linkNum: Int
+    @Published var searchFieldLength: CGFloat
+    @Published var searchOpen: Bool
+    @Published var searchText: String
+    @Published var showCreateSheet: Bool
+    @Published var sortOpen: Bool
 
     
     init() {
