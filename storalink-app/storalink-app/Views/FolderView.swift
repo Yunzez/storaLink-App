@@ -19,6 +19,34 @@ struct FolderView: View {
     @State var currentFolder: Folder = Folder(title: "Initial", imgUrl: "", desc: "Initial Folder", links: [])
     let localFileManager = LocalFileManager.manager
     
+    @State var displayFolder: [Link] = []
+    enum SortOption {
+        case recentlyAdded
+        case oldest
+        case titleAZ
+        case none
+    }
+    
+    @State var sortingOption:SortOption = .none
+    
+    init() {
+        displayFolder = currentFolder.links
+    }
+    
+    func sortLinks() -> [Link] {
+        switch sortingOption {
+        case .recentlyAdded:
+            return currentFolder.links.sorted { $0.creationDate > $1.creationDate }
+        case .oldest:
+            return currentFolder.links.sorted { $0.creationDate < $1.creationDate }
+        case .titleAZ:
+            return currentFolder.links.sorted { $0.title < $1.title }
+        default:
+            return currentFolder.links.sorted { $0.creationDate > $1.creationDate }
+        }
+    }
+
+
     
     let buttonHeight: CGFloat = 25
     
@@ -155,14 +183,6 @@ struct FolderView: View {
                             CustomButton(action: {
                                 folderViewModel.sortButtonClick()
                             }, label: "Sort", imageSystemName: "line.3.horizontal.decrease.circle", style: .outline)
-                            .sheet(isPresented: $folderViewModel.sortOpen) {
-                                // Your bottom sheet view
-                                VStack {
-                                    Text("Option 1").padding()
-                                    Text("Option 2").padding()
-                                    // Add more options as needed
-                                }.presentationDetents([.height(200)])
-                            }
                             
                             CustomButton(action: {
                                 print("Button tapped")
@@ -213,7 +233,7 @@ struct FolderView: View {
                         if currentFolder.getLinkNum() != 0 {
                             ScrollView(.vertical, showsIndicators: true) {
                                 VStack(spacing: 10) {
-                                    ForEach(currentFolder.links.filter
+                                    ForEach(sortLinks().filter
                                             { link in
                                         folderViewModel.searchText.isEmpty || link.title.localizedCaseInsensitiveContains(folderViewModel.searchText)
                                     } , id: \.self) { link in
@@ -288,7 +308,6 @@ struct FolderView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             showingDeletionAlert = true
                         }
-                        
                         print("show delete alert")
                     }, text: "Delete", assetImageString: "Trash")
                     .alert(isPresented: $showingDeletionAlert) {
@@ -300,6 +319,7 @@ struct FolderView: View {
                                 Task{
                                     modelUtils.deleteFolder(modelContext: modelContext, folder: currentFolder)
                                 }
+                                navigationStateManager.navigateToRoot()
                                
                                 openFolderEditSheet = false
                             },
@@ -314,6 +334,32 @@ struct FolderView: View {
                
                 CreateFolderView(editFolder: currentFolder)
             })
+            .sheet(isPresented: $folderViewModel.sortOpen) {
+                // Your bottom sheet view
+                VStack(alignment: .leading) {
+                    Spacer()
+                    BottomSheetOption(onClick: {
+                        print("sort")
+                        sortingOption = .recentlyAdded
+                        folderViewModel.sortOpen = false
+                    }, text: "Recently Added", systemImageString: "clock")
+                    Spacer()
+                    BottomSheetOption(onClick: {
+                        print("sort")
+                        sortingOption = .oldest
+                        folderViewModel.sortOpen = false
+                    }, text: "Oldest", systemImageString: "doc.badge.clock")
+                    Spacer()
+                    BottomSheetOption(onClick: {
+                        print("sort")
+                        sortingOption = .titleAZ
+                        folderViewModel.sortOpen = false
+                    }, text: "Title A-Z", systemImageString: "digitalcrown.arrow.counterclockwise")
+                    Spacer()
+
+                }.presentationDetents([.height(300)])
+            }
+            
         
     }
     
