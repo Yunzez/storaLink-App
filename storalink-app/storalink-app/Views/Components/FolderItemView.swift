@@ -12,6 +12,8 @@ import SwiftData
 
 
 struct FolderItemView: View {
+    let cardWidth: CGFloat = 160
+    
     let localFileManager = LocalFileManager.manager
     let modelUtils = ModelUtilManager.manager
     let folderManager = FolderManager.manager
@@ -30,39 +32,50 @@ struct FolderItemView: View {
 //        self.currentFolder = currentFolderWrapper.getFolder()
 //    }
     var body: some View {
-        VStack(alignment: .leading) {
-            ZStack(alignment: .topTrailing) {
-                // Image view
-                if let uiImage = localFileManager.getImage(path: currentFolder.imgUrl) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 160, height: 135)
-                        .cornerRadius(Spacing.small)
-//                        .padding(.bottom, -Spacing.small)
-                } else {
-                    Image(currentFolder.imgUrl.isEmpty ? "Xiaochuan" : currentFolder.imgUrl)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 160, height: 135)
+        VStack(alignment: .leading){
+            ZStack() {
+                VStack(alignment: .leading ){
+                    // Image view
+                    if let uiImage = localFileManager.getImage(path: currentFolder.imgUrl) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: cardWidth, height: 140)
+                            .background(Color.black)
+                    } else {
+                        Image(currentFolder.imgUrl.isEmpty ? "Xiaochuan" : currentFolder.imgUrl)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: cardWidth, height: 140)
+                            .background(Color.black)
+                        
+                    }
                 }
                 
                 // Heart icon button
-                Button(action: {
-                    withAnimation {
-                        currentFolder.pinned.toggle()
+                VStack{
+                    HStack(alignment: .center){
+                        Spacer()
+                        Button(action: {
+                            withAnimation {
+                                currentFolder.pinned.toggle()
+                            }
+                        }) {
+                            Image(systemName: currentFolder.pinned ? "heart.fill" : "heart")
+                                .foregroundColor(Color("ThemeColor"))
+                                .padding(10)
+                                .background(Color.white)
+                                .clipShape(Circle())
+                                .padding(2)
+                        }
                     }
-                }) {
-                    Image(systemName: currentFolder.pinned ? "heart.fill" : "heart")
-                        .foregroundColor(Color("ThemeColor"))
-                        .padding(10)
-                        .background(Color.white)
-                        .clipShape(Circle())
+                    Spacer()
                 }
-//                .padding([.top], Spacing.small)
             }
-            .frame(width: 160, height: 135)
-            .clipped() // Apply clipping here, outside the ZStack
+            .clipped()
+            .frame(width: cardWidth, height: 135)
+            // Apply clipping here, outside the ZStack
+
             
             HStack {
                 Text(currentFolder.title)
@@ -143,9 +156,10 @@ struct FolderItemView: View {
             .frame(height: 20)
             
         }
-        .frame(width: 160, height: 200) // Adjust size as needed
+        .frame(width: cardWidth, height: 200) // Adjust size as needed
+
         .background(Color("SubtleTheme")) // Use actual card background color
-        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
+//        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
         .shadow(radius: 5)
         .onTapGesture(perform: {
             print("Folder tapped")
@@ -188,6 +202,6 @@ struct FolderItemAddView: View {
 }
 
 #Preview {
-//    FolderItemView(folder: Folder(title: "Sun xiaochuan 28", imgUrl: "", links: [])).environment(NavigationStateManager())
-    FolderItemAddView().environment(NavigationStateManager())
+    FolderItemView(folder: Folder(title: "Sun 28", imgUrl: "", links: [])).environment(NavigationStateManager())
+//    FolderItemAddView().environment(NavigationStateManager())
 }
