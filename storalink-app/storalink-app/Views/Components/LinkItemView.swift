@@ -82,7 +82,7 @@ struct LinkItemView: View {
                     }.presentationDetents([.height(300)])
                 }
                 .sheet(isPresented: $linkItemViewModel.openMove, content: {
-                    CreateLinkView(editLink: currentLink)
+                    CreateLinkView(editLink: currentLink).padding(.top)
                 })
             }
             .padding()

@@ -17,14 +17,24 @@ struct CreateLinkView: View {
     @State private var viewModel = CreateLinkViewModel()
     @State var photoPickerItem: PhotosPickerItem?
     @State var uiImage: UIImage?
-    
     // this allow user to pass in a link to edit
-    init(editLink: Link? = nil) {
+    @State var localLockSelectedFolderTitle: Bool = false
+    init(editLink: Link? = nil, preSelectedfolder: Folder? = nil, preSelectedSignal: Bool? = nil) {
         if let link = editLink {
             viewModel.initialLink = link
             viewModel.updateInfoForEditLink(link: link)
         }
+        
+        if let folder = preSelectedfolder, let preSignal = preSelectedSignal {
+            viewModel.selectedFolder = preSelectedfolder
+            viewModel.searchFolder = folder.title
+            viewModel.lockFolderSelection = true // the view model lock is used to control the pop up behavior
+            viewModel.userAssignedFinishSignal = preSignal
+            localLockSelectedFolderTitle = true // the local lock is passed to the text field
+            
+        }
     }
+    
     
     var body: some View {
         ZStack{
@@ -62,15 +72,17 @@ struct CreateLinkView: View {
                         
                         Text("Link URL")
                         StandardTextField(placeholder: "https://", text: $viewModel.linkName).padding([.horizontal, .bottom])
-                        Text("Save to folder")
                         
+                        Text("Save to folder")
                         ZStack{
                             VStack {
-                                StandardTextField(placeholder: "Search Folder...", text: $viewModel.searchFolder)
+                                StandardTextField(placeholder: "Search Folder...", text: $viewModel.searchFolder, isEnabled:$localLockSelectedFolderTitle )
                                     .padding([.horizontal, .bottom]).onTapGesture {
-                                        withAnimation {
-                                            viewModel.showingSearchResults = true
-                                        }
+                                       if !viewModel.lockFolderSelection {
+                                           withAnimation {
+                                               viewModel.showingSearchResults = true
+                                           }
+                                       }
                                     }
                                 if viewModel.showingSearchResults {
                                     ScrollView(.vertical) {
@@ -99,7 +111,7 @@ struct CreateLinkView: View {
                                                 .frame(maxWidth: .infinity, alignment: .leading) // Make Button fill the width
                                                 Divider() // Divider between items
                                             }
-                                        }.frame(width: .infinity)
+                                        }
                                     }
                                     .background(Color.white)
                                     .cornerRadius(Spacing.small)
@@ -219,6 +231,9 @@ struct CreateLinkView: View {
                             Button(action: {
                                 // Action for folder creation
                                 viewModel.createLink()
+                                if (viewModel.userAssignedFinishSignal) {
+                                    self.presentationMode.wrappedValue.dismiss()
+                                }
                             }) {
                                 HStack{
                                     Image(systemName: "plus.circle")

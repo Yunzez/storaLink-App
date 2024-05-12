@@ -82,56 +82,103 @@ struct MainNavStack: View {
 }
 
 struct CustomTabView: View {
+    @Environment(\.colorScheme) var colorScheme
     @Binding var selectedTab: Int
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     var body: some View {
         VStack {
             Spacer()
-            
-            // Custom Tab Bar
-            HStack(alignment: .bottom) {
-                
-                HStack(alignment: .bottom){
-                    // Home Tab
-                    TabBarButton(iconName: "Home", selectedIcon: "HomeSelected", isSelected: selectedTab == 0) {
+            if colorScheme == .light {
+                // Custom Tab Bar
+                HStack(alignment: .bottom) {
+                    
+                    HStack(alignment: .bottom){
+                        // Home Tab
+                        TabBarButton(iconName: "Home", selectedIcon: "HomeSelected", isSelected: selectedTab == 0) {
                             selectedTab = 0
-                    }.padding(.leading, Spacing.small)
-                    
-                    Spacer() // Adds space between buttons
-                    
-                    // Files Tab
-                    TabBarButton(iconName: "File", selectedIcon: "FileSelected", isSelected: selectedTab == 1) {
+                        }.padding(.leading, Spacing.small)
+                        
+                        Spacer() // Adds space between buttons
+                        
+                        // Files Tab
+                        TabBarButton(iconName: "File", selectedIcon: "FileSelected", isSelected: selectedTab == 1) {
                             selectedTab = 1
-                    }
-                    
-                    Spacer() // Adds space between buttons
-                    
-                    // Create Tab (Larger)
-                    TabBarButton(iconName: "Create", selectedIcon: "CreateSelected", isSelected: selectedTab == 2, isLarge: true) {
+                        }
+                        
+                        Spacer() // Adds space between buttons
+                        
+                        // Create Tab (Larger)
+                        TabBarButton(iconName: "Create", selectedIcon: "CreateSelected", isSelected: selectedTab == 2, isLarge: true) {
                             selectedTab = 2
-                    }.padding(.top, Spacing.small)
-                    
-                    Spacer() // Adds space between buttons
-                    
-                    // Info Tab
-                    TabBarButton(iconName: "Notice", selectedIcon: "NoticeSelected", isSelected: selectedTab == 3) {
+                        }.padding(.top, Spacing.small)
+                        
+                        Spacer() // Adds space between buttons
+                        
+                        // Info Tab
+                        TabBarButton(iconName: "Notice", selectedIcon: "NoticeSelected", isSelected: selectedTab == 3) {
                             selectedTab = 3
-                    }
-                    
-                    Spacer() // Adds space between buttons
-                    
-                    // Settings Tab
-                    TabBarButton(iconName: "Setting", selectedIcon: "SettingSelected", isSelected: selectedTab == 4) {
+                        }
+                        
+                        Spacer() // Adds space between buttons
+                        
+                        // Settings Tab
+                        TabBarButton(iconName: "Setting", selectedIcon: "SettingSelected", isSelected: selectedTab == 4) {
                             selectedTab = 4
-                    }.padding(.trailing, Spacing.small)
+                        }.padding(.trailing, Spacing.small)
+                    }
+                    //                .padding([.top], Spacing.small)
+                    
+                    .padding([.bottom], Spacing.large)
+                    
                 }
-                //                .padding([.top], Spacing.small)
-                
-                .padding([.bottom], Spacing.large)
-                
+                .padding(.horizontal)
+                .background(Color("SubtleTheme").opacity(1))
             }
-            .padding(.horizontal)
-            .background(Color("SubtleTheme").opacity(1))
+            else { // dark theme
+                HStack(alignment: .bottom) {
+                    
+                    HStack(alignment: .bottom){
+                        // Home Tab
+                        TabBarButton(iconName: "HomeLight", selectedIcon: "HomeSelected", isSelected: selectedTab == 0, text: "Home", action:  {
+                            selectedTab = 0
+                        }).padding(.leading, Spacing.small)
+                        
+                        Spacer() // Adds space between buttons
+                        
+                        // Files Tab
+                        TabBarButton(iconName: "FileLight",  selectedIcon: "FileSelected", isSelected: selectedTab == 1, text: "File") {
+                            selectedTab = 1
+                        }
+                        
+                        Spacer() // Adds space between buttons
+                        
+                        // Create Tab (Larger)
+                        TabBarButton(iconName: "CreateLight", selectedIcon: "CreateSelected", isSelected: selectedTab == 2, isLarge: true , text:"") {
+                            selectedTab = 2
+                        }.padding(.top, Spacing.small)
+                        
+                        Spacer() // Adds space between buttons
+                        
+                        // Info Tab
+                        TabBarButton(iconName: "NoticeLight", selectedIcon: "NoticeSelected", isSelected: selectedTab == 3 , text:"Notice") {
+                            selectedTab = 3
+                        }
+                        
+                        Spacer() // Adds space between buttons
+                        
+                        // Settings Tab
+                        TabBarButton(iconName: "SettingLight", selectedIcon: "SettingSelected", isSelected: selectedTab == 4, text:"Setting") {
+                            selectedTab = 4
+                        }.padding(.trailing, Spacing.small)
+                    }
+                    //                .padding([.top], Spacing.small)
+                    
+                    .padding([.bottom], Spacing.large)
+                    
+                }
+                .padding(.horizontal)
+                .background(Color("SubtleTheme").opacity(1))
+            }
         }  .edgesIgnoringSafeArea(.bottom)
             .transition(.move(edge: .bottom))
             .frame(maxHeight: navigationStateManager.isInSubMenu ? 0 : Spacing.customNavigationBarHeight)
@@ -145,13 +192,15 @@ struct TabBarButton: View {
     let isSelected: Bool
     let isLarge: Bool
     let action: () -> Void
+    var text: String?
     
-    init(iconName: String, selectedIcon: String, isSelected: Bool, isLarge: Bool = false, action: @escaping () -> Void) {
+    init(iconName: String, selectedIcon: String, isSelected: Bool, isLarge: Bool = false, text:String? = nil, action: @escaping () -> Void) {
         self.iconName = iconName
         self.isSelected = isSelected
         self.isLarge = isLarge
         self.action = action
         self.selectedIcon = selectedIcon
+        self.text = text
     }
     
     var body: some View {
@@ -161,8 +210,13 @@ struct TabBarButton: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: isLarge ? 60 : 30, height: isLarge ? 60 : 30)
+                    .foregroundColor(.themeBlack)
                 if !isLarge {
-                    Text(iconName).font(.caption2)
+                    if let customText = text {
+                        Text(customText).font(.caption2)
+                    }else {
+                        Text(iconName).font(.caption2)
+                    }
                 }
             }
             .foregroundColor(.themeBlack)

@@ -31,41 +31,6 @@ struct SettingsView: View {
         }
     }
     
-    func saveSelectedImage(image: UIImage) {
-        
-        uploadImageToS3(image: image) { result in
-            switch(result){
-            case .success(let remotePath):
-                appViewModel.user?.avatorPathRemote = remotePath
-                print("uploaded to s3")
-                if let remotePath = appViewModel.user?.avatorPathRemote {
-                    downloadImage(from: remotePath) { downloadedImage in
-                        if let image = downloadedImage {
-                            let filePath = fileManager.saveImage(image: image)
-                            appViewModel.user?.avatorPath = filePath
-                        }
-                    }
-                }
-            case .failure:
-                let filePath = fileManager.saveImage(image: image)
-                appViewModel.user?.avatorPath = filePath
-                print("failed to upload to s3, save to local")
-            }
-        }
-        Task{
-            if let user = appViewModel.user {
-                await userActor.updateUser(user: user) { result in
-                    switch(result) {
-                    case .success(_):
-                        print("update user")
-                    case .failure:
-                        print("fail to update user")
-                    }
-                }
-            }
-        }
-    }
-    
     //    @Bindable var appView = appleViewModel
     var body: some View {
         NavigationView {
@@ -73,36 +38,9 @@ struct SettingsView: View {
                 VStack {
                     
                     VStack{
-//                        HStack{
-//                            Spacer()
-//                            PhotosPicker(selection: $photoPickerItem, matching: .images) {
-//                                Image(uiImage: uiImage ?? UIImage(resource: .defaultAvator))
-//                                    .resizable()
-//                                    .aspectRatio(contentMode: .fill)
-//                                    .frame(width: 120, height: 120)
-//                                    .cornerRadius(60.0)
-//                                    .clipped()
-//                                    .padding()
-//                                
-//                            }
-//                            
-//                            Spacer()
-//                        }
-//                        Text(appViewModel.userName ?? "Nil").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         
                     }.onAppear {
                         updateImage()
-                    }.onChange(of: photoPickerItem) { _, _ in
-                        print("select picture")
-                        Task {
-                            if let photoPickerItem,
-                               let data = try await photoPickerItem.loadTransferable(type: Data.self) {
-                                if let image = UIImage(data: data) {
-                                    uiImage = image
-                                    saveSelectedImage(image: image)
-                                }
-                            }
-                        }
                     }
                     
                     
@@ -139,10 +77,7 @@ struct SettingsView: View {
                         ) {
                             NavigationLink {
                                 PrivacyView()
-                            } label: {UserSettingTab(iconName: "lock", title: "Privacy")}
-                            //                            UserSettingTab(iconName: "questionmark.circle", title: "Help & Support")
-//                            UserSettingTab(iconName: "ellipsis.message", title: "Give Feedback")
-                            
+                            } label: {UserSettingTab(iconName: "lock", title: "Privacy")}.foregroundColor(Color.themeBlack)
                         }
                         Button(action: {
                             
@@ -150,8 +85,9 @@ struct SettingsView: View {
                             showDeleteAlert = true
                             print("show delete alert")
                         }, label: {
-                            UserSettingTab(iconName: "trash", title: "Clear my data")
+                            UserSettingTab(iconName: "trash.fill", title: "Clear my data")
                         })
+                        
                         .alert(isPresented: $showDeleteAlert) {
                             Alert(
                                 title: Text("Are you sure?"),
@@ -178,32 +114,11 @@ struct SettingsView: View {
                            DeletionConfirmationView(deletedDoneAlert: $deletedDoneAlert)
                     }
 
-                                                   
-                        //                            UserSettingTab(iconName: "storefront", title: "Rate us")
-                        //                        }
-                        if appViewModel.userId != nil {
-                            HStack{
-                                Spacer()
-                                Button("Log Out") {
-                                    // Handle log out
-                                    appViewModel.logoutUser()
-                                    
-                                }
-                                .padding()
-                                .padding(.horizontal)
-                                .background(Color.gray) // Adjust color as needed
-                                .cornerRadius(10)
-                                .foregroundColor(.white) // Adjust text color as needed
-                                .shadow(radius: 2)
-                                
-                                Spacer()
-                            }
-                        }
                     }.padding(.horizontal)
                 }
                 
                 // Tab bar here...
-            }.background(Color("ThemeWhite"))
+            }
         }.padding(.bottom, Spacing.customNavigationBarHeight)
     }
 }

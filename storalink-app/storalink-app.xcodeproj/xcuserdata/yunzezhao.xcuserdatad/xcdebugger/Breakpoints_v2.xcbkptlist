@@ -160,5 +160,53 @@
             landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D1732908-DF93-46F5-A433-4A54834E8283"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "storalink-app/ViewModels/CreateLinkViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "createLink()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D1732908-DF93-46F5-A433-4A54834E8283 - 258e903752b34420"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Storalink.CreateLinkViewModel.createLink() -&gt; ()"
+                  moduleName = "Storalink"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yunzezhao/Code/storaLink-App/storalink-app/storalink-app/ViewModels/CreateLinkViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "164"
+                  endingLineNumber = "164"
+                  offsetFromSymbolStart = "2200">
+               </Location>
+               <Location
+                  uuid = "D1732908-DF93-46F5-A433-4A54834E8283 - 258e903752b35b94"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Storalink.CreateLinkViewModel.createLink() -&gt; ()"
+                  moduleName = "Storalink"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yunzezhao/Code/storaLink-App/storalink-app/storalink-app/ViewModels/CreateLinkViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "152"
+                  endingLineNumber = "152"
+                  offsetFromSymbolStart = "2200">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

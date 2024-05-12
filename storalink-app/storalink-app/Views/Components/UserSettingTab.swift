@@ -15,30 +15,27 @@ struct UserSettingTab: View {
         private var currentImage: UIImage?
         
     init(iconName: String, title: String) {
-        self.iconName = iconName
-        self.title = title
-        if let image = UIImage(named: iconName) {
-            currentImage = image
-        } else {
-        currentImage = UIImage(systemName: iconName)
+            self.iconName = iconName
+            self.title = title
+            // Try to load a named image, fall back to a system image if unavailable
+            self.currentImage = UIImage(named: iconName) ?? UIImage(systemName: iconName)
         }
         
-    }
-       
         var body: some View {
-                HStack {
-                    if let image = currentImage {
-                        Image(uiImage: image)
-                            .scaledToFit()
-                            .foregroundColor(Color(.themeGray))
-                            
-                    }
-                    Text(title)
-                        .foregroundColor(Color("ThemeBlack")) // Adjust color as needed
-                    Spacer()
-                }
-            .padding(Spacing.medium)
-            .background(Color.white) // Adjust color as needed
+            HStack {
+                Image(systemName: iconName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(Color("ThemeBlack"))  // This will now properly apply because it's a system image
+                
+                Text(title)
+                    .foregroundColor(Color("ThemeBlack"))
+                
+                Spacer()
+            }
+            .padding()
+            .background(Color("ThemeWhite")) // Make sure 'ThemeWhite' is defined in your assets
             .cornerRadius(10)
             .shadow(radius: 2)
         }
@@ -47,7 +44,7 @@ struct UserSettingTab: View {
 #Preview {
     var item = "test"
     return Group{
-        UserSettingTab(iconName: "CloudSync", title: "Test")
+        UserSettingTab(iconName: "trash.fill", title: "Test")
     }
     
 }

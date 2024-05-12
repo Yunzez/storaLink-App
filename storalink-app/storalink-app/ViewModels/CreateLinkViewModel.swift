@@ -44,6 +44,9 @@ import LinkPresentation
     let fileManager = LocalFileManager.manager
     let linkFetcher = LinkMetaDataFetcher.fetcher
     
+    
+    var lockFolderSelection: Bool = false
+    var userAssignedFinishSignal: Bool = false
     var initialLink: Link? = nil
 
     // Other properties for business logic
@@ -95,21 +98,6 @@ import LinkPresentation
             }
             
             link.parentFolder = selectedFolder
-            
-            print("start online updating")
-            Task{
-                await linkManager.updateLink(link: link) { result in
-                    switch result {
-                    case .success(let link):
-                        print("updated link online: \(link)") // Assuming 'link' is the object you want to print or use
-                    case .failure(let encounteredError):
-                        self.error = true
-                        self.loadingStage = .none
-                        self.errorMessage = "some server error occured :C, try again later"
-                        print("some error has occurred: \(encounteredError.localizedDescription)")
-                    }
-                }
-            }
         }
     }
     
@@ -144,27 +132,17 @@ import LinkPresentation
             newLink.imgUrl = imagePath
             newLink.iconUrl = iconPath
             modelManager.addLinkToFolder(link: newLink, folder: folder, modelContext: context)
-//            
-//            Task{
-//                await linkManager.createLink(link: newLink) { result in
-//                    switch result {
-//                    case .success(let link):
-//                        print("created link online: \(link.mongoId ?? "no mongoid")") // Assuming 'link' is the object you want to print or use
-//                    case .failure(let encounteredError):
-//                        self.error = true
-//                        self.loadingStage = .none
-//                        self.errorMessage = "some server error occured :C, try again later"
-//                        print("some error has occurred: \(encounteredError.localizedDescription)")
-//                    }
-//                }
-//            }
+
             
             if let navigateManager = navigationStateManager {
                 navigateManager.focusLink = newLink
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     print("navigate")
-                    navigateManager.lastNavigationSource = .toMainStack
-                    navigateManager.navigationPath.append(NavigationItem.linkView)
+                    if (!self.lockFolderSelection) {
+                        navigateManager.lastNavigationSource = .toMainStack
+                        navigateManager.navigationPath.append(NavigationItem.linkView)
+                    }
                 }
             }
            

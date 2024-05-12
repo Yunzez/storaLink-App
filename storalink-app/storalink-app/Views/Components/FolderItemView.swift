@@ -139,7 +139,7 @@ struct FolderItemView: View {
                             Spacer()
                         }.presentationDetents([.height(300)])
                     }).sheet(isPresented: $folderItemViewModel.showEditSheet, content: {
-                        CreateFolderView(editFolder: currentFolder)
+                        CreateFolderView(editFolder: currentFolder).padding(.top)
                     })
             }
             .padding([.leading, .trailing], Spacing.small)

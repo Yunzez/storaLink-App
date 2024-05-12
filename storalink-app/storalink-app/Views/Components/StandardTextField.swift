@@ -9,6 +9,14 @@ import SwiftUI
 struct StandardTextField: View {
     var placeholder: String
     @Binding var text: String
+    @Binding var isEnabled: Bool
+    
+    init(placeholder: String, text: Binding<String>, isEnabled: Binding<Bool> = .constant(true)) {
+            self.placeholder = placeholder
+            self._text = text
+            self._isEnabled = isEnabled
+        }
+    
     var body: some View {
         TextField(placeholder, text: $text)
             .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
@@ -18,6 +26,7 @@ struct StandardTextField: View {
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color(UIColor.separator), lineWidth: 1)
             )
+            .disabled(!isEnabled)
     }
 }
 

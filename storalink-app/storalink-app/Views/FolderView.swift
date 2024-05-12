@@ -279,7 +279,7 @@ struct FolderView: View {
             navigationStateManager.exitSubMenu()
         }.navigationBarBackButtonHidden(true)
             .sheet(isPresented: $folderViewModel.showCreateSheet, content: {
-                CreateLinkView().padding([.top])
+                CreateLinkView(preSelectedfolder: currentFolder, preSelectedSignal: folderViewModel.showCreateSheet ).padding([.top])
             })
             .sheet(isPresented: $openFolderEditSheet, content: {
                 VStack{
