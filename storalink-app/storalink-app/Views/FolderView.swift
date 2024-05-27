@@ -65,7 +65,7 @@ struct FolderView: View {
                             .edgesIgnoringSafeArea(.top)
                             .overlay(
                                 LinearGradient(
-                                    gradient: Gradient(colors: [Color("ThemeWhite").opacity(0.0), Color("ThemeWhite").opacity(0.7)]),
+                                    gradient: Gradient(colors: [Color("ThemeWhite").opacity(0.0), Color("ThemeWhite").opacity(0.9)]),
                                     startPoint: .top,
                                     endPoint: .bottomLeading
                                 )
@@ -80,8 +80,13 @@ struct FolderView: View {
                             .edgesIgnoringSafeArea(.top)
                             .overlay(
                                 LinearGradient(
-                                    gradient: Gradient(colors: [Color("ThemeWhite").opacity(0.0), Color("ThemeWhite").opacity(0.7)]),
-                                    startPoint: .top,
+                                    gradient: Gradient(colors: [
+                                                              Color("ThemeWhite").opacity(0.0),
+                                                              Color("ThemeWhite").opacity(0.2),
+                                                              Color("ThemeWhite").opacity(0.7),
+                                                              Color("ThemeWhite").opacity(0.9)
+                                                          ]),
+                                    startPoint: .topTrailing,
                                     endPoint: .bottomLeading
                                 )
                             )
@@ -98,11 +103,11 @@ struct FolderView: View {
                                     .imageScale(.large)
                                     .padding(Spacing.medium)
                             })
-                            .background(Color("SubtleTheme").opacity(0.8))
+                            .background(Color("SubtleTheme").opacity(1))
                             .cornerRadius(Spacing.medium)
                             Spacer()
                         }
-                        .padding(.horizontal)
+                        .padding(.horizontal, Spacing.small)
                         
                         Spacer()
                         // Placeholder Title Text
@@ -111,6 +116,7 @@ struct FolderView: View {
                                 .font(.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .foregroundColor(Color("ThemeBlack"))
+                                .padding(.leading, Spacing.small)
                             
                             Spacer()
                             
@@ -124,7 +130,7 @@ struct FolderView: View {
                                     .frame(width: buttonHeight, height: buttonHeight) // Set the frame of the content
                                     .padding(Spacing.small)
                             }
-                            .background(Color("SubtleTheme").opacity(0.8))
+                            .background(Color("SubtleTheme").opacity(1))
                             .cornerRadius(Spacing.small)
                             .frame(height: buttonHeight) // Set the frame of the button
                             
@@ -136,7 +142,7 @@ struct FolderView: View {
                                     .imageScale(.large)
                                     .frame(width: buttonHeight, height: buttonHeight)
                                     .padding(Spacing.small)
-                                    .background(Color("SubtleTheme").opacity(0.8))
+                                    .background(Color("SubtleTheme").opacity(1))
                                     .cornerRadius(Spacing.small)
                             }.frame(height: buttonHeight)
 
@@ -182,12 +188,12 @@ struct FolderView: View {
                             
                             CustomButton(action: {
                                 folderViewModel.sortButtonClick()
-                            }, label: "Sort", imageSystemName: "line.3.horizontal.decrease.circle", style: .outline)
+                            }, label: "Sort", imageSystemName: "line.3.horizontal.decrease.circle", style: .outline, larger: false )
                             
                             CustomButton(action: {
                                 print("Button tapped")
                                 folderViewModel.showCreateSheet = true
-                            }, label: "Add", imageSystemName: "plus.circle", style: .fill)
+                            }, label: "Add", imageSystemName: "plus.circle", style: .fill, larger: false)
                             
                             Spacer()
                         }
@@ -222,7 +228,7 @@ struct FolderView: View {
                 
                 // Scrollable content
                 HStack{
-                    Text("Links: \(currentFolder.getLinkNum())")
+                    Text("Links · \(currentFolder.getLinkNum())")
                     Spacer()
                 }.padding([.horizontal, .top])
                 
@@ -251,21 +257,22 @@ struct FolderView: View {
                                         CustomButton(action: {
                                             print("create link")
                                             folderViewModel.showCreateSheet = true
-                                        }, label: "Add your first item", imageSystemName: "plus.circle", style: .fill)
+                                        }, label: "Add your first item", imageSystemName: "plus.circle", style: .fill, larger: false)
                                         
                                     }
                                     Spacer()
                                 }
                             }
                         }
-                    }.padding(.horizontal)
+                    }.padding(.horizontal, 3)
                     Spacer()
                 }
                 
                 
                 
-            }
-        }.onAppear {
+            }.background(Color.themeWhite.edgesIgnoringSafeArea(.all))
+        }
+            .onAppear {
             // This is called when the view appears
             currentFolder = navigationStateManager.focusFolder ?? Folder(title: "Oops, Error X:C",imgUrl: "folderAsset8", desc: "Try to restart the app", pinned: true, links: [] )
             print("Folder ", currentFolder.toString())

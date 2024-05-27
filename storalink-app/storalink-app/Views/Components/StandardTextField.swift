@@ -20,7 +20,7 @@ struct StandardTextField: View {
     var body: some View {
         TextField(placeholder, text: $text)
             .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
-            .background(Color.white)
+            .background(Color.subtleTheme)
             .cornerRadius(10)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)

@@ -52,7 +52,6 @@ struct CreateLinkView: View {
                         })
                         .background(Color("SubtleTheme").opacity(0.8))
                         .cornerRadius(Spacing.medium)
-                        .shadow(radius:7)
                     }
                     Spacer()
                     
@@ -69,15 +68,21 @@ struct CreateLinkView: View {
                 
                 ScrollView(.vertical, showsIndicators: false){
                     VStack{
-                        
-                        Text("Link URL")
+                        HStack{
+                            Text("Link URL")
+                            Spacer()
+                        }.padding(.horizontal, Spacing.medium)
+                            .padding(.top, Spacing.medium)
                         StandardTextField(placeholder: "https://", text: $viewModel.linkName).padding([.horizontal, .bottom])
+                        HStack{
+                            Text("Save to folder")
+                            Spacer()
+                        }.padding(.horizontal, Spacing.medium)
                         
-                        Text("Save to folder")
                         ZStack{
                             VStack {
                                 StandardTextField(placeholder: "Search Folder...", text: $viewModel.searchFolder, isEnabled:$localLockSelectedFolderTitle )
-                                    .padding([.horizontal, .bottom]).onTapGesture {
+                                    .padding([.horizontal]).onTapGesture {
                                        if !viewModel.lockFolderSelection {
                                            withAnimation {
                                                viewModel.showingSearchResults = true
@@ -130,7 +135,7 @@ struct CreateLinkView: View {
                             CustomButton(action: {
                                 print("fetching data")
                                 viewModel.fetchLinkMetadata()
-                            }, label: "Auto-fill using URL", style: .fill)
+                            }, label: "Auto-fill using URL", style: .fill, larger: false).padding(.top, 3)
                             Spacer()
                             if viewModel.fetchStatus != 0 {
                                 if viewModel.fetchStatus == 1 {
@@ -146,29 +151,37 @@ struct CreateLinkView: View {
                                 }
                             }
                         }.padding(.horizontal)
-                        
-                        Text("Title")
-                        StandardTextField(placeholder: "https://", text: $viewModel.title).padding([.horizontal, .bottom])
-                        Text("Author")
+                        HStack{
+                            Text("Title")
+                            Spacer()
+                        }.padding([.horizontal, .top], Spacing.medium)
+
+                        StandardTextField(placeholder: "Your most creative name here!", text: $viewModel.title).padding([.horizontal, .bottom])
+                        HStack{
+                            Text("Author")
+                            Spacer()
+                        }.padding(.horizontal, Spacing.medium)
                         StandardTextField(placeholder: "author", text: $viewModel.author).padding([.horizontal, .bottom])
-                        //                    Text("Source")
-                        Text("ThumbNail")
-                        
+                        HStack{
+                            Text("Thumbnail")
+                            Spacer()
+                        }.padding(.horizontal, Spacing.medium)
+                        Divider()
                         VStack {
                             if let image = viewModel.image {
                                 PhotosPicker(selection: $photoPickerItem, matching: .images) {
                                     Image(uiImage: image).resizable() // Allows the image to be resized
                                         .aspectRatio(contentMode: .fill) // Maintain the aspect ratio of the image
-                                        .frame(width: 120, height: 120)
+                                        .frame(width: 140, height: 140)
                                 }
                                 
                             } else {
                                 PhotosPicker(selection: $photoPickerItem, matching: .images) {
-                                    Image(uiImage: viewModel.image ?? UIImage(resource: .defaultAvator))
+                                    Image(uiImage: viewModel.image ?? UIImage(resource: .upload))
                                         .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 120, height: 120)
-                                        .cornerRadius(60.0)
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundColor(Color.themeBlack)
+                                        .frame(height: 140)
                                         .clipped()
                                         .padding()
                                     
@@ -186,21 +199,31 @@ struct CreateLinkView: View {
                             }
                         }
                         
+                        Divider()
                         
-                        
-                        
-                        Text("Description")
-                        TextEditor(text: $viewModel.linkDescription)
-                            .padding(4) // This padding is for inside the TextEditor, between the text and the border
-                            .frame(minHeight: 100)
-                            .background(Color.white) // Set the background color to white or any other color as needed
-                            .cornerRadius(10) // Set the corner radius as needed
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10) // Match this radius with the cornerRadius value above
-                                    .stroke(Color(UIColor.separator), lineWidth: 1)
-                            )
-                            .padding([.bottom, .horizontal])
-                        
+                        HStack{
+                            Text("Description")
+                            Spacer()
+                        }.padding(.horizontal, Spacing.medium)
+                        ZStack(alignment: .topLeading) {
+                            if viewModel.linkDescription == "" {
+                                Text("What’s this link about?")
+                                    .foregroundColor(.gray)
+                                    .padding([.horizontal], 16)
+                                    .padding(10).zIndex(2.0)
+                            }
+                            
+                            TextEditor(text: $viewModel.linkDescription)
+                                .padding(4) // This padding is for inside the TextEditor, between the text and the border
+                                .frame(minHeight: 100)
+                                .background(Color.themeWhite) // Set the background color to white or any other color as needed
+                                .cornerRadius(10) // Set the corner radius as needed
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10) // Match this radius with the cornerRadius value above
+                                        .stroke(Color(UIColor.separator), lineWidth: 1)
+                                )
+                                .padding([.bottom, .horizontal])
+                        }
                         if viewModel.error {
                             Text(viewModel.errorMessage)
                                 .frame(maxWidth: .infinity) // Ensures the Text takes up all available width
@@ -260,6 +283,7 @@ struct CreateLinkView: View {
                 }.onDisappear{
                     print("leave create link")
                 }.navigationBarBackButtonHidden(true)
+                    .background(Color.themeWhite.edgesIgnoringSafeArea(.all))
             }.disabled(viewModel.loadingStage != .none  )
             
             if viewModel.loadingStage != .none {
@@ -290,7 +314,7 @@ struct CreateLinkView: View {
                 .shadow(radius: 50)
             }
             
-        }
+        }.background(Color.themeWhite.edgesIgnoringSafeArea(.top))
     }
 }
 

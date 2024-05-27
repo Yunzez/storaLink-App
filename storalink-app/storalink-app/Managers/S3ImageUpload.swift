@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import AWSS3
 import CryptoKit
+import UIKit
 
 /// Fetches a pre-signed URL from the backend for uploading an image.
 /// - Parameters:

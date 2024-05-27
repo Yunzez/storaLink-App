@@ -17,8 +17,7 @@ import LinkPresentation
     var showingSearchResults: Bool = false
     var modelContext: ModelContext?
     var linkName: String = ""
-    var linkDescription: String = "This is a folder description"
-    var searchUser: String = ""
+    var linkDescription: String = ""
     var selectedFolder: Folder?
     var image: UIImage?
     var icon: UIImage?
@@ -27,6 +26,7 @@ import LinkPresentation
     var error: Bool = false
     var errorMessage: String = ""
     var searchFolder: String = ""
+    var source: String = ""
     
     var fetchStatus: Int = 0
     var fetchError: String = ""
@@ -48,10 +48,10 @@ import LinkPresentation
     var lockFolderSelection: Bool = false
     var userAssignedFinishSignal: Bool = false
     var initialLink: Link? = nil
-
+    
     // Other properties for business logic
     private var cancellables = Set<AnyCancellable>()
-
+    
     func updateInfoForEditLink(link: Link) {
         linkName = link.linkUrl ?? ""
         title = link.title
@@ -87,7 +87,7 @@ import LinkPresentation
             
             link.linkUrl = linkName
             link.title = title
-//            link.author = author
+            //            link.author = author
             link.desc = linkDescription
             if let saveIcon = icon {
                 link.iconUrl = localFileManager.saveImage(image: saveIcon)
@@ -101,7 +101,7 @@ import LinkPresentation
         }
     }
     
-
+    
     func createLink() {
         loadingStage = .loading
         
@@ -114,13 +114,13 @@ import LinkPresentation
         }
         
         if let folder = selectedFolder, let context = modelContext {
-           
+            
             // Implement folder creation logic here
             print("Creating link with name: \(linkName) and description: \(linkDescription)")
             
             title = title.isEmpty ? linkName : title
             
-            let newLink = Link(title: title, imgUrl: "", desc: linkDescription, linkUrl: linkName)
+            let newLink = Link(title: title, imgUrl: "", desc: linkDescription, linkUrl: linkName, source: source)
             if let saveImage = image {
                 imagePath = self.fileManager.saveImage(image: saveImage)
             }
@@ -132,24 +132,38 @@ import LinkPresentation
             newLink.imgUrl = imagePath
             newLink.iconUrl = iconPath
             modelManager.addLinkToFolder(link: newLink, folder: folder, modelContext: context)
-
+            
             
             if let navigateManager = navigationStateManager {
                 navigateManager.focusLink = newLink
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     print("navigate")
                     if (!self.lockFolderSelection) {
-                        navigateManager.lastNavigationSource = .toMainStack
-                        navigateManager.navigationPath.append(NavigationItem.linkView)
+                        navigateManager.navigateBackAndForth(to: .linkView)
+//                        self.resetInfo()
+                        //                        navigateManager.lastNavigationSource = .toMainStack
                     }
                 }
+               
             }
-           
+            
         }
         loadingStage = .done
-       
         
+        
+    }
+    
+    func resetInfo() -> Void {
+        linkName = ""
+        linkDescription = "This is a link description"
+        image = nil
+        icon = nil
+        title = ""
+        author  = ""
+        error = false
+        errorMessage = ""
+        searchFolder = ""
+        source = ""
     }
     
     // More business logic functions as needed
@@ -160,7 +174,7 @@ import LinkPresentation
         if (selectedFolder == nil) {
             print("folder type does not match")
             errorMessage = "Please select a folder"
-           return false
+            return false
         }
         if (linkName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
             errorMessage = "Please input a link name"
@@ -169,7 +183,7 @@ import LinkPresentation
         return true
     }
     
-   
+    
     
     // Initiate any necessary setup
     init() {
@@ -182,7 +196,7 @@ import LinkPresentation
         }
         
         let filteredFolders = folders.filter { folder in
-               folder.title.localizedCaseInsensitiveContains(searchFolder)
+            folder.title.localizedCaseInsensitiveContains(searchFolder)
         }
         return filteredFolders
     }
@@ -194,7 +208,7 @@ import LinkPresentation
     func setup(modelConext: ModelContext) {
         self.modelContext = modelConext
     }
-
+    
     func fetchLinkMetadata() {
         fetchStatus = 1
         linkFetcher.fetch(link: linkName, completion: { linkMetaData, error in
@@ -212,6 +226,7 @@ import LinkPresentation
                 self.author = metaData.linkAuthor
                 self.image = metaData.linkImage
                 self.icon = metaData.linkIcon
+                self.source = metaData.linkSource ?? "Unclear"
                 print(self.image ?? "no image")
                 self.fetchStatus = 2
             }
@@ -219,5 +234,5 @@ import LinkPresentation
         
         
     }
-
+    
 }

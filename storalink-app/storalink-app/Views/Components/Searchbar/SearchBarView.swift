@@ -45,11 +45,11 @@ struct SearchBarView: View {
                             }
                             
                         }
-                } .background(Color(.systemGray6))
+                } .background(Color.subtleTheme)
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: Spacing.roundMd)
-                            .stroke( inputFocus ? Color("ThemeColor") : Color.gray , lineWidth: 2)
+                            .stroke( inputFocus ? Color("ThemeColor") : Color.gray , lineWidth: 1.5)
                     )
                     .padding(.horizontal)
                     .frame(height: Spacing.customSearchBarHeight)

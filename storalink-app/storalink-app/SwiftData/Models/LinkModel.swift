@@ -17,6 +17,7 @@ final class Link {
     var iconUrl: String?
     var desc: String?
     var creationDate: Date
+    var source: String?
 //      socialMediaType: SocialMediaSrc;
     
     var linkUrl: String?
@@ -25,16 +26,17 @@ final class Link {
     /*@Relationship(deleteRule: .cascade)*/ var parentFolder: Folder?
 
     
-    init(title: String, imgUrl: String? = "", desc: String? = nil, linkUrl: String? = nil) {
+    init(title: String, imgUrl: String? = "", desc: String? = nil, linkUrl: String? = nil, source: String? = "Unknown") {
         self.title = title
         self.imgUrl = imgUrl
         self.desc = desc
         self.linkUrl = linkUrl
         self.creationDate = Date()
+        self.source = source
     }
     
     
-    init(title: String, imgUrl: String? = "", desc: String? = nil, linkUrl: String? = nil, parentFolder: Folder? = nil, iconUrl: String? = nil) {
+    init(title: String, imgUrl: String? = "", desc: String? = nil, linkUrl: String? = nil, parentFolder: Folder? = nil, iconUrl: String? = nil,  source: String?) {
         self.title = title
         self.imgUrl = imgUrl
         self.desc = desc
@@ -42,6 +44,7 @@ final class Link {
         self.creationDate = Date()
         self.parentFolder = parentFolder
         self.iconUrl = iconUrl
+        self.source = source ?? "unknown source"
     }
     
     
@@ -53,6 +56,18 @@ final class Link {
         self.iconUrl = iconUrl
         self.creationDate = Date()
         self.mongoId = mongoId
+        self.source = "unknown source"
+    }
+    
+    init(title: String, imgUrl: String, iconUrl: String, desc: String, mongoId: String, linkUrl: String, source: String? = "unknown source") {
+        self.title = title
+        self.imgUrl = imgUrl
+        self.desc = desc
+        self.linkUrl = linkUrl
+        self.iconUrl = iconUrl
+        self.creationDate = Date()
+        self.mongoId = mongoId
+        self.source = source
     }
     
     

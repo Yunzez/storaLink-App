@@ -24,7 +24,7 @@ struct FilesView: View {
     // Define the grid layout: 2 columns
     private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
-
+    
     var body: some View {
         ZStack(alignment: .top){
             VStack {
@@ -34,7 +34,7 @@ struct FilesView: View {
                     }
                 }
             }.zIndex(2.0)
-          
+            
             if folders.count == 0 {
                 VStack{
                     Spacer()
@@ -44,7 +44,7 @@ struct FilesView: View {
                         .multilineTextAlignment(.center).padding(3)
                     CustomButton(action: {
                         navigationStateManager.navigationPath.append(NavigationItem.createFolderView)
-                    }, label: "Create Folder", style: .fill)
+                    }, label: "Create Folder", style: .fill, larger: false)
                     Spacer()
                 }.padding()
             } else {
@@ -60,10 +60,13 @@ struct FilesView: View {
                 }.padding(.top, Spacing.customSearchBarHeight )
                     .padding(.top, Spacing.small)
             }
-                
             
-        }.padding(.bottom, Spacing.customNavigationBarHeight )
-        
+            
+        }/*.padding(.bottom, Spacing.customNavigationBarHeight )*/
+            .background(Color.themeWhite)
+            .onTapGesture {
+                UIApplication.shared.endEditing()
+            }
     }
 }
 

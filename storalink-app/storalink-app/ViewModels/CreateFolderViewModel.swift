@@ -20,7 +20,7 @@ enum LoadingStage {
     var context: ModelContext?
     // Published properties that the view can subscribe to
     var folderName: String = ""
-    var folderDescription: String = "This is a folder description"
+    var folderDescription: String = ""
     var searchUser: String = ""
     var selectedCoverIndex: Int = 0
     var error: Bool = false
@@ -115,48 +115,19 @@ enum LoadingStage {
                 let newFolder = Folder(title: folderName, imgUrl: imgUrl, desc: folderDescription,  links: [])
                 modelUtil.createFolder(modelContext: context, folder: newFolder)
                 
-                
-//                Task{
-//                    await folderManager.createFolder(folder: newFolder) { result in
-//                        switch result {
-//                        case .success(let updatedFolder):
-//                            do {
-//                                let users = try context.fetch(FetchDescriptor<User>(predicate: #Predicate<User>{ user in
-//                                    user.id == userId
-//                                }))
-//                                
-//                                if let currentUser = users.first {
-//                                    currentUser.folders.append(updatedFolder)
-//                                    do {
-//                                        try context.save()
-//                                        print("change saved to user", currentUser.name)
-//                                    } catch {
-//                                        print("Failed to save context: \(error)")
-//                                    }
-//                                }
-//                            } catch {
-//                                print("Failed to fetch users: \(error)")
-//                            }
-//                            
-//                        case .failure(let error):
-//                            print("Failed to create folder: \(error)")
-//                        }
-//                    }
-//                }
 //                
                 
                 if let navigateManager = navigationStateManager {
                     navigateManager.focusFolder = newFolder
-                    navigateManager.lastNavigationSource = .toMainStack
+                    
                     loadingStage = .done
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.readyToNavigate = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        print("navigate")
+                            navigateManager.navigateBackAndForth(to: .folderView)
                     }
                 }
                 
-            } catch {
-                print("something went wrong")
             }
              
         }

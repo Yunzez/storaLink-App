@@ -23,7 +23,7 @@ struct FolderItemTabView: View {
     }
     
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 2) {
             
             folderImage()
                 .resizable()
@@ -31,30 +31,35 @@ struct FolderItemTabView: View {
                 .frame(width: 30, height: 30)
                 .clipped()
                 .cornerRadius(8)
-            
-            Text(folder.title)
-                .font(.system(size: 12, weight: .semibold)) // Adjust font size and weight as needed
-                .lineLimit(2)
-                .foregroundColor(Color("ThemeBlack"))
-            
-            Spacer()
-            
+            HStack{
+                Text(folder.title)
+                    .font(.system(size: 12, weight: .semibold)) // Adjust font size and weight as needed
+                    .lineLimit(1)
+                    .foregroundColor(Color("ThemeBlack"))
+                    .padding(.leading, 4)
+                Spacer()
+            }.frame(width: 90)
+//                .border(Color.green)
             Button {
                 showSheet = true
             } label: {
                 Image(systemName: "ellipsis")
-                    .foregroundColor(.gray)
-            }
+                    .foregroundColor(Color("ThemeBlack"))
+            }.frame(width: 28, height: 30)
+            //                .border(Color.red)
+            
             
             
         }
-        .padding(.horizontal, 5)
+        .padding(.leading, 5)
+        .padding(.trailing, 8)
         .padding(.vertical, 5)
         .frame(height: 40) // The height of the tab
         .background(Color("SubtleTheme")) // Use the actual background color
         .cornerRadius(10)
-        .shadow(radius: 2) // Optional: if you want to add shadow
-        .frame(width: 150, height: 40)
+        //        .shadow(radius: 2) // Optional: if you want to add shadow
+        .frame(width: 160)
+//        .border(.red)
         .sheet(isPresented:  $showSheet, content: {
             VStack(content: {
                 Spacer()

@@ -33,6 +33,9 @@ struct ShareView: View {
     @State var folderId: UUID = UUID()
     @State var showSearchResult: Bool = false
     @State var userEmail: String = "yz8751@nyu.edu"
+    @State var source: String = "Unknown"
+    
+    @State var errorMessage : String = ""
     @FocusState private var isTitleInputFocused: Bool
     @FocusState private var isAuthorInputFocused: Bool
     @FocusState private var isDescriptionInputFocused: Bool
@@ -59,9 +62,16 @@ struct ShareView: View {
         _selectedText = State(initialValue: -1) // Provide an initial value for selectedText
         self.onCancel = onCancel
         _linkText = State(initialValue: self.sharedURL ?? "") // Provide an initial value for linkText
+        _source = State(initialValue: "")
     }
     
     func prepareLinkForFolder() {
+        errorMessage = ""
+        if folderName == "" {
+            errorMessage = "Please select a folder to add"
+            return
+        }
+        
         for folder in folders {
             if folder.id == folderId {
                 var imagePath = ""
@@ -74,7 +84,7 @@ struct ShareView: View {
                     iconPath = self.fileManager.saveImage(image: saveIcon)
                 }
                 print("before: \(folder.links.count)")
-                let newLink = Link(title: titleText, imgUrl: imagePath, desc: descriptionText, linkUrl: linkText, parentFolder: folder, iconUrl: iconPath)
+                let newLink = Link(title: titleText, imgUrl: imagePath, desc: descriptionText, linkUrl: linkText, parentFolder: folder, iconUrl: iconPath, source: source)
                 //                modelUtil.addLinkToFolder(link: newLink, folder: folder, modelContext: modelContext)
                 modelContext.insert(newLink)
                 do {
@@ -119,6 +129,7 @@ struct ShareView: View {
                     titleText = data.linkTitle
                     authorText = data.linkAuthor
                     descriptionText = data.linkDesc
+                    source = data.linkSource ?? source
                 }
             }
         }
@@ -152,7 +163,7 @@ struct ShareView: View {
                         Button {
                             prepareLinkForFolder()
                         } label: {
-                            Text("Add").foregroundColor(Color("ThemeGray")).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                            Text("Add").foregroundColor(folderName == "" ? Color("ThemeGray"): Color("ThemeColor")).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                         }
                         
                     }.padding()
@@ -278,24 +289,34 @@ struct ShareView: View {
                     Divider()
                     VStack{
                         NavigationLink{SelectFolderView { folder in
+                            errorMessage = ""
                             folderName = folder.title
                             folderId = folder.id
                         }} label: {
                             HStack{
                                 Text("Share to").foregroundColor(.themeBlack)
                                 Spacer()
-                                Text("\(folderName)")
+                                Text("\(folderName)").foregroundColor(Color.theme)
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.themeBlack)
                             }
+                        }.onTapGesture {
+                            errorMessage = ""
                         }
                         
                         
                     }.padding()
+                    Divider()
+                    VStack{
+                        Spacer()
+                        Text(errorMessage).foregroundColor(.red).bold()
+                        Spacer()
+                    }
                 }
                 Spacer()
             }
-        }.onTapGesture {
+        }.background(Color.themeWhite.edgesIgnoringSafeArea(.all))
+            .onTapGesture {
             selectedText = -1
         }.onAppear{
             setUp()

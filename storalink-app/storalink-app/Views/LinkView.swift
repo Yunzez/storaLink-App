@@ -94,7 +94,6 @@ struct LinkView: View {
                         })
                         .background(Color("SubtleTheme").opacity(0.8))
                         .cornerRadius(Spacing.medium)
-                        .shadow(radius:7)
                         Spacer()
                         
                         Text("In Folder: \(currentFolder.title)")
@@ -109,7 +108,7 @@ struct LinkView: View {
                     ForEach(visibleCardRange, id: \.self) { index in
                         let link = currentFolder.links[index]
                         LinkViewCard(link: link)
-                            .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                            .shadow(radius: 3)
                             .offset(x: cardOffSet(for: index))
                             .scaleEffect(x: cardScale(for: index), y: cardScale(for: index))
                             .overlay(Color.white.opacity(1-cardScale(for: index)))
@@ -138,18 +137,36 @@ struct LinkView: View {
                 }
                 
                 HStack{
-                    Text("\(currentLinkIndex + 1)/\(currentFolder.getLinkNum())")
+                    Text("\(currentLinkIndex + 1)/\(currentFolder.getLinkNum())").foregroundColor(Color.themeGray)
                     Spacer()
                 }.padding(.horizontal)
+                    .padding(.vertical)
                 
                 VStack{
-                    Text(currentLink?.title ?? "  ").font(.title2).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                    Text(currentLink?.desc ?? "   ")
-                }.padding(.horizontal)
+                    HStack{
+                        Text(currentLink?.title ?? "  ").font(.title2).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).padding(.horizontal)
+                        Spacer()
+                        
+                    }.padding(.bottom, 8)
+                    HStack{
+                        Text(currentLink?.desc ?? "   ").padding(.horizontal)
+                        Spacer()
+                    }
+                }
                 Spacer()
                 
                 HStack{
-                    Image(systemName: "ellipsis")
+                    Button {
+                        print("do something")
+                    } label: {
+                        Image(systemName: "ellipsis").rotationEffect(.degrees(90)) // Rotate the icon 90 degrees
+                            .padding(Spacing.large) // Add padding to increase tappable area
+                            .background(Color.themeWhite) // Set background color
+                            .foregroundColor(Color.themeBlack) // Set icon color
+                            .cornerRadius(Spacing.roundMd)
+                    }.padding(.trailing, 4)
+
+                    
                     CustomButton(action: {
                         if let url = URL(string: currentLink?.linkUrl ?? "") {
                             print("open link", url)
@@ -157,8 +174,8 @@ struct LinkView: View {
                         } else {
                             print("Invalid URL")
                         }
-                    }, label: "View Live Media", imageSystemName: "link", style: .fill)
-                }
+                    }, label: "View Live Media", imageSystemName: "link", style: .fill, larger: true)
+                }.padding(.top, Spacing.medium).frame(maxWidth: .infinity).background(Color.subtleTheme.edgesIgnoringSafeArea(.bottom))
             }.onAppear {
                 print("appear")
                 
@@ -181,7 +198,7 @@ struct LinkView: View {
             .onDisappear {
                 navigationStateManager.exitSubMenu()
             }.navigationBarBackButtonHidden(true)
-        }
+        }.background(Color.themeWhite.edgesIgnoringSafeArea(.top))
     }
 }
 

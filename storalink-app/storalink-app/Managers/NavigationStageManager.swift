@@ -47,6 +47,19 @@ import Observation
         lastNavigationSource = .normal
     }
     
+    func navigateBackAndForth(to destination: NavigationItem) {
+            // Navigate back first
+            if !navigationPath.isEmpty {
+                navigationPath.removeLast()
+            }
+            
+            // Wait for a short duration, then navigate to the destination view
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                print("navigate to \(destination)")
+                self.navigationPath.append(destination)
+            }
+        }
+    
     func navigateToRoot() {
         navigationPath = NavigationPath()
     }

@@ -23,19 +23,20 @@ struct CreateView: View {
                     HStack{
                         Image("Link")
                         Text("Link")
-                    }.frame(width: 300, height: 200).background(.subtleTheme).cornerRadius(Spacing.medium).shadow(radius: 5)
-                }
-                Spacer()
+                    }.frame(width: 300, height: 200).background(.subtleTheme).cornerRadius(Spacing.medium)
+                }.padding(.bottom, 32)
+                
                 Button(action: {
                     navigationStateManager.navigationPath.append(NavigationItem.createFolderView)
                 }) {
                     HStack{
                     Image("Folder")
                     Text("Folder")
-                    }.frame(width: 300, height: 200).background(.subtleTheme).cornerRadius(Spacing.medium).shadow(radius: 5)
+                    }.frame(width: 300, height: 200).background(.subtleTheme).cornerRadius(Spacing.medium)
                 }
                 Spacer()
-            }.padding(.bottom, Spacing.customNavigationBarHeight )
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.themeWhite)/*.padding(.bottom, Spacing.customNavigationBarHeight)*/
         
     }
 }

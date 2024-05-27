@@ -70,7 +70,7 @@ struct SelectFolderView: View {
                 }.padding(.horizontal) // Add padding around the overlay
                 
                 VStack {
-                    Text("folders: \(filteredFolder.count)")
+//                    Text("folders: \(filteredFolder.count)")
                     ScrollView(.vertical) {
                         if (filteredFolder.count > 0) {
                             ForEach(filteredFolder){ folder in
@@ -83,20 +83,21 @@ struct SelectFolderView: View {
                                     self.presentationMode.wrappedValue.dismiss()
                                 } label: {
                                     HStack {
-                                        Image("Folder").resizable().aspectRatio(contentMode: .fit).frame(width: 25, height: 25)
+                                        Image("Folder").resizable().aspectRatio(contentMode: .fit).frame(width: 26, height: 26).foregroundColor(Color("ThemeBlack")).padding(.horizontal, 4)
                                         Text(folder.title)
                                             .foregroundColor(Color("ThemeBlack")) // Set the text color
-                                    }
+                                        Spacer()
+                                    }.frame(width: .infinity)
                                     .padding(.vertical, 8) // Add some vertical padding for tap comfort
                                 }
-                                .padding(.horizontal) // Add horizontal padding for better alignment
+                                .padding(.horizontal, 8) // Add horizontal padding for better alignment
                                 Divider() // Add a divider between items
                                 
                             }
                         } else {
-                            Text("there is no folder")
+                            Text("There is no folder found with the search text").padding(.vertical).frame(maxWidth: .infinity)
                         }
-                    }.background(Color.white)
+                    }.background(Color.themeWhite)
                         .padding(.horizontal)
                         .transition(.asymmetric(
                             insertion: .identity.combined(with: .opacity),
@@ -105,7 +106,7 @@ struct SelectFolderView: View {
                 }
                 Spacer()
             }
-            
+            .background(Color.themeWhite.edgesIgnoringSafeArea(.all))
             // Optionally hide the default back button
         }.navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button(action: {

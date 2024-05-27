@@ -23,6 +23,7 @@ struct BlurView: UIViewRepresentable {
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppViewModel.self) private var appViewModel
+    
     @Query var folders: [Folder] = []
     @Query var links: [Link] = []
     var modelUtil  = ModelUtilManager.manager
@@ -33,15 +34,16 @@ struct ContentView: View {
             if appViewModel.isFirstLaunch ?? true {
                 TutorialView()
             } else {
-                MainNavStack()
+                MainNavStack().background(Color.themeWhite.edgesIgnoringSafeArea(.top))
             }
         }.onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             checkForSharedDataUpdates()
         }.onAppear{
             checkForSharedDataUpdates()
         }
+//        .edgesIgnoringSafeArea(.all)
     }
-    
+     
 #warning("this is problematic, in the futher we need to either save incoming links in user default as a list")
     func checkForSharedDataUpdates() {
         print("Scanning update flag")

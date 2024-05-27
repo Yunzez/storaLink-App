@@ -35,9 +35,8 @@ struct UserSettingTab: View {
                 Spacer()
             }
             .padding()
-            .background(Color("ThemeWhite")) // Make sure 'ThemeWhite' is defined in your assets
-            .cornerRadius(10)
-            .shadow(radius: 2)
+            .background(Color.subtleTheme) // Make sure 'ThemeWhite' is defined in your assets
+            .cornerRadius(5)
         }
 }
 

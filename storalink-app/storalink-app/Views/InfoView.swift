@@ -22,11 +22,11 @@ struct InfoView: View {
                             sectionSelected = 0
                         }
                     }) {
-                        Text("From the Devs ")
+                        Text("Dev Notes ")
                             .foregroundColor(sectionSelected == 0 ? .themeWhite : .themeBlack)
-                            .padding(Spacing.medium)
+                            .padding(Spacing.small)
                     }
-                    .background(sectionSelected == 0 ? Color("ThemeColor") : Color("ThemeWhite"))
+                    .background(sectionSelected == 0 ? Color("ThemeColor") : Color.subtleTheme)
                     
                     Button(action: {
                         withAnimation() {
@@ -35,54 +35,47 @@ struct InfoView: View {
                     }) {
                         Text("Your Activity")
                             .foregroundColor(sectionSelected == 1 ? .themeWhite : .themeBlack)
-                            .padding(Spacing.medium)
+                            .padding(Spacing.small)
                     }
-                    .background(sectionSelected == 1 ? Color("ThemeColor") : Color("ThemeWhite"))
+                    .background(sectionSelected == 1 ? Color("ThemeColor") : Color.subtleTheme)
                     
                 }
-                .frame(height: 50)
-                .background(Color("ThemeWhite"))
+                .frame(height: 40)
                 .cornerRadius(Spacing.small)
-                .shadow(radius: 4)
+                .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.themeWhite, lineWidth: 1))
+                .background(Color.subtleTheme)
+                .padding(.top, 5)
                 
                 Spacer()
-                
-                Button(action: {
-                    // Action for settings button
-                }) {
-                    Image(systemName: "ellipsis")
-                        .foregroundColor(.themeBlack)
-                }
-                .frame(width: 40, height: 40)
-                .background(Color("ThemeWhite"))
-                .cornerRadius(Spacing.small)
-                .shadow(radius: 4)
             }
             .padding(.horizontal)
             
             if (sectionSelected == 1) {
-                ActivityInfoView().padding(.bottom, Spacing.customNavigationBarHeight )
+                ActivityInfoView()/*.padding(.bottom, Spacing.customNavigationBarHeight )*/
                 Spacer()
             } else {
-                VStack{
-                    HStack{
-                        Text("Beta 4.2 note").font(.title3).padding(.leading)
-                        Spacer()
+                VStack {
+                    VStack {
+                        HStack {
+                            Text("V-1.0 note")
+                                .foregroundColor(.themeGray)
+                            Spacer()
+                        }
+                        HStack{
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("Welcome to Storalink!")
+//                                Text("We are a bunch o")
+                            }
+                            Spacer()
+                        }
                     }
-                    HStack{
-                        Text("""
-                                               • Added notice & activities
-                                               • Bug fixes and improved UI
-                                               • Improve Share extensions
-                                               """).padding(.leading)
-                        Spacer()
-                    }
-                }.padding()
-                    .background(Color("SubtleTheme")) // Use actual card background color
-                    .clipShape(RoundedRectangle(cornerSize: CGSize(width: 6, height: 6)))
-                    .shadow(radius: 5)
-                    .padding(2)
+                }
+                .padding()
+                .background(Color.subtleTheme) // Use actual card background color
+                .clipShape(RoundedRectangle(cornerRadius: 5))
+                .padding(Spacing.medium)
                 Spacer()
+                
             }
         }
         
@@ -168,19 +161,10 @@ struct InfoCard: View {
                     Spacer()
                 }
                 
-                HStack{
-                    Spacer()
-                    Button {
-                        print("visit")
-                    } label: {
-                        Text("Visit")
-                    }
-                    
-                }
             }.padding()
-                .background(Color("SubtleTheme")) // Use actual card background color
+                .background(Color.subtleTheme) // Use actual card background color
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 6, height: 6)))
-                .shadow(radius: 5)
+            //                .shadow(radius: 5)
                 .offset(x: offset.width)
                 .gesture(
                     DragGesture()
@@ -208,9 +192,11 @@ struct InfoCard: View {
                             .scaleEffect(min(-offset.width / 80, 2.5), anchor: .center) // Ensuring the scale starts small and increases
                             .foregroundColor(.red)
                             .padding()
-                            .background(Color.white)
+                            .background(Color.themeWhite)
+                            .cornerRadius(5)
                     }
                     .offset(x: offset.width < -80 ? offset.width + 100 : 0) // Adjust this calculation as needed
+                    //                    .foregroundColor(Color.accentColor)
                 }
                 .transition(.move(edge: .trailing))
                 .animation(.easeOut, value: offset.width)

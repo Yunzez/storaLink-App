@@ -118,8 +118,8 @@ struct SettingsView: View {
                 }
                 
                 // Tab bar here...
-            }
-        }.padding(.bottom, Spacing.customNavigationBarHeight)
+            }.background(Color.themeWhite)
+        }
     }
 }
 

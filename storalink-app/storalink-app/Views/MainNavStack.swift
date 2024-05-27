@@ -21,6 +21,7 @@ struct MainNavStack: View {
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @Environment(AppViewModel.self) var appViewModel: AppViewModel
     @State private var selectedTab: Int = 0
+    @State private var refresh: Int = 0
     init() {
         let appearance = UITabBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -33,50 +34,59 @@ struct MainNavStack: View {
             UITabBar.appearance().scrollEdgeAppearance = appearance
         }
     }
+    @State private var someState: Int = 0
     
     var body: some View {
         NavigationStack(path: Bindable(navigationStateManager).navigationPath) {
-            ZStack(alignment: .bottom) {
-                Group {
-                    switch selectedTab {
-                    case 0:
-                        HomeViewEntry()
-                    case 1:
-                        FilesViewEntry()
-                    case 2:
-                        CreateView()
-                    case 3:
-                        InfoView()
-                    case 4:
-                        SettingsView()
-                    default:
-                        HomeView()
+            GeometryReader { geometry in
+                VStack() {
+                    
+                    Group {
+                        switch selectedTab {
+                        case 0:
+                            HomeViewEntry()
+                        case 1:
+                            FilesViewEntry()
+                        case 2:
+                            CreateView()
+                        case 3:
+                            InfoView()
+                        case 4:
+                            SettingsView()
+                        default:
+                            HomeView()
+                        }
+                    }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                    //                        .border(.red)
+                    // MARK: - Custom Tab Bar
+                    if !navigationStateManager.isInSubMenu {
+                        CustomTabView(selectedTab: $selectedTab)
+//                            .overlay(
+//                                // Top border
+//                                Rectangle()
+//                                    .frame(height: 1)
+//                                    .foregroundColor(Color.themeWhite),
+//                                alignment: .top
+//                            )
+                        //                            .border(.green)
                     }
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity) // Take up all available space
-                
-                // MARK: - Custom Tab Bar
-                // Custom Tab Bar
-                if !navigationStateManager.isInSubMenu {
-                    CustomTabView(selectedTab: $selectedTab)
+                }.navigationDestination(for: NavigationItem.self) { item in
+                    switch item {
+                        
+                    case .createFolderView:
+                        CreateFolderView() // The destination for CreateFolderView
+                    case .createLinkView:
+                        CreateLinkView()
+                    case .folderView:
+                        FolderView()
+                    case .linkView:
+                        LinkView()
+                    }
                     
-                }
-                
-                
-            }.navigationDestination(for: NavigationItem.self) { item in
-                switch item {
-                    
-                case .createFolderView:
-                    CreateFolderView() // The destination for CreateFolderView
-                case .createLinkView:
-                    CreateLinkView()
-                case .folderView:
-                    FolderView()
-                case .linkView:
-                    LinkView()
-                }
-                
-            }
+                }.frame(width: geometry.size.width, height: geometry.size.height)
+                    .clipped()
+            }.background(Color.themeWhite.edgesIgnoringSafeArea(.top))
+                .edgesIgnoringSafeArea(.bottom)
         }
     }
 }
@@ -85,13 +95,12 @@ struct CustomTabView: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var selectedTab: Int
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
+    
     var body: some View {
         VStack {
-            Spacer()
+            
             if colorScheme == .light {
-                // Custom Tab Bar
                 HStack(alignment: .bottom) {
-                    
                     HStack(alignment: .bottom){
                         // Home Tab
                         TabBarButton(iconName: "Home", selectedIcon: "HomeSelected", isSelected: selectedTab == 0) {
@@ -110,7 +119,7 @@ struct CustomTabView: View {
                         // Create Tab (Larger)
                         TabBarButton(iconName: "Create", selectedIcon: "CreateSelected", isSelected: selectedTab == 2, isLarge: true) {
                             selectedTab = 2
-                        }.padding(.top, Spacing.small)
+                        }.padding(.top, 6)
                         
                         Spacer() // Adds space between buttons
                         
@@ -122,21 +131,18 @@ struct CustomTabView: View {
                         Spacer() // Adds space between buttons
                         
                         // Settings Tab
-                        TabBarButton(iconName: "Setting", selectedIcon: "SettingSelected", isSelected: selectedTab == 4) {
+                        TabBarButton(iconName: "Setting", selectedIcon: "SettingSelected", isSelected: selectedTab == 4, text: "Profile") {
                             selectedTab = 4
                         }.padding(.trailing, Spacing.small)
                     }
                     //                .padding([.top], Spacing.small)
                     
-                    .padding([.bottom], Spacing.large)
-                    
+                    //                    .padding([.bottom], Spacing.large)
                 }
                 .padding(.horizontal)
-                .background(Color("SubtleTheme").opacity(1))
             }
             else { // dark theme
                 HStack(alignment: .bottom) {
-                    
                     HStack(alignment: .bottom){
                         // Home Tab
                         TabBarButton(iconName: "HomeLight", selectedIcon: "HomeSelected", isSelected: selectedTab == 0, text: "Home", action:  {
@@ -155,7 +161,7 @@ struct CustomTabView: View {
                         // Create Tab (Larger)
                         TabBarButton(iconName: "CreateLight", selectedIcon: "CreateSelected", isSelected: selectedTab == 2, isLarge: true , text:"") {
                             selectedTab = 2
-                        }.padding(.top, Spacing.small)
+                        }.padding(.top, 6)
                         
                         Spacer() // Adds space between buttons
                         
@@ -173,15 +179,20 @@ struct CustomTabView: View {
                     }
                     //                .padding([.top], Spacing.small)
                     
-                    .padding([.bottom], Spacing.large)
-                    
+                    //                    .padding([.bottom], Spacing.large)
                 }
                 .padding(.horizontal)
-                .background(Color("SubtleTheme").opacity(1))
             }
-        }  .edgesIgnoringSafeArea(.bottom)
+            Spacer()
+            
+        }.frame(maxHeight: navigationStateManager.isInSubMenu ? 0 : Spacing.customNavigationBarHeight)
+            .safeAreaInset(edge: .bottom){
+                Text(" ")
+            }
             .transition(.move(edge: .bottom))
-            .frame(maxHeight: navigationStateManager.isInSubMenu ? 0 : Spacing.customNavigationBarHeight)
+        
+            .background(Color.subtleTheme)
+        
         
     }
 }
@@ -213,14 +224,18 @@ struct TabBarButton: View {
                     .foregroundColor(.themeBlack)
                 if !isLarge {
                     if let customText = text {
-                        Text(customText).font(.caption2)
-                    }else {
-                        Text(iconName).font(.caption2)
+                        Text(customText)
+                            .font(.caption2)
+                            .foregroundColor(isSelected ? Color.theme : .themeBlack) // Conditional color
+                    } else {
+                        Text(iconName)
+                            .font(.caption2)
+                            .foregroundColor(isSelected ? Color.theme : .themeBlack) // Conditional color
                     }
                 }
             }
             .foregroundColor(.themeBlack)
-        }
+        }.ignoresSafeArea(.keyboard)
     }
 }
 

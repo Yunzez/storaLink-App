@@ -7,11 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9F0B78BC2B71A2F3008D2862 /* AWSCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9F0B78BB2B71A2F3008D2862 /* AWSCore */; };
-		9F0B78BE2B71A2F3008D2862 /* AWSLambda in Frameworks */ = {isa = PBXBuildFile; productRef = 9F0B78BD2B71A2F3008D2862 /* AWSLambda */; };
-		9F0B78C02B71A2F3008D2862 /* AWSS3 in Frameworks */ = {isa = PBXBuildFile; productRef = 9F0B78BF2B71A2F3008D2862 /* AWSS3 */; };
 		9F0B78C22B71E255008D2862 /* ProdModelContainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0B78C12B71E255008D2862 /* ProdModelContainers.swift */; };
 		9F14229C2BEB22A3002629CE /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = 9F14229B2BEB22A3002629CE /* privacy.html */; };
+		9F14229F2BFD6ADD002629CE /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 9F14229E2BFD6ADD002629CE /* SwiftSoup */; };
+		9F1422A22BFD6DD9002629CE /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 9F1422A12BFD6DD9002629CE /* SwiftSoup */; };
 		9F417BC62B71974E005E022B /* S3ImageUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F417BC52B71974E005E022B /* S3ImageUpload.swift */; };
 		9F7260602B35418700A49628 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F72605F2B35418700A49628 /* CustomButton.swift */; };
 		9F7260622B365D6400A49628 /* NavigationStageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7260612B365D6400A49628 /* NavigationStageManager.swift */; };
@@ -212,6 +211,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F1422A22BFD6DD9002629CE /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,16 +219,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F0B78BE2B71A2F3008D2862 /* AWSLambda in Frameworks */,
 				9F7260B12B4764C000A49628 /* KeychainAccess in Frameworks */,
-				9F0B78C02B71A2F3008D2862 /* AWSS3 in Frameworks */,
-				9F0B78BC2B71A2F3008D2862 /* AWSCore in Frameworks */,
+				9F14229F2BFD6ADD002629CE /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F1422A02BFD6DD9002629CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9F7260662B36826C00A49628 /* ComponentsModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +298,7 @@
 				9FD082D22B1437A4004021FC /* storalink-app */,
 				9F7260822B3A831F00A49628 /* StoralinkSaveLink */,
 				9FD082D12B1437A4004021FC /* Products */,
+				9F1422A02BFD6DD9002629CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -476,6 +482,9 @@
 			dependencies = (
 			);
 			name = StoralinkSaveLink;
+			packageProductDependencies = (
+				9F1422A12BFD6DD9002629CE /* SwiftSoup */,
+			);
 			productName = StoralinkSaveLink;
 			productReference = 9F7260812B3A831F00A49628 /* StoralinkSaveLink.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -497,9 +506,7 @@
 			name = "storalink-app";
 			packageProductDependencies = (
 				9F7260B02B4764C000A49628 /* KeychainAccess */,
-				9F0B78BB2B71A2F3008D2862 /* AWSCore */,
-				9F0B78BD2B71A2F3008D2862 /* AWSLambda */,
-				9F0B78BF2B71A2F3008D2862 /* AWSS3 */,
+				9F14229E2BFD6ADD002629CE /* SwiftSoup */,
 			);
 			productName = "storalink-app";
 			productReference = 9FD082D02B1437A4004021FC /* Storalink.app */;
@@ -535,6 +542,7 @@
 			packageReferences = (
 				9F7260AF2B4764C000A49628 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				9F0B78BA2B71A2F3008D2862 /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */,
+				9F14229D2BFD6A8A002629CE /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = 9FD082D12B1437A4004021FC /* Products */;
 			projectDirPath = "";
@@ -859,7 +867,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "storalink-app/storalink-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4.2;
+				CURRENT_PROJECT_VERSION = 5.0;
 				DEVELOPMENT_ASSET_PATHS = "\"storalink-app/Preview Content\"";
 				DEVELOPMENT_TEAM = 2JF8FU3N7N;
 				ENABLE_PREVIEWS = YES;
@@ -892,7 +900,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "storalink-app/storalink-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4.2;
+				CURRENT_PROJECT_VERSION = 5.0;
 				DEVELOPMENT_ASSET_PATHS = "\"storalink-app/Preview Content\"";
 				DEVELOPMENT_TEAM = 2JF8FU3N7N;
 				ENABLE_PREVIEWS = YES;
@@ -958,6 +966,14 @@
 				minimumVersion = 2.33.8;
 			};
 		};
+		9F14229D2BFD6A8A002629CE /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.2;
+			};
+		};
 		9F7260AF2B4764C000A49628 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -969,20 +985,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9F0B78BB2B71A2F3008D2862 /* AWSCore */ = {
+		9F14229E2BFD6ADD002629CE /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9F0B78BA2B71A2F3008D2862 /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */;
-			productName = AWSCore;
+			package = 9F14229D2BFD6A8A002629CE /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
 		};
-		9F0B78BD2B71A2F3008D2862 /* AWSLambda */ = {
+		9F1422A12BFD6DD9002629CE /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9F0B78BA2B71A2F3008D2862 /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */;
-			productName = AWSLambda;
-		};
-		9F0B78BF2B71A2F3008D2862 /* AWSS3 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9F0B78BA2B71A2F3008D2862 /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */;
-			productName = AWSS3;
+			package = 9F14229D2BFD6A8A002629CE /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
 		};
 		9F7260B02B4764C000A49628 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;

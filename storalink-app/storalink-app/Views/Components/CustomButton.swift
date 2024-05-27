@@ -17,6 +17,7 @@ struct CustomButton: View {
     let label: String
     var imageSystemName: String? = nil
     let style: ButtonStyle
+    let larger: Bool? 
     
     var body: some View {
         Button(action: action) {
@@ -31,7 +32,7 @@ struct CustomButton: View {
                         .fontWeight(.semibold)
                 }
             }
-            .padding(Spacing.small)
+            .padding(larger ?? false ?  Spacing.medium: Spacing.small)
             .foregroundColor(style == .fill ? .white : .accentColor)
             .background(style == .fill ? Color("ThemeColor") : .clear)
             .cornerRadius(Spacing.small)
@@ -45,14 +46,3 @@ struct CustomButton: View {
 }
 
 
-#Preview {
-    Group{
-        CustomButton(action: {
-            print("Button tapped")
-        }, label: "Search", style: .outline)
-
-        CustomButton(action: {
-            print("Button tapped")
-        }, label: "Search", imageSystemName: "magnifyingglass", style: .fill)
-    }
-}

@@ -26,27 +26,28 @@ struct LinkItemView: View {
                 Image(uiImage: fileManager.getImage(path: currentLink.imgUrl ?? "") ?? UIImage(resource: .linkPlaceholder)) // Replace with actual image
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 88, height: 65)
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(Spacing.roundMd)
-                
+                    .frame(width: 75, height: 60)
+                    .clipShape(RoundedRectangle(cornerRadius: Spacing.roundMd)) // Clip to a rounded rectangle with medium corner radius
+                    .cornerRadius(Spacing.roundMd) // Apply the same corner radius
+
                 VStack(alignment: .leading) {
                     Text(currentLink.title )
-                        .font(.headline)
+                        .font(.subheadline)
                     HStack{
                         Image(uiImage: fileManager.getImage(path: currentLink.iconUrl ?? "") ?? UIImage(resource: .defaultLinkIcon))
                             .resizable()
                             .scaledToFit()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 22, height: 22)
-                        Text(" ")
-                            .font(.subheadline)
+                            .frame(width: 20, height: 20)
+                            .clipShape(RoundedRectangle(cornerRadius: Spacing.small)) // Clip to a rounded rectangle
+                        Text(currentLink.source ?? " ")
+                            .font(.system(size: 13))
+                            .foregroundColor(Color.themeGray)
                         
                     }
                 }
                 Spacer()
                 Button(action: {
-                    print("clicked item")
                     linkItemViewModel.toggleMore()
                 }, label: {
                     Image(systemName: "ellipsis").foregroundColor(Color("ThemeBlack"))
@@ -85,16 +86,18 @@ struct LinkItemView: View {
                     CreateLinkView(editLink: currentLink).padding(.top)
                 })
             }
-            .padding()
-            .frame(height: 75) // Adjust size as needed
+            .padding(Spacing.small )
+            .frame(height: 70) // Adjust size as needed
             .frame(maxWidth: .infinity)
-            .background(Color.gray.opacity(0.1)) // Placeholder for card background
+             // Placeholder for card background
             .cornerRadius(10)
             .foregroundColor(Color("ThemeBlack"))
             .onAppear{
                 //                print(currentLink.parentFolder?.title ?? "fail to find folder")
                 //                print(currentLink.id)
             }
+            .background(Color.subtleTheme)
+            
         })
     }
 }

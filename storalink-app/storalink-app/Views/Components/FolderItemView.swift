@@ -28,9 +28,6 @@ struct FolderItemView: View {
         self.currentFolder = folder
     }
     
-//    private func setUp() {
-//        self.currentFolder = currentFolderWrapper.getFolder()
-//    }
     var body: some View {
         VStack(alignment: .leading){
             ZStack() {
@@ -48,7 +45,6 @@ struct FolderItemView: View {
                             .scaledToFill()
                             .frame(width: cardWidth, height: 140)
                             .background(Color.black)
-                        
                     }
                 }
                 
@@ -63,10 +59,12 @@ struct FolderItemView: View {
                         }) {
                             Image(systemName: currentFolder.pinned ? "heart.fill" : "heart")
                                 .foregroundColor(Color("ThemeColor"))
-                                .padding(10)
-                                .background(Color.white)
-                                .clipShape(Circle())
-                                .padding(2)
+                                .padding(8)
+                                .background(Color.themeWhite)
+                                .clipShape(
+                                    RoundedRectangle(cornerRadius: 2.5)
+                                )
+                                .padding(4)
                         }
                     }
                     Spacer()
@@ -79,8 +77,8 @@ struct FolderItemView: View {
             
             HStack {
                 Text(currentFolder.title)
-                    .lineLimit(2)
-                    .font(.headline)
+                    .lineLimit(1)
+                    .font(.subheadline)
                     .foregroundColor(Color("ThemeBlack"))
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer()
@@ -89,7 +87,7 @@ struct FolderItemView: View {
                     folderItemViewModel.showDetailSheet = true
                 } label: {
                     Image(systemName: "ellipsis")
-                }.foregroundColor(.gray)
+                }.foregroundColor(Color("ThemeBlack"))
                     .sheet(isPresented: $folderItemViewModel.showDetailSheet, content: {
                         VStack{
                             Spacer()
@@ -143,32 +141,36 @@ struct FolderItemView: View {
                     })
             }
             .padding([.leading, .trailing], Spacing.small)
-            .frame(height: 25)
+            .frame(height: 20)
             
             HStack(spacing: 0) {
                 Image(systemName: "link").foregroundColor(.gray)
                 Text("\(currentFolder.getLinkNum())")
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                    .padding([.leading], 2)
+                    .padding([.leading], 3)
             }
-            .padding([.leading, .trailing], Spacing.small)
-            .frame(height: 20)
+            .padding([.leading, .trailing], 5)
+            .padding(.bottom, 2)
+            .frame(height: 22)
             
         }
         .frame(width: cardWidth, height: 200) // Adjust size as needed
-
-        .background(Color("SubtleTheme")) // Use actual card background color
-//        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
-        .shadow(radius: 5)
+//        .overlay(
+//                    RoundedRectangle(cornerRadius: 5)
+//                        .stroke(Color.themeGray, lineWidth: 2) // Apply the border with color and line width
+//                )
+        .background(Color("SubtleTheme"))
+        .cornerRadius(5)
+        
         .onTapGesture(perform: {
             print("Folder tapped")
             navigationStateManager.navigationPath.append(NavigationItem.folderView)
             navigationStateManager.focusFolder = currentFolder
         })
-        .onAppear{
-            print("current folder links num: \(currentFolder.links.count)")
-        }
+//        .onAppear{
+//            print("current folder links num: \(currentFolder.links.count)")
+//        }
     }
 }
 
@@ -196,7 +198,7 @@ struct FolderItemAddView: View {
             }.frame(width: 160, height: 200)
                 .background(Color("SubtleTheme")) // Use actual card background color
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
-                .shadow(radius: 5)
+                
         }
     }
 }
