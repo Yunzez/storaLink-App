@@ -111,7 +111,6 @@ struct LinkView: View {
                             .shadow(radius: 3)
                             .offset(x: cardOffSet(for: index))
                             .scaleEffect(x: cardScale(for: index), y: cardScale(for: index))
-                            .overlay(Color.white.opacity(1-cardScale(for: index)))
                             .zIndex(-Double (index))
                             .frame(width: screenWidth)
                             .gesture(

@@ -19,7 +19,8 @@ struct FolderView: View {
     @State var currentFolder: Folder = Folder(title: "Initial", imgUrl: "", desc: "Initial Folder", links: [])
     let localFileManager = LocalFileManager.manager
     
-    @State var displayFolder: [Link] = []
+    @State var displayLinks: [Link] = []
+
     enum SortOption {
         case recentlyAdded
         case oldest
@@ -30,19 +31,23 @@ struct FolderView: View {
     @State var sortingOption:SortOption = .none
     
     init() {
-        displayFolder = currentFolder.links
+        
     }
     
-    func sortLinks() -> [Link] {
+    func setup() {
+        displayLinks = sortLinks(folder: currentFolder)
+    }
+    
+    func sortLinks(folder: Folder) -> [Link] {
         switch sortingOption {
         case .recentlyAdded:
-            return currentFolder.links.sorted { $0.creationDate > $1.creationDate }
+            return folder.links.sorted { $0.creationDate > $1.creationDate }
         case .oldest:
-            return currentFolder.links.sorted { $0.creationDate < $1.creationDate }
+            return folder.links.sorted { $0.creationDate < $1.creationDate }
         case .titleAZ:
-            return currentFolder.links.sorted { $0.title < $1.title }
+            return folder.links.sorted { $0.title < $1.title }
         default:
-            return currentFolder.links.sorted { $0.creationDate > $1.creationDate }
+            return folder.links.sorted { $0.creationDate > $1.creationDate }
         }
     }
 
@@ -162,8 +167,7 @@ struct FolderView: View {
                 Text(currentFolder.desc ?? "No description for this folder")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding([.horizontal, .bottom])
-                
-                
+               
                 HStack{
                     if !folderViewModel.searchOpen {
                         HStack {
@@ -239,11 +243,14 @@ struct FolderView: View {
                         if currentFolder.getLinkNum() != 0 {
                             ScrollView(.vertical, showsIndicators: true) {
                                 VStack(spacing: 10) {
-                                    ForEach(sortLinks().filter
+                                    ForEach(displayLinks.filter
                                             { link in
                                         folderViewModel.searchText.isEmpty || link.title.localizedCaseInsensitiveContains(folderViewModel.searchText)
                                     } , id: \.self) { link in
-                                        LinkItemView(currentLink: link).frame(width: geometry.size.width).transition(.opacity)
+                                        LinkItemView(currentLink: link, onDelete: {
+                                            //resort the links
+                                            displayLinks = sortLinks(folder: currentFolder)
+                                        }).frame(width: geometry.size.width).transition(.opacity)
                                     }
                                 }
                             }.animation(.easeInOut(duration: 0.3), value: folderViewModel.searchText.isEmpty)
@@ -366,7 +373,9 @@ struct FolderView: View {
 
                 }.presentationDetents([.height(300)])
             }
-            
+            .onAppear{
+                setup()
+            }
         
     }
     

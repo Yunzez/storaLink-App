@@ -83,7 +83,6 @@ struct SettingsView: View {
                             
                             // this will need to be its own page
                             showDeleteAlert = true
-                            print("show delete alert")
                         }, label: {
                             UserSettingTab(iconName: "trash.fill", title: "Clear my data")
                         })
@@ -112,7 +111,16 @@ struct SettingsView: View {
                         }
                        .sheet(isPresented: $deletedDoneAlert) {
                            DeletionConfirmationView(deletedDoneAlert: $deletedDoneAlert)
-                    }
+                       }
+                        
+                        Button(action: {
+                            
+                            // this will need to be its own page
+                            let versionKey = "appVersion"
+                            UserDefaults.standard.set(0, forKey: versionKey)
+                        }, label: {
+                            UserSettingTab(iconName: "trash.fill", title: "Show update motice")
+                        })
 
                     }.padding(.horizontal)
                 }

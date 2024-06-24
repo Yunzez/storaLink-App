@@ -46,7 +46,7 @@ struct HomeView: View {
     @State private var filteredLinks: [Link] = []
     
     func setup(){
-        
+        filteredLinks = links.sorted(by: { $0.creationDate > $1.creationDate }).prefix(10).map { $0 }
         //        let folderFetchDescriptor = FetchDescriptor<Folder>(
         //            predicate:  #Predicate { folder in
         //                return true
@@ -182,7 +182,7 @@ struct HomeView: View {
                             
                             ScrollView(.vertical, showsIndicators: true) {
                                 VStack(spacing: 5) {
-                                    ForEach(links) { link in // Replace with your data source
+                                    ForEach(filteredLinks) { link in // Replace with your data source
                                         LinkItemView(currentLink: link)
                                     }
                                 }

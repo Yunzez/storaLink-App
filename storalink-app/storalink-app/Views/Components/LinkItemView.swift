@@ -14,6 +14,8 @@ struct LinkItemView: View {
     @Environment(NavigationStateManager.self) var navigationStateManager: NavigationStateManager
     @Environment(\.modelContext) var modelContext
     
+    var onDelete: (() -> Void)? // this gives other components choices to update after delete if not happening automatically
+    
     let linkActor = LinkActor()
     let fileManager = LocalFileManager.manager
     var body: some View {
@@ -25,11 +27,11 @@ struct LinkItemView: View {
                 
                 Image(uiImage: fileManager.getImage(path: currentLink.imgUrl ?? "") ?? UIImage(resource: .linkPlaceholder)) // Replace with actual image
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 75, height: 60)
+                    .scaledToFill()
+                    .frame(width: 75, height: 55)
                     .clipShape(RoundedRectangle(cornerRadius: Spacing.roundMd)) // Clip to a rounded rectangle with medium corner radius
                     .cornerRadius(Spacing.roundMd) // Apply the same corner radius
-
+                
                 VStack(alignment: .leading) {
                     Text(currentLink.title )
                         .font(.subheadline)
@@ -58,16 +60,10 @@ struct LinkItemView: View {
                         Spacer()
                         BottomSheetOption(onClick: {
                             Task{
-                                await linkActor.deleteLink(link: currentLink) { result in
-                                    switch result {
-                                    case .success:
-                                        modelContext.delete(currentLink)
-                                        do { try modelContext.save() } catch { print("error saving") }
-                                    case .failure(let err):
-                                        print("fail to delete, delete locally", err.localizedDescription)
-                                        modelContext.delete(currentLink)
-                                    }
-                                    
+                                modelContext.delete(currentLink)
+                                do {
+                                    try modelContext.save()
+                                    onDelete?()
                                 }
                             }
                         }, text: "Delete", assetImageString: "Trash")
@@ -85,19 +81,19 @@ struct LinkItemView: View {
                 .sheet(isPresented: $linkItemViewModel.openMove, content: {
                     CreateLinkView(editLink: currentLink).padding(.top)
                 })
+                
             }
-            .padding(Spacing.small )
+            .padding(Spacing.small)
             .frame(height: 70) // Adjust size as needed
             .frame(maxWidth: .infinity)
-             // Placeholder for card background
-            .cornerRadius(10)
+            // Placeholder for card background
             .foregroundColor(Color("ThemeBlack"))
             .onAppear{
                 //                print(currentLink.parentFolder?.title ?? "fail to find folder")
                 //                print(currentLink.id)
             }
             .background(Color.subtleTheme)
-            
+            .cornerRadius(Spacing.roundMd)
         })
     }
 }

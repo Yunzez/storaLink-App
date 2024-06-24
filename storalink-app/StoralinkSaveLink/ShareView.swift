@@ -91,10 +91,13 @@ struct ShareView: View {
                     try modelContext.save()
                     print("after: \(folder.links.count)")
                     if let sharedDefaults = UserDefaults(suiteName: "group.com.storalink.appgroup") {
+                        var linksArray = sharedDefaults.array(forKey: "IncomingNewLinks") as? [String] ?? [String]()
+                        linksArray.append(newLink.id.uuidString)
+                        sharedDefaults.set(linksArray, forKey: "IncomingNewLinks")
                         sharedDefaults.set(true, forKey: "DataUpdatedFlag")
-                        sharedDefaults.set(newLink.id.uuidString, forKey: "IncomingNewLinkId")
                         sharedDefaults.synchronize()
                     }
+
                     
                     onCancel()
                     
